@@ -23,7 +23,7 @@ INSTALL_EXECUTABLE_PATH=$(BINARY_DIRECTORY)/$(PRODUCT_NAME)
 all: build
 
 .PHONY: test
-test:
+test: clean
 	$(SWIFT) build -c debug -Xswiftc -static-stdlib | xcbeautify
 
 .PHONY: build
