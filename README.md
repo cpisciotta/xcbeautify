@@ -1,4 +1,4 @@
-# xcbeautify
+# xcbeautify [![Build Status](https://app.bitrise.io/app/d23cc64bb267e15f/status.svg?token=BTw64Na-X05ayyPpauFEDw&branch=master)](https://app.bitrise.io/app/d23cc64bb267e15f)
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
