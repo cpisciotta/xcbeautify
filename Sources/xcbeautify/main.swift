@@ -1,0 +1,3 @@
+setupCommands()
+
+rootCommand.execute()

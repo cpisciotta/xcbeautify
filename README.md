@@ -1,0 +1,75 @@
+# xcbeautify
+
+**`xcbeautify` is a little beautifier tool for `xcodebuild`.**
+
+Similar to `xcpretty`, but written in Swift.
+
+## Features
+
+- [x] Human-friendly and colored output.
+- [x] Supports the new build system's output (`xcpretty` does not).
+- [x] Supports Xcode 10's parallel testing output (`xcpretty` does not).
+- [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
+  bring anywhere. This also means less Ruby-dependant in your development
+  environment and CI.
+
+**Note:** `xcbeautify` does not support generating JUnit or HTML test reports.
+In fact, you shouldn't rely on `xcodebuild`'s output to generate test reports.
+We suggest using [trainer](https://github.com/KrauseFx/trainer) or
+[XCTestHTMLReport](https://github.com/TitouanVanBelle/XCTestHTMLReport) to
+generate test reports from `xcodebuild`'s generated `TestSummaries.plist`
+files.
+
+## Fun fact
+
+`xcbeautify` uses itself to format its CI build logs.
+
+## Installation
+### Homebrew
+
+```bash
+$ brew tap thii/xcbeautify https://github.com/thii/xcbeautify.git
+$ brew install xcbeautify
+```
+
+### Build from source
+
+```bash
+$ git clone https://github.com/thii/xcbeautify.git
+$ cd xcbeautify
+$ make install
+```
+
+## Usage
+
+```bash
+$ xcodebuild [flags] | xcbeautify
+```
+
+If you want `xcbeautify` to exit with the same status code as `xcodebuild`
+(e.g. on a CI):
+
+```bash
+$ set -o pipefail && xcodebuild [flags] | xcbeautify
+```
+
+## Future work
+
+- [ ] Write tests
+- [ ] Support formatting Swift Package Manager output on Linux
+
+## Development
+
+To release a new version, say `x.y.z`:
+
+1. Run `make release version=x.y.z`
+1. Upload the newly packaged `xcbeautify-x.y.z-x86_64-apple-macosx10.10.zip`
+   file to GitHub.
+
+## Contributing
+
+Just send a PR! We don't bite ;)
+
+## License
+
+MIT

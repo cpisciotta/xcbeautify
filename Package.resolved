@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Guaka",
+        "repositoryURL": "https://github.com/nsomar/Guaka.git",
+        "state": {
+          "branch": null,
+          "revision": "1c1de0f89f202d87d20d568559efb6cc6c7d9f10",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "StringScanner",
+        "repositoryURL": "https://github.com/getGuaka/StringScanner.git",
+        "state": {
+          "branch": null,
+          "revision": "c2cf5c81dade9486386f1cacd917c03e959a3005",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "Swiftline",
+        "repositoryURL": "https://github.com/Swiftline/Swiftline.git",
+        "state": {
+          "branch": null,
+          "revision": "4f84dee14e47a69bfbea71a6dbba0ddc9fd9b66b",
+          "version": "0.5.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
