@@ -9,7 +9,13 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "xcbeautify",
+            name: "XcbeautifyLib",
             dependencies: ["Guaka", "Swiftline"]),
+        .target(
+            name: "xcbeautify",
+            dependencies: ["XcbeautifyLib"]),
+        .testTarget(
+            name: "XcbeautifyLibTests",
+            dependencies: ["XcbeautifyLib"]),
     ]
 )

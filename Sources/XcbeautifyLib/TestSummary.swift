@@ -1,4 +1,4 @@
-struct TestSummary {
+public struct TestSummary {
     let testsCount: String
     let failuresCount: String
     let unexpectedCount: String
@@ -15,7 +15,7 @@ extension TestSummary {
         return "\(failuresCount) failed, \(testsCount) total (\(time) seconds)"
     }
 
-    func format() -> String {
+    public func format() -> String {
         if isSuccess() {
             return "Tests Passed: \(description)".s.Bold.f.Green
         } else {

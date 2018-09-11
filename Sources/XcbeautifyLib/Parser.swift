@@ -1,7 +1,9 @@
-class Parser {
-    var summary: TestSummary? = nil
+public class Parser {
+    public init() {}
 
-    func parse(line: String) -> String? {
+    public var summary: TestSummary? = nil
+
+    public func parse(line: String) -> String? {
         switch line {
         case Matcher.analyzeMatcher:
             return line.beautify(pattern: .analyze)

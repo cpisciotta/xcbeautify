@@ -1,4 +1,5 @@
 import Guaka
+import XcbeautifyLib
 
 var rootCommand = Command(
     usage: "xcbeautify",
