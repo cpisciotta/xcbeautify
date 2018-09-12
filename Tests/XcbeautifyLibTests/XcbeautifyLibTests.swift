@@ -20,10 +20,4 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertTrue(Parser().parse(line: original)!.contains("testBuildTarget"))
         XCTAssertTrue(Parser().parse(line: original)!.contains("0.131"))
     }
-
-    static var allTests = [
-        ("testPhaseSucceeded", testPhaseSucceeded),
-        ("testBuildTarget", testBuildTarget),
-        ("testTestCasePassed", testTestCasePassed),
-    ]
 }
