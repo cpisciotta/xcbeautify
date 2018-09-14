@@ -3,9 +3,17 @@ import XCTest
 
 final class XcbeautifyLibTests: XCTestCase {
     func testAggregateTarget() {
+        let original = "=== BUILD AGGREGATE TARGET Be Aggro OF PROJECT AggregateExample WITH CONFIGURATION Debug ==="
+        let formatted = Parser().parse(line: original)!
+        let expected = "Aggregate target Be Aggro of project AggregateExample with configuration Debug"
+        XCTAssertTrue(formatted.contains(expected))
     }
 
     func testAnalyze() {
+        let original = "=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ==="
+        let formatted = Parser().parse(line: original)!
+        let expected = "Analyze target The Spacer of project Pods with configuration Debug"
+        XCTAssertTrue(formatted.contains(expected))
     }
 
     func testAnalyzeTarget() {
