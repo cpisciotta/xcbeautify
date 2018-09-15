@@ -5,7 +5,7 @@ let package = Package(
     name: "xcbeautify",
     dependencies: [
         .package(url: "https://github.com/nsomar/Guaka.git", from: "0.0.0"),
-        .package(url: "https://github.com/nsomar/Swiftline.git", from: "0.0.0"),
+        .package(url: "https://github.com/getGuaka/Swiftline.git", .branch("master")),
     ],
     targets: [
         .target(

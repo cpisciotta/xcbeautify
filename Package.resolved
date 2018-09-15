@@ -21,11 +21,11 @@
       },
       {
         "package": "Swiftline",
-        "repositoryURL": "https://github.com/Swiftline/Swiftline.git",
+        "repositoryURL": "https://github.com/getGuaka/Swiftline.git",
         "state": {
-          "branch": null,
-          "revision": "4f84dee14e47a69bfbea71a6dbba0ddc9fd9b66b",
-          "version": "0.5.0"
+          "branch": "master",
+          "revision": "e0aa7c5bf66c940af4d982717ebaac3aec311822",
+          "version": null
         }
       }
     ]
