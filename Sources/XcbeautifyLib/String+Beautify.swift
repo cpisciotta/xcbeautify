@@ -26,6 +26,8 @@ extension String {
             return format(command: "Building library", pattern: pattern, arguments: "$1")
         case .linking:
             return format(command: "Linking", pattern: pattern, arguments: "$1")
+        case .linkingInTarget:
+            return formatLinkingInTarget(pattern: pattern)
         case .testSuiteStarted,
              .testSuiteStart,
             .parallelTestingStarted:
@@ -261,6 +263,13 @@ extension String {
         let prefix = groups[0]
         let message = groups[1]
         return "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)"
+    }
+
+    func formatLinkingInTarget(pattern: Pattern) -> String {
+        let groups = capturedGroups(with: pattern)
+        let linkingBinary = groups[0]
+        let inTarget = groups[3]
+        return "Linking".s.Bold + " " + "\(linkingBinary) (in target: \(inTarget))"
     }
 
     // TODO: Print symbol and reference location
