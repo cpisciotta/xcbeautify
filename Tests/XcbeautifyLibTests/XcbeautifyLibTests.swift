@@ -2,31 +2,24 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class XcbeautifyLibTests: XCTestCase {
-    func testAggregateTarget() {
-        let original = "=== BUILD AGGREGATE TARGET Be Aggro OF PROJECT AggregateExample WITH CONFIGURATION Debug ==="
+    private func formatted(of original: String, shouldContain expected: String) {
         let formatted = Parser().parse(line: original)!
-        let expected = "Aggregate target Be Aggro of project AggregateExample with configuration Debug"
         XCTAssertTrue(formatted.contains(expected))
+    }
+
+    func testAggregateTarget() {
+        formatted(of: "=== BUILD AGGREGATE TARGET Be Aggro OF PROJECT AggregateExample WITH CONFIGURATION Debug ===", shouldContain: "Aggregate target Be Aggro of project AggregateExample with configuration Debug")
     }
 
     func testAnalyze() {
-        let original = "=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ==="
-        let formatted = Parser().parse(line: original)!
-        let expected = "Analyze target The Spacer of project Pods with configuration Debug"
-        XCTAssertTrue(formatted.contains(expected))
     }
 
     func testAnalyzeTarget() {
+        formatted(of: "=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===", shouldContain: "Analyze target The Spacer of project Pods with configuration Debug")
     }
 
     func testBuildTarget() {
-        let original = "=== BUILD TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ==="
-        guard let formatted = Parser().parse(line: original) else {
-            XCTFail()
-            return
-        }
-        let expected = "Build target The Spacer of project Pods with configuration Debug"
-        XCTAssertTrue(formatted.contains(expected))
+        formatted(of: "=== BUILD TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===", shouldContain: "Build target The Spacer of project Pods with configuration Debug")
     }
 
     func testCheckDependenciesErrors() {
@@ -42,6 +35,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCleanTarget() {
+        let original = "=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ==="
+        let formatted = Parser().parse(line: original)!
+        let expected = "Analyze target The Spacer of project Pods with configuration Debug"
+        XCTAssertTrue(formatted.contains(expected))
     }
 
     func testCodesignFramework() {
@@ -63,6 +60,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompileSwift() {
+        formatted(of: "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)", shouldContain: "Compiling")
+        formatted(of: "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)", shouldContain: "setup.swift")
     }
 
     func testCompileWarning() {
@@ -173,6 +172,12 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testProcessInfoPlist() {
+        formatted(
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
+            shouldContain: "Processing")
+        formatted(
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
+            shouldContain: "/Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)")
     }
 
     func testProcessPchCommand() {
