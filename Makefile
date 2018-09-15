@@ -41,7 +41,7 @@ package: bump-version build
 
 .PHONY: bump-version
 bump-version:
-	$(SED) -i '' '4s/.*/  version = "$(VERSION)"/' Formula/xcbeautify.rb
+	$(SED) -i '' '4s/.*/  version "$(VERSION)"/' Formula/xcbeautify.rb
 	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
 
 .PHONY: release
