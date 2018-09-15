@@ -125,14 +125,7 @@ enum Pattern: String {
     /// $1 = target
     /// $2 = build variants (normal, profile, debug)
     /// $3 = architecture
-    case linking = "Ld \\/?.*\\/(.*?) (.*) (i386|x86_64)"
-
-    /// Regular expression captured groups:
-    /// $1 = binary
-    /// $2 = build variants (normal, profile, debug)
-    /// $3 = architecture
-    /// $4 = the target in which the linking is executing
-    case linkingInTarget = "Ld \\/?.*\\/(.*?) (.*) (i386|x86_64) \\(in target: (\\.*)\\)"
+    case linking = "Ld \\/?.*\\/(.*?) (.*) (i386|x86_64)( \\(in target: (\\.*)\\))?"
 
     /// Regular expression captured groups:
     /// $1 = suite

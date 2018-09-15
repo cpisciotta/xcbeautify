@@ -130,7 +130,7 @@ final class XcbeautifyLibTests: XCTestCase {
         formatted(of: sample, shouldContain: "ObjectiveSugar")
     }
 
-    func testLinkingInTarget() {
+    func testLinkingInXcode10() {
         let sample = "Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)"
         formatted(of: sample, shouldContain: "Linking")
         formatted(of: sample, shouldContain: "xcbeautify (in target: xcbeautify")

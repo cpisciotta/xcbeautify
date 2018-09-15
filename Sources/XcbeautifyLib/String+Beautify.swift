@@ -26,8 +26,6 @@ extension String {
             return format(command: "Building library", pattern: pattern, arguments: "$1")
         case .linking:
             return format(command: "Linking", pattern: pattern, arguments: "$1")
-        case .linkingInTarget:
-            return formatLinkingInTarget(pattern: pattern)
         case .testSuiteStarted,
              .testSuiteStart,
             .parallelTestingStarted:

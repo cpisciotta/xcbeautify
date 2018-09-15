@@ -56,8 +56,6 @@ public class Parser {
             return line.beautify(pattern: .generateDsym)
         case Matcher.libtoolMatcher:
             return line.beautify(pattern: .libtool)
-        case Matcher.linkingInTargetMatcher:
-            return line.beautify(pattern: .linkingInTarget)
         case Matcher.linkingMatcher:
             return line.beautify(pattern: .linking)
         case Matcher.testCasePassedMatcher:

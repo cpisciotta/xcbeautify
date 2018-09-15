@@ -35,7 +35,6 @@ struct Matcher {
     static let linkerDuplicateSymbolsMatcher = Regex(pattern: .linkerDuplicateSymbols)
     static let linkerUndefinedSymbolLocationMatcher = Regex(pattern: .linkerUndefinedSymbolLocation)
     static let linkerUndefinedSymbolsMatcher = Regex(pattern: .linkerUndefinedSymbols)
-    static let linkingInTargetMatcher = Regex(pattern: .linkingInTarget)
     static let linkingMatcher = Regex(pattern: .linking)
     static let moduleIncludesErrorMatcher = Regex(pattern: .moduleIncludesError)
     static let noCertificateMatcher = Regex(pattern: .noCertificate)
