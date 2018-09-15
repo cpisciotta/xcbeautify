@@ -191,8 +191,10 @@ enum Pattern: String {
     case pbxcp = "PBXCp\\s((?:\\\\ |[^ ])*)"
 
     /// Regular expression captured groups:
-    /// $1 = file
-    case processInfoPlist = "ProcessInfoPlistFile\\s.*\\.plist\\s(.*\\/+(.*\\.plist))"
+    /// $1 = file path
+    /// $2 = filename
+    /// $4 = target
+    case processInfoPlist = "ProcessInfoPlistFile\\s.*\\.plist\\s(.*\\/+(.*\\.plist))( \\(in target: (.*)\\))?"
 
     /// Regular expression captured groups:
     /// $1 = suite

@@ -182,11 +182,20 @@ final class XcbeautifyLibTests: XCTestCase {
 
     func testProcessInfoPlist() {
         formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist",
             shouldContain: "Processing")
         formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
-            shouldContain: "/Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)")
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist",
+            shouldContain: " Guaka_Info.plist")
+        formatted(
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
+            shouldContain: "Processing")
+        formatted(
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
+            shouldContain: "Guaka")
+        formatted(
+            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
+            shouldContain: " Guaka_Info.plist")
     }
 
     func testProcessPchCommand() {

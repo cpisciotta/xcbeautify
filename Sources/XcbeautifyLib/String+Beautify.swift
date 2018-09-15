@@ -52,9 +52,9 @@ extension String {
         case .checkDependencies:
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case .processInfoPlist:
-             return format(command: "Processing", pattern: .processInfoPlist, arguments: "$1")
+            return formatProcessInfoPlist(pattern: .processInfoPlist)
         case .processPch:
-             return format(command: "Processing", pattern: .processPch, arguments: "$1")
+            return format(command: "Processing", pattern: .processPch, arguments: "$1")
         case .touch:
             return format(command: "Touching", pattern: .touch, arguments: "$2")
         case .phaseSuccess:
@@ -264,11 +264,18 @@ extension String {
         return "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)"
     }
 
-    func formatLinkingInTarget(pattern: Pattern) -> String {
+    func formatProcessInfoPlist(pattern: Pattern) -> String {
         let groups = capturedGroups(with: pattern)
-        let linkingBinary = groups[0]
-        let inTarget = groups[3]
-        return "Linking".s.Bold + " " + "\(linkingBinary) (in target: \(inTarget))"
+        let plist = groups[1]
+
+        // Xcode 9 output
+        if groups.count == 2 {
+            return "Processing".s.Bold + " " + plist
+        }
+
+        // Xcode 10+ output
+        let target = groups[3]
+        return "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)"
     }
 
     // TODO: Print symbol and reference location
