@@ -41,7 +41,7 @@ package: build
 
 .PHONY: release
 release: package
-	$(SED) -i '' '2s/.*/  version = "$(VERSION)"/' Formula/xcbeautify.rb
+	$(SED) -i '' '4s/.*/  version = "$(VERSION)"/' Formula/xcbeautify.rb
 	$(SED) -i '' '6s/.*/  sha256 "$(shell shasum -a 256 "$(PACKAGE_ZIP)" | cut -f 1 -d " ")"/' Formula/xcbeautify.rb
 	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
 	$(GIT) commit Formula Sources -m "Release version $(VERSION)"
