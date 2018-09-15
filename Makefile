@@ -54,7 +54,7 @@ xcode:
 
 .PHONY: uninstall
 uninstall:
-	$(RM) "$(BINARY_DIRECTORY)/$(BINARY_NAME)"
+	$(RM) "$(BINARY_DIRECTORY)/$(PRODUCT_NAME)"
 
 .PHONY: clean
 clean:
