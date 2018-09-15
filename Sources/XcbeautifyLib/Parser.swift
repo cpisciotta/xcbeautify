@@ -88,6 +88,8 @@ public class Parser {
             return line.beautify(pattern: .testSuiteStart)
         case Matcher.tiffutilMatcher:
             return line.beautify(pattern: .tiffutil)
+        case Matcher.touchInTargetMatcher: // This has to be checked before `.touch`
+            return line.beautify(pattern: .touchInTarget)
         case Matcher.touchMatcher:
             return line.beautify(pattern: .touch)
         case Matcher.writeFileMatcher:

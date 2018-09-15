@@ -241,6 +241,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTouch() {
+        let sample = "Touch /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/XcbeautifyLib.framework (in target: XcbeautifyLib)"
+        formatted(of: sample, shouldContain: "[")
+        formatted(of: sample, shouldContain: "Touching")
+        formatted(of: sample, shouldContain: "XcbeautifyLib")
     }
 
     func testUiFailingTest() {

@@ -216,6 +216,11 @@ enum Pattern: String {
     case tiffutil = "TiffUtil\\s(.*)"
 
     /// Regular expression captured groups:
+    /// $1 = filename
+    /// $3 = target
+    case touchInTarget = "Touch\\s(.*\\/(.+))( \\(in target: (.*)\\))"
+
+    /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
     case touch = "Touch\\s(.*\\/(.+))"

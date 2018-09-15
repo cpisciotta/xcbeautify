@@ -56,8 +56,9 @@ extension String {
             return formatProcessInfoPlist(pattern: .processInfoPlist)
         case .processPch:
             return format(command: "Processing", pattern: .processPch, arguments: "$1")
-        case .touch:
-            return format(command: "Touching", pattern: .touch, arguments: "$2")
+        case .touchInTarget, 
+             .touch:
+            return formatTouch(pattern: pattern)
         case .phaseSuccess:
             let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
             return "\(phase) Succeeded".s.Bold.f.Green
@@ -163,6 +164,21 @@ extension String {
         // Xcode 10+ output
         let target = groups[3]
         return "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)"
+
+    }
+
+    private func formatTouch(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let filename = groups[1]
+
+        // Xcode 9 output
+        if groups.count == 2 {
+            return "Touching".s.Bold + " " + filename
+        }
+
+        // Xcode 10+ output
+        let target = groups[3]
+        return "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)"
 
     }
 
