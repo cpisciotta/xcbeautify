@@ -53,9 +53,10 @@ extension String {
             return format(command: "Copying", pattern: pattern)
         case .checkDependencies:
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
-        case .processInfoPlist,
-             .processPch:
-            return format(command: "Processing", pattern: .processInfoPlist, arguments: "$1")
+        case .processInfoPlist:
+             return format(command: "Processing", pattern: .processInfoPlist, arguments: "$1")
+        case .processPch:
+             return format(command: "Processing", pattern: .processPch, arguments: "$1")
         case .touch:
             return format(command: "Touching", pattern: .touch, arguments: "$2")
         case .phaseSuccess:
