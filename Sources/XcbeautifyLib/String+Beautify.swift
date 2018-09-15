@@ -10,9 +10,7 @@ extension String {
              .compileXib,
              .compileStoryboard,
              .compileCommand:
-            return format(command: "Compiling", pattern: pattern, arguments: "$2")
-        case .compileSwift:
-            return formatCompileSwift(pattern: pattern)
+            return formatCompile(pattern: pattern)
         case .buildTarget:
             return formatTargetCommand(command: "Build", pattern: pattern)
         case .analyzeTarget:
@@ -151,17 +149,10 @@ extension String {
         return formatted
     }
 
-    private func formatCompileSwift(pattern: Pattern) -> String? {
+    private func formatCompile(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[1]
-
-        // Xcode 9 output
-        if groups.count == 2 {
-            return "Compiling".s.Bold + " " + filename
-        }
-
-        // Xcode 10+ output
-        let target = groups[3]
+        let target = groups[2]
         return "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)"
     }
 

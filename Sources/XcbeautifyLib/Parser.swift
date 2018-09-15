@@ -27,8 +27,6 @@ public class Parser {
             return line.beautify(pattern: .codesignFramework)
         case Matcher.compileMatcher:
             return line.beautify(pattern: .compile)
-        case Matcher.compileSwiftMatcher:
-            return line.beautify(pattern: .compileSwift)
         case Matcher.compileCommandMatcher:
             return line.beautify(pattern: .compileCommand)
         case Matcher.compileXibMatcher:

@@ -14,7 +14,6 @@ struct Matcher {
     static let compileErrorMatcher = Regex(pattern: .compileError)
     static let compileMatcher = Regex(pattern: .compile)
     static let compileStoryboardMatcher = Regex(pattern: .compileStoryboard)
-    static let compileSwiftMatcher = Regex(pattern: .compileSwift)
     static let compileWarningMatcher = Regex(pattern: .compileWarning)
     static let compileXibMatcher = Regex(pattern: .compileXib)
     static let copyHeaderMatcher = Regex(pattern: .copyHeader)

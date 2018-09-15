@@ -51,13 +51,8 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
-    case compile = "Compile[\\w]+\\s.+?\\s((?:\\\\.|[^ ])+\\/((?:\\\\.|[^ ])+\\.(?:m|mm|c|cc|cpp|cxx)))\\s.*"
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = filename (e.g. main.swift)
-    /// $4 = target
-    case compileSwift = "CompileSwift\\s.*\\s.*\\s(.*\\/([^\\/].*\\.swift))( \\(in target: (.*)\\))?"
+    /// $3 = target
+    case compile = "Compile[\\w]+\\s.+?\\s((?:\\\\.|[^ ])+\\/((?:\\\\.|[^ ])+\\.(?:m|mm|c|cc|cpp|cxx|swift)))\\s.*\\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = compiler command

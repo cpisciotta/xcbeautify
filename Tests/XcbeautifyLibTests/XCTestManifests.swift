@@ -17,7 +17,6 @@ extension XcbeautifyLibTests {
         ("testCompileCommand", testCompileCommand),
         ("testCompileError", testCompileError),
         ("testCompileStoryboard", testCompileStoryboard),
-        ("testCompileSwift", testCompileSwift),
         ("testCompileWarning", testCompileWarning),
         ("testCompileXib", testCompileXib),
         ("testCopyHeader", testCopyHeader),

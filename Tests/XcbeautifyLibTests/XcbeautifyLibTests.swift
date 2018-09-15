@@ -54,14 +54,13 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompile() {
+        let sample = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
+        formatted(of: sample, shouldContain: "[")
+        formatted(of: sample, shouldContain: "xcbeautify")
+        formatted(of: sample, shouldContain: "setup.swift")
     }
 
     func testCompileStoryboard() {
-    }
-
-    func testCompileSwift() {
-        formatted(of: "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)", shouldContain: "Compiling")
-        formatted(of: "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)", shouldContain: "setup.swift")
     }
 
     func testCompileWarning() {
