@@ -7,11 +7,12 @@ extension String {
         case .analyze:
             return format(command: "Analyzing", pattern: pattern, arguments: "$2")
         case .compile,
-             .compileSwift,
              .compileXib,
              .compileStoryboard,
              .compileCommand:
             return format(command: "Compiling", pattern: pattern, arguments: "$2")
+        case .compileSwift:
+            return formatCompileSwift(pattern: pattern)
         case .buildTarget:
             return formatTargetCommand(command: "Build", pattern: pattern)
         case .analyzeTarget:
@@ -148,6 +149,21 @@ extension String {
         }
 
         return formatted
+    }
+
+    private func formatCompileSwift(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let filename = groups[1]
+
+        // Xcode 9 output
+        if groups.count == 2 {
+            return "Compiling".s.Bold + " " + filename
+        }
+
+        // Xcode 10+ output
+        let target = groups[3]
+        return "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)"
+
     }
 
     private func formatTestHeading(pattern: Pattern) -> String? {
