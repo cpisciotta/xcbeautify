@@ -125,15 +125,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testLinking() {
-        let sample = "Ld /Users/admin/Library/Developer/Xcode/DerivedData/ObjectiveSugar-abcd/Build/Products/Debug-iphonesimulator/ObjectiveSugar.app/ObjectiveSugar normal i386"
-        formatted(of: sample, shouldContain: "Linking")
-        formatted(of: sample, shouldContain: "ObjectiveSugar")
-    }
-
-    func testLinkingInXcode10() {
         let sample = "Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)"
+        formatted(of: sample, shouldContain: "[")
+        formatted(of: sample, shouldContain: "xcbeautify")
         formatted(of: sample, shouldContain: "Linking")
-        formatted(of: sample, shouldContain: "xcbeautify (in target: xcbeautify")
     }
 
     func testModuleIncludesError() {

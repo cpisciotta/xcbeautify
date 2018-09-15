@@ -126,7 +126,7 @@ enum Pattern: String {
     /// $1 = target
     /// $2 = build variants (normal, profile, debug)
     /// $3 = architecture
-    case linking = "Ld \\/?.*\\/(.*?) (.*) (i386|x86_64)( \\(in target: (\\.*)\\))?"
+    case linking = "Ld \\/?.*\\/(.*?) (.*) (i386|x86_64) \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -218,12 +218,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = filename
     /// $3 = target
-    case touchInTarget = "Touch\\s(.*\\/(.+))( \\(in target: (.*)\\))"
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = filename
-    case touch = "Touch\\s(.*\\/(.+))"
+    case touch = "Touch\\s(.*\\/(.+))( \\(in target: (.*)\\))"
 
     /// Regular expression captured groups:
     /// $1 = file path

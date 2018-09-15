@@ -61,7 +61,6 @@ struct Matcher {
     static let testSuiteStartedMatcher = Regex(pattern: .testSuiteStarted)
     static let testsRunCompletionMatcher = Regex(pattern: .testsRunCompletion)
     static let tiffutilMatcher = Regex(pattern: .tiffutil)
-    static let touchInTargetMatcher = Regex(pattern: .touchInTarget)
     static let touchMatcher = Regex(pattern: .touch)
     static let uiFailingTestMatcher = Regex(pattern: .uiFailingTest)
     static let willNotBeCodeSignedMatcher = Regex(pattern: .willNotBeCodeSigned)
