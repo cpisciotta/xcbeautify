@@ -45,9 +45,10 @@ extension String {
         case .copyHeader,
              .copyPlist,
              .copyStrings,
-             .cpresource,
-             .pbxcp:
-            return format(command: "Copying", pattern: pattern)
+             .cpresource:
+            return formatCopy(pattern: pattern)
+        case .pbxcp:
+            return formatCopy(pattern: pattern)
         case .checkDependencies:
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case .processInfoPlist:
@@ -154,6 +155,16 @@ extension String {
         let filename = groups[1]
         let target = groups[2]
         return "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)"
+    }
+
+    private func formatCopy(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let filename = groups[0].lastPathComponent
+        if groups.count < 3 {
+            fatalError(groups.description)
+        }
+        let target = groups[2]
+        return "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)"
     }
 
     private func formatTouch(pattern: Pattern) -> String? {

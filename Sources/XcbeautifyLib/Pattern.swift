@@ -72,20 +72,21 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
-    case copyHeader = "CpHeader\\s(.*\\.h)\\s(.*\\.h)"
+    /// $3 = target
+    case copyHeader = "CpHeader\\s(.*\\.h)\\s(.*\\.h) \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
-    case copyPlist = "CopyPlistFile\\s(.*\\.plist)\\s(.*\\.plist)"
+    case copyPlist = "CopyPlistFile\\s(.*\\.plist)\\s(.*\\.plist) \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = file
-    case copyStrings = "CopyStringsFile.*\\/(.*.strings)"
+    case copyStrings = "CopyStringsFile\\s(.*\\.strings)\\s(.*\\.strings) \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = resource
-    case cpresource = "CpResource\\s(.*)\\s\\/"
+    case cpresource = "CpResource\\s(.*)\\s\\/(.*) \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = number of tests
