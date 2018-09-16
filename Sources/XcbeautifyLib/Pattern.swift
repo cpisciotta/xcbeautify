@@ -117,7 +117,8 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = library
-    case libtool = "Libtool.*\\/(.*\\.a)"
+    /// $2 = target
+    case libtool = "Libtool.*\\/(.*) .* .* \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = target

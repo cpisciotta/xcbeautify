@@ -22,7 +22,7 @@ extension String {
         case .generateDsym:
             return formatGenerateDsym(pattern: pattern)
         case .libtool:
-            return format(command: "Building library", pattern: pattern, arguments: "$1")
+            return formatLibtool(pattern: pattern)
         case .linking:
             return formatLinking(pattern: pattern)
         case .testSuiteStarted,
@@ -172,6 +172,13 @@ extension String {
         let dsym = groups[0]
         let target = groups[1]
         return "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)"
+    }
+
+    private func formatLibtool(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let filename = groups[0]
+        let target = groups[1]
+        return "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)"
     }
 
     private func formatTouch(pattern: Pattern) -> String? {
