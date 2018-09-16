@@ -28,29 +28,29 @@ files.
 ### Homebrew
 
 ```bash
-$ brew tap thii/xcbeautify https://github.com/thii/xcbeautify.git
-$ brew install xcbeautify
+brew tap thii/xcbeautify https://github.com/thii/xcbeautify.git
+brew install xcbeautify
 ```
 
 ### Build from source
 
 ```bash
-$ git clone https://github.com/thii/xcbeautify.git
-$ cd xcbeautify
-$ make install
+git clone https://github.com/thii/xcbeautify.git
+cd xcbeautify
+make install
 ```
 
 ## Usage
 
 ```bash
-$ xcodebuild [flags] | xcbeautify
+xcodebuild [flags] | xcbeautify
 ```
 
 If you want `xcbeautify` to exit with the same status code as `xcodebuild`
 (e.g. on a CI):
 
 ```bash
-$ set -o pipefail && xcodebuild [flags] | xcbeautify
+set -o pipefail && xcodebuild [flags] | xcbeautify
 ```
 
 ## Future work
