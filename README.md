@@ -32,6 +32,12 @@ brew tap thii/xcbeautify https://github.com/thii/xcbeautify.git
 brew install xcbeautify
 ```
 
+### [Mint](https://github.com/yonaskolb/mint)
+
+```bash
+mint install thii/xcbeautify
+```
+
 ### Build from source
 
 ```bash
