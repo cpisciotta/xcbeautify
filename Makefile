@@ -45,7 +45,7 @@ bump-version:
 	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
 
 .PHONY: release
-release: package
+release: clean package
 	$(SED) -i '' '6s/.*/  sha256 "$(shell shasum -a 256 "$(PACKAGE_ZIP)" | cut -f 1 -d " ")"/' Formula/xcbeautify.rb
 	$(GIT) commit Formula Sources -m "Release version $(VERSION)"
 	$(GIT) push origin master
