@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Improves format of GenerateDSYMFile and Libtool.
+
 ## 0.2.1
 
 - Minor bug fixes.
