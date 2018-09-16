@@ -112,7 +112,8 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = dsym
-    case generateDsym = "GenerateDSYMFile \\/.*\\/(.*\\.dSYM)"
+    /// $2 = target
+    case generateDsym = "GenerateDSYMFile \\/.*\\/(.*\\.dSYM) \\/.* \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = library

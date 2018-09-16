@@ -20,7 +20,7 @@ extension String {
         case .cleanTarget:
             return formatTargetCommand(command: "Clean", pattern: pattern)
         case .generateDsym:
-            return format(command: "Generating", pattern: pattern)
+            return formatGenerateDsym(pattern: pattern)
         case .libtool:
             return format(command: "Building library", pattern: pattern, arguments: "$1")
         case .linking:
@@ -165,6 +165,13 @@ extension String {
         }
         let target = groups[2]
         return "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)"
+    }
+
+    private func formatGenerateDsym(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let dsym = groups[0]
+        let target = groups[1]
+        return "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)"
     }
 
     private func formatTouch(pattern: Pattern) -> String? {
