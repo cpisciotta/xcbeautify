@@ -121,10 +121,9 @@ enum Pattern: String {
     case libtool = "Libtool.*\\/(.*) .* .* \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
-    /// $1 = target
-    /// $2 = build variants (normal, profile, debug)
-    /// $3 = architecture
-    case linking = "Ld \\/?.*\\/(.*?) (.*) (i386|x86_64) \\(in target: (.*)\\)"
+    /// $1 = binary filename
+    /// $4 = target
+    case linking = "Ld \\/?.*\\/(.*?) .* .* \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = suite

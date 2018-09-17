@@ -190,8 +190,8 @@ extension String {
 
     private func formatLinking(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
-        let filename = groups[1]
-        let target = groups[3]
+        let filename = groups[0].lastPathComponent
+        let target = groups[1]
         return "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)"
     }
 
