@@ -1,6 +1,10 @@
+## 0.3.1
+
+- Fixes format of `Ld`.
+
 ## 0.3.0
 
-- Improves format of GenerateDSYMFile and Libtool.
+- Improves format of `GenerateDSYMFile` and `Libtool`.
 
 ## 0.2.1
 
