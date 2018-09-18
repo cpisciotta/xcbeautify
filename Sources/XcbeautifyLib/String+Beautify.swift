@@ -1,5 +1,5 @@
 import Foundation
-import Swiftline
+import Colorizer
 
 extension String {
     func beautify(pattern: Pattern) -> String? {

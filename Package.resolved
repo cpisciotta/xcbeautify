@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Colorizer",
+        "repositoryURL": "https://github.com/getGuaka/Colorizer.git",
+        "state": {
+          "branch": null,
+          "revision": "49277ea92b3a6877f1290489fa1fcf2084ce16ee",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "Guaka",
         "repositoryURL": "https://github.com/nsomar/Guaka.git",
         "state": {
@@ -11,21 +20,30 @@
         }
       },
       {
+        "package": "Nimble",
+        "repositoryURL": "https://github.com/Quick/Nimble.git",
+        "state": {
+          "branch": null,
+          "revision": "7c61d8e7e830dd37f7161ce2b894be178532163c",
+          "version": "7.3.0"
+        }
+      },
+      {
+        "package": "Quick",
+        "repositoryURL": "https://github.com/Quick/Quick.git",
+        "state": {
+          "branch": null,
+          "revision": "b060679e70d13c3c7dcd124201b5b1b34ce6f340",
+          "version": "1.3.1"
+        }
+      },
+      {
         "package": "StringScanner",
         "repositoryURL": "https://github.com/getGuaka/StringScanner.git",
         "state": {
           "branch": null,
           "revision": "c2cf5c81dade9486386f1cacd917c03e959a3005",
           "version": "0.3.0"
-        }
-      },
-      {
-        "package": "Swiftline",
-        "repositoryURL": "https://github.com/getGuaka/Swiftline.git",
-        "state": {
-          "branch": "master",
-          "revision": "e0aa7c5bf66c940af4d982717ebaac3aec311822",
-          "version": null
         }
       }
     ]

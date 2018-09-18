@@ -2,7 +2,7 @@ import Foundation
 
 extension String {
     var lastPathComponent: String {
-        return (self as NSString).lastPathComponent
+        return NSString(string: self).lastPathComponent
     }
 
     func substring(with nsrange: NSRange) -> String? {
