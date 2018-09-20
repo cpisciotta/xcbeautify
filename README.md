@@ -7,8 +7,10 @@ Similar to `xcpretty`, but written in Swift.
 ## Features
 
 - [x] Human-friendly and colored output.
-- [x] Supports the new build system's output (`xcpretty` does not).
-- [x] Supports Xcode 10's parallel testing output (`xcpretty` does not).
+- [x] Supports the new build system's output.
+- [x] Supports Xcode 10's parallel testing output.
+- [x] Supports formatting Swift Package Manager output.
+- [x] Supports macOS & Linux.
 - [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
   bring anywhere. This also means less Ruby-dependant in your development
   environment and CI.
@@ -61,8 +63,8 @@ set -o pipefail && xcodebuild [flags] | xcbeautify
 
 ## Future work
 
-- [ ] Write tests
-- [ ] Support formatting Swift Package Manager output on Linux
+- [ ] Write more tests
+- [ ] Performance improvements
 
 ## Development
 
