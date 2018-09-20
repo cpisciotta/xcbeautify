@@ -24,7 +24,7 @@ all: build
 
 .PHONY: test
 test: clean
-	$(SWIFT) build -c debug -Xswiftc -static-stdlib | xcbeautify
+	$(SWIFT) test
 
 .PHONY: build
 build:
