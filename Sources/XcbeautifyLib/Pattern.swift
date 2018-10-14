@@ -61,7 +61,8 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. MainMenu.xib)
-    case compileXib = "CompileXIB\\s(.*\\/(.*\\.xib))"
+    /// $3 = target
+    case compileXib = "CompileXIB\\s(.*\\/(.*\\.xib))\\s.*\\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = file path
