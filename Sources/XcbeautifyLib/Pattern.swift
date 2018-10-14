@@ -30,7 +30,6 @@ enum Pattern: String {
     /// $2 = arguments
     case shellCommand = "\\s{4}(cd|setenv|(?:[\\w\\/:\\\\\\s\\-.]+?\\/)?[\\w\\-]+)\\s(.*)$"
 
-    /// Regular expression captured groups:
     /// Nothing returned here for now
     case cleanRemove = "Clean.Remove"
 
@@ -166,7 +165,7 @@ enum Pattern: String {
     /// $1 = device
     case parallelTestingStarted = "Testing started on '(.*)'"
 
-    /// Regular expression captured groups:
+    /// Nothing returned here for now
     case phaseSuccess = "\\*\\*\\s(.*)\\sSUCCEEDED\\s\\*\\*"
 
     /// Regular expression captured groups:
@@ -222,12 +221,12 @@ enum Pattern: String {
     /// $1 = file path
     case writeFile = "write-file\\s(.*)"
 
-    /// Regular expression captured groups:
+    /// Nothing returned here for now
     case writeAuxiliaryFiles = "Write auxiliary files"
 
-    /// Regular expression captured groups:
     // MARK: - Warning
 
+    /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
@@ -246,9 +245,9 @@ enum Pattern: String {
     /// $1 = whole warning
     case willNotBeCodeSigned = "(.* will not be code signed because .*)$"
 
-    /// Regular expression captured groups:
     // MARK: - Error
 
+    /// Regular expression captured groups:
     /// $1 = whole error
     case clangError = "(clang: error:.*)$"
 
