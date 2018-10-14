@@ -157,6 +157,11 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testPhaseScriptExecution() {
+        let original = """
+        PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)
+        """
+        formatted(of: original, shouldContain: "Running script")
+        formatted(of: original, shouldContain: "[CP]\\ Check\\ Pods\\ Manifest.lock")
     }
 
     func testPhaseSuccess() {

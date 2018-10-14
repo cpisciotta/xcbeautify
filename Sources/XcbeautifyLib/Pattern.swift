@@ -170,8 +170,9 @@ enum Pattern: String {
     case phaseSuccess = "\\*\\*\\s(.*)\\sSUCCEEDED\\s\\*\\*"
 
     /// Regular expression captured groups:
-    /// $1 = script name
-    case phaseScriptExecution = "PhaseScriptExecution\\s((\\\\\\ |\\S)*)\\s"
+    /// $1 = phase name
+    /// $2 = target
+    case phaseScriptExecution = "PhaseScriptExecution\\s(.*)\\s\\/.*\\.sh\\s\\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = file

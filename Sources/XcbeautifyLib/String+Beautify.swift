@@ -61,7 +61,7 @@ extension String {
             let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
             return "\(phase) Succeeded".s.Bold.f.Green
         case .phaseScriptExecution:
-            return format(command: "Running script", pattern: .phaseScriptExecution, arguments: "$1")
+            return formatPhaseScriptExecution()
         case .preprocess,
              .processPchCommand:
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
@@ -193,6 +193,13 @@ extension String {
         let filename = groups[0].lastPathComponent
         let target = groups[1]
         return "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)"
+    }
+
+    private func formatPhaseScriptExecution() -> String? {
+        let groups = capturedGroups(with: .phaseScriptExecution)
+        let phaseName = groups[0]
+        let target = groups[1]
+        return "[\(target.f.Cyan)] \("Running script".s.Bold) \(phaseName)"
     }
 
     private func formatTestHeading(pattern: Pattern) -> String? {
