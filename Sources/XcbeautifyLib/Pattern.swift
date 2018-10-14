@@ -124,7 +124,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = binary filename
     /// $4 = target
-    case linking = "Ld \\/?.*\\/(.*?) .* .* \\(in target: (.*)\\)"
+    case linking = "Ld \\/?.*\\/(.*?) normal .* \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = suite

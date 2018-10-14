@@ -128,6 +128,9 @@ final class XcbeautifyLibTests: XCTestCase {
         formatted(of: sample, shouldContain: "[")
         formatted(of: sample, shouldContain: "xcbeautify")
         formatted(of: sample, shouldContain: "Linking")
+
+        let sample2 = "Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)"
+        formatted(of: sample2, shouldContain: "My\\ App")
     }
 
     func testModuleIncludesError() {
