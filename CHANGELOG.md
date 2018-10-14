@@ -1,5 +1,7 @@
-## 0.3.1
+## 0.3.2
+- Fixes crash when parsing `compileStoryboard` line.
 
+## 0.3.1
 - Fixes format of `Ld`.
 
 ## 0.3.0
