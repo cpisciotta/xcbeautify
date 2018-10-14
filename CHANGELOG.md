@@ -1,3 +1,6 @@
+## 0.3.3
+- Fixes crash when parsing `compileXib` line.
+
 ## 0.3.2
 - Fixes crash when parsing `compileStoryboard` line.
 
