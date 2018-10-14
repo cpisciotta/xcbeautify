@@ -67,7 +67,8 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. Main.storyboard)
-    case compileStoryboard = "CompileStoryboard\\s(.*\\/([^\\/].*\\.storyboard))"
+    /// $3 = target
+    case compileStoryboard = "CompileStoryboard\\s(.*\\/([^\\/].*\\.storyboard))\\s.*\\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = source file
