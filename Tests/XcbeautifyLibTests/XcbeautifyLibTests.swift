@@ -157,6 +157,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testPbxcp() {
+        let original = "PBXCp /Users/admin/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Products/Release/include/CocoaLumberjack/DDDispatchQueueLogFormatter.h (in target: CocoaLumberjack-Static)"
+        formatted(of: original, shouldContain: "CocoaLumberjack-Static")
+        formatted(of: original, shouldContain: "Copying")
+        formatted(of: original, shouldContain: "DDDispatchQueueLogFormatter.h")
     }
 
     func testPhaseScriptExecution() {

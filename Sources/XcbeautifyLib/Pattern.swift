@@ -187,8 +187,10 @@ enum Pattern: String {
     case preprocess = "Preprocess\\s(?:(?:\\\\ |[^ ])*)\\s((?:\\\\ |[^ ])*)$"
 
     /// Regular expression captured groups:
-    /// $1 = file
-    case pbxcp = "PBXCp\\s((?:\\\\ |[^ ])*)"
+    /// $1 = source file
+    /// $2 = target file
+    /// $3 = build target
+    case pbxcp = "PBXCp\\s(.*)\\s\\/(.*)\\s\\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = file path
