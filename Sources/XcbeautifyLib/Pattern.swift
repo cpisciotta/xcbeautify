@@ -176,7 +176,8 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = file
-    case processPch = "ProcessPCH\\s.*\\s(.*.pch)"
+    /// $2 = build target
+    case processPch = "ProcessPCH\\s.*\\s\\/.*\\/(.*.pch) normal .* .* .* \\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 file path

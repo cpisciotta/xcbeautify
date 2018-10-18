@@ -53,7 +53,7 @@ extension String {
         case .processInfoPlist:
             return formatProcessInfoPlist(pattern: .processInfoPlist)
         case .processPch:
-            return format(command: "Processing", pattern: .processPch, arguments: "$1")
+            return formatProcessPch(pattern: pattern)
         case .touch:
             return formatTouch(pattern: pattern)
         case .phaseSuccess:
@@ -154,6 +154,13 @@ extension String {
         let filename = groups[1]
         let target = groups[2]
         return "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)"
+    }
+
+    private func formatProcessPch(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let filename = groups[0]
+        let target = groups[1]
+        return "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)"
     }
 
     private func formatCompile(pattern: Pattern) -> String? {
