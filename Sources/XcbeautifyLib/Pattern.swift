@@ -2,7 +2,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
-    case analyze = "Analyze(?:Shallow)?\\s(.*\\/(.*\\.(?:m|mm|cc|cpp|c|cxx)))\\s*"
+    case analyze = "Analyze(?:Shallow)?\\s(.*\\/(.*\\.(?:m|mm|cc|cpp|c|cxx)))\\s.*\\(in target: (.*)\\)"
 
     /// Regular expression captured groups:
     /// $1 = target

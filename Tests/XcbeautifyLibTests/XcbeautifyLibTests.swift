@@ -12,6 +12,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testAnalyze() {
+        let original = "AnalyzeShallow /Users/admin/CocoaLumberjack/Classes/DDTTYLogger.m normal x86_64 (in target: CocoaLumberjack-Static)"
+        formatted(of: original, shouldContain: "CocoaLumberjack-Static")
+        formatted(of: original, shouldContain: "Analyzing")
+        formatted(of: original, shouldContain: "DDTTYLogger.m")
     }
 
     func testAnalyzeTarget() {

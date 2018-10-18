@@ -5,7 +5,7 @@ extension String {
     func beautify(pattern: Pattern) -> String? {
         switch pattern {
         case .analyze:
-            return format(command: "Analyzing", pattern: pattern, arguments: "$2")
+            return formatAnalyze(pattern: pattern)
         case .compile,
              .compileXib,
              .compileStoryboard,
@@ -147,6 +147,13 @@ extension String {
         }
 
         return formatted
+    }
+
+    private func formatAnalyze(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let filename = groups[1]
+        let target = groups[2]
+        return "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)"
     }
 
     private func formatCompile(pattern: Pattern) -> String? {
