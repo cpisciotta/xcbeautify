@@ -1,3 +1,7 @@
+## 0.3.5
+- Fixes crash when parsing `PBXCp` commands (#1).
+- Improves format of other `AnalyzeShallow` and `ProcessPCH`.
+
 ## 0.3.3
 - Fixes crash when parsing `compileXib` line.
 
