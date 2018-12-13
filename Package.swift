@@ -3,6 +3,9 @@ import PackageDescription
 
 let package = Package(
     name: "xcbeautify",
+    products: [
+        .executable(name: "xcbeautify", targets: ["xcbeautify"]),
+    ],
     dependencies: [
         .package(url: "https://github.com/nsomar/Guaka.git", from: "0.0.0"),
         .package(url: "https://github.com/getGuaka/Colorizer.git", from: "0.1.0"),
