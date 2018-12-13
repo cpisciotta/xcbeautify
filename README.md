@@ -40,6 +40,14 @@ brew install xcbeautify
 mint install thii/xcbeautify
 ```
 
+### CocoaPods
+
+```ruby
+pod 'xcbeautify'
+```
+
+The `xcbeautify` binary will be installed at `Pods/xcbeautify/xcbeautify`
+
 ### Build from source
 
 ```bash
