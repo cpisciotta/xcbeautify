@@ -7,7 +7,7 @@ CD=cd
 CP=$(shell whereis cp) -Rf
 GIT=$(shell which git)
 RM=$(shell whereis rm) -rf
-SED=$(shell which sed)
+SED=/usr/bin/sed
 SWIFT=$(shell which swift)
 ZIP=$(shell whereis zip) -r
 
