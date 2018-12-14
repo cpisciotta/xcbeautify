@@ -1,3 +1,6 @@
+## 0.3.6
+- Fixes `Executable product not found` error when installs using Mint.
+
 ## 0.3.5
 - Fixes crash when parsing `PBXCp` commands (#1).
 - Improves format of other `AnalyzeShallow` and `ProcessPCH`.
