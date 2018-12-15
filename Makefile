@@ -43,6 +43,7 @@ package: bump-version build
 bump-version:
 	$(SED) -i '' '4s/.*/  version "$(VERSION)"/' Formula/xcbeautify.rb
 	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
+	$(SED) -i '' "3s/.*/  s.version        = '$(VERSION)'/" xcbeautify.podspec
 
 .PHONY: release
 release: clean package
@@ -51,6 +52,7 @@ release: clean package
 	$(GIT) push origin master
 	$(GIT) tag $(VERSION)
 	$(GIT) push origin $(VERSION)
+	bundle exec pod trunk push
 
 .PHONY: xcode
 xcode:
