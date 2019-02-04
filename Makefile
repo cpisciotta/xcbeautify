@@ -6,6 +6,7 @@ PREFIX?=/usr/local
 CD=cd
 CP=$(shell whereis cp) -Rf
 GIT=$(shell which git)
+HUB=$(shell which hub)
 RM=$(shell whereis rm) -rf
 SED=/usr/bin/sed
 SWIFT=$(shell which swift)
@@ -53,6 +54,7 @@ release: clean package
 	$(GIT) tag $(VERSION)
 	$(GIT) push origin $(VERSION)
 	bundle exec pod trunk push
+	$(HUB) create --attach $(PACKAGE_ZIP) $(VERSION)
 
 .PHONY: xcode
 xcode:

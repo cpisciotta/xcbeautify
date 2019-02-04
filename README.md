@@ -78,9 +78,9 @@ set -o pipefail && xcodebuild [flags] | xcbeautify
 
 To release a new version, say `x.y.z`:
 
-1. Run `make release version=x.y.z`
-1. Upload the newly packaged `xcbeautify-x.y.z-x86_64-apple-macosx10.10.zip`
-   file to GitHub.
+```bash
+make release version=x.y.z
+```
 
 ## Contributing
 
