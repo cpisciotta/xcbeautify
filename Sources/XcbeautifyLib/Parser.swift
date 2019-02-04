@@ -134,6 +134,8 @@ public class Parser {
             return line.beautify(pattern: .moduleIncludesError)
         case Matcher.parallelTestCasePassedMatcher:
             return line.beautify(pattern: .parallelTestCasePassed)
+        case Matcher.parallelTestCaseAppKitPassedMatcher:
+            return line.beautify(pattern: .parallelTestCaseAppKitPassed)
         case Matcher.parallelTestCaseFailedMatcher:
             return line.beautify(pattern: .parallelTestCaseFailed)
         case Matcher.parallelTestingStartedMatcher:

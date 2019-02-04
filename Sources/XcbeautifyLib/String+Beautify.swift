@@ -37,6 +37,7 @@ extension String {
              .testCaseMeasured,
              .testsRunCompletion,
              .parallelTestCasePassed,
+             .parallelTestCaseAppKitPassed,
              .parallelTestCaseFailed:
             return formatTest(pattern: pattern)
         case .codesign,
@@ -260,6 +261,10 @@ extension String {
             let device = groups[2]
             let time = groups[4]
             return indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)"
+        case .parallelTestCaseAppKitPassed:
+            let testCase = groups[1]
+            let time = groups[2]
+            return indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)"
         case .parallelTestCaseFailed:
             let testCase = groups[1]
             let device = groups[2]
