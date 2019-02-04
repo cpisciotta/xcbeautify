@@ -157,6 +157,12 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
+    /// $3 = time
+    case parallelTestCaseAppKitPassed = "\\s*Test case\\s'-\\[(.*)\\s(.*)\\]'\\spassed\\son\\s'.*'\\s\\((\\d*\\.\\d{3})\\sseconds\\)"
+
+    /// Regular expression captured groups:
+    /// $1 = suite
+    /// $2 = test case
     /// $3 = device
     /// $4 = installed app file and ID (e.g. MyApp.app (12345))
     /// $5 = time

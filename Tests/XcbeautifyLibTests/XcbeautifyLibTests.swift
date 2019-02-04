@@ -157,6 +157,17 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertTrue(formatted.contains("0.131"))
     }
 
+    func testParallelTestCaseAppKitPassed() {
+        let original = "Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds)."
+        guard let formatted = Parser().parse(line: original) else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(formatted.contains(TestStatus.pass.rawValue))
+        XCTAssertTrue(formatted.contains("testBuildTarget"))
+        XCTAssertTrue(formatted.contains("0.131"))
+    }
+
     func testParallelTestingStarted() {
     }
 

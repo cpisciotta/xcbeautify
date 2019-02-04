@@ -42,6 +42,7 @@ extension XcbeautifyLibTests {
         ("testNoCertificate", testNoCertificate),
         ("testParallelTestCaseFailed", testParallelTestCaseFailed),
         ("testParallelTestCasePassed", testParallelTestCasePassed),
+        ("testParallelTestCaseAppKitPassed", testParallelTestCaseAppKitPassed),
         ("testParallelTestingStarted", testParallelTestingStarted),
         ("testPbxcp", testPbxcp),
         ("testPhaseScriptExecution", testPhaseScriptExecution),

@@ -39,6 +39,7 @@ struct Matcher {
     static let noCertificateMatcher = Regex(pattern: .noCertificate)
     static let parallelTestCaseFailedMatcher = Regex(pattern: .parallelTestCaseFailed)
     static let parallelTestCasePassedMatcher = Regex(pattern: .parallelTestCasePassed)
+    static let parallelTestCaseAppKitPassedMatcher = Regex(pattern: .parallelTestCaseAppKitPassed)
     static let parallelTestingStartedMatcher = Regex(pattern: .parallelTestingStarted)
     static let pbxcpMatcher = Regex(pattern: .pbxcp)
     static let phaseScriptExecutionMatcher = Regex(pattern: .phaseScriptExecution)
