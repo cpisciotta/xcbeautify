@@ -49,12 +49,12 @@ bump-version:
 .PHONY: release
 release: clean package
 	$(SED) -i '' '6s/.*/  sha256 "$(shell shasum -a 256 "$(PACKAGE_ZIP)" | cut -f 1 -d " ")"/' Formula/xcbeautify.rb
-	$(GIT) commit Formula Sources -m "Release version $(VERSION)"
+	$(GIT) commit Formula Sources xcbeautify.podspec -m "Release version $(VERSION)"
 	$(GIT) push origin master
 	$(GIT) tag $(VERSION)
 	$(GIT) push origin $(VERSION)
-	bundle exec pod trunk push
-	$(HUB) create --attach $(PACKAGE_ZIP) $(VERSION)
+	$(HUB) release create --message $(VERSION) --attach $(PACKAGE_ZIP) $(VERSION)
+	bundle exec pod trunk push --allow-warnings
 
 .PHONY: xcode
 xcode:
