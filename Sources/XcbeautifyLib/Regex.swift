@@ -1,11 +1,11 @@
 import Foundation
 
-struct Regex {
+class Regex {
     let pattern: Pattern
 
-    private var matcher: NSRegularExpression? {
+    private lazy var matcher: NSRegularExpression? = {
         return try? NSRegularExpression(pattern: pattern.rawValue)
-    }
+    }()
 
     init(pattern: Pattern) {
         self.pattern = pattern
