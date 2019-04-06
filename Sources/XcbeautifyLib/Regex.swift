@@ -4,7 +4,7 @@ class Regex {
     let pattern: Pattern
 
     private lazy var matcher: NSRegularExpression? = {
-        return try? NSRegularExpression(pattern: pattern.rawValue)
+        return try? NSRegularExpression(pattern: "^" + pattern.rawValue)
     }()
 
     init(pattern: Pattern) {
