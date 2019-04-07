@@ -2,10 +2,11 @@
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
-Similar to `xcpretty`, but written in Swift.
+Similar to `xcpretty`, but faster.
 
 ## Features
 
+- [x] 2x faster than `xcpretty`.
 - [x] Human-friendly and colored output.
 - [x] Supports the new build system's output.
 - [x] Supports Xcode 10's parallel testing output.
@@ -72,7 +73,6 @@ set -o pipefail && xcodebuild [flags] | xcbeautify
 ## Future work
 
 - [ ] Write more tests
-- [ ] Performance improvements
 
 ## Development
 
