@@ -1,3 +1,9 @@
+## 0.3.8
+- Improves performance significantly.
+
+## 0.3.7
+- Supports AppKit projects.
+
 ## 0.3.6
 - Fixes `Executable product not found` error when installs using Mint.
 
