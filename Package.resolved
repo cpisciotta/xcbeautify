@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/getGuaka/Colorizer.git",
         "state": {
           "branch": null,
-          "revision": "49277ea92b3a6877f1290489fa1fcf2084ce16ee",
-          "version": "0.1.0"
+          "revision": "7a5535130e55e08151e9961341943f8343daad12",
+          "version": "0.2.0"
         }
       },
       {
@@ -15,26 +15,8 @@
         "repositoryURL": "https://github.com/nsomar/Guaka.git",
         "state": {
           "branch": null,
-          "revision": "7d6135f0bcb324977698c40a1985f481899b6dce",
-          "version": "0.3.1"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble.git",
-        "state": {
-          "branch": null,
-          "revision": "cd6dfb86f496fcd96ce0bc6da962cd936bf41903",
-          "version": "7.3.1"
-        }
-      },
-      {
-        "package": "Quick",
-        "repositoryURL": "https://github.com/Quick/Quick.git",
-        "state": {
-          "branch": null,
-          "revision": "5fbf13871d185526993130c3a1fad0b70bfe37ce",
-          "version": "1.3.2"
+          "revision": "90c03a9e4c894808a8882a16ccf56743b4b2d40c",
+          "version": "0.4.0"
         }
       },
       {
@@ -42,8 +24,8 @@
         "repositoryURL": "https://github.com/getGuaka/StringScanner.git",
         "state": {
           "branch": null,
-          "revision": "c2cf5c81dade9486386f1cacd917c03e959a3005",
-          "version": "0.3.0"
+          "revision": "39f9b77e37c69ab6fec14aadf79a066468ce63e3",
+          "version": "0.4.0"
         }
       }
     ]
