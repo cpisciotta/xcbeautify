@@ -5,6 +5,7 @@ let package = Package(
     name: "xcbeautify",
     products: [
         .executable(name: "xcbeautify", targets: ["xcbeautify"]),
+        .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"])
     ],
     dependencies: [
         .package(url: "https://github.com/nsomar/Guaka.git", from: "0.0.0"),
