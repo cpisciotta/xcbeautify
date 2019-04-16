@@ -1,5 +1,6 @@
 ## 0.3.8
 - Improves performance significantly.
+- This is the last version that supports macOS 10.4.3 and below.
 
 ## 0.3.7
 - Supports AppKit projects.
