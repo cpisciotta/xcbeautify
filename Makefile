@@ -12,7 +12,7 @@ SED=/usr/bin/sed
 SWIFT=$(shell which swift)
 ZIP=$(shell whereis zip) -r
 
-TARGET_PLATFORM=x86_64-apple-macosx10.10
+TARGET_PLATFORM=x86_64-apple-macosx10.14
 PACKAGE_ZIP="$(PRODUCT_NAME)-$(VERSION)-$(TARGET_PLATFORM).zip"
 
 BINARY_DIRECTORY=$(PREFIX)/bin
@@ -29,7 +29,7 @@ test: clean
 
 .PHONY: build
 build:
-	$(SWIFT) build -c release -Xswiftc -static-stdlib
+	$(SWIFT) build -c release
 
 .PHONY: install
 install: build
