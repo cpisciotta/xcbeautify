@@ -1,4 +1,4 @@
-## 0.4.8
+## 0.4.0
 - Reduces binary size.
 - This version requires macOS Mojave 10.14.4 or above.
 
