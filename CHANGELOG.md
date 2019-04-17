@@ -1,6 +1,10 @@
+## 0.4.8
+- Reduces binary size.
+- This version requires macOS Mojave 10.14.4 or above.
+
 ## 0.3.8
 - Improves performance significantly.
-- This is the last version that supports macOS 10.4.3 and below.
+- This is the last version that supports macOS 10.14.3 and below.
 
 ## 0.3.7
 - Supports AppKit projects.
