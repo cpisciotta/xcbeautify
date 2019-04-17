@@ -4,3 +4,4 @@
 /*.xcodeproj
 *.swp
 *.zip
+bazel-*
