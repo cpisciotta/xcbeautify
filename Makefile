@@ -7,6 +7,7 @@ CD=cd
 CP=$(shell whereis cp) -Rf
 GIT=$(shell which git)
 HUB=$(shell which hub)
+MKDIR=$(shell which mkdir) -p
 RM=$(shell whereis rm) -rf
 SED=/usr/bin/sed
 SWIFT=$(shell which swift)
@@ -34,6 +35,7 @@ build:
 
 .PHONY: install
 install: build
+	$(MKDIR) $(BINARY_DIRECTORY)
 	$(CP) "$(OUTPUT_EXECUTABLE)" "$(BINARY_DIRECTORY)"
 
 .PHONY: package
