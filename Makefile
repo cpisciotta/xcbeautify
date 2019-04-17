@@ -27,9 +27,10 @@ all: build
 test: clean
 	$(SWIFT) test
 
+# Disable sandbox since SwiftPM needs to access to the internet to fetch dependencies
 .PHONY: build
 build:
-	$(SWIFT) build -c release
+	$(SWIFT) build -c release --disable-sandbox
 
 .PHONY: install
 install: build
