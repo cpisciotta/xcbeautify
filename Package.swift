@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "xcbeautify",
+    platforms: [.macOS("10.14")],
     products: [
         .executable(name: "xcbeautify", targets: ["xcbeautify"]),
         .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"])
