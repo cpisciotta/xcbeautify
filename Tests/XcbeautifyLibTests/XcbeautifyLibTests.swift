@@ -71,6 +71,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompileStoryboard() {
+        let formatted = noColoredFormatted("CompileStoryboard /Users/admin/MyApp/MyApp/Main.storyboard (in target: MyApp)")
+        XCTAssertEqual(formatted, "[MyApp] Compiling Main.storyboard")
     }
 
     func testCompileWarning() {
