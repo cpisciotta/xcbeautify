@@ -292,13 +292,13 @@ extension String {
         }
     }
 
-    func formatError(pattern: Pattern) -> String? {
+    private func formatError(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         guard let errorMessage = groups.first else { return nil }
         return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
     }
 
-    func formatCompileError(pattern: Pattern) -> String? {
+    private func formatCompileError(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filePath = groups[0]
         let reason = groups[2]
@@ -320,20 +320,20 @@ extension String {
             """
     }
 
-    func formatFileMissingError(pattern: Pattern) -> String {
+    private func formatFileMissingError(pattern: Pattern) -> String {
         let groups = capturedGroups(with: pattern)
         let reason = groups[0]
         let filePath = groups[1]
         return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
     }
 
-    func formatWarning(pattern: Pattern) -> String? {
+    private func formatWarning(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         guard let warningMessage = groups.first else { return nil }
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
-    func formatCompileWarning(pattern: Pattern) -> String? {
+    private func formatCompileWarning(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filePath = groups[0]
         let reason = groups[2]
@@ -355,14 +355,14 @@ extension String {
             """
     }
 
-    func formatLdWarning(pattern: Pattern) -> String? {
+    private func formatLdWarning(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let prefix = groups[0]
         let message = groups[1]
         return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
-    func formatProcessInfoPlist(pattern: Pattern) -> String {
+    private func formatProcessInfoPlist(pattern: Pattern) -> String {
         let groups = capturedGroups(with: pattern)
         let plist = groups[1]
 
@@ -377,26 +377,26 @@ extension String {
     }
 
     // TODO: Print symbol and reference location
-    func formatLinkerUndefinedSymbolsError(pattern: Pattern) -> String? {
+    private func formatLinkerUndefinedSymbolsError(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let reason = groups[0]
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
     // TODO: Print file path
-    func formatLinkerDuplicateSymbolsError(pattern: Pattern) -> String? {
+    private func formatLinkerDuplicateSymbolsError(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let reason = groups[0]
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
-    func formatWillNotBeCodesignWarning(pattern: Pattern) -> String? {
+    private func formatWillNotBeCodesignWarning(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         guard let warningMessage = groups.first else { return nil }
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
-    func formatSummary() -> String? {
+    private func formatSummary() -> String? {
         return _colored ? self.f.Green.s.Bold : self
     }
 
