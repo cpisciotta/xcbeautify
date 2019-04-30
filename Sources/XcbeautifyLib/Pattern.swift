@@ -31,7 +31,7 @@ enum Pattern: String {
     case shellCommand = #"\s{4}(cd|setenv|(?:[\w\/:\s\-.]+?\/)?[\w\-]+)\s(.*)$"#
 
     /// Nothing returned here for now
-    case cleanRemove = #"Clean.Remove"#
+    case cleanRemove = #"Clean.Remove(.*)"#
 
     /// Regular expression captured groups:
     /// $1 = target

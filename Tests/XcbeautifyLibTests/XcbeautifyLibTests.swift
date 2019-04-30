@@ -4,8 +4,8 @@ import XCTest
 final class XcbeautifyLibTests: XCTestCase {
     let parser = Parser()
 
-    private func noColoredFormatted(_ string: String) -> String {
-        return parser.parse(line: string, colored: false)!
+    private func noColoredFormatted(_ string: String) -> String? {
+        return parser.parse(line: string, colored: false)
     }
 
     func testAggregateTarget() {
@@ -35,9 +35,13 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testClangError() {
+        let formatted = noColoredFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
+        XCTAssertEqual(formatted, "[x] clang: error: linker command failed with exit code 1 (use -v to see invocation)")
     }
 
     func testCleanRemove() {
+        let formatted = noColoredFormatted("Clean.Remove clean /Users/admin/Library/Developer/Xcode/DerivedData/MyLibrary-abcd/Build/Intermediates/MyLibrary.build/Debug-iphonesimulator/MyLibraryTests.build")
+        XCTAssertEqual(formatted, "Cleaning MyLibraryTests.build")
     }
 
     func testCleanTarget() {

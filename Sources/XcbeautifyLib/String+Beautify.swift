@@ -76,7 +76,7 @@ extension String {
         case .shellCommand:
             return nil
         case .cleanRemove:
-            return nil
+            return formatCleanRemove(pattern: pattern)
         case .executed:
             return nil
         case .testCaseStarted:
@@ -159,6 +159,12 @@ extension String {
         let filename = groups[1]
         let target = groups[2]
         return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
+    }
+
+    private func formatCleanRemove(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let directory = groups[0].lastPathComponent
+        return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
 
     private func formatProcessPch(pattern: Pattern) -> String? {
