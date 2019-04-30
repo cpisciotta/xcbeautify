@@ -87,7 +87,7 @@ make release version=x.y.z
 Just send a PR! We don't bite ;)
 
 Don't have a GitHub account or prefer old-school patching via email? Send your
-patch to [the project's mailing list](~thi/xcbeautify@lists.sr.ht).
+patch to [the project's mailing list](mailto:~thi/xcbeautify@lists.sr.ht).
 
 ## License
 
