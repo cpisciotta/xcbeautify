@@ -2,28 +2,30 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class XcbeautifyLibTests: XCTestCase {
-    private func formatted(of original: String, shouldContain expected: String) {
-        let formatted = Parser().parse(line: original)!
-        XCTAssertTrue(formatted.contains(expected))
+    let parser = Parser()
+
+    private func noColoredFormatted(_ string: String) -> String {
+        return parser.parse(line: string, colored: false)!
     }
 
     func testAggregateTarget() {
-        formatted(of: "=== BUILD AGGREGATE TARGET Be Aggro OF PROJECT AggregateExample WITH CONFIGURATION Debug ===", shouldContain: "Aggregate target Be Aggro of project AggregateExample with configuration Debug")
+        let formatted = noColoredFormatted("=== BUILD AGGREGATE TARGET Be Aggro OF PROJECT AggregateExample WITH CONFIGURATION Debug ===")
+        XCTAssertEqual(formatted, "Aggregate target Be Aggro of project AggregateExample with configuration Debug")
     }
 
     func testAnalyze() {
-        let original = "AnalyzeShallow /Users/admin/CocoaLumberjack/Classes/DDTTYLogger.m normal x86_64 (in target: CocoaLumberjack-Static)"
-        formatted(of: original, shouldContain: "CocoaLumberjack-Static")
-        formatted(of: original, shouldContain: "Analyzing")
-        formatted(of: original, shouldContain: "DDTTYLogger.m")
+        let formatted = noColoredFormatted("AnalyzeShallow /Users/admin/CocoaLumberjack/Classes/DDTTYLogger.m normal x86_64 (in target: CocoaLumberjack-Static)")
+        XCTAssertEqual(formatted, "[CocoaLumberjack-Static] Analyzing DDTTYLogger.m")
     }
 
     func testAnalyzeTarget() {
-        formatted(of: "=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===", shouldContain: "Analyze target The Spacer of project Pods with configuration Debug")
+        let formatted = noColoredFormatted("=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
+        XCTAssertEqual(formatted, "Analyze target The Spacer of project Pods with configuration Debug")
     }
 
     func testBuildTarget() {
-        formatted(of: "=== BUILD TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===", shouldContain: "Build target The Spacer of project Pods with configuration Debug")
+        let formatted = noColoredFormatted("=== BUILD TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
+        XCTAssertEqual(formatted, "Build target The Spacer of project Pods with configuration Debug")
     }
 
     func testCheckDependenciesErrors() {
@@ -39,10 +41,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCleanTarget() {
-        let original = "=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ==="
-        let formatted = Parser().parse(line: original)!
-        let expected = "Analyze target The Spacer of project Pods with configuration Debug"
-        XCTAssertTrue(formatted.contains(expected))
+        let formatted = noColoredFormatted("=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
+        XCTAssertEqual(formatted, "Analyze target The Spacer of project Pods with configuration Debug")
     }
 
     func testCodesignFramework() {
@@ -58,10 +58,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompile() {
-        let sample = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
-        formatted(of: sample, shouldContain: "[")
-        formatted(of: sample, shouldContain: "xcbeautify")
-        formatted(of: sample, shouldContain: "setup.swift")
+        let formatted = noColoredFormatted("CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)")
+        XCTAssertEqual(formatted, "[xcbeautify] Compiling setup.swift")
     }
 
     func testCompileStoryboard() {
@@ -128,13 +126,11 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testLinking() {
-        let sample = "Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)"
-        formatted(of: sample, shouldContain: "[")
-        formatted(of: sample, shouldContain: "xcbeautify")
-        formatted(of: sample, shouldContain: "Linking")
+        let formatted = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
+        XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
 
-        let sample2 = "Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)"
-        formatted(of: sample2, shouldContain: "My\\ App")
+        let formatted2 = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
+        XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
     }
 
     func testModuleIncludesError() {
@@ -147,52 +143,31 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testParallelTestCasePassed() {
-        let original = "Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds)."
-        guard let formatted = Parser().parse(line: original) else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(formatted.contains(TestStatus.pass.rawValue))
-        XCTAssertTrue(formatted.contains("testBuildTarget"))
-        XCTAssertTrue(formatted.contains("0.131"))
+        let formatted = noColoredFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
+        XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
     }
 
     func testParallelTestCaseAppKitPassed() {
-        let original = "Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds)."
-        guard let formatted = Parser().parse(line: original) else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(formatted.contains(TestStatus.pass.rawValue))
-        XCTAssertTrue(formatted.contains("testBuildTarget"))
-        XCTAssertTrue(formatted.contains("0.131"))
+        let formatted = noColoredFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds).")
+        XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131) seconds)")
     }
 
     func testParallelTestingStarted() {
     }
 
     func testPbxcp() {
-        let original = "PBXCp /Users/admin/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Products/Release/include/CocoaLumberjack/DDDispatchQueueLogFormatter.h (in target: CocoaLumberjack-Static)"
-        formatted(of: original, shouldContain: "CocoaLumberjack-Static")
-        formatted(of: original, shouldContain: "Copying")
-        formatted(of: original, shouldContain: "DDDispatchQueueLogFormatter.h")
+        let formatted = noColoredFormatted("PBXCp /Users/admin/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Products/Release/include/CocoaLumberjack/DDDispatchQueueLogFormatter.h (in target: CocoaLumberjack-Static)")
+        XCTAssertEqual(formatted, "[CocoaLumberjack-Static] Copying DDDispatchQueueLogFormatter.h")
     }
 
     func testPhaseScriptExecution() {
-        let original = """
-        PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)
-        """
-        formatted(of: original, shouldContain: "Running script")
-        formatted(of: original, shouldContain: "[CP]\\ Check\\ Pods\\ Manifest.lock")
+        let formatted = noColoredFormatted("PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)")
+        XCTAssertEqual(formatted, "[App] Running script [CP]\\ Check\\ Pods\\ Manifest.lock")
     }
 
     func testPhaseSuccess() {
-        let original = "** CLEAN SUCCEEDED ** [0.085 sec]"
-        guard let formatted = Parser().parse(line: original) else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(formatted.contains("Clean Succeeded"))
+        let formatted = noColoredFormatted("** CLEAN SUCCEEDED ** [0.085 sec]")
+        XCTAssertEqual(formatted, "Clean Succeeded")
     }
 
     func testPodsError() {
@@ -202,31 +177,16 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testProcessInfoPlist() {
-        formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist",
-            shouldContain: "Processing")
-        formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist",
-            shouldContain: " Guaka_Info.plist")
-        formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
-            shouldContain: "Processing")
-        formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
-            shouldContain: "Guaka")
-        formatted(
-            of: "ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target: Guaka)",
-            shouldContain: " Guaka_Info.plist")
+        let formatted = noColoredFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")
+        XCTAssertEqual(formatted, "Processing Guaka_Info.plist")
     }
 
     func testProcessPchCommand() {
     }
 
     func testProcessPch() {
-        let original = "ProcessPCH /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)"
-        formatted(of: original, shouldContain: "CocoaLumberjack")
-        formatted(of: original, shouldContain: "Processing")
-        formatted(of: original, shouldContain: "CocoaLumberjack-Prefix.pch")
+        let formatted = noColoredFormatted("ProcessPCH /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)")
+        XCTAssertEqual(formatted, "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
     }
 
     func testProvisioningProfileRequired() {
@@ -266,10 +226,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTouch() {
-        let sample = "Touch /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/XcbeautifyLib.framework (in target: XcbeautifyLib)"
-        formatted(of: sample, shouldContain: "[")
-        formatted(of: sample, shouldContain: "Touching")
-        formatted(of: sample, shouldContain: "XcbeautifyLib")
+        let formatted = noColoredFormatted("Touch /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/XcbeautifyLib.framework (in target: XcbeautifyLib)")
+        XCTAssertEqual(formatted, "[XcbeautifyLib] Touching XcbeautifyLib.framework")
     }
 
     func testUiFailingTest() {

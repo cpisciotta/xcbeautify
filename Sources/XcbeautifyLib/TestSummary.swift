@@ -3,6 +3,7 @@ public struct TestSummary {
     let failuresCount: String
     let unexpectedCount: String
     let time: String
+    let colored: Bool
 }
 
 extension TestSummary {
@@ -17,9 +18,9 @@ extension TestSummary {
 
     public func format() -> String {
         if isSuccess() {
-            return "Tests Passed: \(description)".s.Bold.f.Green
+            return colored ? "Tests Passed: \(description)".s.Bold.f.Green : "Tests Passed: \(description)"
         } else {
-            return "Tests Failed: \(description)".s.Bold.f.Red
+            return colored ? "Tests Failed: \(description)".s.Bold.f.Red : "Tests Failed: \(description)"
         }
     }
 }
