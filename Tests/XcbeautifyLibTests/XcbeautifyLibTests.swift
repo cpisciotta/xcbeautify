@@ -55,6 +55,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCodesign() {
+        let formatted = noColoredFormatted("CodeSign build/Release/MyApp.app")
+        XCTAssertEqual(formatted, "Signing MyApp.app")
     }
 
     func testCompileCommand() {
