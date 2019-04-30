@@ -45,7 +45,7 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = file
-    case codesignFramework = #"CodeSign\s((?:\ |[^ ])*.framework)\/Versions"#
+    case codesignFramework = #"CodeSign\s((?:\ |[^ ])*.framework)\/Versions/A"#
 
     /// Regular expression captured groups:
     /// $1 = file path

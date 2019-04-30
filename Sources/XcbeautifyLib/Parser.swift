@@ -21,10 +21,10 @@ public class Parser {
             return line.beautify(pattern: .cleanRemove, colored: colored)
         case Matcher.cleanTargetMatcher:
             return line.beautify(pattern: .cleanTarget, colored: colored)
-        case Matcher.codesignMatcher:
-            return line.beautify(pattern: .codesign, colored: colored)
         case Matcher.codesignFrameworkMatcher:
             return line.beautify(pattern: .codesignFramework, colored: colored)
+        case Matcher.codesignMatcher:
+            return line.beautify(pattern: .codesign, colored: colored)
         case Matcher.compileMatcher:
             return line.beautify(pattern: .compile, colored: colored)
         case Matcher.compileCommandMatcher:

@@ -50,6 +50,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCodesignFramework() {
+        let formatted = noColoredFormatted("CodeSign build/Release/MyFramework.framework/Versions/A")
+        XCTAssertEqual(formatted, "Signing build/Release/MyFramework.framework")
     }
 
     func testCodesign() {

@@ -44,9 +44,10 @@ extension String {
              .parallelTestCaseAppKitPassed,
              .parallelTestCaseFailed:
             return formatTest(pattern: pattern)
-        case .codesign,
-             .codesignFramework:
+        case .codesign:
             return format(command: "Signing", pattern: pattern)
+        case .codesignFramework:
+            return formatCodeSignFramework(pattern: pattern)
         case .copyHeader,
              .copyPlist,
              .copyStrings,
@@ -165,6 +166,12 @@ extension String {
         let groups = capturedGroups(with: pattern)
         let directory = groups[0].lastPathComponent
         return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
+    }
+
+    private func formatCodeSignFramework(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let frameworkPath = groups[0]
+        return _colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 
     private func formatProcessPch(pattern: Pattern) -> String? {
