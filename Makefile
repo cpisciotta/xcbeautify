@@ -13,11 +13,11 @@ SED=/usr/bin/sed
 SWIFT=$(shell which swift)
 ZIP=$(shell whereis zip) -r
 
-TARGET_PLATFORM=x86_64-apple-macosx10.14
+TARGET_PLATFORM=x86_64-apple-macosx
 PACKAGE_ZIP="$(PRODUCT_NAME)-$(VERSION)-$(TARGET_PLATFORM).zip"
 
 BINARY_DIRECTORY=$(PREFIX)/bin
-BUILD_DIRECTORY=$(shell pwd)/.build/x86_64-apple-macosx/release
+BUILD_DIRECTORY=$(shell pwd)/.build/$(TARGET_PLATFORM)/release
 OUTPUT_EXECUTABLE=$(BUILD_DIRECTORY)/$(PRODUCT_NAME)
 INSTALL_EXECUTABLE_PATH=$(BINARY_DIRECTORY)/$(PRODUCT_NAME)
 
