@@ -1,9 +1,9 @@
 class Xcbeautify < Formula
   desc "A little beautifier tool for xcodebuild"
   homepage "https://github.com/thii/xcbeautify"
-  version "0.4.1"
+  version "0.4.2"
   url "https://github.com/thii/xcbeautify/releases/download/#{version}/xcbeautify-#{version}-x86_64-apple-macosx10.14.zip"
-  sha256 "78a3807d6f7520f8a42ebc6b85b7a66d2e5d0d637a577277fa838ea9943c8ba0"
+  sha256 "bf2f25a84b63bf0e9a7a6deb891506714aebbea13a46ddb4dfeaeb10022fc248"
   head "https://github.com/thii/xcbeautify.git"
 
   def install
