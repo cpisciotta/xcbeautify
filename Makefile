@@ -21,6 +21,16 @@ BUILD_DIRECTORY=$(shell pwd)/.build/$(TARGET_PLATFORM)/release
 OUTPUT_EXECUTABLE=$(BUILD_DIRECTORY)/$(PRODUCT_NAME)
 INSTALL_EXECUTABLE_PATH=$(BINARY_DIRECTORY)/$(PRODUCT_NAME)
 
+SWIFT_BUILD_FLAGS = --configuration release --disable-sandbox
+
+USE_SWIFT_VERSION_4:=$(shell swift -version | grep '.*Swift version 4.*' > /dev/null && echo yes)
+ifeq ($(USE_SWIFT_VERSION_4), yes)
+# Link Swift stdlib statically
+SWIFT_BUILD_FLAGS += --static-swift-stdlib
+# Swift 4 uses a different build directory
+TARGET_PLATFORM=x86_64-apple-macosx10.10
+endif
+
 .PHONY: all
 all: build
 
@@ -31,7 +41,7 @@ test: clean
 # Disable sandbox since SwiftPM needs to access to the internet to fetch dependencies
 .PHONY: build
 build:
-	$(SWIFT) build -c release --disable-sandbox
+	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 
 .PHONY: install
 install: build
@@ -40,8 +50,8 @@ install: build
 
 .PHONY: package
 package: bump-version build
-	$(CD) "$(BUILD_DIRECTORY)" && $(ZIP) "$(PACKAGE_ZIP)" "$(PRODUCT_NAME)"
-	$(CP) "$(BUILD_DIRECTORY)/$(PACKAGE_ZIP)" "$(PACKAGE_ZIP)"
+	$(CD) "$(BUILD_DIRECTORY)" && $(ZIP) $(PACKAGE_ZIP) "$(PRODUCT_NAME)"
+	$(CP) "$(BUILD_DIRECTORY)/$(PACKAGE_ZIP)" $(PACKAGE_ZIP)
 
 .PHONY: bump-version
 bump-version:
