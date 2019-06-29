@@ -1,3 +1,16 @@
+## 0.4.4
+- Remove backslashes before whitespaces in script build phases (#12)
+  @guillaumealgis
+
+## 0.4.3
+- Fix bottling error on macOS High Sierra.
+
+## 0.4.2
+- Support building with Swift 4
+
+## 0.4.1
+- Support custom prefix installation
+
 ## 0.4.0
 - Reduces binary size.
 - This version requires macOS Mojave 10.14.4 or above.
