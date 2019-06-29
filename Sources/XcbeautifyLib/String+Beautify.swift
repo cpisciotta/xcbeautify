@@ -226,8 +226,10 @@ extension String {
     private func formatPhaseScriptExecution() -> String? {
         let groups = capturedGroups(with: .phaseScriptExecution)
         let phaseName = groups[0]
+        // Strip backslashed added by xcodebuild before spaces in the build phase name
+        let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
         let target = groups[1]
-        return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(phaseName)" : "[\(target)] Running script \(phaseName)"
+        return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
     }
 
     private func formatTestHeading(pattern: Pattern) -> String? {
