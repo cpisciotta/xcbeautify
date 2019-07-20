@@ -9,6 +9,14 @@ var rootCommand = Command(
 
 private func configuration(command: Command) {
     command.add(flags: [
+        .init(shortName: "q",
+              longName: "quiet",
+              value: false,
+              description: "Do not print any output except for warnings and errors.",
+              inheritable: true)
+        ])
+
+    command.add(flags: [
         .init(shortName: "v",
               longName: "version",
               value: false,
@@ -32,6 +40,8 @@ private func configuration(command: Command) {
 
 private func execute(flags: Flags, args: [String]) {
     let parser = Parser()
+    parser.quiet = flags.getBool(name: "quiet") == true
+
     while let line = readLine() {
         guard let formatted = parser.parse(line: line) else { continue }
         print(formatted)
