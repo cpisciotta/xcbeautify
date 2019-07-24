@@ -31,7 +31,7 @@ extension String {
             return formatLinking(pattern: pattern)
         case .testSuiteStarted,
              .testSuiteStart,
-            .parallelTestingStarted:
+             .parallelTestingStarted:
             return formatTestHeading(pattern: pattern)
         case .failingTest,
              .uiFailingTest,
