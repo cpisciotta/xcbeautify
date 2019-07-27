@@ -12,7 +12,7 @@ private func configuration(command: Command) {
         .init(shortName: "q",
               longName: "quiet",
               value: false,
-              description: "Do not print any output except for warnings and errors.",
+              description: "Only print tasks that have warnings or errors.",
               inheritable: true)
         ])
 
@@ -40,11 +40,29 @@ private func configuration(command: Command) {
 
 private func execute(flags: Flags, args: [String]) {
     let parser = Parser()
-    parser.quiet = flags.getBool(name: "quiet") == true
+    let quiet = flags.getBool(name: "quiet") == true
+    var lastFormatted: String? = nil
 
     while let line = readLine() {
         guard let formatted = parser.parse(line: line) else { continue }
-        print(formatted)
+
+        if !quiet {
+            print(formatted)
+            continue
+        }
+
+        switch parser.outputType {
+            case OutputType.warning, OutputType.error:
+                if let last = lastFormatted {
+                    print(last)
+                    lastFormatted = nil
+                }
+                print(formatted)
+            case OutputType.result:
+                print(formatted)
+            default:
+                lastFormatted = formatted
+        }
     }
 
     if let summary = parser.summary {
