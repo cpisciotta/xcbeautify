@@ -13,3 +13,11 @@ enum Symbol: String {
     case warning = "⚠️"
     case asciiWarning = "[!]"
 }
+
+public enum OutputType {
+    case undefined
+    case task
+    case warning
+    case error
+    case result
+}

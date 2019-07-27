@@ -52,13 +52,13 @@ private func execute(flags: Flags, args: [String]) {
         }
 
         switch parser.outputType {
-            case OutputType.WARN_ERR:
+            case OutputType.warning, OutputType.error:
                 if let last = lastFormatted {
                     print(last)
                     lastFormatted = nil
                 }
                 print(formatted)
-            case OutputType.RESULT:
+            case OutputType.result:
                 print(formatted)
             default:
                 lastFormatted = formatted
