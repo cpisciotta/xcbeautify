@@ -278,7 +278,7 @@ extension String {
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
-            let time = groups[4]
+            let time = groups[3]
             return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
         case .parallelTestCaseAppKitPassed:
             let testCase = groups[1]
@@ -287,7 +287,7 @@ extension String {
         case .parallelTestCaseFailed:
             let testCase = groups[1]
             let device = groups[2]
-            let time = groups[4]
+            let time = groups[3]
             return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
         default:
             return nil

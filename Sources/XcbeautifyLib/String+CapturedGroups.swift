@@ -11,7 +11,7 @@ extension String {
             return results
         }
 
-        let matches = regex.matches(in: self, range: NSRange(location:0, length: self.count))
+        let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
 
         guard let match = matches.first else { return results }
 

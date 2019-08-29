@@ -151,9 +151,8 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     /// $3 = device
-    /// $4 = installed app file and ID (e.g. MyApp.app (12345))
-    /// $5 = time
-    case parallelTestCasePassed = "Test case '(.*)\\.(.*)\\(\\)' passed on '(.*) - (.*)' \\((\\d*\\.(.*){3}) seconds\\)"
+    /// $4 = time
+    case parallelTestCasePassed = "Test case '(.*)\\.(.*)\\(\\)' passed on '(.*)' \\((\\d*\\.(.*){3}) seconds\\)"
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -165,9 +164,8 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     /// $3 = device
-    /// $4 = installed app file and ID (e.g. MyApp.app (12345))
-    /// $5 = time
-    case parallelTestCaseFailed = "Test case '(.*)\\.(.*)\\(\\)' failed on '(.*) - (.*)' \\((\\d*\\.(.*){3}) seconds\\)"
+    /// $4 = time
+    case parallelTestCaseFailed = "Test case '(.*)\\.(.*)\\(\\)' failed on '(.*)' \\((\\d*\\.(.*){3}) seconds\\)"
 
     /// Regular expression captured groups:
     /// $1 = device
