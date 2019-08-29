@@ -74,6 +74,12 @@ public class Parser {
             case Matcher.restartingTestsMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .restartingTests, colored: colored)
+            case Matcher.generateCoverageDataMatcher:
+                outputType = OutputType.task
+                return line.beautify(pattern: .generateCoverageData, colored: colored)
+            case Matcher.generatedCoverageReportMatcher:
+                outputType = OutputType.task
+                return line.beautify(pattern: .generatedCoverageReport, colored: colored)
             case Matcher.generateDsymMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .generateDsym, colored: colored)
@@ -146,6 +152,12 @@ public class Parser {
             case Matcher.parallelTestingStartedMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .parallelTestingStarted, colored: colored)
+            case Matcher.parallelTestingPassedMatcher:
+                outputType = OutputType.task
+                return line.beautify(pattern: .parallelTestingPassed, colored: colored)
+            case Matcher.parallelTestSuiteStartedMatcher:
+                outputType = OutputType.task
+                return line.beautify(pattern: .parallelTestSuiteStarted, colored: colored)
             
             case Matcher.compileWarningMatcher:
                 outputType = OutputType.warning
@@ -207,6 +219,9 @@ public class Parser {
             case Matcher.moduleIncludesErrorMatcher:
                 outputType = OutputType.error
                 return line.beautify(pattern: .moduleIncludesError, colored: colored)
+            case Matcher.parallelTestingFailedMatcher:
+                outputType = OutputType.error
+                return line.beautify(pattern: .parallelTestingFailed, colored: colored)
             case Matcher.parallelTestCaseFailedMatcher:
                 outputType = OutputType.error
                 return line.beautify(pattern: .parallelTestCaseFailed, colored: colored)

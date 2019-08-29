@@ -6,7 +6,7 @@ extension String {
 
         var regex: NSRegularExpression
         do {
-            regex = try NSRegularExpression(pattern: pattern.rawValue)
+            regex = try NSRegularExpression(pattern: pattern.rawValue, options: [.caseInsensitive])
         } catch {
             return results
         }

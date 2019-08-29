@@ -112,6 +112,13 @@ enum Pattern: String {
     /// Regular expression captured groups:
     case restartingTests = "Restarting after unexpected exit or crash in.+$"
 
+    /// Nothing returned here for now.
+    case generateCoverageData = "generating\\s+coverage\\s+data\\.*"
+
+    /// Regular expression captured groups:
+    /// $1 = coverage report file path
+    case generatedCoverageReport = "generated\\s+coverage\\s+report:\\s+(.+)"
+
     /// Regular expression captured groups:
     /// $1 = dsym
     /// $2 = target
@@ -152,7 +159,7 @@ enum Pattern: String {
     /// $2 = test case
     /// $3 = device
     /// $4 = time
-    case parallelTestCasePassed = "Test case '(.*)\\.(.*)\\(\\)' passed on '(.*)' \\((\\d*\\.(.*){3}) seconds\\)"
+    case parallelTestCasePassed = "Test\\s+case\\s+'(.*)\\.(.*)\\(\\)'\\s+passed\\s+on\\s+'(.*)'\\s+\\((\\d*\\.(.*){3})\\s+seconds\\)"
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -165,11 +172,24 @@ enum Pattern: String {
     /// $2 = test case
     /// $3 = device
     /// $4 = time
-    case parallelTestCaseFailed = "Test case '(.*)\\.(.*)\\(\\)' failed on '(.*)' \\((\\d*\\.(.*){3}) seconds\\)"
+    case parallelTestCaseFailed = "Test\\s+case\\s+'(.*)\\.(.*)\\(\\)'\\s+failed\\s+on\\s+'(.*)'\\s+\\((\\d*\\.(.*){3})\\s+seconds\\)"
 
     /// Regular expression captured groups:
     /// $1 = device
-    case parallelTestingStarted = "Testing started on '(.*)'"
+    case parallelTestingStarted = "Testing\\s+started\\s+on\\s+'(.*)'"
+
+    /// Regular expression captured groups:
+    /// $1 = device
+    case parallelTestingPassed = "Testing\\s+passed\\s+on\\s+'(.*)'"
+
+    /// Regular expression captured groups:
+    /// $1 = device
+    case parallelTestingFailed = "Testing\\s+failed\\s+on\\s+'(.*)'"
+
+    /// Regular expression captured groups:
+    /// $1 = suite
+    /// $2 = device
+    case parallelTestSuiteStarted = "\\s*Test\\s+Suite\\s+'(.*)'\\s+started\\s+on\\s+'(.*)'"
 
     /// Nothing returned here for now
     case phaseSuccess = "\\*\\*\\s(.*)\\sSUCCEEDED\\s\\*\\*"
