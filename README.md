@@ -84,6 +84,12 @@ If you want `xcbeautify` to exit with the same status code as `xcodebuild`
 set -o pipefail && xcodebuild [flags] | xcbeautify
 ```
 
+For parallel and concurrent destination testing, it helps to use unbuffered I/O for _stdout_ and to redirect _stderr_ to _stdout_.
+
+```bash
+NSUnbufferedIO=YES xcodebuild [flags] 2>&1 | xcbeautify
+```
+
 ## Future work
 
 - [ ] Write more tests
