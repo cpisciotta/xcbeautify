@@ -108,6 +108,16 @@ final class XcbeautifyLibTests: XCTestCase {
     func testFileMissingError() {
     }
 
+    func testGenerateCoverageData() {
+        let formatted = noColoredFormatted("Generating coverage data...")
+        XCTAssertEqual(formatted, "Generating code coverage data...")
+    }
+
+    func testGeneratedCoverageReport() {
+        let formatted = noColoredFormatted("Generated coverage report: /path/to/code coverage.xccovreport")
+        XCTAssertEqual(formatted, "Generated code coverage report: /path/to/code coverage.xccovreport")
+    }
+
     func testGenerateDsym() {
     }
 
@@ -150,11 +160,28 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testParallelTestCaseFailed() {
+        let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ✖ testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
     func testParallelTestCasePassed() {
-        let formatted = noColoredFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
-        XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
+        let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ✔ testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+    }
+
+    func testConcurrentDestinationTestSuiteStarted() {
+        let formatted = noColoredFormatted("Test suite 'XcbeautifyLibTests (iOS).xctest' started on 'iPhone X'")
+        XCTAssertEqual(formatted, "Test Suite XcbeautifyLibTests (iOS).xctest started on 'iPhone X'")
+    }
+
+    func testConcurrentDestinationTestCaseFailed() {
+        let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "    ✖ testBuildTarget on 'iPhone X' (77.158 seconds)")
+    }
+
+    func testConcurrentDestinationTestCasePassed() {
+        let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "    ✔ testBuildTarget on 'iPhone X' (77.158 seconds)")
     }
 
     func testParallelTestCaseAppKitPassed() {
@@ -163,6 +190,18 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testParallelTestingStarted() {
+        let formatted = noColoredFormatted("Testing started on 'iPhone X'")
+        XCTAssertEqual(formatted, "Testing started on 'iPhone X'")
+    }
+
+    func testParallelTestingPassed() {
+        let formatted = noColoredFormatted("Testing passed on 'iPhone X'")
+        XCTAssertEqual(formatted, "Testing passed on 'iPhone X'")
+    }
+
+    func testParallelTestingFailed() {
+        let formatted = noColoredFormatted("Testing failed on 'iPhone X'")
+        XCTAssertEqual(formatted, "Testing failed on 'iPhone X'")
     }
 
     func testPbxcp() {
@@ -215,6 +254,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTestCasePassed() {
+        let formatted = noColoredFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
+        XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
     }
 
     func testTestCasePending() {

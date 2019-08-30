@@ -23,6 +23,9 @@ extension String {
             return formatTargetCommand(command: "Aggregate", pattern: pattern)
         case .cleanTarget:
             return formatTargetCommand(command: "Clean", pattern: pattern)
+        case .generateCoverageData,
+             .generatedCoverageReport:
+            return formatCodeCoverage(pattern: pattern)
         case .generateDsym:
             return formatGenerateDsym(pattern: pattern)
         case .libtool:
@@ -31,7 +34,10 @@ extension String {
             return formatLinking(pattern: pattern)
         case .testSuiteStarted,
              .testSuiteStart,
-             .parallelTestingStarted:
+             .parallelTestingStarted,
+             .parallelTestingPassed,
+             .parallelTestingFailed,
+             .parallelTestSuiteStarted:
             return formatTestHeading(pattern: pattern)
         case .failingTest,
              .uiFailingTest,
@@ -202,6 +208,20 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
     }
 
+    private func formatCodeCoverage(pattern: Pattern) -> String? {
+        switch pattern {
+        case .generateCoverageData:
+            return _colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
+        case .generatedCoverageReport:
+            let filePath = capturedGroups(with: pattern)[0]
+            return _colored
+                ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)"
+                : "Generated code coverage report: \(filePath)"
+        default:
+            return nil
+        }
+    }
+
     private func formatLibtool(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[0]
@@ -236,15 +256,23 @@ extension String {
         let groups = capturedGroups(with: pattern)
         let testSuite = groups[0]
 
-        if pattern == .testSuiteStart {
+        switch pattern {
+        case .testSuiteStart:
             return _colored ? testSuite.s.Bold : testSuite
-        } else if pattern == .testSuiteStarted {
-            return _colored ? "Test Suite \(testSuite) started".s.Bold.f.Cyan : "Test Suite \(testSuite) started"
-        } else if pattern == .parallelTestingStarted {
+        case .testSuiteStarted,
+             .parallelTestSuiteStarted:
+            let deviceDescription = pattern == .parallelTestSuiteStarted ? " on '\(groups[1])'" : ""
+            let heading = "Test Suite \(testSuite) started\(deviceDescription)"
+            return _colored ? heading.s.Bold.f.Cyan : heading
+        case .parallelTestingStarted:
             return _colored ? s.Bold.f.Cyan : self
+        case .parallelTestingPassed:
+            return _colored ? s.Bold.f.Green : self
+        case .parallelTestingFailed:
+            return _colored ? s.Bold.f.Red : self
+        default:
+            return nil
         }
-
-        return nil
     }
 
     private func formatTest(pattern: Pattern) -> String? {
@@ -278,7 +306,7 @@ extension String {
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
-            let time = groups[4]
+            let time = groups[3]
             return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
         case .parallelTestCaseAppKitPassed:
             let testCase = groups[1]
@@ -287,7 +315,7 @@ extension String {
         case .parallelTestCaseFailed:
             let testCase = groups[1]
             let device = groups[2]
-            let time = groups[4]
+            let time = groups[3]
             return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
         default:
             return nil

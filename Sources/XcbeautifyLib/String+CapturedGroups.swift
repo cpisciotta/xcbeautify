@@ -6,12 +6,12 @@ extension String {
 
         var regex: NSRegularExpression
         do {
-            regex = try NSRegularExpression(pattern: pattern.rawValue)
+            regex = try NSRegularExpression(pattern: pattern.rawValue, options: [.caseInsensitive])
         } catch {
             return results
         }
 
-        let matches = regex.matches(in: self, range: NSRange(location:0, length: self.count))
+        let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
 
         guard let match = matches.first else { return results }
 
