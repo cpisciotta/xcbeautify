@@ -1,3 +1,6 @@
+## 0.6.0
+- Parallel & Concurrent Destination Testing (#16) @chriszielinski
+
 ## 0.5.0
 - Display a banner and warning or error in the quiet mode (#15) @greensky01
 - Support filtering out ouput that aren't warnings and errors (#14) @thii
