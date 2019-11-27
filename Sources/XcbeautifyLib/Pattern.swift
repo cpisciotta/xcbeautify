@@ -102,7 +102,11 @@ enum Pattern: String {
     /// $2 = test suite
     /// $3 = test case
     /// $4 = reason
+    #if os(Linux)
+    case failingTest = #"\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#
+    #else
     case failingTest = #"\s*(.+:\d+):\serror:\s[\+\-]\[(.*)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -138,12 +142,20 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
+    #if os(Linux)
+    case testCasePassed = #"\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{3})\sseconds\)."#
+    #else
     case testCasePassed = #"\s*Test Case\s'-\[(.*)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
+    #if os(Linux)
+    case testCaseStarted = #"Test Case '(.*)\.(.*)' started.$"#
+    #else
     case testCaseStarted = #"Test Case '-\[(.*) (.*)\]' started.$"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -152,7 +164,11 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
+    #if os(Linux)
+    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[Time,\sseconds\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    #else
     case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[Time,\sseconds\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
