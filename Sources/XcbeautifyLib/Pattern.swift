@@ -143,7 +143,7 @@ enum Pattern: String {
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    case testCasePassed = #"\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{3})\sseconds\)."#
+    case testCasePassed = #"\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#
     #else
     case testCasePassed = #"\s*Test Case\s'-\[(.*)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#
     #endif
@@ -152,7 +152,7 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     #if os(Linux)
-    case testCaseStarted = #"Test Case '(.*)\.(.*)' started.$"#
+    case testCaseStarted = #"Test Case '(.*)\.(.*)' started at"#
     #else
     case testCaseStarted = #"Test Case '-\[(.*) (.*)\]' started.$"#
     #endif
