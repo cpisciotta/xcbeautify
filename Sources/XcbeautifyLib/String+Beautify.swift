@@ -7,7 +7,6 @@ extension String {
     func beautify(pattern: Pattern, colored: Bool) -> String? {
         _colored = colored
 
-        return "\(pattern) === \(self)"
         switch pattern {
         case .analyze:
             return formatAnalyze(pattern: pattern)

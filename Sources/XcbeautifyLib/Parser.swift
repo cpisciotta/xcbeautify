@@ -64,7 +64,6 @@ public class Parser {
             case Matcher.executedMatcher:
                 outputType = OutputType.task
                 parseSummary(line: line, colored: colored)
-                return "executedMatcher === \(line)"
                 return nil
             case Matcher.failingTestMatcher:
                 outputType = OutputType.task
@@ -159,6 +158,7 @@ public class Parser {
             case Matcher.parallelTestSuiteStartedMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .parallelTestSuiteStarted, colored: colored)
+            
             case Matcher.compileWarningMatcher:
                 outputType = OutputType.warning
                 return line.beautify(pattern: .compileWarning, colored: colored)
@@ -227,7 +227,6 @@ public class Parser {
                 return line.beautify(pattern: .parallelTestCaseFailed, colored: colored)
             default:
                 outputType = OutputType.undefined
-                return "DEFAULT === \(line)"
                 return nil
         }
     }
