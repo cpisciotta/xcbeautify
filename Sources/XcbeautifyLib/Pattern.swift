@@ -161,6 +161,7 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     case testCasePending = #"Test Case\s'-\[(.*)\s(.*)PENDING\]'\spassed"#
+
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
@@ -242,13 +243,22 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = suite
-    /// $2 = time
+    /// $2 = result
+    /// $3 = time
+    #if os(Linux)
+    case testsRunCompletion = #"\s*Test Suite '(.*)' (finished|passed|failed) at (.*)"#
+    #else
     case testsRunCompletion = #"\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = time
+    #if os(Linux)
+    case testSuiteStarted = #"\s*Test Suite '(.*)' started at(.*)"#
+    #else
     case testSuiteStarted = #"\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' started at(.*)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = test suite name
