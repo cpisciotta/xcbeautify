@@ -1,4 +1,3 @@
-#if swift(>=5)
 enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
@@ -371,4 +370,3 @@ enum Pattern: String {
     /// $1 = error reason
     case moduleIncludesError = #"\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#
 }
-#endif
