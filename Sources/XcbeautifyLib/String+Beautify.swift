@@ -10,8 +10,13 @@ extension String {
         switch pattern {
         case .analyze:
             return formatAnalyze(pattern: pattern)
-        case .compile,
-             .compileXib,
+        case .compile:
+        #if os(Linux)
+            return formatCompileLinux(pattern: pattern)
+        #else
+            fallthrough
+        #endif
+        case .compileXib,
              .compileStoryboard,
              .compileCommand:
             return formatCompile(pattern: pattern)
@@ -188,9 +193,17 @@ extension String {
     }
 
     private func formatCompile(pattern: Pattern) -> String? {
+        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
+    }
+    
+    private func formatCompileLinux(pattern: Pattern) -> String? {
+        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 0)
+    }
+    
+    private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
         let groups = capturedGroups(with: pattern)
-        let filename = groups[1]
-        let target = groups[2]
+        let filename = groups[fileIndex]
+        let target = groups[targetIndex]
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 

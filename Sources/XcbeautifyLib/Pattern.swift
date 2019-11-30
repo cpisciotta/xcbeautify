@@ -47,11 +47,18 @@ enum Pattern: String {
     /// $1 = file
     case codesignFramework = #"CodeSign\s((?:\ |[^ ])*.framework)\/Versions/A"#
 
+    #if os(Linux)
+    /// Regular expression captured groups:
+    /// $1 = filename (e.g. KWNull.m)
+    /// $2 = target
+    case compile = #"\[\d+\/\d+\]\sCompiling\s([^ ]+)\s([^ \.]+\.(?:m|mm|c|cc|cpp|cxx|swift))"#
+    #else
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
     /// $3 = target
     case compile = #"Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\(in target: (.*)\)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = compiler command
