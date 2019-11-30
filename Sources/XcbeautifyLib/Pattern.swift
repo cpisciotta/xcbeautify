@@ -139,10 +139,16 @@ enum Pattern: String {
     /// $2 = target
     case libtool = #"Libtool.*\/(.*) .* .* \(in target: (.*)\)"#
 
+    #if os(Linux)
+    /// Regular expression captured groups:
+    /// $1 = target
+    case linking = #"\[\d+\/\d+\]\sLinking\s([^ ]+)"#
+    #else
     /// Regular expression captured groups:
     /// $1 = binary filename
-    /// $4 = target
+    /// $2 = target
     case linking = #"Ld \/?.*\/(.*?) normal .* \(in target: (.*)\)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite

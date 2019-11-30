@@ -36,7 +36,11 @@ extension String {
         case .libtool:
             return formatLibtool(pattern: pattern)
         case .linking:
+        #if os(Linux)
+            return formatLinkingLinux(pattern: pattern)
+        #else
             return formatLinking(pattern: pattern)
+        #endif
         case .testSuiteStarted,
              .testSuiteStart,
              .parallelTestingStarted,
@@ -254,6 +258,12 @@ extension String {
         let filename = groups[0].lastPathComponent
         let target = groups[1]
         return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
+    }
+    
+    private func formatLinkingLinux(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let target = groups[0]
+        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
     }
 
     private func formatPhaseScriptExecution() -> String? {
