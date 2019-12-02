@@ -1,3 +1,6 @@
+- Fixed the following regexes for Linux Swift CLI: compile, failingTest, linking, testCasePassed, testCaseStarted, testCaseMeasured, testsRunCompletion, testSuiteStarted (#21) @cyberbeni
+- `swift-tools-version:4.0` meant Xcode and Swift CLI built the project in Swift 4.0 mode, bumped it to 5.0, so raw strings can be used for regexes. (This also means Swift 4 is no longer supported) (#21) @cyberbeni
+
 ## 0.6.0
 - Parallel & Concurrent Destination Testing (#16) @chriszielinski
 
