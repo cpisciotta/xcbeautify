@@ -1,4 +1,3 @@
-#if swift(>=5)
 enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
@@ -48,11 +47,18 @@ enum Pattern: String {
     /// $1 = file
     case codesignFramework = #"CodeSign\s((?:\ |[^ ])*.framework)\/Versions/A"#
 
+    #if os(Linux)
+    /// Regular expression captured groups:
+    /// $1 = filename (e.g. KWNull.m)
+    /// $2 = target
+    case compile = #"\[\d+\/\d+\]\sCompiling\s([^ ]+)\s([^ \.]+\.(?:m|mm|c|cc|cpp|cxx|swift))"#
+    #else
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
     /// $3 = target
     case compile = #"Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\(in target: (.*)\)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = compiler command
@@ -102,7 +108,11 @@ enum Pattern: String {
     /// $2 = test suite
     /// $3 = test case
     /// $4 = reason
+    #if os(Linux)
+    case failingTest = #"\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#
+    #else
     case failingTest = #"\s*(.+:\d+):\serror:\s[\+\-]\[(.*)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -129,30 +139,49 @@ enum Pattern: String {
     /// $2 = target
     case libtool = #"Libtool.*\/(.*) .* .* \(in target: (.*)\)"#
 
+    #if os(Linux)
+    /// Regular expression captured groups:
+    /// $1 = target
+    case linking = #"\[\d+\/\d+\]\sLinking\s([^ ]+)"#
+    #else
     /// Regular expression captured groups:
     /// $1 = binary filename
-    /// $4 = target
+    /// $2 = target
     case linking = #"Ld \/?.*\/(.*?) normal .* \(in target: (.*)\)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
+    #if os(Linux)
+    case testCasePassed = #"\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#
+    #else
     case testCasePassed = #"\s*Test Case\s'-\[(.*)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
+    #if os(Linux)
+    case testCaseStarted = #"Test Case '(.*)\.(.*)' started at"#
+    #else
     case testCaseStarted = #"Test Case '-\[(.*) (.*)\]' started.$"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     case testCasePending = #"Test Case\s'-\[(.*)\s(.*)PENDING\]'\spassed"#
+
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
+    #if os(Linux)
+    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[Time,\sseconds\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    #else
     case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[Time,\sseconds\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -226,13 +255,22 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = suite
-    /// $2 = time
+    /// $2 = result
+    /// $3 = time
+    #if os(Linux)
+    case testsRunCompletion = #"\s*Test Suite '(.*)' (finished|passed|failed) at (.*)"#
+    #else
     case testsRunCompletion = #"\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = time
+    #if os(Linux)
+    case testSuiteStarted = #"\s*Test Suite '(.*)' started at(.*)"#
+    #else
     case testSuiteStarted = #"\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' started at(.*)"#
+    #endif
 
     /// Regular expression captured groups:
     /// $1 = test suite name
@@ -345,4 +383,3 @@ enum Pattern: String {
     /// $1 = error reason
     case moduleIncludesError = #"\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#
 }
-#endif

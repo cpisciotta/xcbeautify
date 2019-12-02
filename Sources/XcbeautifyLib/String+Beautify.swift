@@ -10,8 +10,13 @@ extension String {
         switch pattern {
         case .analyze:
             return formatAnalyze(pattern: pattern)
-        case .compile,
-             .compileXib,
+        case .compile:
+        #if os(Linux)
+            return formatCompileLinux(pattern: pattern)
+        #else
+            fallthrough
+        #endif
+        case .compileXib,
              .compileStoryboard,
              .compileCommand:
             return formatCompile(pattern: pattern)
@@ -31,7 +36,11 @@ extension String {
         case .libtool:
             return formatLibtool(pattern: pattern)
         case .linking:
+        #if os(Linux)
+            return formatLinkingLinux(pattern: pattern)
+        #else
             return formatLinking(pattern: pattern)
+        #endif
         case .testSuiteStarted,
              .testSuiteStart,
              .parallelTestingStarted,
@@ -188,9 +197,17 @@ extension String {
     }
 
     private func formatCompile(pattern: Pattern) -> String? {
+        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
+    }
+    
+    private func formatCompileLinux(pattern: Pattern) -> String? {
+        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 0)
+    }
+    
+    private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
         let groups = capturedGroups(with: pattern)
-        let filename = groups[1]
-        let target = groups[2]
+        let filename = groups[fileIndex]
+        let target = groups[targetIndex]
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 
@@ -241,6 +258,12 @@ extension String {
         let filename = groups[0].lastPathComponent
         let target = groups[1]
         return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
+    }
+    
+    private func formatLinkingLinux(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let target = groups[0]
+        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
     }
 
     private func formatPhaseScriptExecution() -> String? {
