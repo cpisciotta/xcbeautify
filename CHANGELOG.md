@@ -1,3 +1,6 @@
+- Fixed log parsing for certain outputs for SwiftPM CLI on Linux (#21) @cyberbeni
+- Bumped Swift tools version to 5.0 (#21) @cyberbeni
+
 ## 0.6.0
 - Parallel & Concurrent Destination Testing (#16) @chriszielinski
 
