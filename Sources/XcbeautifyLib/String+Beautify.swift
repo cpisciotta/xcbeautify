@@ -173,7 +173,7 @@ extension String {
     private func formatAnalyze(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[1]
-        let target = groups[2]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 
@@ -192,7 +192,7 @@ extension String {
     private func formatProcessPch(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[0]
-        let target = groups[1]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
     }
 
@@ -207,21 +207,21 @@ extension String {
     private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[fileIndex]
-        let target = groups[targetIndex]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 
     private func formatCopy(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[0].lastPathComponent
-        let target = groups[2]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 
     private func formatGenerateDsym(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let dsym = groups[0]
-        let target = groups[1]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
     }
 
@@ -242,21 +242,21 @@ extension String {
     private func formatLibtool(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[0]
-        let target = groups[1]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
     private func formatTouch(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[1]
-        let target = groups[3]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
     private func formatLinking(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filename = groups[0].lastPathComponent
-        let target = groups[1]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
     }
     
@@ -271,7 +271,7 @@ extension String {
         let phaseName = groups[0]
         // Strip backslashed added by xcodebuild before spaces in the build phase name
         let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
-        let target = groups[1]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
     }
 
@@ -415,7 +415,7 @@ extension String {
         return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
-    private func formatProcessInfoPlist(pattern: Pattern) -> String {
+    private func formatProcessInfoPlist(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let plist = groups[1]
 
@@ -425,7 +425,7 @@ extension String {
         }
 
         // Xcode 10+ output
-        let target = groups[3]
+        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
     }
 

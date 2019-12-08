@@ -66,8 +66,13 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompile() {
-        let formatted = noColoredFormatted("CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)")
-        XCTAssertEqual(formatted, "[xcbeautify] Compiling setup.swift")
+        // Xcode 10 and before
+        let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
+        // Xcode 11+'s output
+        let input2 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target 'xcbeautify' from project 'xcbeautify')"
+        let output = "[xcbeautify] Compiling setup.swift"
+        XCTAssertEqual(noColoredFormatted(input1), output)
+        XCTAssertEqual(noColoredFormatted(input2), output)
     }
 
     func testCompileStoryboard() {
@@ -210,8 +215,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testPhaseScriptExecution() {
-        let formatted = noColoredFormatted("PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)")
-        XCTAssertEqual(formatted, "[App] Running script [CP] Check Pods Manifest.lock")
+        let input1 = "PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)"
+        let input2 = "PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target 'App' from project 'App')"
+        XCTAssertEqual(noColoredFormatted(input1), "[App] Running script [CP] Check Pods Manifest.lock")
+        XCTAssertEqual(noColoredFormatted(input2), "[App] Running script [CP] Check Pods Manifest.lock")
     }
 
     func testPhaseSuccess() {
