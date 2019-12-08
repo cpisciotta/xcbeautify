@@ -2,7 +2,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
-    case analyze = #"Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\(in target: (.*)\)"#
+    case analyze = #"Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = target
@@ -57,7 +57,7 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
     /// $3 = target
-    case compile = #"Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\(in target: (.*)\)"#
+    case compile = #"Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#
     #endif
 
     /// Regular expression captured groups:
@@ -69,32 +69,32 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename (e.g. MainMenu.xib)
     /// $3 = target
-    case compileXib = #"CompileXIB\s(.*\/(.*\.xib))\s.*\(in target: (.*)\)"#
+    case compileXib = #"CompileXIB\s(.*\/(.*\.xib))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. Main.storyboard)
     /// $3 = target
-    case compileStoryboard = #"CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\(in target: (.*)\)"#
+    case compileStoryboard = #"CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
     /// $3 = target
-    case copyHeader = #"CpHeader\s(.*\.h)\s(.*\.h) \(in target: (.*)\)"#
+    case copyHeader = #"CpHeader\s(.*\.h)\s(.*\.h) \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
-    case copyPlist = #"CopyPlistFile\s(.*\.plist)\s(.*\.plist) \(in target: (.*)\)"#
+    case copyPlist = #"CopyPlistFile\s(.*\.plist)\s(.*\.plist) \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = file
-    case copyStrings = #"CopyStringsFile\s(.*\.strings)\s(.*\.strings) \(in target: (.*)\)"#
+    case copyStrings = #"CopyStringsFile\s(.*\.strings)\s(.*\.strings) \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = resource
-    case cpresource = #"CpResource\s(.*)\s\/(.*) \(in target: (.*)\)"#
+    case cpresource = #"CpResource\s(.*)\s\/(.*) \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = number of tests
@@ -132,12 +132,12 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = dsym
     /// $2 = target
-    case generateDsym = #"GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \(in target: (.*)\)"#
+    case generateDsym = #"GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = library
     /// $2 = target
-    case libtool = #"Libtool.*\/(.*) .* .* \(in target: (.*)\)"#
+    case libtool = #"Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     #if os(Linux)
     /// Regular expression captured groups:
@@ -147,7 +147,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = binary filename
     /// $2 = target
-    case linking = #"Ld \/?.*\/(.*?) normal .* \(in target: (.*)\)"#
+    case linking = #"Ld \/?.*\/(.*?) normal .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
     #endif
 
     /// Regular expression captured groups:
@@ -226,12 +226,12 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = phase name
     /// $2 = target
-    case phaseScriptExecution = #"PhaseScriptExecution\s(.*)\s\/.*\.sh\s\(in target: (.*)\)"#
+    case phaseScriptExecution = #"PhaseScriptExecution\s(.*)\s\/.*\.sh\s\((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
-    case processPch = #"ProcessPCH\s.*\s\/.*\/(.*.pch) normal .* .* .* \(in target: (.*)\)"#
+    case processPch = #"ProcessPCH\s.*\s\/.*\/(.*.pch) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 file path
@@ -245,13 +245,13 @@ enum Pattern: String {
     /// $1 = source file
     /// $2 = target file
     /// $3 = build target
-    case pbxcp = #"PBXCp\s(.*)\s\/(.*)\s\(in target: (.*)\)"#
+    case pbxcp = #"PBXCp\s(.*)\s\/(.*)\s\((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
     /// $4 = target
-    case processInfoPlist = #"ProcessInfoPlistFile\s.*\.plist\s(.*\/+(.*\.plist))( \(in target: (.*)\))?"#
+    case processInfoPlist = #"ProcessInfoPlistFile\s.*\.plist\s(.*\/+(.*\.plist))( \((in target: (.*)|in target '(.*)' from project '.*')\))?"#
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -283,7 +283,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = filename
     /// $3 = target
-    case touch = #"Touch\s(.*\/(.+))( \(in target: (.*)\))"#
+    case touch = #"Touch\s(.*\/(.+))( \((in target: (.*)|in target '(.*)' from project '.*')\))"#
 
     /// Regular expression captured groups:
     /// $1 = file path
