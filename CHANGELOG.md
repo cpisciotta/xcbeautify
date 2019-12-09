@@ -1,3 +1,5 @@
+## 0.7.0
+- Fixed parsing of Xcode 11.1 and above's outputs (#24) @thii
 - Fixed log parsing for certain outputs for SwiftPM CLI on Linux (#21) @cyberbeni
 - Bumped Swift tools version to 5.0 (#21) @cyberbeni
 
