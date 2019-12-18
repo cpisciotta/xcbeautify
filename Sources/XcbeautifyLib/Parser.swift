@@ -22,9 +22,6 @@ public class Parser {
             case Matcher.checkDependenciesMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .checkDependencies, colored: colored)
-            case Matcher.shellCommandMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .shellCommand, colored: colored)
             case Matcher.cleanRemoveMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .cleanRemove, colored: colored)
@@ -225,6 +222,9 @@ public class Parser {
             case Matcher.parallelTestCaseFailedMatcher:
                 outputType = OutputType.error
                 return line.beautify(pattern: .parallelTestCaseFailed, colored: colored)
+            case Matcher.shellCommandMatcher:
+                outputType = OutputType.task
+                return line.beautify(pattern: .shellCommand, colored: colored)
             default:
                 outputType = OutputType.undefined
                 return nil
