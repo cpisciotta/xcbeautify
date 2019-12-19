@@ -252,6 +252,9 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testShellCommand() {
+        let formatted = noColoredFormatted("    cd /foo/bar/baz")
+        XCTAssertNil(formatted)
+        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testSymbolReferencedFrom() {
@@ -289,6 +292,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testUiFailingTest() {
+        let formatted = noColoredFormatted("    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>")
+        XCTAssertEqual(formatted, "    ✖ <unknown>:0, App crashed in <external symbol>")
     }
 
     func testWillNotBeCodeSigned() {
