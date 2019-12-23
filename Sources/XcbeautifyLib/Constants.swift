@@ -17,6 +17,7 @@ enum Symbol: String {
 public enum OutputType {
     case undefined
     case task
+    case detail
     case warning
     case error
     case result
