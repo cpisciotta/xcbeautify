@@ -1,3 +1,6 @@
+## 0.7.2
+- Fixed Xcode 11.3 output (#28) @greensky01
+
 ## 0.7.1
 - Fixed shell command matcher hiding UI test failures (#26) @cobbal
 
