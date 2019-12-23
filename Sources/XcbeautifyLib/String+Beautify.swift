@@ -17,9 +17,10 @@ extension String {
             fallthrough
         #endif
         case .compileXib,
-             .compileStoryboard,
-             .compileCommand:
+             .compileStoryboard:
             return formatCompile(pattern: pattern)
+        case .compileCommand:
+            return formatCompileCommand(pattern: pattern)
         case .buildTarget:
             return formatTargetCommand(command: "Build", pattern: pattern)
         case .analyzeTarget:
@@ -196,6 +197,9 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
     }
 
+    private func formatCompileCommand(pattern: Pattern) -> String? {
+        return nil
+    }
     private func formatCompile(pattern: Pattern) -> String? {
         return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
     }
