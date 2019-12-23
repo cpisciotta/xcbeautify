@@ -24,14 +24,6 @@ private func configuration(command: Command) {
               inheritable: true)
         ])
 
-    command.add(flags: [
-        .init(shortName: "V",
-              longName: "verbose",
-              value: 2,
-              description: "Set verbosity level. 1 for least verbose and 3 for most verbose. Default verbosity is 2.",
-              inheritable: true)
-        ])
-
     command.inheritablePreRun = { flags, args in
         if let versionFlag = flags.getBool(name: "version"), versionFlag == true {
             print(version)
@@ -49,38 +41,27 @@ private func configuration(command: Command) {
 private func execute(flags: Flags, args: [String]) {
     let parser = Parser()
     let quiet = flags.getBool(name: "quiet") == true
-    let verbose = flags.getInt(name: "verbose")
     var lastFormatted: String? = nil
 
     while let line = readLine() {
         guard let formatted = parser.parse(line: line) else { continue }
 
-        if !quiet && verbose == 3 {
+        if !quiet {
             print(formatted)
             continue
         }
-        else if !quiet && verbose == 2 {
-            switch parser.outputType {
-                case OutputType.detail:
-                    continue
-                default:
-                    print(formatted)
-                    continue
-            }
-        }
-        else if verbose == 1 {
-            switch parser.outputType {
-                case OutputType.warning, OutputType.error:
-                    if let last = lastFormatted {
-                        print(last)
-                        lastFormatted = nil
-                    }
-                    print(formatted)
-                case OutputType.result:
-                    print(formatted)
-                default:
-                    lastFormatted = formatted
-            }
+
+        switch parser.outputType {
+            case OutputType.warning, OutputType.error:
+                if let last = lastFormatted {
+                    print(last)
+                    lastFormatted = nil
+                }
+                print(formatted)
+            case OutputType.result:
+                print(formatted)
+            default:
+                lastFormatted = formatted
         }
     }
 

@@ -38,7 +38,7 @@ public class Parser {
                 outputType = OutputType.task
                 return line.beautify(pattern: .compile, colored: colored)
             case Matcher.compileCommandMatcher:
-                outputType = OutputType.detail
+                outputType = OutputType.task
                 return line.beautify(pattern: .compileCommand, colored: colored)
             case Matcher.compileXibMatcher:
                 outputType = OutputType.task
