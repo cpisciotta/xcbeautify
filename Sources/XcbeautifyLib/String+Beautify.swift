@@ -198,11 +198,7 @@ extension String {
     }
 
     private func formatCompileCommand(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let leading = "Compile Command For"
-        let command = groups[0]
-        guard let filePath = groups.last else { return nil }
-        return "\(leading.s.Bold) \(filePath):\n\(command)"
+        return nil
     }
     private func formatCompile(pattern: Pattern) -> String? {
         return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
