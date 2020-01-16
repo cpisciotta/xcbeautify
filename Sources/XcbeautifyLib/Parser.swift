@@ -63,10 +63,10 @@ public class Parser {
                 parseSummary(line: line, colored: colored)
                 return nil
             case Matcher.failingTestMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.error
                 return line.beautify(pattern: .failingTest, colored: colored)
             case Matcher.uiFailingTestMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.error
                 return line.beautify(pattern: .uiFailingTest, colored: colored)
             case Matcher.restartingTestsMatcher:
                 outputType = OutputType.task
