@@ -1,3 +1,6 @@
+## 0.7.3
+- Failing tests are no longer being masked by the "--quiet" flag. (#29) @cobbal
+
 ## 0.7.2
 - Fixed Xcode 11.3 output (#28) @greensky01
 
