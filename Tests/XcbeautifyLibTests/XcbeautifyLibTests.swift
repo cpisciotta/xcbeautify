@@ -258,6 +258,15 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testSymbolReferencedFrom() {
+        let formatted = noColoredFormatted( "  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        XCTAssertEqual(parser.outputType, .warning)
+    }
+
+    func testUndefinedSymbolLocation() {
+        let formatted = noColoredFormatted( "      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        XCTAssertEqual(formatted, "[!]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
