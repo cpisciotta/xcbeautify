@@ -1,1 +1,1 @@
-let version = "0.7.3"
+let version = "0.7.4"
