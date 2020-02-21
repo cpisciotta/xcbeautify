@@ -68,6 +68,7 @@ struct Matcher {
     static let tiffutilMatcher = Regex(pattern: .tiffutil)
     static let touchMatcher = Regex(pattern: .touch)
     static let uiFailingTestMatcher = Regex(pattern: .uiFailingTest)
+    static let undefinedSymbolLocationMatcher = Regex(pattern: .undefinedSymbolLocation)
     static let willNotBeCodeSignedMatcher = Regex(pattern: .willNotBeCodeSigned)
     static let writeAuxiliaryFilesMatcher = Regex(pattern: .writeAuxiliaryFiles)
     static let writeFileMatcher = Regex(pattern: .writeFile)

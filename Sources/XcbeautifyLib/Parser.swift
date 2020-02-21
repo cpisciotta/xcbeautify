@@ -225,6 +225,9 @@ public class Parser {
             case Matcher.shellCommandMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .shellCommand, colored: colored)
+            case Matcher.undefinedSymbolLocationMatcher:
+                outputType = .warning
+                return line.beautify(pattern: .undefinedSymbolLocation, colored: colored)
             default:
                 outputType = OutputType.undefined
                 return nil

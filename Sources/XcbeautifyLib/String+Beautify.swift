@@ -135,7 +135,9 @@ extension String {
         case .linkerUndefinedSymbols:
             return formatLinkerUndefinedSymbolsError(pattern: pattern)
         case .symbolReferencedFrom:
-            return formatError(pattern: pattern)
+            return formatCompleteError()
+        case .undefinedSymbolLocation:
+            return formatCompleteWarning()
         }
     }
 
@@ -355,6 +357,10 @@ extension String {
         return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
     }
 
+    private func formatCompleteError() -> String? {
+        return _colored ? Symbol.error.rawValue + " " + self.f.Red : Symbol.asciiError.rawValue + " " + self
+    }
+
     private func formatCompileError(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
         let filePath = groups[0]
@@ -388,6 +394,10 @@ extension String {
         let groups = capturedGroups(with: pattern)
         guard let warningMessage = groups.first else { return nil }
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
+    }
+
+    private func formatCompleteWarning() -> String? {
+        return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " + self
     }
 
     private func formatCompileWarning(pattern: Pattern) -> String? {

@@ -382,4 +382,9 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = error reason
     case moduleIncludesError = #"\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#
+
+    /// Regular expression captured groups:
+    /// $1 = target
+    /// $2 = filename
+    case undefinedSymbolLocation = #".+ in (.+)\((.+)\.o\)$"#
 }
