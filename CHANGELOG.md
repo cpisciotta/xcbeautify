@@ -1,3 +1,6 @@
+## 0.7.4
+- Added support for undefined symbold location warnings (#31) @kingslay
+
 ## 0.7.3
 - Failing tests are no longer being masked by the "--quiet" flag. (#29) @cobbal
 
