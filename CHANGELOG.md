@@ -1,3 +1,6 @@
+## 0.7.5
+- Fixed ProcessPCH++ not parsed and incorrect captured content for processPchCommand (#32) @greensky01
+
 ## 0.7.4
 - Added support for undefined symbold location warnings (#31) @kingslay
 
