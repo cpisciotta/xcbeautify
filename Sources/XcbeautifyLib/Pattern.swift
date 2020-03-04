@@ -231,7 +231,7 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
-    case processPch = #"ProcessPCH\s.*\s\/.*\/(.*.pch) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
+    case processPch = #"ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*.pch) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 file path
