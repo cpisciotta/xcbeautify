@@ -238,6 +238,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testProcessPchCommand() {
+        let formatted = noColoredFormatted("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -target x86_64-apple-macos10.13 -c /path/to/my.pch -o /path/to/output/AcVDiff_Prefix.pch.gch")
+        XCTAssertEqual(formatted, "Preprocessing /path/to/my.pch")
     }
 
     func testProcessPch() {

@@ -83,9 +83,10 @@ extension String {
             return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
         case .phaseScriptExecution:
             return formatPhaseScriptExecution()
-        case .preprocess,
-             .processPchCommand:
+        case .preprocess:
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
+        case .processPchCommand:
+            return formatProcessPchCommand(pattern: pattern)
         case .writeFile:
             return nil
         case .writeAuxiliaryFiles:
@@ -197,6 +198,12 @@ extension String {
         let filename = groups[0]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
+    }
+
+    private func formatProcessPchCommand(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        guard let filePath = groups.last else { return nil }
+        return _colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
 
     private func formatCompileCommand(pattern: Pattern) -> String? {
