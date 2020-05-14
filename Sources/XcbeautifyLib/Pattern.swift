@@ -298,7 +298,7 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
-    case compileWarning = #"(\/.+\/(.*):.*:.*):\swarning:\s(.*)$"#
+    case compileWarning = #"((.*):.*:.*):\swarning:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = ld prefix
@@ -332,10 +332,10 @@ enum Pattern: String {
     case noCertificate = #"(No certificate matching.*)$"#
 
     /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = filename
+    /// $1 = file path (could be a relative path if you build with Bazel)
+    /// $2 = is fatal error
     /// $3 = reason
-    case compileError = #"(\/.+\/(.*):.*:.*):\s(?:fatal\s)?error:\s(.*)$"#
+    case compileError = #"((.*):.*:.*):\s(?:fatal\s)?error:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = cursor (with whitespaces and tildes)
