@@ -1,5 +1,5 @@
 ## 0.7.6
-- Added support for parsing warnings and errors from Bazel build output (#34) @thii
+- Added support for parsing warnings and errors from Bazel build output (#35) @thii
 
 ## 0.7.5
 - Fixed ProcessPCH++ not parsed and incorrect captured content for processPchCommand (#32) @greensky01
