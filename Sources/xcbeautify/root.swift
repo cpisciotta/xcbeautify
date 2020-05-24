@@ -15,6 +15,13 @@ private func configuration(command: Command) {
               description: "Only print tasks that have warnings or errors.",
               inheritable: true)
         ])
+    
+    command.add(flags: [
+        .init(longName: "quieter",
+              value: false,
+              description: "Only print tasks that have errors.",
+              inheritable: true)
+        ])
 
     command.add(flags: [
         .init(shortName: "v",
@@ -41,18 +48,22 @@ private func configuration(command: Command) {
 private func execute(flags: Flags, args: [String]) {
     let parser = Parser()
     let quiet = flags.getBool(name: "quiet") == true
+    let quieter = flags.getBool(name: "quieter") == true
     var lastFormatted: String? = nil
 
     while let line = readLine() {
         guard let formatted = parser.parse(line: line) else { continue }
 
-        if !quiet {
+        if !quiet && !quieter {
             print(formatted)
             continue
         }
 
         switch parser.outputType {
-            case OutputType.warning, OutputType.error:
+            case OutputType.warning:
+                if quieter {continue}
+            fallthrough
+            case OutputType.error:
                 if let last = lastFormatted {
                     print(last)
                     lastFormatted = nil
