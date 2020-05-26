@@ -1,3 +1,6 @@
+## 0.8.0
+- Added `--quieter` option to suppress warnings (#37) @jakub-gonet
+
 ## 0.7.6
 - Added support for parsing warnings and errors from Bazel build output (#35) @thii
 
