@@ -91,6 +91,16 @@ For parallel and concurrent destination testing, it helps to use unbuffered I/O 
 NSUnbufferedIO=YES xcodebuild [flags] 2>&1 | xcbeautify
 ```
 
+Parse Bazel's building and testing output:
+
+```sh
+set -o pipefail && bazel build //path/to/package:target 2>&1 | xcbeautify
+```
+
+```sh
+set -o pipefail && bazel test //path/to/package:target 2>&1 | xcbeautify
+```
+
 ## Future work
 
 - [ ] Write more tests
