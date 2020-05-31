@@ -5,9 +5,6 @@ swift_binary(
     srcs = glob([
         "*.swift",
     ]),
-    copts = [
-        "-whole-module-optimization",
-    ],
     deps = [
         "//Sources/XcbeautifyLib",
     ],

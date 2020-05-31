@@ -5,9 +5,6 @@ swift_library(
     srcs = glob([
         "Sources/Colorizer/*.swift",
     ]),
-    copts = [
-        "-whole-module-optimization",
-    ],
     visibility = ["//visibility:public"],
 )
 
@@ -16,9 +13,6 @@ swift_library(
     srcs = glob([
         "Sources/Guaka/**/*.swift",
     ]),
-    copts = [
-        "-whole-module-optimization",
-    ],
     visibility = ["//visibility:public"],
     deps = [
         "@StringScanner",
@@ -30,8 +24,5 @@ swift_library(
     srcs = glob([
         "Sources/StringScanner/*.swift",
     ]),
-    copts = [
-        "-whole-module-optimization",
-    ],
     visibility = ["//visibility:public"],
 )

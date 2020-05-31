@@ -5,9 +5,6 @@ swift_library(
     srcs = glob([
         "*.swift",
     ]),
-    copts = [
-        "-whole-module-optimization",
-    ],
     module_name = "XcbeautifyLib",
     visibility = ["//visibility:public"],
     deps = [

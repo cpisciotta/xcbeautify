@@ -107,7 +107,19 @@ set -o pipefail && bazel test //path/to/package:target 2>&1 | xcbeautify
 
 ## Development
 
-To release a new version, say `x.y.z`:
+Generate Xcode project:
+
+```sh
+make xcode
+```
+
+Build with Bazel:
+
+```sh
+bazel build //Sources/xcbeautify
+```
+
+Release a new version, say `x.y.z`:
 
 ```bash
 make release version=x.y.z
