@@ -9,8 +9,9 @@ Similar to `xcpretty`, but faster.
 - [x] 2x faster than `xcpretty`.
 - [x] Human-friendly and colored output.
 - [x] Supports the new build system's output.
-- [x] Supports Xcode 10's parallel testing output.
+- [x] Supports Xcode's parallel testing output.
 - [x] Supports formatting Swift Package Manager output.
+- [x] Supports formatting Bazel output.
 - [x] Supports macOS & Linux.
 - [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
   bring anywhere. This also means less Ruby-dependant in your development
