@@ -24,7 +24,7 @@ private func configuration(command: Command) {
     ])
 
     command.add(flags: [
-        .init(longName: "isCI",
+        .init(longName: "is-ci",
               value: false,
               description: "Print test result too under quiet/quiter flag"),
     ])
@@ -55,7 +55,7 @@ private func execute(flags: Flags, args: [String]) {
     let parser = Parser()
     let quiet = flags.getBool(name: "quiet") == true
     let quieter = flags.getBool(name: "quieter") == true
-    let isCI = flags.getBool(name: "is-CI") == true
+    let isCI = flags.getBool(name: "is-ci") == true
     let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCI, { print($0) })
 
     while let line = readLine() {
