@@ -69,7 +69,7 @@ public class Parser {
                 outputType = OutputType.error
                 return line.beautify(pattern: .uiFailingTest, colored: colored)
             case Matcher.restartingTestsMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .restartingTests, colored: colored)
             case Matcher.generateCoverageDataMatcher:
                 outputType = OutputType.task
@@ -87,16 +87,16 @@ public class Parser {
                 outputType = OutputType.task
                 return line.beautify(pattern: .linking, colored: colored)
             case Matcher.testCasePassedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testCasePassed, colored: colored)
             case Matcher.testCaseStartedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testCaseStarted, colored: colored)
             case Matcher.testCasePendingMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testCasePending, colored: colored)
             case Matcher.testCaseMeasuredMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testCaseMeasured, colored: colored)
             case Matcher.phaseSuccessMatcher:
                 outputType = OutputType.result
@@ -120,13 +120,13 @@ public class Parser {
                 outputType = OutputType.task
                 return line.beautify(pattern: .processInfoPlist, colored: colored)
             case Matcher.testsRunCompletionMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testsRunCompletion, colored: colored)
             case Matcher.testSuiteStartedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testSuiteStarted, colored: colored)
             case Matcher.testSuiteStartMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .testSuiteStart, colored: colored)
             case Matcher.tiffutilMatcher:
                 outputType = OutputType.task
@@ -141,19 +141,19 @@ public class Parser {
                 outputType = OutputType.task
                 return line.beautify(pattern: .writeAuxiliaryFiles, colored: colored)
             case Matcher.parallelTestCasePassedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .parallelTestCasePassed, colored: colored)
             case Matcher.parallelTestCaseAppKitPassedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .parallelTestCaseAppKitPassed, colored: colored)
             case Matcher.parallelTestingStartedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .parallelTestingStarted, colored: colored)
             case Matcher.parallelTestingPassedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .parallelTestingPassed, colored: colored)
             case Matcher.parallelTestSuiteStartedMatcher:
-                outputType = OutputType.task
+                outputType = OutputType.test
                 return line.beautify(pattern: .parallelTestSuiteStarted, colored: colored)
             
             case Matcher.compileWarningMatcher:
