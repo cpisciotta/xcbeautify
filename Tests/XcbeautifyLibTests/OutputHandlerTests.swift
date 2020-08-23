@@ -125,10 +125,3 @@ class OutputHandlerTests: XCTestCase {
     }
     
 }
-
-/*
- sut.write(.result, "Clean Succeeded")
- sut.write(.error, "❌ error: unable to resolve product type 'com.apple.product-type.tool' for platform 'iphonesimulator' (in target 'xcbeautify' from project 'xcbeautify')")
- sut.write(.task, "[XCUITestKit] Processing XCUITestKit-Info.plist")
- sut.write(.warning, "Multiple targets match implicit dependency for linker flags '-framework XCUITestLiveReset'. Consider adding an explicit dependency on the intended target to resolve this ambiguity. (in target 'XCUITestKit_Example' from project 'XCUITestKit')")
- */

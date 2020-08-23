@@ -1,3 +1,6 @@
+## 0.8.1
+- Added `--is-ci` option to output test result under `--quiet` or `--quieter` flag (#39) @kinwahlai
+
 ## 0.8.0
 - Added `--quieter` option to suppress warnings (#37) @jakub-gonet
 
