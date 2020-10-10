@@ -1,22 +1,14 @@
-import Guaka
+import ArgumentParser
 
-struct XcbeautifyHelp: HelpGenerator {
-    let commandHelp: CommandHelp
+extension Xcbeautify {
+	static var additionalHelp: String { """
+	Usage:
+	  $ xcodebuild [options] | xcbeautify
 
-    init(commandHelp: CommandHelp) {
-        self.commandHelp = commandHelp
-    }
-
-    var usageSection: String? {
-        return """
-        Usage:
-          $ xcodebuild [options] | xcbeautify
-
-
-        """
-    }
-
-    var informationSection: String? {
-        return nil
-    }
+	"""
+	}
+	static var configuration: CommandConfiguration = {
+		return CommandConfiguration(discussion: additionalHelp,
+													 version: version)
+	}()
 }

@@ -8,16 +8,16 @@ let package = Package(
         .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"])
     ],
     dependencies: [
-        .package(url: "https://github.com/nsomar/Guaka.git", from: "0.0.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.1"),
         .package(url: "https://github.com/getGuaka/Colorizer.git", from: "0.1.0"),
     ],
     targets: [
         .target(
             name: "XcbeautifyLib",
-            dependencies: ["Guaka", "Colorizer"]),
+            dependencies: ["Colorizer"]),
         .target(
             name: "xcbeautify",
-            dependencies: ["XcbeautifyLib"]),
+            dependencies: ["XcbeautifyLib", "ArgumentParser"]),
         .testTarget(
             name: "XcbeautifyLibTests",
             dependencies: ["XcbeautifyLib"]),
