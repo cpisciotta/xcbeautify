@@ -11,7 +11,7 @@ struct Xcbeautify: ParsableCommand {
 	var quieter = false
 	
 	@Flag(name: .long, help: "Print test result too under quiet/quiter flag")
-	var isCi: Bool = ProcessInfo.processInfo.environment["CI"] == "true"
+	var isCi = false
 	
 	func run() throws {
 		let parser = Parser()
