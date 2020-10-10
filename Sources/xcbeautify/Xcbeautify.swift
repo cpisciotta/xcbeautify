@@ -10,7 +10,7 @@ struct Xcbeautify: ParsableCommand {
 	@Flag(name: [.customLong("qq", withSingleDash: true), .long], help: "Only print tasks that have errors.")
 	var quieter = false
 	
-	@Flag(name: .long, help: "Print test result too under quiet/quiter flag")
+	@Flag(name: .long, help: "Print test result too under quiet/quiter flag.")
 	var isCi = false
 	
 	func run() throws {
