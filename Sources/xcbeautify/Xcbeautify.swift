@@ -27,7 +27,3 @@ struct Xcbeautify: ParsableCommand {
 		}
 	}
 }
-
-//    command.example = """
-//      $ xcodebuild test -project MyApp.xcodeproj -scheme MyApp -destination 'platform=iOS Simulator,OS=12.0,name=iPhone X' | xcbeautify
-//    """
