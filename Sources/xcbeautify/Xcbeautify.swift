@@ -7,7 +7,7 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: [.short, .long], help: "Only print tasks that have warnings or errors.")
     var quiet = false
     
-    @Flag(name: [.customLong("qq", withSingleDash: true), .long], help: "Only print tasks that have errors.")
+    @Flag(name: [.long, .customLong("qq", withSingleDash: true)], help: "Only print tasks that have errors.")
     var quieter = false
     
     @Flag(name: .long, help: "Print test result too under quiet/quieter flag.")
