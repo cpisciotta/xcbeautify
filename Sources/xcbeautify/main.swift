@@ -1,3 +1,1 @@
-setupCommands()
-
-rootCommand.execute()
+Xcbeautify.main()
