@@ -3,7 +3,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 git_repository(
     name = "build_bazel_rules_swift",
-    commit = "6408d85da799ec2af053c4e2883dce3ce6d30f08",
+    commit = "410d8ed546e3e43dd06f01cb3916ede6632a6d71",
     remote = "https://github.com/bazelbuild/rules_swift.git",
 )
 

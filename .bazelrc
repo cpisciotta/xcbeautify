@@ -1,1 +1,3 @@
-build --swiftcopt=-whole-module-optimization
+build:release --compilation_mode=opt
+build:release --swiftcopt=-whole-module-optimization
+build:release --features=swift.opt_uses_osize
