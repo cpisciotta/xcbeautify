@@ -9,20 +9,9 @@ swift_library(
 )
 
 swift_library(
-    name = "Guaka",
+    name = "ArgumentParser",
     srcs = glob([
-        "Sources/Guaka/**/*.swift",
-    ]),
-    visibility = ["//visibility:public"],
-    deps = [
-        "@StringScanner",
-    ],
-)
-
-swift_library(
-    name = "StringScanner",
-    srcs = glob([
-        "Sources/StringScanner/*.swift",
+        "Sources/ArgumentParser/**/*.swift",
     ]),
     visibility = ["//visibility:public"],
 )

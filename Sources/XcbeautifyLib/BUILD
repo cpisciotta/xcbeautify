@@ -9,7 +9,6 @@ swift_library(
     visibility = ["//visibility:public"],
     deps = [
         "@Colorizer",
-        "@Guaka",
-        "@StringScanner",
+        "@ArgumentParser",
     ],
 )

@@ -30,17 +30,9 @@ http_archive(
 )
 
 http_archive(
-    name = "Guaka",
+    name = "ArgumentParser",
     build_file = "//external:External.BUILD",
-    sha256 = "f8d87ad9bf3e9ad5bdf8e62ea2fe63b6d248991b8044c77e266e53a6538150c5",
-    strip_prefix = "Guaka-0.4.0",
-    url = "https://github.com/nsomar/Guaka/archive/0.4.0.zip",
-)
-
-http_archive(
-    name = "StringScanner",
-    build_file = "//external:External.BUILD",
-    sha256 = "803df39865042391371e7caba5ebf0adf44d2b237cabc75dd6040e9bc4b7477c",
-    strip_prefix = "StringScanner-0.4.0",
-    url = "https://github.com/getGuaka/StringScanner/archive/0.4.0.zip",
+    sha256 = "3ed7c5f36ebbd6436221348b4c56f51a23434fdb0955236c291e29bd6f19499b",
+    strip_prefix = "swift-argument-parser-0.3.1",
+    url = "https://github.com/apple/swift-argument-parser/archive/0.3.1.zip",
 )
