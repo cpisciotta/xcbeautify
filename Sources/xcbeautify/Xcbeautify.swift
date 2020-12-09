@@ -12,13 +12,16 @@ struct Xcbeautify: ParsableCommand {
     
     @Flag(name: .long, help: "Print test result too under quiet/quieter flag.")
     var isCi = false
-    
+
+    @Flag(name: .long, help: "Disable the colored output")
+    var disableColoredOutput = false
+
     func run() throws {
         let parser = Parser()
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
         
         while let line = readLine() {
-            guard let formatted = parser.parse(line: line) else { continue }
+            guard let formatted = parser.parse(line: line, colored: !disableColoredOutput) else { continue }
             output.write(parser.outputType, formatted)
         }
         
