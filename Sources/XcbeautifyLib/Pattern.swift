@@ -387,4 +387,14 @@ enum Pattern: String {
     /// $1 = target
     /// $2 = filename
     case undefinedSymbolLocation = #".+ in (.+)\((.+)\.o\)$"#
+
+    /// Regular expression captures groups:
+    case packageGraphResolvingStart = #"\s*(Resolve Package Graph)\s*$"#
+    case packageGraphResolvingEnded = #"(Resolved source packages):$"#
+
+    /// Regular expression captures groups:
+    /// $1 = package name
+    /// $2 = package url
+    /// $3 = package version
+    case packageGraphResolvedItem = #"\s*([^\s:]+):\s([^ ]+)\s@\s(\d+\.\d+\.\d+)"#;
 }
