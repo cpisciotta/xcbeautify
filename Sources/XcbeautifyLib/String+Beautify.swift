@@ -142,7 +142,7 @@ extension String {
         case .packageGraphResolvingStart:
             return formatPackageStart()
         case .packageGraphResolvingEnded:
-            return formatPackageEnd()
+            return formatPackageEnd(pattern: pattern)
         case .packageGraphResolvedItem:
             return formatPackgeItem(pattern: pattern)
         }
@@ -491,8 +491,10 @@ extension String {
         return _colored ? self.s.Bold.f.Cyan : self
     }
 
-    private func formatPackageEnd() -> String? {
-        return _colored ? self.s.Bold.f.Green : self
+    private func formatPackageEnd(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let ended = groups[0]
+        return _colored ? ended.s.Bold.f.Green : ended
     }
 
     private func formatPackgeItem(pattern: Pattern) -> String?  {
