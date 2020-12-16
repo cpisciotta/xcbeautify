@@ -228,6 +228,15 @@ public class Parser {
             case Matcher.undefinedSymbolLocationMatcher:
                 outputType = .warning
                 return line.beautify(pattern: .undefinedSymbolLocation, colored: colored)
+            case Matcher.packageGraphResolvingStart:
+                outputType = .task
+                return line.beautify(pattern: .packageGraphResolvingStart, colored: colored)
+            case Matcher.packageGraphResolvingEnded:
+                outputType = .task
+                return line.beautify(pattern: .packageGraphResolvingEnded, colored: colored)
+            case Matcher.packageGraphResolvedItem:
+                outputType = .task
+                return line.beautify(pattern: .packageGraphResolvedItem, colored: colored)
             default:
                 outputType = OutputType.undefined
                 return nil

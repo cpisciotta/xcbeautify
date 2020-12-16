@@ -320,4 +320,19 @@ final class XcbeautifyLibTests: XCTestCase {
 
     func testWriteFile() {
     }
+
+    func testPackageGraphResolved() {
+
+        // Start
+        let start = noColoredFormatted("Resolve Package Graph")
+        XCTAssertEqual(start, "Resolve Package Graph")
+
+        // Ended
+        let ended = noColoredFormatted("Resolved source packages:")
+        XCTAssertEqual(ended, "Resolved source packages")
+
+        // Package
+        let package = noColoredFormatted("  StrasbourgParkAPI: https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
+        XCTAssertEqual(package, "StrasbourgParkAPI - https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
+    }
 }

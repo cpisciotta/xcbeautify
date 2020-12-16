@@ -139,6 +139,12 @@ extension String {
             return formatCompleteError()
         case .undefinedSymbolLocation:
             return formatCompleteWarning()
+        case .packageGraphResolvingStart:
+            return formatPackageStart()
+        case .packageGraphResolvingEnded:
+            return formatPackageEnd(pattern: pattern)
+        case .packageGraphResolvedItem:
+            return formatPackgeItem(pattern: pattern)
         }
     }
 
@@ -479,5 +485,23 @@ extension String {
         if time < 0.025 { return self }
         if time < 0.100 { return _colored ? f.Yellow : self }
         return _colored ? f.Red : self
+    }
+
+    private func formatPackageStart() -> String? {
+        return _colored ? self.s.Bold.f.Cyan : self
+    }
+
+    private func formatPackageEnd(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let ended = groups[0]
+        return _colored ? ended.s.Bold.f.Green : ended
+    }
+
+    private func formatPackgeItem(pattern: Pattern) -> String?  {
+        let groups = capturedGroups(with: pattern)
+        let name = groups[0]
+        let url = groups[1]
+        let version = groups[2]
+        return _colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
     }
 }
