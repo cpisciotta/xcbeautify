@@ -14,7 +14,7 @@ struct Xcbeautify: ParsableCommand {
     var isCi = false
 
     @Flag(name: .long, help: "Disable the colored output")
-    var disableColoredOutput = false
+    var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
     func run() throws {
         let parser = Parser()
