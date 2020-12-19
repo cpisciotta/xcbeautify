@@ -40,7 +40,6 @@ brew cask install thii/swift-runtime/swift-runtime
 ### Homebrew
 
 ```bash
-brew tap thii/xcbeautify https://github.com/thii/xcbeautify.git
 brew install xcbeautify
 ```
 
