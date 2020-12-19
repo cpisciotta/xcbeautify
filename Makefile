@@ -13,15 +13,16 @@ SED=/usr/bin/sed
 SWIFT=$(shell which swift)
 ZIP=$(shell whereis zip) -r
 
-TARGET_PLATFORM=x86_64-apple-macosx
+SWIFT_BUILD_FLAGS = --arch x86_64 --arch arm64 --configuration release \
+	--disable-sandbox
+
+TARGET_PLATFORM=universal-apple-macosx
 PACKAGE_ZIP="$(PRODUCT_NAME)-$(VERSION)-$(TARGET_PLATFORM).zip"
 
 BINARY_DIRECTORY=$(PREFIX)/bin
-BUILD_DIRECTORY=$(shell pwd)/.build/$(TARGET_PLATFORM)/release
+BUILD_DIRECTORY=$(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS))
 OUTPUT_EXECUTABLE=$(BUILD_DIRECTORY)/$(PRODUCT_NAME)
 INSTALL_EXECUTABLE_PATH=$(BINARY_DIRECTORY)/$(PRODUCT_NAME)
-
-SWIFT_BUILD_FLAGS = --configuration release --disable-sandbox
 
 USE_SWIFT_VERSION_4:=$(shell swift -version | grep '.*Swift version 4.*' > /dev/null && echo yes)
 ifeq ($(USE_SWIFT_VERSION_4), yes)
