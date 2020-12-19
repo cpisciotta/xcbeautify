@@ -1,3 +1,9 @@
+## 0.9.0
+- Added support for the `NO_COLOR` environment variable (#50) @pieterclaerhout
+- Added resolve graph parsing and display (#47) @yageek
+- Added flag to disable colored output (#46) @yageek
+- Swift argument parser (#43) @Cyberbeni
+
 ## 0.8.1
 - Added `--is-ci` option to output test result under `--quiet` or `--quieter` flag (#39) @kinwahlai
 
