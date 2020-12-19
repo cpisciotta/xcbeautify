@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name           = 'xcbeautify'
-  s.version        = '0.8.1'
+  s.version        = '0.9.0'
   s.summary        = 'A little beautifier tool for xcodebuild'
   s.homepage       = 'https://github.com/thii/xcbeautify'
   s.source         = { :http => "#{s.homepage}/releases/download/#{s.version}/xcbeautify-#{s.version}-universal-apple-macosx.zip" }
