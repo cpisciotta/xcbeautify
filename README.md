@@ -90,6 +90,10 @@ For parallel and concurrent destination testing, it helps to use unbuffered I/O 
 NSUnbufferedIO=YES xcodebuild [flags] 2>&1 | xcbeautify
 ```
 
+```bash
+swift test [flags] 2>&1 | xcbeautify
+```
+
 Parse Bazel's building and testing output:
 
 ```sh
