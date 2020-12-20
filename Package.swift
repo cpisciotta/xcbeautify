@@ -17,7 +17,10 @@ let package = Package(
             dependencies: ["Colorizer"]),
         .target(
             name: "xcbeautify",
-            dependencies: ["XcbeautifyLib", "ArgumentParser"]),
+            dependencies: [
+                "XcbeautifyLib",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]),
         .testTarget(
             name: "XcbeautifyLibTests",
             dependencies: ["XcbeautifyLib"]),
