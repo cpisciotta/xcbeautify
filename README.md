@@ -1,6 +1,6 @@
 # xcbeautify
 
-[![CI Status](https://github.com/thii/xcbeautify/workflows/CI/badge.svg?branch=master)](https://github.com/thii/xcbeautify/actions)
+[![Build Status](https://github.com/thii/xcbeautify/workflows/build/badge.svg?branch=master)](https://github.com/thii/xcbeautify/actions)
 [![Latest Release](https://img.shields.io/github/release/thii/xcbeautify.svg)](https://github.com/thii/xcbeautify/releases/latest)
 [![License](https://img.shields.io/github/license/thii/xcbeautify.svg)](LICENSE.md)
 
