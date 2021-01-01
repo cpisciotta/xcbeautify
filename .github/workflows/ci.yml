@@ -20,4 +20,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: swift build
+      - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
       - run: make package-linux-x86_64

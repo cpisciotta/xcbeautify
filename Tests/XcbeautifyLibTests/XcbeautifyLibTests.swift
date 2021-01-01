@@ -66,6 +66,7 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompile() {
+#if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
         // Xcode 11+'s output
@@ -73,6 +74,7 @@ final class XcbeautifyLibTests: XCTestCase {
         let output = "[xcbeautify] Compiling setup.swift"
         XCTAssertEqual(noColoredFormatted(input1), output)
         XCTAssertEqual(noColoredFormatted(input2), output)
+#endif
     }
 
     func testCompileStoryboard() {
@@ -151,11 +153,13 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testLinking() {
+#if os(macOS)
         let formatted = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
         XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
 
         let formatted2 = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
+#endif
     }
 
     func testModuleIncludesError() {
@@ -280,8 +284,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTestCasePassed() {
+#if os(macOS)
         let formatted = noColoredFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
         XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
+#endif
     }
 
     func testTestCasePending() {
