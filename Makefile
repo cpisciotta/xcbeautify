@@ -73,7 +73,7 @@ package-linux-x86_64:
 	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
 	docker run --rm --volume `pwd`:/workdir --workdir /workdir \
 		swift:5.3.2-bionic swift build $(SWIFT_BUILD_FLAGS)
-	tar --cd "$(BUILD_DIRECTORY)" --create --xz --file \
+	tar --directory "$(BUILD_DIRECTORY)" --create --xz --file \
 		"$(BUILD_DIRECTORY)/$(PRODUCT_NAME).tar.xz" "$(PRODUCT_NAME)"
 
 .PHONY: install
