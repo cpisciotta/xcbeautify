@@ -7,6 +7,9 @@ jobs:
   create_release:
     name: Create Release
     runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      tag_name: ${{ steps.get_version.outputs.version }}
     steps:
       - name: Create Release
         id: create_release
@@ -16,8 +19,10 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
+      - id: get_version
+        uses: battila7/get-version-action@v2
   macos:
-    name: Release
+    name: Release macOS
     runs-on: macos-latest
     needs: create_release
     steps:
@@ -30,32 +35,33 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
           asset_path: .build/apple/Products/Release/xcbeautify.zip
-          asset_name: xcbeautify-${{ github.ref }}-universal-apple-macosx.zip
+          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-universal-apple-macosx.zip
           asset_content_type: application/zip
       - name: Darwin x86_64
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
           asset_path: .build/x86_64-apple-macosx/release/xcbeautify.zip
-          asset_name: xcbeautify-${{ github.ref }}-x86_64-apple-macosx.zip
+          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-x86_64-apple-macosx.zip
           asset_content_type: application/zip
       - name: Darwin arm64
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
           asset_path: .build/arm64-apple-macosx/release/xcbeautify.zip
-          asset_name: xcbeautify-${{ github.ref }}-arm64-apple-macosx.zip
+          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-arm64-apple-macosx.zip
           asset_content_type: application/zip
       - name: Publish To CocoaPods
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
+          gem install bundler
           bundle install
           bundle exec pod trunk push --allow-warnings
   ubuntu:
@@ -72,7 +78,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
-          asset_path: .build/x86_64-unknown-linux-gnu/release/xcbeautify.tar.xz
-          asset_name: xcbeautify-${{ github.ref }}-x86_64-unknown-linux-gnu.tar.xz
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_path: xcbeautify.tar.xz
+          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-x86_64-unknown-linux-gnu.tar.xz
           asset_content_type: application/x-xz
