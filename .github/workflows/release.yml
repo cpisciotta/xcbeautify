@@ -61,7 +61,7 @@ jobs:
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
-          gem install bundler
+          gem install bundler:2.2.4
           bundle install
           bundle exec pod trunk push --allow-warnings
   ubuntu:
