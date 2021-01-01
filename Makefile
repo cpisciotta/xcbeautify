@@ -82,7 +82,7 @@ install: build
 	$(CP) "$(OUTPUT_EXECUTABLE)" "$(BINARY_DIRECTORY)"
 
 .PHONY: package
-package: package-darwin-universal package-darwin-x86_64 package-darwin-arm64 package-linux-x86_64
+package: package-darwin-universal package-darwin-x86_64 package-darwin-arm64
 
 .PHONY: bump-version
 bump-version:
