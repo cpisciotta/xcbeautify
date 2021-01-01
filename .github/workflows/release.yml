@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build & Package
-        run: make release
+        run: make package
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
