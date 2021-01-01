@@ -30,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ jobs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
           asset_path: .build/apple/Products/Release/xcbeautify.zip
           asset_name: xcbeautify-${{ github.ref }}-universal-apple-macosx.zip
           asset_content_type: application/zip
@@ -39,7 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ jobs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
           asset_path: .build/x86_64-apple-macosx/release/xcbeautify.zip
           asset_name: xcbeautify-${{ github.ref }}-x86_64-apple-macosx.zip
           asset_content_type: application/zip
@@ -48,7 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ jobs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
           asset_path: .build/arm64-apple-macosx/release/xcbeautify.zip
           asset_name: xcbeautify-${{ github.ref }}-arm64-apple-macosx.zip
           asset_content_type: application/zip
@@ -72,7 +72,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ jobs.create_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release.steps.create_release.outputs.upload_url }}
           asset_path: .build/x86_64-unknown-linux-gnu/release/xcbeautify.tar.xz
           asset_name: xcbeautify-${{ github.ref }}-x86_64-unknown-linux-gnu.tar.xz
           asset_content_type: application/x-xz
