@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
+
+apt update -yq
+apt install -y curl
+curl -s https://packagecloud.io/install/repositories/swift-arm/dev-builds/script.deb.sh | bash
+apt install -y swift-lang
