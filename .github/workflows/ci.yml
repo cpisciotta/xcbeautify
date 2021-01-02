@@ -16,10 +16,24 @@ jobs:
       - name: Test
         run: set -o pipefail && swift test 2>&1 | .build/release/xcbeautify
 
-  ubuntu:
+  ubuntu_x86_64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: swift build
       - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
       - run: make package-linux-x86_64
+
+  ubuntu_arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+          githubToken: ${{ github.token }}
+          run: |
+            apt update -yq
+            apt install -y make
+            make package-linux-arm64
