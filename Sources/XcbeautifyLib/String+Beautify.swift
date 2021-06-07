@@ -4,7 +4,7 @@ import Colorizer
 private var _colored = true
 
 extension String {
-    func beautify(pattern: Pattern, colored: Bool) -> String? {
+    func beautify(pattern: Pattern, colored: Bool, additionalLines: @escaping () -> (String?)) -> String? {
         _colored = colored
 
         switch pattern {
@@ -102,7 +102,7 @@ extension String {
         case .tiffutil:
             return nil
         case .compileWarning:
-            return formatCompileWarning(pattern: pattern)
+            return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
         case .ldWarning:
             return formatLdWarning(pattern: pattern)
         case .genericWarning:
@@ -116,7 +116,7 @@ extension String {
              .moduleIncludesError:
             return formatError(pattern: pattern)
         case .compileError:
-            return formatCompileError(pattern: pattern)
+            return formatCompileError(pattern: pattern, additionalLines: additionalLines)
         case .fileMissingError:
             return formatFileMissingError(pattern: pattern)
         case .checkDependenciesErrors:
@@ -374,14 +374,14 @@ extension String {
         return _colored ? Symbol.error.rawValue + " " + self.f.Red : Symbol.asciiError.rawValue + " " + self
     }
 
-    private func formatCompileError(pattern: Pattern) -> String? {
+    private func formatCompileError(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
         let groups = capturedGroups(with: pattern)
         let filePath = groups[0]
         let reason = groups[2]
 
         // Read 2 additional lines to get the error line and cursor position
-        let line: String = readLine() ?? ""
-        let cursor: String = readLine() ?? ""
+        let line: String = additionalLines() ?? ""
+        let cursor: String = additionalLines() ?? ""
         return _colored ?
             """
             \(Symbol.error.rawValue) \(filePath): \(reason.f.Red)
@@ -413,14 +413,14 @@ extension String {
         return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " + self
     }
 
-    private func formatCompileWarning(pattern: Pattern) -> String? {
+    private func formatCompileWarning(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
         let groups = capturedGroups(with: pattern)
         let filePath = groups[0]
         let reason = groups[2]
 
         // Read 2 additional lines to get the warning line and cursor position
-        let line: String = readLine() ?? ""
-        let cursor: String = readLine() ?? ""
+        let line: String = additionalLines() ?? ""
+        let cursor: String = additionalLines() ?? ""
         return _colored ?
             """
             \(Symbol.warning.rawValue)  \(filePath): \(reason.f.Yellow)
