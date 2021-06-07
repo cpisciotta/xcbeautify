@@ -5,7 +5,7 @@ final class XcbeautifyLibTests: XCTestCase {
     let parser = Parser()
 
     private func noColoredFormatted(_ string: String) -> String? {
-        return parser.parse(line: string, colored: false)
+        return parser.parse(line: string, colored: false, additionalLines: { nil })
     }
 
     func testAggregateTarget() {

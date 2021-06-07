@@ -21,7 +21,9 @@ struct Xcbeautify: ParsableCommand {
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
         
         while let line = readLine() {
-            guard let formatted = parser.parse(line: line, colored: !disableColoredOutput) else { continue }
+            guard let formatted = parser.parse(line: line,
+                                               colored: !disableColoredOutput,
+                                               additionalLines: { readLine() }) else { continue }
             output.write(parser.outputType, formatted)
         }
         
