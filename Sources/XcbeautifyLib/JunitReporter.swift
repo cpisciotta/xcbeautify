@@ -67,11 +67,20 @@ private final class JunitComponentParser {
     }
 
     func result() -> Testsuites {
-        var groupedTestCases: [String: [Testcase]] = [:]
+        var testSuites: [Testsuite] = []
         for testCase in testCases {
-            groupedTestCases[testCase.classname] = (groupedTestCases[testCase.classname] ?? []) + [testCase]
+            let index: Int
+            if let existingTestSuiteIndex = testSuites.firstIndex(where: { $0.name == testCase.classname }) {
+                index = existingTestSuiteIndex
+            } else {
+                let newTestSuite = Testsuite(name: testCase.classname, testcases: [])
+                testSuites.append(newTestSuite)
+                index = testSuites.count - 1
+            }
+            var testSuite = testSuites[index]
+            testSuite.testcases.append(testCase)
+            testSuites[index] = testSuite
         }
-        let testSuites = groupedTestCases.map { Testsuite(name: $0.key, testcases: $0.value) }
         let container = Testsuites(name: mainTestSuiteName, testsuites: testSuites)
         return container
     }
@@ -95,11 +104,12 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
     }
 
     static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+        let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
-        case Self.CodingKeys.name, Self.CodingKeys.tests, Self.CodingKeys.failures:
+        case .name, .tests, .failures:
             return .attribute
         
-        default:
+        case .testsuites:
             return .element
         }
     }
@@ -125,11 +135,12 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
     }
 
     static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+        let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
-        case Self.CodingKeys.name, Self.CodingKeys.tests, Self.CodingKeys.failures:
+        case .name, .tests, .failures:
             return .attribute
         
-        default:
+        case .testcases:
             return .element
         }
     }
@@ -150,11 +161,12 @@ private struct Testcase: Codable, DynamicNodeEncoding {
     let failure: Failure?
     
     static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+        let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
-        case Self.CodingKeys.classname, Self.CodingKeys.name, Self.CodingKeys.time:
+        case .classname, .name, .time:
             return .attribute
             
-        default:
+        case .failure:
             return .element
         }
     }
@@ -165,20 +177,11 @@ private extension Testcase {
         let message: String
         
         static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+            let key = CodingKeys(stringValue: key.stringValue)!
             switch key {
-            case Self.CodingKeys.message:
+            case .message:
                 return .attribute
-                
-            default:
-                return .element
             }
         }
-    }
-}
-
-private extension Array {
-    var lastELement: Element {
-        get { self[count - 1] }
-        set { self[count - 1] = newValue }
     }
 }
