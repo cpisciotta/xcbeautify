@@ -4,6 +4,10 @@ import XcbeautifyLib
 
 
 struct Xcbeautify: ParsableCommand {
+    enum Report: String, ExpressibleByArgument {
+        case junit
+    }
+
     @Flag(name: [.short, .long], help: "Only print tasks that have warnings or errors.")
     var quiet = false
     
@@ -16,10 +20,27 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
+    @Option(help: "Generate the specified reports")
+    var report: [Report] = []
+
+    @Option(help: "The path to use when generating reports")
+    var reportPath = "build/reports"
+
     func run() throws {
         let parser = Parser()
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
-        
+        let junitReporter = JunitReporter()
+
+        func readLine() -> String? {
+            let line = Swift.readLine()
+            if let line = line {
+                if report.contains(.junit) {
+                    junitReporter.add(line: line)
+                }
+            }
+            return line
+        }
+
         while let line = readLine() {
             guard let formatted = parser.parse(line: line,
                                                colored: !disableColoredOutput,
@@ -29,6 +50,21 @@ struct Xcbeautify: ParsableCommand {
         
         if let summary = parser.summary {
             print(summary.format())
+        }
+
+        if !report.isEmpty {
+            let outputPath = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+                .appendingPathComponent(reportPath)
+            try FileManager.default.createDirectory(at: outputPath, withIntermediateDirectories: true)
+
+            for reportType in Set(report) {
+                switch reportType {
+                case .junit:
+                    let junitOutputPath = outputPath.appendingPathComponent("junit.xml")
+                    let report = try junitReporter.generateReport()
+                    try report.write(to: junitOutputPath)
+                }
+            }
         }
     }
 }
