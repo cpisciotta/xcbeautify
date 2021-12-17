@@ -185,7 +185,7 @@ class JunitReporterTests: XCTestCase {
              Executed 83 tests, with 1 failure (0 unexpected) in 0.202 (0.206) seconds
         """
 
-    private let expectedXml = """
+    private let expectedMacOsXml = """
         <testsuites name="All tests" tests="83" failures="1">
             <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
                 <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testEarlyReturnIfEmptyString" time="0.054" />
@@ -279,11 +279,108 @@ class JunitReporterTests: XCTestCase {
         </testsuites>
         """
 
+    private let expectedLinuxXml = """
+        <testsuites name="All tests" tests="83" failures="1">
+            <testsuite name="-[XcbeautifyLibTests" tests="83" failures="1">
+                <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testEarlyReturnIfEmptyString]" time="0.054" />
+                <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintOnlyTasksWithError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintOnlyTasksWithWarningOrError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintTestResultTooIfIsCIAndQuiet]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintTestResultTooIfIsCIAndQuieter]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testAggregateTarget]">
+                    <failure message="/Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/XcbeautifyLibTests.swift:13 - XCTAssertEqual failed: (&quot;Optional(&quot;Aggregate target Be Aggro of project AggregateExample with configuration Debug&quot;)&quot;) is not equal to (&quot;Optional(&quot;failing Aggregate target Be Aggro of project AggregateExample with configuration Debug&quot;)&quot;)" />
+                </testcase>
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testAnalyze]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testAnalyzeTarget]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testBuildTarget]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCheckDependencies]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCheckDependenciesErrors]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testClangError]" time="0.002" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCleanRemove]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCleanTarget]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCodesign]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCodesignFramework]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCompile]" time="0.002" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCompileCommand]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCompileError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCompileStoryboard]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCompileWarning]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCompileXib]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testConcurrentDestinationTestCaseFailed]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testConcurrentDestinationTestCasePassed]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testConcurrentDestinationTestSuiteStarted]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCopyHeader]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCopyPlist]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCopyStrings]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCpresource]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testCursor]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testExecuted]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testFailingTest]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testFatalError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testFileMissingError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testGenerateCoverageData]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testGeneratedCoverageReport]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testGenerateDsym]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testGenericWarning]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLdError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLdWarning]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLibtool]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLinkerDuplicateSymbols]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLinkerDuplicateSymbolsLocation]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLinkerUndefinedSymbolLocation]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLinkerUndefinedSymbols]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testLinking]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testModuleIncludesError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testNoCertificate]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testPackageGraphResolved]" time="0.003" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testParallelTestCaseAppKitPassed]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testParallelTestCaseFailed]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testParallelTestCasePassed]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testParallelTestingFailed]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testParallelTestingPassed]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testParallelTestingStarted]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testPbxcp]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testPhaseScriptExecution]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testPhaseSuccess]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testPodsError]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testPreprocess]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testProcessInfoPlist]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testProcessPch]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testProcessPchCommand]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testProcessPchPlusPlus]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testProvisioningProfileRequired]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testRestartingTests]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testShellCommand]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testSymbolReferencedFrom]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestCaseMeasured]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestCasePassed]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestCasePending]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestCaseStarted]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestsRunCompletion]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestSuiteStart]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTestSuiteStarted]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTiffutil]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testTouch]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testUiFailingTest]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testUndefinedSymbolLocation]" time="0.001" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWillNotBeCodeSigned]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteAuxiliaryFiles]" time="0.000" />
+                <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteFile]" time="0.000" />
+            </testsuite>
+        </testsuites>
+        """
+
     func testJunitReport() throws {
         let reporter = JunitReporter()
         testLog.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
+        #if os(Linux)
+        let expectedXml = expectedLinuxXml
+        #else
+        let expectedXml = expectedMacOsXml
+        #endif
         XCTAssertEqual(xml, expectedXml)
     }
 }
