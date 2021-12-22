@@ -10,11 +10,15 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.1"),
         .package(url: "https://github.com/getGuaka/Colorizer.git", from: "0.1.0"),
+        .package(url: "https://github.com/MaxDesiatov/XMLCoder.git", from: "0.13.1"),
     ],
     targets: [
         .target(
             name: "XcbeautifyLib",
-            dependencies: ["Colorizer"]),
+            dependencies: [
+                "Colorizer",
+                "XMLCoder"
+            ]),
         .target(
             name: "xcbeautify",
             dependencies: [
