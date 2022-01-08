@@ -47,12 +47,6 @@ brew cask install thii/swift-runtime/swift-runtime
 brew install xcbeautify
 ```
 
-### [Swiftbrew](https://github.com/swiftbrew/Swiftbrew)
-
-```bash
-swift brew install thii/xcbeautify
-```
-
 ### [Mint](https://github.com/yonaskolb/mint)
 
 ```bash
@@ -134,10 +128,7 @@ make release version=x.y.z
 
 ## Contributing
 
-Just send a PR! We don't bite ;)
-
-Don't have a GitHub account or prefer old-school patching via email? Send your
-patch to [the project's mailing list](mailto:~thi/xcbeautify@lists.sr.ht).
+Please send a PR!
 
 ## License
 
