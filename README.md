@@ -1,6 +1,6 @@
 # xcbeautify
 
-[![Build Status](https://github.com/tuist/xcbeautify/workflows/build/badge.svg?branch=master)](https://github.com/tuist/xcbeautify/actions)
+[![Build Status](https://github.com/tuist/xcbeautify/workflows/build/badge.svg?branch=main)](https://github.com/tuist/xcbeautify/actions)
 [![Latest Release](https://img.shields.io/github/release/tuist/xcbeautify.svg)](https://github.com/tuist/xcbeautify/releases/latest)
 [![License](https://img.shields.io/github/license/tuist/xcbeautify.svg)](LICENSE.md)
 
