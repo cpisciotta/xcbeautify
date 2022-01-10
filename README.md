@@ -1,8 +1,8 @@
 # xcbeautify
 
-[![Build Status](https://github.com/thii/xcbeautify/workflows/build/badge.svg?branch=master)](https://github.com/thii/xcbeautify/actions)
-[![Latest Release](https://img.shields.io/github/release/thii/xcbeautify.svg)](https://github.com/thii/xcbeautify/releases/latest)
-[![License](https://img.shields.io/github/license/thii/xcbeautify.svg)](LICENSE.md)
+[![Build Status](https://github.com/tuist/xcbeautify/workflows/build/badge.svg?branch=master)](https://github.com/tuist/xcbeautify/actions)
+[![Latest Release](https://img.shields.io/github/release/tuist/xcbeautify.svg)](https://github.com/tuist/xcbeautify/releases/latest)
+[![License](https://img.shields.io/github/license/tuist/xcbeautify.svg)](LICENSE.md)
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
@@ -50,7 +50,7 @@ brew install xcbeautify
 ### [Mint](https://github.com/yonaskolb/mint)
 
 ```bash
-mint install thii/xcbeautify
+mint install tuist/xcbeautify
 ```
 
 ### CocoaPods
@@ -64,7 +64,7 @@ The `xcbeautify` binary will be installed at `Pods/xcbeautify/xcbeautify`
 ### Build from source
 
 ```bash
-git clone https://github.com/thii/xcbeautify.git
+git clone https://github.com/tuist/xcbeautify.git
 cd xcbeautify
 make install
 ```
