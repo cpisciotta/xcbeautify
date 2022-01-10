@@ -1,0 +1,27 @@
+name: xcbeautify
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+jobs:
+  macos:
+    name: Build on macOS
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: swift build --disable-sandbox --configuration release
+      - name: Test
+        run: set -o pipefail && swift test 2>&1 | .build/release/xcbeautify
+
+  ubuntu_x86_64:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: swift build
+      - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
+      - run: make package-linux-x86_64
