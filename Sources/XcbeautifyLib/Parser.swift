@@ -2,7 +2,7 @@ public class Parser {
     public init() {}
 
     public var summary: TestSummary? = nil
-    private var needToRecordSummary = false
+    public var needToRecordSummary = false
 
     public var outputType: OutputType = OutputType.undefined
 
