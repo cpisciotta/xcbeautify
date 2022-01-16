@@ -102,6 +102,14 @@ enum Pattern: String {
     /// $3 = number of unexpected failures
     /// $4 = wall clock time in seconds (e.g. 0.295)
     case executed = #"\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#
+    
+    /// Regular expression captured groups:
+    /// $1 = number of tests
+    /// $2 = number of skipped
+    /// $3 = number of failures
+    /// $4 = number of unexpected failures
+    /// $5 = wall clock time in seconds (e.g. 0.295)
+    case executedWithSkipped = #"\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -276,6 +284,11 @@ enum Pattern: String {
     /// $1 = test suite name
     case testSuiteStart = #"\s*Test Suite '(.*)' started at"#
 
+    
+    case testSuiteAllTestsPassed = #"\s*Test Suite 'All tests' passed at"#
+    
+    case testSuiteAllTestsFailed = #"\s*Test Suite 'All tests' failed at"#
+    
     /// Regular expression captured groups:
     /// $1 = filename
     case tiffutil = #"TiffUtil\s(.*)"#
