@@ -255,7 +255,7 @@ public class Parser {
     }
 
     func parseSummary(line: String, colored: Bool) {
-        if !needToRecordSummary {
+        guard needToRecordSummary else {
             return
         }
         
