@@ -124,7 +124,7 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
-        XCTAssertNotNil(parser.summary)
+        let summary = try XCTUnwrap(parser.summary)
         
         XCTAssertEqual(parser.summary?.testsCount, 3)
         XCTAssertEqual(parser.summary?.failuresCount, 2)
