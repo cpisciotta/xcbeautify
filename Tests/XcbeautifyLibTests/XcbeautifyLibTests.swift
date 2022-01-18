@@ -108,7 +108,7 @@ final class XcbeautifyLibTests: XCTestCase {
     func testCursor() {
     }
 
-    func testExecuted() {
+    func testExecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let input2 = "Executed 3 tests, with 2 failures (1 unexpected) in 0.112 (0.112) seconds"
         
@@ -124,13 +124,14 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
-        let summary = try XCTUnwrap(parser.summary)
         
-        XCTAssertEqual(parser.summary?.testsCount, 3)
-        XCTAssertEqual(parser.summary?.failuresCount, 2)
-        XCTAssertEqual(parser.summary?.unexpectedCount, 1)
-        XCTAssertEqual(parser.summary?.skippedCount, 0)
-        XCTAssertEqual(parser.summary?.time, 0.112)
+        var summary = try XCTUnwrap(parser.summary)
+        
+        XCTAssertEqual(summary.testsCount, 3)
+        XCTAssertEqual(summary.failuresCount, 2)
+        XCTAssertEqual(summary.unexpectedCount, 1)
+        XCTAssertEqual(summary.skippedCount, 0)
+        XCTAssertEqual(summary.time, 0.112)
         
         // Second test plan
         XCTAssertNotNil(parser.summary)
@@ -141,13 +142,14 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted3)
         XCTAssertNil(formatted4)
-        XCTAssertNotNil(parser.summary)
         
-        XCTAssertEqual(parser.summary?.testsCount, 4)
-        XCTAssertEqual(parser.summary?.failuresCount, 3)
-        XCTAssertEqual(parser.summary?.unexpectedCount, 2)
-        XCTAssertEqual(parser.summary?.skippedCount, 0)
-        XCTAssertEqual(parser.summary?.time, 0.312)
+        summary = try XCTUnwrap(parser.summary)
+        
+        XCTAssertEqual(summary.testsCount, 4)
+        XCTAssertEqual(summary.failuresCount, 3)
+        XCTAssertEqual(summary.unexpectedCount, 2)
+        XCTAssertEqual(summary.skippedCount, 0)
+        XCTAssertEqual(summary.time, 0.312)
     }
     
     func testExecutedWithSkipped() {
