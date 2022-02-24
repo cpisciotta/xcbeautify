@@ -1,12 +1,20 @@
 public class Parser {
-    public init() {}
+    
+    private let colored: Bool
+    
+    private let additionalLines: () -> String?
+    
+    public init(colored: Bool = true, additionalLines: @escaping () -> (String?)) {
+        self.colored = colored
+        self.additionalLines = additionalLines
+    }
 
     public var summary: TestSummary? = nil
     public var needToRecordSummary = false
 
     public var outputType: OutputType = OutputType.undefined
 
-    public func parse(line: String, colored: Bool = true, additionalLines: @escaping () -> (String?)) -> String? {
+    public func parse(line: String) -> String? {
         switch line {
             case Matcher.analyzeMatcher:
                 outputType = OutputType.task

@@ -6,11 +6,11 @@ final class XcbeautifyLibTests: XCTestCase {
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser()
+        parser = Parser(colored: false, additionalLines: { nil } )
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        return parser.parse(line: string, colored: false, additionalLines: { nil })
+        return parser.parse(line: string)
     }
 
     func testAggregateTarget() {
