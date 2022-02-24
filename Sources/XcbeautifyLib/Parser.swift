@@ -3,266 +3,146 @@ public class Parser {
     private let colored: Bool
     
     private let additionalLines: () -> String?
+
+    public var summary: TestSummary? = nil
+
+    public var needToRecordSummary = false
+
+    public var outputType: OutputType = OutputType.undefined
+    
+    private lazy var innerParsers: [InnerParser] = [
+        innerParser(Matcher.analyzeMatcher, outputType: .task),
+        innerParser(Matcher.buildTargetMatcher, outputType: .task),
+        innerParser(Matcher.aggregateTargetMatcher, outputType: .task),
+        innerParser(Matcher.analyzeTargetMatcher, outputType: .task),
+        innerParser(Matcher.checkDependenciesMatcher, outputType: .task),
+        innerParser(Matcher.cleanRemoveMatcher, outputType: .task),
+        innerParser(Matcher.cleanTargetMatcher, outputType: .task),
+        innerParser(Matcher.codesignFrameworkMatcher, outputType: .task),
+        innerParser(Matcher.codesignMatcher, outputType: .task),
+        innerParser(Matcher.compileMatcher, outputType: .task),
+        innerParser(Matcher.compileCommandMatcher, outputType: .task),
+        innerParser(Matcher.compileXibMatcher, outputType: .task),
+        innerParser(Matcher.compileStoryboardMatcher, outputType: .task),
+        innerParser(Matcher.copyHeaderMatcher, outputType: .task),
+        innerParser(Matcher.copyPlistMatcher, outputType: .task),
+        innerParser(Matcher.copyStringsMatcher, outputType: .task),
+        innerParser(Matcher.cpresourceMatcher, outputType: .task),
+        innerParser(Matcher.failingTestMatcher, outputType: .error),
+        innerParser(Matcher.uiFailingTestMatcher, outputType: .error),
+        innerParser(Matcher.restartingTestsMatcher, outputType: .test),
+        innerParser(Matcher.generateCoverageDataMatcher, outputType: .task),
+        innerParser(Matcher.generatedCoverageReportMatcher, outputType: .task),
+        innerParser(Matcher.generateDsymMatcher, outputType: .task),
+        innerParser(Matcher.libtoolMatcher, outputType: .task),
+        innerParser(Matcher.linkingMatcher, outputType: .task),
+        innerParser(Matcher.testCasePassedMatcher, outputType: .test),
+        innerParser(Matcher.testCaseStartedMatcher, outputType: .test),
+        innerParser(Matcher.testCasePendingMatcher, outputType: .test),
+        innerParser(Matcher.testCaseMeasuredMatcher, outputType: .test),
+        innerParser(Matcher.phaseSuccessMatcher, outputType: .result),
+        innerParser(Matcher.phaseScriptExecutionMatcher, outputType: .task),
+        innerParser(Matcher.processPchMatcher, outputType: .task),
+        innerParser(Matcher.processPchCommandMatcher, outputType: .task),
+        innerParser(Matcher.preprocessMatcher, outputType: .task),
+        innerParser(Matcher.pbxcpMatcher, outputType: .task),
+        innerParser(Matcher.processInfoPlistMatcher, outputType: .task),
+        innerParser(Matcher.testsRunCompletionMatcher, outputType: .test),
+        innerParser(Matcher.testSuiteStartedMatcher, outputType: .test),
+        innerParser(Matcher.testSuiteStartMatcher, outputType: .test),
+        innerParser(Matcher.tiffutilMatcher, outputType: .task),
+        innerParser(Matcher.touchMatcher, outputType: .task),
+        innerParser(Matcher.writeFileMatcher, outputType: .task),
+        innerParser(Matcher.writeAuxiliaryFilesMatcher, outputType: .task),
+        innerParser(Matcher.parallelTestCasePassedMatcher, outputType: .test),
+        innerParser(Matcher.parallelTestCaseAppKitPassedMatcher, outputType: .test),
+        innerParser(Matcher.parallelTestingStartedMatcher, outputType: .test),
+        innerParser(Matcher.parallelTestingPassedMatcher, outputType: .test),
+        innerParser(Matcher.parallelTestSuiteStartedMatcher, outputType: .test),
+        innerParser(Matcher.compileWarningMatcher, outputType: .warning),
+        innerParser(Matcher.ldWarningMatcher, outputType: .warning),
+        innerParser(Matcher.genericWarningMatcher, outputType: .warning),
+        innerParser(Matcher.willNotBeCodeSignedMatcher, outputType: .warning),
+        innerParser(Matcher.clangErrorMatcher, outputType: .error),
+        innerParser(Matcher.checkDependenciesErrorsMatcher, outputType: .error),
+        innerParser(Matcher.provisioningProfileRequiredMatcher, outputType: .warning),
+        innerParser(Matcher.noCertificateMatcher, outputType: .warning),
+        innerParser(Matcher.compileErrorMatcher, outputType: .error),
+        innerParser(Matcher.cursorMatcher, outputType: .warning),
+        innerParser(Matcher.fatalErrorMatcher, outputType: .error),
+        innerParser(Matcher.fileMissingErrorMatcher, outputType: .error),
+        innerParser(Matcher.ldErrorMatcher, outputType: .error),
+        innerParser(Matcher.linkerDuplicateSymbolsLocationMatcher, outputType: .error),
+        innerParser(Matcher.linkerDuplicateSymbolsMatcher, outputType: .error),
+        innerParser(Matcher.linkerUndefinedSymbolLocationMatcher, outputType: .error),
+        innerParser(Matcher.linkerUndefinedSymbolsMatcher, outputType: .error),
+        innerParser(Matcher.podsErrorMatcher, outputType: .error),
+        innerParser(Matcher.symbolReferencedFromMatcher, outputType: .warning),
+        innerParser(Matcher.moduleIncludesErrorMatcher, outputType: .error),
+        innerParser(Matcher.parallelTestingFailedMatcher, outputType: .error),
+        innerParser(Matcher.parallelTestCaseFailedMatcher, outputType: .error),
+        innerParser(Matcher.shellCommandMatcher, outputType: .task),
+        innerParser(Matcher.undefinedSymbolLocationMatcher, outputType: .warning),
+        innerParser(Matcher.packageGraphResolvingStart, outputType: .task),
+        innerParser(Matcher.packageGraphResolvingEnded, outputType: .task),
+        innerParser(Matcher.packageGraphResolvedItem, outputType: .task)
+    ]
+    
+    // MARK: - Init
     
     public init(colored: Bool = true, additionalLines: @escaping () -> (String?)) {
         self.colored = colored
         self.additionalLines = additionalLines
     }
-
-    public var summary: TestSummary? = nil
-    public var needToRecordSummary = false
-
-    public var outputType: OutputType = OutputType.undefined
-
     public func parse(line: String) -> String? {
-        switch line {
-            case Matcher.analyzeMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .analyze, colored: colored, additionalLines: additionalLines)
-            case Matcher.buildTargetMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .buildTarget, colored: colored, additionalLines: additionalLines)
-            case Matcher.aggregateTargetMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .aggregateTarget, colored: colored, additionalLines: additionalLines)
-            case Matcher.analyzeTargetMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .analyzeTarget, colored: colored, additionalLines: additionalLines)
-            case Matcher.checkDependenciesMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .checkDependencies, colored: colored, additionalLines: additionalLines)
-            case Matcher.cleanRemoveMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .cleanRemove, colored: colored, additionalLines: additionalLines)
-            case Matcher.cleanTargetMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .cleanTarget, colored: colored, additionalLines: additionalLines)
-            case Matcher.codesignFrameworkMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .codesignFramework, colored: colored, additionalLines: additionalLines)
-            case Matcher.codesignMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .codesign, colored: colored, additionalLines: additionalLines)
-            case Matcher.compileMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .compile, colored: colored, additionalLines: additionalLines)
-            case Matcher.compileCommandMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .compileCommand, colored: colored, additionalLines: additionalLines)
-            case Matcher.compileXibMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .compileXib, colored: colored, additionalLines: additionalLines)
-            case Matcher.compileStoryboardMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .compileStoryboard, colored: colored, additionalLines: additionalLines)
-            case Matcher.copyHeaderMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .copyHeader, colored: colored, additionalLines: additionalLines)
-            case Matcher.copyPlistMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .copyPlist, colored: colored, additionalLines: additionalLines)
-            case Matcher.copyStringsMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .copyStrings, colored: colored, additionalLines: additionalLines)
-            case Matcher.cpresourceMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .cpresource, colored: colored, additionalLines: additionalLines)
-            case Matcher.executedMatcher:
+        
+        // Find first parser that can parse specified string
+        guard let idx = innerParsers.firstIndex(where: { $0.regex.match(string: line)}) else {
+            
+            // Some uncommon cases, which have additional logic and don't follow default flow
+            
+            if Matcher.executedMatcher.match(string: line) {
                 outputType = OutputType.task
                 parseSummary(line: line, colored: colored)
                 return nil
-            case Matcher.executedWithSkippedMatcher:
+            }
+
+            if Matcher.executedWithSkippedMatcher.match(string: line) {
                 outputType = OutputType.task
                 parseSummarySkipped(line: line, colored: colored)
                 return nil
-            case Matcher.failingTestMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .failingTest, colored: colored, additionalLines: additionalLines)
-            case Matcher.uiFailingTestMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .uiFailingTest, colored: colored, additionalLines: additionalLines)
-            case Matcher.restartingTestsMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .restartingTests, colored: colored, additionalLines: additionalLines)
-            case Matcher.generateCoverageDataMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .generateCoverageData, colored: colored, additionalLines: additionalLines)
-            case Matcher.generatedCoverageReportMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .generatedCoverageReport, colored: colored, additionalLines: additionalLines)
-            case Matcher.generateDsymMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .generateDsym, colored: colored, additionalLines: additionalLines)
-            case Matcher.libtoolMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .libtool, colored: colored, additionalLines: additionalLines)
-            case Matcher.linkingMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .linking, colored: colored, additionalLines: additionalLines)
-            case Matcher.testCasePassedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testCasePassed, colored: colored, additionalLines: additionalLines)
-            case Matcher.testCaseStartedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testCaseStarted, colored: colored, additionalLines: additionalLines)
-            case Matcher.testCasePendingMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testCasePending, colored: colored, additionalLines: additionalLines)
-            case Matcher.testCaseMeasuredMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testCaseMeasured, colored: colored, additionalLines: additionalLines)
-            case Matcher.phaseSuccessMatcher:
-                outputType = OutputType.result
-                return line.beautify(pattern: .phaseSuccess, colored: colored, additionalLines: additionalLines)
-            case Matcher.phaseScriptExecutionMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .phaseScriptExecution, colored: colored, additionalLines: additionalLines)
-            case Matcher.processPchMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .processPch, colored: colored, additionalLines: additionalLines)
-            case Matcher.processPchCommandMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .processPchCommand, colored: colored, additionalLines: additionalLines)
-            case Matcher.preprocessMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .preprocess, colored: colored, additionalLines: additionalLines)
-            case Matcher.pbxcpMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .pbxcp, colored: colored, additionalLines: additionalLines)
-            case Matcher.processInfoPlistMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .processInfoPlist, colored: colored, additionalLines: additionalLines)
-            case Matcher.testsRunCompletionMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testsRunCompletion, colored: colored, additionalLines: additionalLines)
-            case Matcher.testSuiteStartedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testSuiteStarted, colored: colored, additionalLines: additionalLines)
-            case Matcher.testSuiteStartMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .testSuiteStart, colored: colored, additionalLines: additionalLines)
-            case Matcher.testSuiteAllTestsPassedMatcher:
+            }
+
+            if Matcher.testSuiteAllTestsPassedMatcher.match(string: line) {
                 needToRecordSummary = true
                 return nil
-            case Matcher.testSuiteAllTestsFailedMatcher:
+            }
+
+            if Matcher.testSuiteAllTestsFailedMatcher.match(string: line) {
                 needToRecordSummary = true
                 return nil
-            case Matcher.tiffutilMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .tiffutil, colored: colored, additionalLines: additionalLines)
-            case Matcher.touchMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .touch, colored: colored, additionalLines: additionalLines)
-            case Matcher.writeFileMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .writeFile, colored: colored, additionalLines: additionalLines)
-            case Matcher.writeAuxiliaryFilesMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .writeAuxiliaryFiles, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestCasePassedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .parallelTestCasePassed, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestCaseAppKitPassedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .parallelTestCaseAppKitPassed, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestingStartedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .parallelTestingStarted, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestingPassedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .parallelTestingPassed, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestSuiteStartedMatcher:
-                outputType = OutputType.test
-                return line.beautify(pattern: .parallelTestSuiteStarted, colored: colored, additionalLines: additionalLines)
+            }
             
-            case Matcher.compileWarningMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .compileWarning, colored: colored, additionalLines: additionalLines)
-            case Matcher.ldWarningMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .ldWarning, colored: colored, additionalLines: additionalLines)
-            case Matcher.genericWarningMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .genericWarning, colored: colored, additionalLines: additionalLines)
-            case Matcher.willNotBeCodeSignedMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .willNotBeCodeSigned, colored: colored, additionalLines: additionalLines)
-            case Matcher.clangErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .clangError, colored: colored, additionalLines: additionalLines)
-            case Matcher.checkDependenciesErrorsMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .checkDependenciesErrors, colored: colored, additionalLines: additionalLines)
-            case Matcher.provisioningProfileRequiredMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .provisioningProfileRequired, colored: colored, additionalLines: additionalLines)
-            case Matcher.noCertificateMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .noCertificate, colored: colored, additionalLines: additionalLines)
-            case Matcher.compileErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .compileError, colored: colored, additionalLines: additionalLines)
-            case Matcher.cursorMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .cursor, colored: colored, additionalLines: additionalLines)
-            case Matcher.fatalErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .fatalError, colored: colored, additionalLines: additionalLines)
-            case Matcher.fileMissingErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .fileMissingError, colored: colored, additionalLines: additionalLines)
-            case Matcher.ldErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .ldError, colored: colored, additionalLines: additionalLines)
-            case Matcher.linkerDuplicateSymbolsLocationMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .linkerDuplicateSymbolsLocation, colored: colored, additionalLines: additionalLines)
-            case Matcher.linkerDuplicateSymbolsMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .linkerDuplicateSymbols, colored: colored, additionalLines: additionalLines)
-            case Matcher.linkerUndefinedSymbolLocationMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .linkerUndefinedSymbolLocation, colored: colored, additionalLines: additionalLines)
-            case Matcher.linkerUndefinedSymbolsMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .linkerUndefinedSymbols, colored: colored, additionalLines: additionalLines)
-            case Matcher.podsErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .podsError, colored: colored, additionalLines: additionalLines)
-            case Matcher.symbolReferencedFromMatcher:
-                outputType = OutputType.warning
-                return line.beautify(pattern: .symbolReferencedFrom, colored: colored, additionalLines: additionalLines)
-            case Matcher.moduleIncludesErrorMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .moduleIncludesError, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestingFailedMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .parallelTestingFailed, colored: colored, additionalLines: additionalLines)
-            case Matcher.parallelTestCaseFailedMatcher:
-                outputType = OutputType.error
-                return line.beautify(pattern: .parallelTestCaseFailed, colored: colored, additionalLines: additionalLines)
-            case Matcher.shellCommandMatcher:
-                outputType = OutputType.task
-                return line.beautify(pattern: .shellCommand, colored: colored, additionalLines: additionalLines)
-            case Matcher.undefinedSymbolLocationMatcher:
-                outputType = .warning
-                return line.beautify(pattern: .undefinedSymbolLocation, colored: colored, additionalLines: additionalLines)
-            case Matcher.packageGraphResolvingStart:
-                outputType = .task
-                return line.beautify(pattern: .packageGraphResolvingStart, colored: colored, additionalLines: additionalLines)
-            case Matcher.packageGraphResolvingEnded:
-                outputType = .task
-                return line.beautify(pattern: .packageGraphResolvingEnded, colored: colored, additionalLines: additionalLines)
-            case Matcher.packageGraphResolvedItem:
-                outputType = .task
-                return line.beautify(pattern: .packageGraphResolvedItem, colored: colored, additionalLines: additionalLines)
-            default:
-                outputType = OutputType.undefined
-                return nil
+            // Nothing found?
+            outputType = OutputType.undefined
+            return nil
         }
+        
+        let parser = innerParsers[idx]
+        
+        let result = parser.parse(line: line)
+        outputType = result.outputType
+        
+        // Move found parser to the top, so next time it will be checked first
+        innerParsers.insert(innerParsers.remove(at: idx), at: 0)
+        
+        return result.value
     }
 
-    func parseSummary(line: String, colored: Bool) {
+    
+    // MARK: Private
+
+    private func parseSummary(line: String, colored: Bool) {
         guard needToRecordSummary else {
             return
         }
@@ -280,7 +160,7 @@ public class Parser {
         needToRecordSummary = false
     }
     
-    func parseSummarySkipped(line: String, colored: Bool) {
+    private func parseSummarySkipped(line: String, colored: Bool) {
         if !needToRecordSummary {
             return
         }
@@ -297,4 +177,26 @@ public class Parser {
         
         needToRecordSummary = false
     }
+    
+    private func innerParser(_ regex: Regex, outputType: OutputType) -> InnerParser {
+        return InnerParser(additionalLines: additionalLines, colored: colored, regex: regex, outputType: outputType)
+    }
+    
+    private struct InnerParser {
+        
+        fileprivate struct Result {
+            let outputType: OutputType
+            let value: String?
+        }
+        
+        let additionalLines: () -> String?
+        let colored: Bool
+        let regex: Regex
+        let outputType: OutputType
+        
+        func parse(line: String) -> Result {
+            return .init(outputType: outputType, value: line.beautify(pattern: regex.pattern, colored: colored, additionalLines: additionalLines))
+        }
+    }
+
 }

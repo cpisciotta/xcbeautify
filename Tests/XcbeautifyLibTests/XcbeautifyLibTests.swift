@@ -63,6 +63,13 @@ final class XcbeautifyLibTests: XCTestCase {
         let formatted = noColoredFormatted("CodeSign build/Release/MyApp.app")
         XCTAssertEqual(formatted, "Signing MyApp.app")
     }
+    
+    func testMultipleCodesigns() {
+        let formattedApp = noColoredFormatted("CodeSign build/Release/MyApp.app")
+        let formattedFramework = noColoredFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
+        XCTAssertEqual(formattedApp, "Signing MyApp.app")
+        XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
+    }
 
     func testCompileCommand() {
     }
