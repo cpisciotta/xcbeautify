@@ -2,6 +2,7 @@ public class Parser {
     public init() {}
 
     public var summary: TestSummary? = nil
+    public var needToRecordSummary = false
 
     public var outputType: OutputType = OutputType.undefined
 
@@ -61,6 +62,10 @@ public class Parser {
             case Matcher.executedMatcher:
                 outputType = OutputType.task
                 parseSummary(line: line, colored: colored)
+                return nil
+            case Matcher.executedWithSkippedMatcher:
+                outputType = OutputType.task
+                parseSummarySkipped(line: line, colored: colored)
                 return nil
             case Matcher.failingTestMatcher:
                 outputType = OutputType.error
@@ -128,6 +133,12 @@ public class Parser {
             case Matcher.testSuiteStartMatcher:
                 outputType = OutputType.test
                 return line.beautify(pattern: .testSuiteStart, colored: colored, additionalLines: additionalLines)
+            case Matcher.testSuiteAllTestsPassedMatcher:
+                needToRecordSummary = true
+                return nil
+            case Matcher.testSuiteAllTestsFailedMatcher:
+                needToRecordSummary = true
+                return nil
             case Matcher.tiffutilMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .tiffutil, colored: colored, additionalLines: additionalLines)
@@ -244,12 +255,38 @@ public class Parser {
     }
 
     func parseSummary(line: String, colored: Bool) {
+        guard needToRecordSummary else {
+            return
+        }
+        
         let groups = line.capturedGroups(with: .executed)
         summary = TestSummary(
-            testsCount: groups[0],
-            failuresCount: groups[1],
-            unexpectedCount: groups[2],
-            time: groups[3],
-            colored: colored)
+            testsCount: Int(groups[0]) ?? 0,
+            skippedCount: 0,
+            failuresCount: Int(groups[1]) ?? 0,
+            unexpectedCount: Int(groups[2]) ?? 0,
+            time: Double(groups[3]) ?? 0,
+            colored: colored,
+            testSummary: summary)
+        
+        needToRecordSummary = false
+    }
+    
+    func parseSummarySkipped(line: String, colored: Bool) {
+        if !needToRecordSummary {
+            return
+        }
+        
+        let groups = line.capturedGroups(with: .executedWithSkipped)
+        summary = TestSummary(
+            testsCount: Int(groups[0]) ?? 0,
+            skippedCount: Int(groups[1]) ?? 0,
+            failuresCount: Int(groups[2]) ?? 0,
+            unexpectedCount: Int(groups[3]) ?? 0,
+            time: Double(groups[4]) ?? 0,
+            colored: colored,
+            testSummary: summary)
+        
+        needToRecordSummary = false
     }
 }

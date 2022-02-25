@@ -49,6 +49,9 @@ extension String {
              .parallelTestingFailed,
              .parallelTestSuiteStarted:
             return formatTestHeading(pattern: pattern)
+        case .testSuiteAllTestsPassed,
+             .testSuiteAllTestsFailed:
+            return nil
         case .failingTest,
              .uiFailingTest,
              .restartingTests,
@@ -95,7 +98,8 @@ extension String {
             return nil
         case .cleanRemove:
             return formatCleanRemove(pattern: pattern)
-        case .executed:
+        case .executed,
+             .executedWithSkipped:
             return nil
         case .testCaseStarted:
             return nil
