@@ -12,6 +12,7 @@ class Regex {
     }
 
     func match(string: String) -> Bool {
-        return matcher?.numberOfMatches(in: string, range: NSRange(location: 0, length: string.count)) != 0
+        let fullRange = NSRange(string.startIndex..., in: string)
+        return matcher?.rangeOfFirstMatch(in: string, range: fullRange).location != NSNotFound
     }
 }

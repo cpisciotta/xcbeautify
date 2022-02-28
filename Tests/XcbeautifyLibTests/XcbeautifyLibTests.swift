@@ -6,11 +6,11 @@ final class XcbeautifyLibTests: XCTestCase {
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser()
+        parser = Parser(colored: false, additionalLines: { nil } )
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        return parser.parse(line: string, colored: false, additionalLines: { nil })
+        return parser.parse(line: string)
     }
 
     func testAggregateTarget() {
@@ -62,6 +62,13 @@ final class XcbeautifyLibTests: XCTestCase {
     func testCodesign() {
         let formatted = noColoredFormatted("CodeSign build/Release/MyApp.app")
         XCTAssertEqual(formatted, "Signing MyApp.app")
+    }
+    
+    func testMultipleCodesigns() {
+        let formattedApp = noColoredFormatted("CodeSign build/Release/MyApp.app")
+        let formattedFramework = noColoredFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
+        XCTAssertEqual(formattedApp, "Signing MyApp.app")
+        XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
     }
 
     func testCompileCommand() {
