@@ -3,7 +3,7 @@ import XCTest
 
 final class XcbeautifyLibTests: XCTestCase {
     var parser: Parser!
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         parser = Parser(colored: false, additionalLines: { nil } )
@@ -63,7 +63,7 @@ final class XcbeautifyLibTests: XCTestCase {
         let formatted = noColoredFormatted("CodeSign build/Release/MyApp.app")
         XCTAssertEqual(formatted, "Signing MyApp.app")
     }
-    
+
     func testMultipleCodesigns() {
         let formattedApp = noColoredFormatted("CodeSign build/Release/MyApp.app")
         let formattedFramework = noColoredFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
@@ -126,39 +126,43 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertNil(parser.summary)
         XCTAssertFalse(parser.needToRecordSummary)
         let formatted1 = noColoredFormatted(input1)
+#if os(macOS)
         // FIXME: Failing on Linux
-        // XCTAssertTrue(parser.needToRecordSummary)
+        XCTAssertTrue(parser.needToRecordSummary)
+#endif
         let formatted2 = noColoredFormatted(input2)
         XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
 
+#if os(macOS)
         // FIXME: Failing on Linux
-        // var summary = try XCTUnwrap(parser.summary)
-        //
-        // XCTAssertEqual(summary.testsCount, 3)
-        // XCTAssertEqual(summary.failuresCount, 2)
-        // XCTAssertEqual(summary.unexpectedCount, 1)
-        // XCTAssertEqual(summary.skippedCount, 0)
-        // XCTAssertEqual(summary.time, 0.112)
+        var summary = try XCTUnwrap(parser.summary)
+
+        XCTAssertEqual(summary.testsCount, 3)
+        XCTAssertEqual(summary.failuresCount, 2)
+        XCTAssertEqual(summary.unexpectedCount, 1)
+        XCTAssertEqual(summary.skippedCount, 0)
+        XCTAssertEqual(summary.time, 0.112)
 
         // Second test plan
-        // XCTAssertNotNil(parser.summary)
-        // XCTAssertFalse(parser.needToRecordSummary)
-        // let formatted3 = noColoredFormatted(input3)
-        // XCTAssertTrue(parser.needToRecordSummary)
-        // let formatted4 = noColoredFormatted(input4)
-        // XCTAssertFalse(parser.needToRecordSummary)
-        // XCTAssertNil(formatted3)
-        // XCTAssertNil(formatted4)
-        //
-        // summary = try XCTUnwrap(parser.summary)
-        //
-        // XCTAssertEqual(summary.testsCount, 4)
-        // XCTAssertEqual(summary.failuresCount, 3)
-        // XCTAssertEqual(summary.unexpectedCount, 2)
-        // XCTAssertEqual(summary.skippedCount, 0)
-        // XCTAssertEqual(summary.time, 0.312)
+        XCTAssertNotNil(parser.summary)
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted3 = noColoredFormatted(input3)
+        XCTAssertTrue(parser.needToRecordSummary)
+        let formatted4 = noColoredFormatted(input4)
+        XCTAssertFalse(parser.needToRecordSummary)
+        XCTAssertNil(formatted3)
+        XCTAssertNil(formatted4)
+
+        summary = try XCTUnwrap(parser.summary)
+
+        XCTAssertEqual(summary.testsCount, 4)
+        XCTAssertEqual(summary.failuresCount, 3)
+        XCTAssertEqual(summary.unexpectedCount, 2)
+        XCTAssertEqual(summary.skippedCount, 0)
+        XCTAssertEqual(summary.time, 0.312)
+#endif
     }
 
     func testExecutedWithSkipped() {
