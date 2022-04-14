@@ -75,6 +75,13 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompileError() {
+        let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
+        let outputError = "[x] /path/file.swift:64:69: cannot find \'input\' in scope\n\n"
+        XCTAssertEqual(noColoredFormatted(inputError), outputError)
+
+        let inputFatal = "/path/file.swift:64:69: fatal error: cannot find 'input' in scope"
+        let outputFatal = "[x] /path/file.swift:64:69: cannot find 'input' in scope\n\n"
+        XCTAssertEqual(noColoredFormatted(inputFatal), outputFatal)
     }
 
     func testCompile() {
@@ -95,6 +102,9 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompileWarning() {
+        let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
+        let output = "[!]  /path/file.swift:64:69: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCompileXib() {
