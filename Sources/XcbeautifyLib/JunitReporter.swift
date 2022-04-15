@@ -46,11 +46,11 @@ private final class JunitComponentParser {
             guard mainTestSuiteName == nil else {
                 break
             }
-            let groups = line.capturedGroups(with: .testSuiteStart)
+            let groups = RegexMatcher(pattern: .testSuiteStart).capturedGroups(string: line)
             mainTestSuiteName = groups[0]
 
         case let .failingTest(line):
-            let groups = line.capturedGroups(with: .failingTest)
+            let groups = RegexMatcher(pattern: .failingTest).capturedGroups(string: line)
             let testCase = Testcase(
                 classname: groups[1],
                 name: groups[2],
@@ -60,7 +60,7 @@ private final class JunitComponentParser {
             testCases.append(testCase)
 
         case let .testCasePassed(line):
-            let groups = line.capturedGroups(with: .testCasePassed)
+            let groups = RegexMatcher(pattern: .testCasePassed).capturedGroups(string: line)
             let testCase = Testcase(classname: groups[0], name: groups[1], time: groups[2], failure: nil)
             testCases.append(testCase)
         }
@@ -184,4 +184,8 @@ private extension Testcase {
             }
         }
     }
+}
+
+private func ~=(regex: Matching, matchable: String) -> Bool {
+    return regex.match(string: matchable)
 }

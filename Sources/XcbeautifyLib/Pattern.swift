@@ -247,7 +247,7 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = file
-    case preprocess = #"Preprocess\s(?:(?:\ |[^ ])*)\s((?:\ |[^ ])*)$"#
+    case preprocess = #"Preprocess\s(.*)\s\/(.*) \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 = source file

@@ -10,82 +10,94 @@ public class Parser {
 
     public var outputType: OutputType = OutputType.undefined
     
-    private lazy var innerParsers: [InnerParser] = [
-        innerParser(Matcher.analyzeMatcher, outputType: .task),
-        innerParser(Matcher.buildTargetMatcher, outputType: .task),
-        innerParser(Matcher.aggregateTargetMatcher, outputType: .task),
-        innerParser(Matcher.analyzeTargetMatcher, outputType: .task),
-        innerParser(Matcher.checkDependenciesMatcher, outputType: .task),
-        innerParser(Matcher.cleanRemoveMatcher, outputType: .task),
-        innerParser(Matcher.cleanTargetMatcher, outputType: .task),
-        innerParser(Matcher.codesignFrameworkMatcher, outputType: .task),
-        innerParser(Matcher.codesignMatcher, outputType: .task),
-        innerParser(Matcher.compileMatcher, outputType: .task),
-        innerParser(Matcher.compileCommandMatcher, outputType: .task),
-        innerParser(Matcher.compileXibMatcher, outputType: .task),
-        innerParser(Matcher.compileStoryboardMatcher, outputType: .task),
-        innerParser(Matcher.copyHeaderMatcher, outputType: .task),
-        innerParser(Matcher.copyPlistMatcher, outputType: .task),
-        innerParser(Matcher.copyStringsMatcher, outputType: .task),
-        innerParser(Matcher.cpresourceMatcher, outputType: .task),
-        innerParser(Matcher.failingTestMatcher, outputType: .error),
-        innerParser(Matcher.uiFailingTestMatcher, outputType: .error),
-        innerParser(Matcher.restartingTestsMatcher, outputType: .test),
-        innerParser(Matcher.generateCoverageDataMatcher, outputType: .task),
-        innerParser(Matcher.generatedCoverageReportMatcher, outputType: .task),
-        innerParser(Matcher.generateDsymMatcher, outputType: .task),
-        innerParser(Matcher.libtoolMatcher, outputType: .task),
-        innerParser(Matcher.linkingMatcher, outputType: .task),
-        innerParser(Matcher.testCasePassedMatcher, outputType: .test),
-        innerParser(Matcher.testCaseStartedMatcher, outputType: .test),
-        innerParser(Matcher.testCasePendingMatcher, outputType: .test),
-        innerParser(Matcher.testCaseMeasuredMatcher, outputType: .test),
-        innerParser(Matcher.phaseSuccessMatcher, outputType: .result),
-        innerParser(Matcher.phaseScriptExecutionMatcher, outputType: .task),
-        innerParser(Matcher.processPchMatcher, outputType: .task),
-        innerParser(Matcher.processPchCommandMatcher, outputType: .task),
-        innerParser(Matcher.preprocessMatcher, outputType: .task),
-        innerParser(Matcher.pbxcpMatcher, outputType: .task),
-        innerParser(Matcher.processInfoPlistMatcher, outputType: .task),
-        innerParser(Matcher.testsRunCompletionMatcher, outputType: .test),
-        innerParser(Matcher.testSuiteStartedMatcher, outputType: .test),
-        innerParser(Matcher.testSuiteStartMatcher, outputType: .test),
-        innerParser(Matcher.tiffutilMatcher, outputType: .task),
-        innerParser(Matcher.touchMatcher, outputType: .task),
-        innerParser(Matcher.writeFileMatcher, outputType: .task),
-        innerParser(Matcher.writeAuxiliaryFilesMatcher, outputType: .task),
-        innerParser(Matcher.parallelTestCasePassedMatcher, outputType: .test),
-        innerParser(Matcher.parallelTestCaseAppKitPassedMatcher, outputType: .test),
-        innerParser(Matcher.parallelTestingStartedMatcher, outputType: .test),
-        innerParser(Matcher.parallelTestingPassedMatcher, outputType: .test),
-        innerParser(Matcher.parallelTestSuiteStartedMatcher, outputType: .test),
-        innerParser(Matcher.compileWarningMatcher, outputType: .warning),
-        innerParser(Matcher.ldWarningMatcher, outputType: .warning),
-        innerParser(Matcher.genericWarningMatcher, outputType: .warning),
-        innerParser(Matcher.willNotBeCodeSignedMatcher, outputType: .warning),
-        innerParser(Matcher.clangErrorMatcher, outputType: .error),
-        innerParser(Matcher.checkDependenciesErrorsMatcher, outputType: .error),
-        innerParser(Matcher.provisioningProfileRequiredMatcher, outputType: .warning),
-        innerParser(Matcher.noCertificateMatcher, outputType: .warning),
-        innerParser(Matcher.compileErrorMatcher, outputType: .error),
-        innerParser(Matcher.cursorMatcher, outputType: .warning),
-        innerParser(Matcher.fatalErrorMatcher, outputType: .error),
-        innerParser(Matcher.fileMissingErrorMatcher, outputType: .error),
-        innerParser(Matcher.ldErrorMatcher, outputType: .error),
-        innerParser(Matcher.linkerDuplicateSymbolsLocationMatcher, outputType: .error),
-        innerParser(Matcher.linkerDuplicateSymbolsMatcher, outputType: .error),
-        innerParser(Matcher.linkerUndefinedSymbolLocationMatcher, outputType: .error),
-        innerParser(Matcher.linkerUndefinedSymbolsMatcher, outputType: .error),
-        innerParser(Matcher.podsErrorMatcher, outputType: .error),
-        innerParser(Matcher.symbolReferencedFromMatcher, outputType: .warning),
-        innerParser(Matcher.moduleIncludesErrorMatcher, outputType: .error),
-        innerParser(Matcher.parallelTestingFailedMatcher, outputType: .error),
-        innerParser(Matcher.parallelTestCaseFailedMatcher, outputType: .error),
-        innerParser(Matcher.shellCommandMatcher, outputType: .task),
-        innerParser(Matcher.undefinedSymbolLocationMatcher, outputType: .warning),
-        innerParser(Matcher.packageGraphResolvingStart, outputType: .task),
-        innerParser(Matcher.packageGraphResolvingEnded, outputType: .task),
-        innerParser(Matcher.packageGraphResolvedItem, outputType: .task)
+    private var platformSpecificInnerParsers: [InnerParser] {
+#if os(Linux)
+        return [
+            innerParser(Matcher.compileMatcher, outputType: .task, formatter: Formatter.formatCompileLinux),
+            innerParser(Matcher.linkingMatcher, outputType: .task, formatter: Formatter.formatLinkingLinux),
+        ]
+#else
+        return [
+            innerParser(Matcher.compileMatcher, outputType: .task, formatter: Formatter.formatCompile),
+            innerParser(Matcher.linkingMatcher, outputType: .task, formatter: Formatter.formatLinking),
+        ]
+#endif
+    }
+    
+    private lazy var innerParsers: [InnerParser] = platformSpecificInnerParsers + [
+        innerParser(Matcher.analyzeMatcher , outputType: .task, formatter: Formatter.formatAnalyze),
+        innerParser(Matcher.buildTargetMatcher, outputType: .task, formatter: Formatter.formatBuildTargetCommand),
+        innerParser(Matcher.aggregateTargetMatcher, outputType: .task, formatter: Formatter.formatAggregateTargetCommand),
+        innerParser(Matcher.analyzeTargetMatcher, outputType: .task, formatter: Formatter.formatAnalyzeTargetCommand),
+        innerParser(Matcher.checkDependenciesMatcher, outputType: .task, formatter: Formatter.formatCheckDependencies),
+        innerParser(Matcher.cleanRemoveMatcher, outputType: .task, formatter: Formatter.formatCleanRemove),
+        innerParser(Matcher.cleanTargetMatcher, outputType: .task, formatter: Formatter.formatCleanTargetCommand),
+        innerParser(Matcher.codesignFrameworkMatcher, outputType: .task, formatter: Formatter.formatCodeSignFramework),
+        innerParser(Matcher.codesignMatcher, outputType: .task, formatter: Formatter.formatCodeSigning),
+        innerParser(Matcher.compileCommandMatcher, outputType: .task, formatter: Formatter.formatCompileCommand),
+        innerParser(Matcher.compileXibMatcher, outputType: .task, formatter: Formatter.formatCompile),
+        innerParser(Matcher.compileStoryboardMatcher, outputType: .task, formatter: Formatter.formatCompile),
+        innerParser(Matcher.copyHeaderMatcher, outputType: .task, formatter: Formatter.formatCopy),
+        innerParser(Matcher.copyPlistMatcher, outputType: .task, formatter: Formatter.formatCopy),
+        innerParser(Matcher.copyStringsMatcher, outputType: .task, formatter: Formatter.formatCopy),
+        innerParser(Matcher.cpresourceMatcher, outputType: .task, formatter: Formatter.formatCopy),
+        innerParser(Matcher.failingTestMatcher, outputType: .error, formatter: Formatter.formatTest(pattern: .failingTest)),
+        innerParser(Matcher.uiFailingTestMatcher, outputType: .error, formatter: Formatter.formatTest(pattern: .uiFailingTest)),
+        innerParser(Matcher.restartingTestsMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .restartingTests)),
+        innerParser(Matcher.generateCoverageDataMatcher, outputType: .task, formatter: Formatter.formatCodeCoverage(pattern: .generateCoverageData)),
+        innerParser(Matcher.generatedCoverageReportMatcher, outputType: .task, formatter: Formatter.formatCodeCoverage(pattern: .generatedCoverageReport)),
+        innerParser(Matcher.generateDsymMatcher, outputType: .task, formatter: Formatter.formatGenerateDsym),
+        innerParser(Matcher.libtoolMatcher, outputType: .task, formatter: Formatter.formatLibtool),
+        innerParser(Matcher.testCasePassedMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .testCasePassed)),
+        innerParser(Matcher.testCaseStartedMatcher, outputType: .test, formatter: Formatter.formatNil),
+        innerParser(Matcher.testCasePendingMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .testCasePending)),
+        innerParser(Matcher.testCaseMeasuredMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .testCaseMeasured)),
+        innerParser(Matcher.phaseSuccessMatcher, outputType: .result, formatter: Formatter.formatPhaseSuccess),
+        innerParser(Matcher.phaseScriptExecutionMatcher, outputType: .task, formatter: Formatter.formatPhaseScriptExecution),
+        innerParser(Matcher.processPchMatcher, outputType: .task, formatter: Formatter.formatProcessPch),
+        innerParser(Matcher.processPchCommandMatcher, outputType: .task, formatter: Formatter.formatProcessPchCommand),
+        innerParser(Matcher.preprocessMatcher, outputType: .task, formatter: Formatter.formatPreprocess),
+        innerParser(Matcher.pbxcpMatcher, outputType: .task, formatter: Formatter.formatCopy),
+        innerParser(Matcher.processInfoPlistMatcher, outputType: .task, formatter: Formatter.formatProcessInfoPlist),
+        innerParser(Matcher.testsRunCompletionMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .testsRunCompletion)),
+        innerParser(Matcher.testSuiteStartedMatcher, outputType: .test, formatter: Formatter.formatTestHeading(pattern: .testSuiteStarted)),
+        innerParser(Matcher.testSuiteStartMatcher, outputType: .test, formatter: Formatter.formatTestHeading(pattern: .testSuiteStart)),
+        innerParser(Matcher.tiffutilMatcher, outputType: .task, formatter: Formatter.formatNil),
+        innerParser(Matcher.touchMatcher, outputType: .task, formatter: Formatter.formatTouch),
+        innerParser(Matcher.writeFileMatcher, outputType: .task, formatter: Formatter.formatNil),
+        innerParser(Matcher.writeAuxiliaryFilesMatcher, outputType: .task, formatter: Formatter.formatNil),
+        innerParser(Matcher.parallelTestCasePassedMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .parallelTestCasePassed)),
+        innerParser(Matcher.parallelTestCaseAppKitPassedMatcher, outputType: .test, formatter: Formatter.formatTest(pattern: .parallelTestCaseAppKitPassed)),
+        innerParser(Matcher.parallelTestingStartedMatcher, outputType: .test, formatter: Formatter.formatTestHeading(pattern: .parallelTestingStarted)),
+        innerParser(Matcher.parallelTestingPassedMatcher, outputType: .test, formatter: Formatter.formatTestHeading(pattern: .parallelTestingPassed)),
+        innerParser(Matcher.parallelTestSuiteStartedMatcher, outputType: .test, formatter: Formatter.formatTestHeading(pattern: .parallelTestSuiteStarted)),
+        innerParser(Matcher.compileWarningMatcher, outputType: .warning, formatter: Formatter.formatCompileWarning),
+        innerParser(Matcher.ldWarningMatcher, outputType: .warning, formatter: Formatter.formatLdWarning),
+        innerParser(Matcher.genericWarningMatcher, outputType: .warning, formatter: Formatter.formatWarning),
+        innerParser(Matcher.willNotBeCodeSignedMatcher, outputType: .warning, formatter: Formatter.formatWillNotBeCodesignWarning),
+        innerParser(Matcher.clangErrorMatcher, outputType: .error, formatter: Formatter.formatError),
+        innerParser(Matcher.checkDependenciesErrorsMatcher, outputType: .error, formatter: Formatter.formatError),
+        innerParser(Matcher.provisioningProfileRequiredMatcher, outputType: .warning, formatter: Formatter.formatError),
+        innerParser(Matcher.noCertificateMatcher, outputType: .warning, formatter: Formatter.formatError),
+        innerParser(Matcher.compileErrorMatcher, outputType: .error, formatter: Formatter.formatCompileError),
+        innerParser(Matcher.cursorMatcher, outputType: .warning, formatter: Formatter.formatNil),
+        innerParser(Matcher.fatalErrorMatcher, outputType: .error, formatter: Formatter.formatError),
+        innerParser(Matcher.fileMissingErrorMatcher, outputType: .error, formatter: Formatter.formatFileMissingError),
+        innerParser(Matcher.ldErrorMatcher, outputType: .error, formatter: Formatter.formatError),
+        innerParser(Matcher.linkerDuplicateSymbolsLocationMatcher, outputType: .error, formatter: Formatter.formatNil),
+        innerParser(Matcher.linkerDuplicateSymbolsMatcher, outputType: .error, formatter: Formatter.formatLinkerDuplicateSymbolsError),
+        innerParser(Matcher.linkerUndefinedSymbolLocationMatcher, outputType: .error, formatter: Formatter.formatNil),
+        innerParser(Matcher.linkerUndefinedSymbolsMatcher, outputType: .error, formatter: Formatter.formatLinkerUndefinedSymbolsError),
+        innerParser(Matcher.podsErrorMatcher, outputType: .error, formatter: Formatter.formatError),
+        innerParser(Matcher.symbolReferencedFromMatcher, outputType: .warning, formatter: Formatter.formatCompleteError),
+        innerParser(Matcher.moduleIncludesErrorMatcher, outputType: .error, formatter: Formatter.formatError),
+        innerParser(Matcher.parallelTestingFailedMatcher, outputType: .error, formatter: Formatter.formatTestHeading(pattern: .parallelTestingFailed)),
+        innerParser(Matcher.parallelTestCaseFailedMatcher, outputType: .error, formatter: Formatter.formatTest(pattern: .parallelTestCaseFailed)),
+        innerParser(Matcher.shellCommandMatcher, outputType: .task, formatter: Formatter.formatNil),
+        innerParser(Matcher.undefinedSymbolLocationMatcher, outputType: .warning, formatter: Formatter.formatCompleteWarning),
+        innerParser(Matcher.packageGraphResolvingStart, outputType: .task, formatter: Formatter.formatPackageStart),
+        innerParser(Matcher.packageGraphResolvingEnded, outputType: .task, formatter: Formatter.formatPackageEnd),
+        innerParser(Matcher.packageGraphResolvedItem, outputType: .task, formatter: Formatter.formatPackgeItem)
     ]
     
     // MARK: - Init
@@ -94,10 +106,11 @@ public class Parser {
         self.colored = colored
         self.additionalLines = additionalLines
     }
+    
     public func parse(line: String) -> String? {
         
         // Find first parser that can parse specified string
-        guard let idx = innerParsers.firstIndex(where: { $0.regex.match(string: line)}) else {
+        guard let idx = innerParsers.firstIndex(where: { $0.match(string: line)}) else {
             
             // Some uncommon cases, which have additional logic and don't follow default flow
             
@@ -147,7 +160,7 @@ public class Parser {
             return
         }
         
-        let groups = line.capturedGroups(with: .executed)
+        let groups = RegexMatcher(pattern: .executed).capturedGroups(string: line)
         summary = TestSummary(
             testsCount: Int(groups[0]) ?? 0,
             skippedCount: 0,
@@ -165,7 +178,7 @@ public class Parser {
             return
         }
         
-        let groups = line.capturedGroups(with: .executedWithSkipped)
+        let groups = RegexMatcher(pattern: .executedWithSkipped).capturedGroups(string: line)
         summary = TestSummary(
             testsCount: Int(groups[0]) ?? 0,
             skippedCount: Int(groups[1]) ?? 0,
@@ -178,8 +191,12 @@ public class Parser {
         needToRecordSummary = false
     }
     
-    private func innerParser(_ regex: Regex, outputType: OutputType) -> InnerParser {
-        return InnerParser(additionalLines: additionalLines, colored: colored, regex: regex, outputType: outputType)
+    private func innerParser(_ parser: Matching, outputType: OutputType, formatter: @escaping (Formatter) -> ((Matching) -> String?)) -> InnerParser {
+        return InnerParser(outputType: outputType, colored: colored, matcher: parser) { string in formatter(string)(parser) }
+    }
+
+    private func innerParser(_ parser: Matching, outputType: OutputType, formatter: @escaping (Formatter) -> ((Matching, @escaping () -> (String?)) -> String?)) -> InnerParser {
+        return InnerParser(outputType: outputType, colored: colored, matcher: parser) { string in formatter(string)(parser, self.additionalLines) }
     }
     
     private struct InnerParser {
@@ -189,13 +206,18 @@ public class Parser {
             let value: String?
         }
         
-        let additionalLines: () -> String?
-        let colored: Bool
-        let regex: Regex
         let outputType: OutputType
+        let colored: Bool
+        let matcher: Matching
+        let format: (Formatter) -> String?
         
         func parse(line: String) -> Result {
-            return .init(outputType: outputType, value: line.beautify(pattern: regex.pattern, colored: colored, additionalLines: additionalLines))
+            let formatter = Formatter(colored: colored, string: line)
+            return .init(outputType: outputType, value: format(formatter))
+        }
+        
+        func match(string: String) -> Bool {
+            return matcher.match(string: string)
         }
     }
 

@@ -1,398 +1,254 @@
 import Foundation
 import Colorizer
 
-private var _colored = true
-
-extension String {
-    func beautify(pattern: Pattern, colored: Bool, additionalLines: @escaping () -> (String?)) -> String? {
-        _colored = colored
-
-        switch pattern {
-        case .analyze:
-            return formatAnalyze(pattern: pattern)
-        case .compile:
-        #if os(Linux)
-            return formatCompileLinux(pattern: pattern)
-        #else
-            fallthrough
-        #endif
-        case .compileXib,
-             .compileStoryboard:
-            return formatCompile(pattern: pattern)
-        case .compileCommand:
-            return formatCompileCommand(pattern: pattern)
-        case .buildTarget:
-            return formatTargetCommand(command: "Build", pattern: pattern)
-        case .analyzeTarget:
-            return formatTargetCommand(command: "Analyze", pattern: pattern)
-        case .aggregateTarget:
-            return formatTargetCommand(command: "Aggregate", pattern: pattern)
-        case .cleanTarget:
-            return formatTargetCommand(command: "Clean", pattern: pattern)
-        case .generateCoverageData,
-             .generatedCoverageReport:
-            return formatCodeCoverage(pattern: pattern)
-        case .generateDsym:
-            return formatGenerateDsym(pattern: pattern)
-        case .libtool:
-            return formatLibtool(pattern: pattern)
-        case .linking:
-        #if os(Linux)
-            return formatLinkingLinux(pattern: pattern)
-        #else
-            return formatLinking(pattern: pattern)
-        #endif
-        case .testSuiteStarted,
-             .testSuiteStart,
-             .parallelTestingStarted,
-             .parallelTestingPassed,
-             .parallelTestingFailed,
-             .parallelTestSuiteStarted:
-            return formatTestHeading(pattern: pattern)
-        case .testSuiteAllTestsPassed,
-             .testSuiteAllTestsFailed:
-            return nil
-        case .failingTest,
-             .uiFailingTest,
-             .restartingTests,
-             .testCasePassed,
-             .testCasePending,
-             .testCaseMeasured,
-             .testsRunCompletion,
-             .parallelTestCasePassed,
-             .parallelTestCaseAppKitPassed,
-             .parallelTestCaseFailed:
-            return formatTest(pattern: pattern)
-        case .codesign:
-            return format(command: "Signing", pattern: pattern)
-        case .codesignFramework:
-            return formatCodeSignFramework(pattern: pattern)
-        case .copyHeader,
-             .copyPlist,
-             .copyStrings,
-             .cpresource,
-             .pbxcp:
-            return formatCopy(pattern: pattern)
-        case .checkDependencies:
-            return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
-        case .processInfoPlist:
-            return formatProcessInfoPlist(pattern: .processInfoPlist)
-        case .processPch:
-            return formatProcessPch(pattern: pattern)
-        case .touch:
-            return formatTouch(pattern: pattern)
-        case .phaseSuccess:
-            let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
-            return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
-        case .phaseScriptExecution:
-            return formatPhaseScriptExecution()
-        case .preprocess:
-            return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
-        case .processPchCommand:
-            return formatProcessPchCommand(pattern: pattern)
-        case .writeFile:
-            return nil
-        case .writeAuxiliaryFiles:
-            return nil
-        case .shellCommand:
-            return nil
-        case .cleanRemove:
-            return formatCleanRemove(pattern: pattern)
-        case .executed,
-             .executedWithSkipped:
-            return nil
-        case .testCaseStarted:
-            return nil
-        case .tiffutil:
-            return nil
-        case .compileWarning:
-            return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
-        case .ldWarning:
-            return formatLdWarning(pattern: pattern)
-        case .genericWarning:
-            return formatWarning(pattern: pattern)
-        case .willNotBeCodeSigned:
-            return formatWillNotBeCodesignWarning(pattern: pattern)
-        case .clangError,
-             .fatalError,
-             .ldError,
-             .podsError,
-             .moduleIncludesError:
-            return formatError(pattern: pattern)
-        case .compileError:
-            return formatCompileError(pattern: pattern, additionalLines: additionalLines)
-        case .fileMissingError:
-            return formatFileMissingError(pattern: pattern)
-        case .checkDependenciesErrors:
-            return formatError(pattern: pattern)
-        case .provisioningProfileRequired:
-            return formatError(pattern: pattern)
-        case .noCertificate:
-            return formatError(pattern: pattern)
-        case .cursor:
-            return nil
-        case .linkerDuplicateSymbolsLocation:
-            return nil
-        case .linkerDuplicateSymbols:
-            return formatLinkerDuplicateSymbolsError(pattern: pattern)
-        case .linkerUndefinedSymbolLocation:
-            return nil
-        case .linkerUndefinedSymbols:
-            return formatLinkerUndefinedSymbolsError(pattern: pattern)
-        case .symbolReferencedFrom:
-            return formatCompleteError()
-        case .undefinedSymbolLocation:
-            return formatCompleteWarning()
-        case .packageGraphResolvingStart:
-            return formatPackageStart()
-        case .packageGraphResolvingEnded:
-            return formatPackageEnd(pattern: pattern)
-        case .packageGraphResolvedItem:
-            return formatPackgeItem(pattern: pattern)
-        }
-    }
-
-    // MARK: - Private
-
-    private func formatTargetCommand(command: String, pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
+struct Formatter {
+    let colored: Bool
+    let string: String
+    
+    func formatTargetCommand(matching: Matching, command: String) -> String {
+        let groups = matching.capturedGroups(string: string)
         let target = groups[0]
         let project = groups[1]
         let configuration = groups[2]
-        return _colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
+        return colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
+    }
+    
+    func formatPhaseSuccess(matcher: Matching) -> String? {
+        let phase = matcher.capturedGroups(string: string)[0].capitalized
+        return colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
     }
 
-    private func format(command: String, pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
+    func formatPreprocess(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
+        let filename = groups[1].lastPathComponent
+        return (colored ? "Preprocessing".s.Bold : "Preprocessing") + " " + filename
+    }
+
+    func formatCheckDependencies(matcher: Matching) -> String? {
+        return (colored ? "Check Dependencies".s.Bold : "Check Dependencies")
+    }
+
+    func formatCodeSigning(matcher: Matching) -> String {
+        let groups = matcher.capturedGroups(string: string)
         let sourceFile = groups[0]
-        return _colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
+        return colored ? "Signing".s.Bold + " " + sourceFile.lastPathComponent : "Signing" + " " + sourceFile.lastPathComponent
     }
 
-    private func format(command: String, pattern: Pattern, arguments: String) -> String? {
-        let template = command.style.Bold + " " + arguments
-
-        guard let formatted =
-            try? NSRegularExpression(pattern: pattern.rawValue)
-                .stringByReplacingMatches(
-                    in: self,
-                    range: NSRange(location: 0, length: count),
-                    withTemplate: template)
-            else {
-                return nil
-        }
-
-        return formatted
-    }
-
-    private func formatAnalyze(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatAnalyze(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filename = groups[1]
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 
-    private func formatCleanRemove(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let directory = groups[0].lastPathComponent
-        return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
-    }
-
-    private func formatCodeSignFramework(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let frameworkPath = groups[0]
-        return _colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
-    }
-
-    private func formatProcessPch(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[0]
-        guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
-    }
-
-    private func formatProcessPchCommand(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        guard let filePath = groups.last else { return nil }
-        return _colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
-    }
-
-    private func formatCompileCommand(pattern: Pattern) -> String? {
+    func formatNil(matcher: Matching) -> String? {
         return nil
     }
-    private func formatCompile(pattern: Pattern) -> String? {
-        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
+
+    func formatCleanRemove(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
+        let directory = groups[0].lastPathComponent
+        return colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
-    
-    private func formatCompileLinux(pattern: Pattern) -> String? {
-        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 0)
+
+    func formatCodeSignFramework(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
+        let frameworkPath = groups[0]
+        return colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
-    
-    private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
-        let groups = capturedGroups(with: pattern)
+
+    func formatProcessPch(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
+        let filename = groups[0]
+        guard let target = groups.last else { return nil }
+        return colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
+    }
+
+    func formatProcessPchCommand(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
+        guard let filePath = groups.last else { return nil }
+        return colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
+    }
+
+    func formatCompileCommand(matcher: Matching) -> String? {
+        return nil
+    }
+
+    func formatCompile(matcher: Matching) -> String? {
+        return innerFormatCompile(matcher: matcher, fileIndex: 1, targetIndex: 2)
+    }
+
+    func formatCompileLinux(matcher: Matching) -> String? {
+        return innerFormatCompile(matcher: matcher, fileIndex: 1, targetIndex: 0)
+    }
+
+    func innerFormatCompile(matcher: Matching, fileIndex: Int, targetIndex: Int) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filename = groups[fileIndex]
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 
-    private func formatCopy(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatCopy(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filename = groups[0].lastPathComponent
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 
-    private func formatGenerateDsym(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatGenerateDsym(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let dsym = groups[0]
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
+        return colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
     }
 
-    private func formatCodeCoverage(pattern: Pattern) -> String? {
+    func formatCodeCoverage(matcher: Matching, pattern: Pattern) -> String? {
         switch pattern {
         case .generateCoverageData:
-            return _colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
+            return colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
         case .generatedCoverageReport:
-            let filePath = capturedGroups(with: pattern)[0]
-            return _colored
-                ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)"
-                : "Generated code coverage report: \(filePath)"
+            let groups = matcher.capturedGroups(string: string)
+            let filePath = groups[0]
+            return colored
+            ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)"
+            : "Generated code coverage report: \(filePath)"
         default:
             return nil
         }
     }
 
-    private func formatLibtool(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatLibtool(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filename = groups[0]
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
-    private func formatTouch(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatTouch(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filename = groups[1]
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
-    private func formatLinking(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatLinking(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filename = groups[0].lastPathComponent
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
     }
     
-    private func formatLinkingLinux(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatLinkingLinux(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let target = groups[0]
-        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
+        return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
     }
 
-    private func formatPhaseScriptExecution() -> String? {
-        let groups = capturedGroups(with: .phaseScriptExecution)
+    func formatPhaseScriptExecution(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let phaseName = groups[0]
         // Strip backslashed added by xcodebuild before spaces in the build phase name
         let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
+        return colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
     }
 
-    private func formatTestHeading(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatTestHeading(matcher: Matching, pattern: Pattern) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let testSuite = groups[0]
-
+        
         switch pattern {
         case .testSuiteStart:
-            return _colored ? testSuite.s.Bold : testSuite
+            return colored ? testSuite.s.Bold : testSuite
         case .testSuiteStarted,
              .parallelTestSuiteStarted:
             let deviceDescription = pattern == .parallelTestSuiteStarted ? " on '\(groups[1])'" : ""
             let heading = "Test Suite \(testSuite) started\(deviceDescription)"
-            return _colored ? heading.s.Bold.f.Cyan : heading
+            return colored ? heading.s.Bold.f.Cyan : heading
         case .parallelTestingStarted:
-            return _colored ? s.Bold.f.Cyan : self
+            return colored ? string.s.Bold.f.Cyan : string
         case .parallelTestingPassed:
-            return _colored ? s.Bold.f.Green : self
+            return colored ? string.s.Bold.f.Green : string
         case .parallelTestingFailed:
-            return _colored ? s.Bold.f.Red : self
+            return colored ? string.s.Bold.f.Red : string
         default:
             return nil
         }
     }
 
-    private func formatTest(pattern: Pattern) -> String? {
+    func formatTest(matcher: Matching, pattern: Pattern) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let indent = "    "
-        let groups = capturedGroups(with: pattern)
-
+        
         switch pattern {
         case .testCasePassed:
             let testCase = groups[1]
             let time = groups[2]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
+            return colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(coloredTime(timedString: time)) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
         case .failingTest:
             let testCase = groups[2]
             let failingReason = groups[3]
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
+            return colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
         case .uiFailingTest:
             let file = groups[0]
             let failingReason = groups[1]
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
+            return colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
         case .restartingTests:
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
+            return colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + string : indent + TestStatus.fail.rawValue + " "  + string
         case .testCasePending:
             let testCase = groups[1]
-            return _colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
+            return colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
         case .testsRunCompletion:
             return nil
         case .testCaseMeasured:
             let testCase = groups[1]
             let time = groups[2]
-            return _colored ? indent + TestStatus.measure.rawValue.foreground.Yellow + " "  + testCase + " measured (\(time.coloredTime()) seconds)" : indent + TestStatus.measure.rawValue + " "  + testCase + " measured (\(time) seconds)"
+            return colored ? indent + TestStatus.measure.rawValue.foreground.Yellow + " "  + testCase + " measured (\(coloredTime(timedString: time)) seconds)" : indent + TestStatus.measure.rawValue + " "  + testCase + " measured (\(time) seconds)"
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
             let time = groups[3]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
+            return colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(coloredTime(timedString: time)) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
         case .parallelTestCaseAppKitPassed:
             let testCase = groups[1]
             let time = groups[2]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
+            return colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(coloredTime(timedString: time)) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
         case .parallelTestCaseFailed:
             let testCase = groups[1]
             let device = groups[2]
             let time = groups[3]
-            return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
+            return colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(coloredTime(timedString: time)) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
         default:
             return nil
         }
     }
 
-    private func formatError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatError(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         guard let errorMessage = groups.first else { return nil }
-        return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
+        return colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
     }
 
-    private func formatCompleteError() -> String? {
-        return _colored ? Symbol.error.rawValue + " " + self.f.Red : Symbol.asciiError.rawValue + " " + self
+    func formatCompleteError(matcher: Matching) -> String? {
+        return colored ? Symbol.error.rawValue + " " + string.f.Red : Symbol.asciiError.rawValue + " " + string
     }
 
-    private func formatCompileError(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatCompileError(matcher: Matching, additionalLines: @escaping () -> (String?)) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filePath = groups[0]
         let reason = groups[2]
-
+        
         // Read 2 additional lines to get the error line and cursor position
         let line: String = additionalLines() ?? ""
         let cursor: String = additionalLines() ?? ""
-        return _colored ?
+        return colored ?
             """
             \(Symbol.error.rawValue) \(filePath): \(reason.f.Red)
             \(line)
             \(cursor.f.Cyan)
             """
-            :
+        :
             """
             \(Symbol.asciiError.rawValue) \(filePath): \(reason)
             \(line)
@@ -400,38 +256,38 @@ extension String {
             """
     }
 
-    private func formatFileMissingError(pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
+    func formatFileMissingError(matcher: Matching) -> String {
+        let groups = matcher.capturedGroups(string: string)
         let reason = groups[0]
         let filePath = groups[1]
-        return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
+        return colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
     }
 
-    private func formatWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatWarning(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         guard let warningMessage = groups.first else { return nil }
-        return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
+        return colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
+    }
+    
+    func formatCompleteWarning(matcher: Matching) -> String? {
+        return colored ? Symbol.warning.rawValue + " " + string.f.Yellow : Symbol.asciiWarning.rawValue + " " + string
     }
 
-    private func formatCompleteWarning() -> String? {
-        return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " + self
-    }
-
-    private func formatCompileWarning(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatCompileWarning(matcher: Matching, additionalLines: @escaping () -> (String?)) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let filePath = groups[0]
         let reason = groups[2]
-
+        
         // Read 2 additional lines to get the warning line and cursor position
         let line: String = additionalLines() ?? ""
         let cursor: String = additionalLines() ?? ""
-        return _colored ?
+        return colored ?
             """
             \(Symbol.warning.rawValue)  \(filePath): \(reason.f.Yellow)
             \(line)
             \(cursor.f.Green)
             """
-            :
+        :
             """
             \(Symbol.asciiWarning.rawValue)  \(filePath): \(reason)
             \(line)
@@ -439,73 +295,113 @@ extension String {
             """
     }
 
-    private func formatLdWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatLdWarning(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let prefix = groups[0]
         let message = groups[1]
-        return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
+        return colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
-    private func formatProcessInfoPlist(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatProcessInfoPlist(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let plist = groups[1]
-
+        
         // Xcode 9 output
         if groups.count == 2 {
-            return _colored ? "Processing".s.Bold + " " + plist : "Processing" + " " + plist
+            return colored ? "Processing".s.Bold + " " + plist : "Processing" + " " + plist
         }
-
+        
         // Xcode 10+ output
         guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
+        return colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
     }
 
     // TODO: Print symbol and reference location
-    private func formatLinkerUndefinedSymbolsError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatLinkerUndefinedSymbolsError(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let reason = groups[0]
-        return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
+        return colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
     // TODO: Print file path
-    private func formatLinkerDuplicateSymbolsError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatLinkerDuplicateSymbolsError(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let reason = groups[0]
-        return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
+        return colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
-    private func formatWillNotBeCodesignWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatWillNotBeCodesignWarning(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         guard let warningMessage = groups.first else { return nil }
-        return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
+        return colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
-    private func formatSummary() -> String? {
-        return _colored ? self.f.Green.s.Bold : self
+    func formatSummary() -> String? {
+        return colored ? string.f.Green.s.Bold : string
     }
 
-    private func coloredTime() -> String {
-        guard let time = Double(self) else { return self }
-        if time < 0.025 { return self }
-        if time < 0.100 { return _colored ? f.Yellow : self }
-        return _colored ? f.Red : self
+    func coloredTime(timedString: String) -> String {
+        guard let time = Double(timedString) else { return timedString }
+        if time < 0.025 { return timedString }
+        if time < 0.100 { return colored ? timedString.f.Yellow : timedString }
+        return colored ? timedString.f.Red : timedString
     }
 
-    private func formatPackageStart() -> String? {
-        return _colored ? self.s.Bold.f.Cyan : self
+    func formatPackageStart(matcher: Matching) -> String? {
+        return colored ? string.s.Bold.f.Cyan : string
     }
 
-    private func formatPackageEnd(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+    func formatPackageEnd(matcher: Matching) -> String? {
+        let groups = matcher.capturedGroups(string: string)
         let ended = groups[0]
-        return _colored ? ended.s.Bold.f.Green : ended
+        return colored ? ended.s.Bold.f.Green : ended
     }
 
-    private func formatPackgeItem(pattern: Pattern) -> String?  {
-        let groups = capturedGroups(with: pattern)
+    func formatPackgeItem(matcher: Matching) -> String?  {
+        let groups = matcher.capturedGroups(string: string)
         let name = groups[0]
         let url = groups[1]
         let version = groups[2]
-        return _colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
+        return colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
     }
+
+    func formatBuildTargetCommand(matching: Matching) -> String {
+        formatTargetCommand(matching: matching, command: "Build")
+    }
+    
+    func formatAggregateTargetCommand(matching: Matching) -> String {
+        formatTargetCommand(matching: matching, command: "Aggregate")
+    }
+    
+    func formatAnalyzeTargetCommand(matching: Matching) -> String {
+        formatTargetCommand(matching: matching, command: "Analyze")
+    }
+    
+    func formatCleanTargetCommand(matching: Matching) -> String {
+        formatTargetCommand(matching: matching, command: "Clean")
+    }
+    
+    static func formatTestHeading(pattern: Pattern) -> (Formatter) -> (Matching) -> String? {
+        format(pattern: pattern, formatter: Formatter.formatTestHeading)
+    }
+    
+    static func formatTest(pattern: Pattern) -> (Formatter) -> (Matching) -> String? {
+        format(pattern: pattern, formatter: Formatter.formatTest)
+    }
+    
+    static func formatCodeCoverage(pattern: Pattern) -> (Formatter) -> (Matching) -> String? {
+        format(pattern: pattern, formatter: Formatter.formatCodeCoverage)
+    }
+    
+    static func format(
+        pattern: Pattern,
+        formatter: @escaping (Formatter) -> (Matching, Pattern) -> String?
+    ) -> (Formatter) -> (Matching) -> String? {
+        { string in
+            { matcher in
+                return formatter(string)(matcher, pattern)
+            }
+        }
+    }
+
 }

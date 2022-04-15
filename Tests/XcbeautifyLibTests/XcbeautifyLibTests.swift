@@ -335,6 +335,8 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testPreprocess() {
+        let formatted = noColoredFormatted("Preprocess /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Preprocessed-Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist (in target 'target' from project 'project')")
+        XCTAssertEqual(formatted, "Preprocessing Guaka_Info.plist")
     }
 
     func testProcessInfoPlist() {
