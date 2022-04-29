@@ -359,7 +359,7 @@ extension String {
             } else {
                 formattedValue = value
             }
-            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured [\(name)] (\(formattedValue) \(unitName))"
+            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) -- \(name))"
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
