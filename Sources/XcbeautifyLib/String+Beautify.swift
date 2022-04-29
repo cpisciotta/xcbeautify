@@ -347,8 +347,19 @@ extension String {
             return nil
         case .testCaseMeasured:
             let testCase = groups[1]
-            let time = groups[2]
-            return _colored ? indent + TestStatus.measure.rawValue.foreground.Yellow + " "  + testCase + " measured (\(time.coloredTime()) seconds)" : indent + TestStatus.measure.rawValue + " "  + testCase + " measured (\(time) seconds)"
+            let name = groups[2]
+            let unitName = groups[3]
+            let value = groups[4]
+
+            let formattedValue: String
+            if unitName == "seconds",
+               _colored
+            {
+                formattedValue = value.coloredTime()
+            } else {
+                formattedValue = value
+            }
+            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured [\(name)] (\(formattedValue) \(unitName))"
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
