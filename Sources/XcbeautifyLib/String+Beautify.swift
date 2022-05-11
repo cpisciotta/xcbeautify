@@ -507,8 +507,8 @@ extension String {
         guard _colored,
               let deviation = Double(self)
         else { return self }
-        if deviation < 10 { return self }
-        if deviation < 50 { return f.Yellow }
+        if deviation < 1 { return self }
+        if deviation < 10 { return f.Yellow }
         return f.Red
     }
 
