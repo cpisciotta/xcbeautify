@@ -350,16 +350,15 @@ extension String {
             let name = groups[2]
             let unitName = groups[3]
             let value = groups[4]
+            let deviation = groups[5].coloredDeviation()
 
             let formattedValue: String
-            if unitName == "seconds",
-               _colored
-            {
+            if unitName == "seconds" {
                 formattedValue = value.coloredTime()
             } else {
                 formattedValue = value
             }
-            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) -- \(name))"
+            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
@@ -496,10 +495,21 @@ extension String {
     }
 
     private func coloredTime() -> String {
-        guard let time = Double(self) else { return self }
+        guard _colored,
+              let time = Double(self)
+        else { return self }
         if time < 0.025 { return self }
-        if time < 0.100 { return _colored ? f.Yellow : self }
-        return _colored ? f.Red : self
+        if time < 0.100 { return f.Yellow }
+        return f.Red
+    }
+
+    private func coloredDeviation() -> String {
+        guard _colored,
+              let deviation = Double(self)
+        else { return self }
+        if deviation < 10 { return self }
+        if deviation < 50 { return f.Yellow }
+        return f.Red
     }
 
     private func formatPackageStart() -> String? {
