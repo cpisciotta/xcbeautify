@@ -186,9 +186,9 @@ enum Pattern: String {
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*])\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*])\]\saverage:\s(\d*\.\d{3})"#
     #else
-    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3})"#
     #endif
 
     /// Regular expression captured groups:
