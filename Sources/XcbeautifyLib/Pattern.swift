@@ -243,7 +243,7 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 file path
-    case processPchCommand = #"\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*"#
+    case processPchCommand = #"\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#
 
     /// Regular expression captured groups:
     /// $1 = file
