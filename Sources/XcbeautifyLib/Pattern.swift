@@ -239,11 +239,11 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
-    case processPch = #"ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*.pch) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
+    case processPch = #"ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 file path
-    case processPchCommand = #"\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*.pch)\s.*\-o\s.*"#
+    case processPchCommand = #"\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#
 
     /// Regular expression captured groups:
     /// $1 = file
