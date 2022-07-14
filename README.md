@@ -64,7 +64,7 @@ The `xcbeautify` binary will be installed at `Pods/xcbeautify/xcbeautify`
 
 ### Swift Package Manager
 
-Create a directory in the same location as the `xcodeproj` file, for example `Example`.  
+Create a directory in the same location as the `xcodeproj` file, for example `BuildTools`.  
 In that directory, create a `Package.swift` file with the following contents.  
 In addition, add an empty file named `Empty.swift` to the same location.
 
@@ -73,20 +73,20 @@ In addition, add an empty file named `Empty.swift` to the same location.
 import PackageDescription
 
 let package = Package(
-    name: "Example",
+    name: "BuildTools",
     platforms: [.macOS(.v10_11)],
     dependencies: [
       .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0"),
     ],
     targets: [
-      .target(name: "Example", path: "")
+      .target(name: "BuildTools", path: "")
     ]
 )
 ```
 
 Enter this command to execute.  
 ```
-$ cd Example
+$ cd BuildTools
 $ swift run -c release --package-path {package-path} xcbeautify
 ```
 
