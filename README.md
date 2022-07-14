@@ -86,7 +86,7 @@ let package = Package(
 
 Enter this command to execute.  
 ```
-swift run -c release --package-path {package-path} xcbeautify
+swift run -c release --package-path ./BuildTools xcbeautify
 ```
 
 ### Build from source
