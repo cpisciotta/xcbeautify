@@ -8,6 +8,8 @@ public class Parser {
 
     public var needToRecordSummary = false
 
+    public var preserveUnbeautifiedLines = false
+
     public var outputType: OutputType = OutputType.undefined
     
     private lazy var innerParsers: [InnerParser] = [
@@ -90,8 +92,13 @@ public class Parser {
     
     // MARK: - Init
     
-    public init(colored: Bool = true, additionalLines: @escaping () -> (String?)) {
+    public init(
+        colored: Bool = true,
+        preserveUnbeautifiedLines: Bool = false,
+        additionalLines: @escaping () -> (String?)
+    ) {
         self.colored = colored
+        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }
     public func parse(line: String) -> String? {
@@ -125,7 +132,7 @@ public class Parser {
             
             // Nothing found?
             outputType = OutputType.undefined
-            return nil
+            return preserveUnbeautifiedLines ? line : nil
         }
         
         let parser = innerParsers[idx]
