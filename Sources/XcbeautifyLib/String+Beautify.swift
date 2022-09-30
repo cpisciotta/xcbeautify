@@ -49,6 +49,9 @@ extension String {
              .parallelTestingFailed,
              .parallelTestSuiteStarted:
             return formatTestHeading(pattern: pattern)
+        case .testSuiteAllTestsPassed,
+             .testSuiteAllTestsFailed:
+            return nil
         case .failingTest,
              .uiFailingTest,
              .restartingTests,
@@ -95,7 +98,8 @@ extension String {
             return nil
         case .cleanRemove:
             return formatCleanRemove(pattern: pattern)
-        case .executed:
+        case .executed,
+             .executedWithSkipped:
             return nil
         case .testCaseStarted:
             return nil
@@ -344,8 +348,18 @@ extension String {
             return nil
         case .testCaseMeasured:
             let testCase = groups[1]
-            let time = groups[2]
-            return _colored ? indent + TestStatus.measure.rawValue.foreground.Yellow + " "  + testCase + " measured (\(time.coloredTime()) seconds)" : indent + TestStatus.measure.rawValue + " "  + testCase + " measured (\(time) seconds)"
+            let name = groups[2]
+            let unitName = groups[3]
+            let value = groups[4]
+            let deviation = groups[5].coloredDeviation()
+
+            let formattedValue: String
+            if unitName == "seconds" {
+                formattedValue = value.coloredTime()
+            } else {
+                formattedValue = value
+            }
+            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
         case .parallelTestCasePassed:
             let testCase = groups[1]
             let device = groups[2]
@@ -482,10 +496,21 @@ extension String {
     }
 
     private func coloredTime() -> String {
-        guard let time = Double(self) else { return self }
+        guard _colored,
+              let time = Double(self)
+        else { return self }
         if time < 0.025 { return self }
-        if time < 0.100 { return _colored ? f.Yellow : self }
-        return _colored ? f.Red : self
+        if time < 0.100 { return f.Yellow }
+        return f.Red
+    }
+
+    private func coloredDeviation() -> String {
+        guard _colored,
+              let deviation = Double(self)
+        else { return self }
+        if deviation < 1 { return self }
+        if deviation < 10 { return f.Yellow }
+        return f.Red
     }
 
     private func formatPackageStart() -> String? {

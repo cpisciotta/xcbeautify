@@ -96,7 +96,7 @@ bump-version:
 .PHONY: release
 release: bump-version
 	$(GIT) commit Sources xcbeautify.podspec -m "Release version $(VERSION)"
-	$(GIT) push origin master
+	$(GIT) push origin main
 	$(GIT) tag $(VERSION)
 	$(GIT) push origin $(VERSION)
 

@@ -2,10 +2,15 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class XcbeautifyLibTests: XCTestCase {
-    let parser = Parser()
+    var parser: Parser!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        parser = Parser(colored: false, additionalLines: { nil } )
+    }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        return parser.parse(line: string, colored: false, additionalLines: { nil })
+        return parser.parse(line: string)
     }
 
     func testAggregateTarget() {
@@ -59,10 +64,24 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertEqual(formatted, "Signing MyApp.app")
     }
 
+    func testMultipleCodesigns() {
+        let formattedApp = noColoredFormatted("CodeSign build/Release/MyApp.app")
+        let formattedFramework = noColoredFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
+        XCTAssertEqual(formattedApp, "Signing MyApp.app")
+        XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
+    }
+
     func testCompileCommand() {
     }
 
     func testCompileError() {
+        let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
+        let outputError = "[x] /path/file.swift:64:69: cannot find \'input\' in scope\n\n"
+        XCTAssertEqual(noColoredFormatted(inputError), outputError)
+
+        let inputFatal = "/path/file.swift:64:69: fatal error: cannot find 'input' in scope"
+        let outputFatal = "[x] /path/file.swift:64:69: cannot find 'input' in scope\n\n"
+        XCTAssertEqual(noColoredFormatted(inputFatal), outputFatal)
     }
 
     func testCompile() {
@@ -83,6 +102,9 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompileWarning() {
+        let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
+        let output = "[!]  /path/file.swift:64:69: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCompileXib() {
@@ -103,7 +125,96 @@ final class XcbeautifyLibTests: XCTestCase {
     func testCursor() {
     }
 
-    func testExecuted() {
+    func testExecuted() throws {
+        let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+        let input2 = "Executed 3 tests, with 2 failures (1 unexpected) in 0.112 (0.112) seconds"
+
+        let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
+        let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
+
+        // First test plan
+        XCTAssertNil(parser.summary)
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted1 = noColoredFormatted(input1)
+#if os(macOS)
+        // FIXME: Failing on Linux
+        XCTAssertTrue(parser.needToRecordSummary)
+#endif
+        let formatted2 = noColoredFormatted(input2)
+        XCTAssertFalse(parser.needToRecordSummary)
+        XCTAssertNil(formatted1)
+        XCTAssertNil(formatted2)
+
+#if os(macOS)
+        // FIXME: Failing on Linux
+        var summary = try XCTUnwrap(parser.summary)
+
+        XCTAssertEqual(summary.testsCount, 3)
+        XCTAssertEqual(summary.failuresCount, 2)
+        XCTAssertEqual(summary.unexpectedCount, 1)
+        XCTAssertEqual(summary.skippedCount, 0)
+        XCTAssertEqual(summary.time, 0.112)
+
+        // Second test plan
+        XCTAssertNotNil(parser.summary)
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted3 = noColoredFormatted(input3)
+        XCTAssertTrue(parser.needToRecordSummary)
+        let formatted4 = noColoredFormatted(input4)
+        XCTAssertFalse(parser.needToRecordSummary)
+        XCTAssertNil(formatted3)
+        XCTAssertNil(formatted4)
+
+        summary = try XCTUnwrap(parser.summary)
+
+        XCTAssertEqual(summary.testsCount, 4)
+        XCTAssertEqual(summary.failuresCount, 3)
+        XCTAssertEqual(summary.unexpectedCount, 2)
+        XCTAssertEqual(summary.skippedCount, 0)
+        XCTAssertEqual(summary.time, 0.312)
+#endif
+    }
+
+    func testExecutedWithSkipped() {
+        let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+        let input2 = "Executed 56 tests, with 3 test skipped and 2 failures (1 unexpected) in 1.029 (1.029) seconds"
+
+        let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
+        let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
+
+        // First test plan
+        XCTAssertNil(parser.summary)
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted1 = noColoredFormatted(input1)
+        XCTAssertTrue(parser.needToRecordSummary)
+        let formatted2 = noColoredFormatted(input2)
+        XCTAssertFalse(parser.needToRecordSummary)
+        XCTAssertNil(formatted1)
+        XCTAssertNil(formatted2)
+        XCTAssertNotNil(parser.summary)
+
+        XCTAssertEqual(parser.summary?.testsCount, 56)
+        XCTAssertEqual(parser.summary?.failuresCount, 2)
+        XCTAssertEqual(parser.summary?.unexpectedCount, 1)
+        XCTAssertEqual(parser.summary?.skippedCount, 3)
+        XCTAssertEqual(parser.summary?.time, 1.029)
+
+        // Second test plan
+        XCTAssertNotNil(parser.summary)
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted3 = noColoredFormatted(input3)
+        XCTAssertTrue(parser.needToRecordSummary)
+        let formatted4 = noColoredFormatted(input4)
+        XCTAssertFalse(parser.needToRecordSummary)
+        XCTAssertNil(formatted3)
+        XCTAssertNil(formatted4)
+        XCTAssertNotNil(parser.summary)
+
+        XCTAssertEqual(parser.summary?.testsCount, 57)
+        XCTAssertEqual(parser.summary?.failuresCount, 3)
+        XCTAssertEqual(parser.summary?.unexpectedCount, 2)
+        XCTAssertEqual(parser.summary?.skippedCount, 4)
+        XCTAssertEqual(parser.summary?.time, 4.029)
     }
 
     func testFailingTest() {
@@ -246,9 +357,19 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertEqual(formatted, "Preprocessing /path/to/my.pch")
     }
 
+    func testProcessPchCommandArbitraryExtension() {
+        let formatted = noColoredFormatted(#"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -target x86_64-apple-macos12.3 -c /path/with\ space/cmake_pch.hxx -o /path/with\ space/build/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.gch --serialize-diagnostics /path/with\ space/build/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.dia"#)
+        XCTAssertEqual(formatted, #"Preprocessing /path/with\ space/cmake_pch.hxx"#)
+    }
+
     func testProcessPch() {
         let formatted = noColoredFormatted("ProcessPCH /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)")
         XCTAssertEqual(formatted, "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
+    }
+
+    func testProcessPchArbitraryExtension() {
+        let formatted = noColoredFormatted(#"ProcessPCH++ /Users/admin/src/Test\ Folder/_builds/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.gch /Users/admin/src/Test\ Folder/_builds/CMakeFiles/foo.dir/Debug/cmake_pch.hxx normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler (in target 'foo' from project 'foo')"#)
+        XCTAssertEqual(formatted, "[foo] Processing cmake_pch.hxx")
     }
 
     func testProcessPchPlusPlus() {
@@ -283,6 +404,10 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTestCaseMeasured() {
+#if os(macOS)
+        let formatted = noColoredFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
+        XCTAssertEqual(formatted, #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
+#endif
     }
 
     func testTestCasePassed() {
@@ -302,6 +427,24 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTestSuiteStarted() {
+    }
+
+    func testTestSuiteAllTestsPassed() {
+        let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
+
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted = noColoredFormatted(input)
+        XCTAssertNil(formatted)
+        XCTAssertTrue(parser.needToRecordSummary)
+    }
+
+    func testTestSuiteAllTestsFailed() {
+        let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+
+        XCTAssertFalse(parser.needToRecordSummary)
+        let formatted = noColoredFormatted(input)
+        XCTAssertNil(formatted)
+        XCTAssertTrue(parser.needToRecordSummary)
     }
 
     func testTestsRunCompletion() {

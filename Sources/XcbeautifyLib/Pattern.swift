@@ -41,7 +41,7 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = file
-    case codesign = #"CodeSign\s((?:\ |[^ ])*)$"#
+    case codesign = #"CodeSign\s(((?!.framework/Versions/A)(?:\ |[^ ]))*)$"#
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -102,6 +102,14 @@ enum Pattern: String {
     /// $3 = number of unexpected failures
     /// $4 = wall clock time in seconds (e.g. 0.295)
     case executed = #"\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#
+    
+    /// Regular expression captured groups:
+    /// $1 = number of tests
+    /// $2 = number of skipped
+    /// $3 = number of failures
+    /// $4 = number of unexpected failures
+    /// $5 = wall clock time in seconds (e.g. 0.295)
+    case executedWithSkipped = #"\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -178,9 +186,9 @@ enum Pattern: String {
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[Time,\sseconds\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#
     #else
-    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[Time,\sseconds\]\saverage:\s(\d*\.\d{3})(.*){4}"#
+    case testCaseMeasured = #"[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#
     #endif
 
     /// Regular expression captured groups:
@@ -231,11 +239,11 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
-    case processPch = #"ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*.pch) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
+    case processPch = #"ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#
 
     /// Regular expression captured groups:
     /// $1 file path
-    case processPchCommand = #"\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*.pch)\s.*\-o\s.*"#
+    case processPchCommand = #"\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -276,6 +284,11 @@ enum Pattern: String {
     /// $1 = test suite name
     case testSuiteStart = #"\s*Test Suite '(.*)' started at"#
 
+    
+    case testSuiteAllTestsPassed = #"\s*Test Suite 'All tests' passed at"#
+    
+    case testSuiteAllTestsFailed = #"\s*Test Suite 'All tests' failed at"#
+    
     /// Regular expression captured groups:
     /// $1 = filename
     case tiffutil = #"TiffUtil\s(.*)"#
@@ -298,7 +311,7 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
-    case compileWarning = #"((.*):.*:.*):\swarning:\s(.*)$"#
+    case compileWarning = #"(([^:]*):\d*:\d*):\swarning:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = ld prefix
@@ -335,7 +348,7 @@ enum Pattern: String {
     /// $1 = file path (could be a relative path if you build with Bazel)
     /// $2 = is fatal error
     /// $3 = reason
-    case compileError = #"((.*):.*:.*):\s(?:fatal\s)?error:\s(.*)$"#
+    case compileError = #"(([^:]*):\d*:\d*):\s(?:fatal\s)?error:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = cursor (with whitespaces and tildes)

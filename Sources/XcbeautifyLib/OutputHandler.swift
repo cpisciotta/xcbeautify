@@ -13,7 +13,7 @@ public class OutputHandler {
     /// [Target] Doing Something
     /// warnings or errors
     ///
-    /// Ref: https://github.com/thii/xcbeautify/pull/15
+    /// Ref: https://github.com/tuist/xcbeautify/pull/15
     private var lastFormatted: String? = nil
 
     public init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {

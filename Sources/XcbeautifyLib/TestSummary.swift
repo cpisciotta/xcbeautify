@@ -1,19 +1,29 @@
 public struct TestSummary {
-    let testsCount: String
-    let failuresCount: String
-    let unexpectedCount: String
-    let time: String
+    let testsCount: Int
+    let skippedCount: Int
+    let failuresCount: Int
+    let unexpectedCount: Int
+    let time: Double
     let colored: Bool
+    
+    init(testsCount: Int, skippedCount: Int, failuresCount: Int, unexpectedCount: Int, time: Double, colored: Bool, testSummary: TestSummary?) {
+        self.testsCount = testsCount + (testSummary?.testsCount ?? 0)
+        self.skippedCount = skippedCount + (testSummary?.skippedCount ?? 0)
+        self.failuresCount = failuresCount + (testSummary?.failuresCount ?? 0)
+        self.unexpectedCount = unexpectedCount + (testSummary?.unexpectedCount ?? 0)
+        self.time = time + (testSummary?.time ?? 0)
+        self.colored = colored || (testSummary?.colored ?? false)
+    }
 }
 
 extension TestSummary {
     func isSuccess() -> Bool {
-        guard let failures = Int(failuresCount) else { return false }
-        return failures == 0
+        return failuresCount == 0
     }
 
     var description: String {
-        return "\(failuresCount) failed, \(testsCount) total (\(time) seconds)"
+        let timeFormatted = String(format: "%.3f", time)
+        return "\(failuresCount) failed, \(skippedCount) skipped, \(testsCount) total (\(timeFormatted) seconds)"
     }
 
     public func format() -> String {

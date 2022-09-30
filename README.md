@@ -1,8 +1,8 @@
 # xcbeautify
 
-[![Build Status](https://github.com/thii/xcbeautify/workflows/build/badge.svg?branch=master)](https://github.com/thii/xcbeautify/actions)
-[![Latest Release](https://img.shields.io/github/release/thii/xcbeautify.svg)](https://github.com/thii/xcbeautify/releases/latest)
-[![License](https://img.shields.io/github/license/thii/xcbeautify.svg)](LICENSE.md)
+[![Build Status](https://github.com/tuist/xcbeautify/workflows/build/badge.svg?branch=main)](https://github.com/tuist/xcbeautify/actions)
+[![Latest Release](https://img.shields.io/github/release/tuist/xcbeautify.svg)](https://github.com/tuist/xcbeautify/releases/latest)
+[![License](https://img.shields.io/github/license/tuist/xcbeautify.svg)](LICENSE.md)
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
@@ -50,7 +50,7 @@ brew install xcbeautify
 ### [Mint](https://github.com/yonaskolb/mint)
 
 ```bash
-mint install thii/xcbeautify
+mint install tuist/xcbeautify
 ```
 
 ### CocoaPods
@@ -61,10 +61,38 @@ pod 'xcbeautify'
 
 The `xcbeautify` binary will be installed at `Pods/xcbeautify/xcbeautify`
 
+
+### Swift Package Manager
+
+Create a directory in the same location as the `xcodeproj` file, for example `BuildTools`.  
+In that directory, create a `Package.swift` file with the following contents.  
+In addition, add an empty file named `Empty.swift` to the same location.
+
+```swift
+// swift-tools-version: 5.6
+import PackageDescription
+
+let package = Package(
+    name: "BuildTools",
+    platforms: [.macOS(.v10_11)],
+    dependencies: [
+      .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0"),
+    ],
+    targets: [
+      .target(name: "BuildTools", path: "")
+    ]
+)
+```
+
+Enter this command to execute.  
+```
+swift run -c release --package-path ./BuildTools xcbeautify
+```
+
 ### Build from source
 
 ```bash
-git clone https://github.com/thii/xcbeautify.git
+git clone https://github.com/tuist/xcbeautify.git
 cd xcbeautify
 make install
 ```

@@ -14,6 +14,9 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: [.long, .customLong("qq", withSingleDash: true)], help: "Only print tasks that have errors.")
     var quieter = false
     
+    @Flag(name: [.long], help: "Preserves unbeautified output lines.")
+    var preserveUnbeautified = false
+
     @Flag(name: .long, help: "Print test result too under quiet/quieter flag.")
     var isCi = false
 
@@ -27,7 +30,6 @@ struct Xcbeautify: ParsableCommand {
     var reportPath = "build/reports"
 
     func run() throws {
-        let parser = Parser()
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
         let junitReporter = JunitReporter()
 
@@ -40,11 +42,15 @@ struct Xcbeautify: ParsableCommand {
             }
             return line
         }
+        
+        let parser = Parser(
+            colored: !disableColoredOutput,
+            preserveUnbeautifiedLines: preserveUnbeautified,
+            additionalLines: { readLine() }
+        )
 
         while let line = readLine() {
-            guard let formatted = parser.parse(line: line,
-                                               colored: !disableColoredOutput,
-                                               additionalLines: { readLine() }) else { continue }
+            guard let formatted = parser.parse(line: line) else { continue }
             output.write(parser.outputType, formatted)
         }
         
