@@ -87,7 +87,8 @@ public class Parser {
         innerParser(Matcher.undefinedSymbolLocationMatcher, outputType: .warning),
         innerParser(Matcher.packageGraphResolvingStart, outputType: .task),
         innerParser(Matcher.packageGraphResolvingEnded, outputType: .task),
-        innerParser(Matcher.packageGraphResolvedItem, outputType: .task)
+        innerParser(Matcher.packageGraphResolvedItem, outputType: .task),
+        innerParser(Matcher.xcodebuildErrorMatcher, outputType: .error)
     ]
     
     // MARK: - Init

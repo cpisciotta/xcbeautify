@@ -78,4 +78,5 @@ struct Matcher {
     static let willNotBeCodeSignedMatcher = Regex(pattern: .willNotBeCodeSigned)
     static let writeAuxiliaryFilesMatcher = Regex(pattern: .writeAuxiliaryFiles)
     static let writeFileMatcher = Regex(pattern: .writeFile)
+    static let xcodebuildErrorMatcher = Regex(pattern: .xcodebuildError)
 }

@@ -486,4 +486,9 @@ final class XcbeautifyLibTests: XCTestCase {
         let package = noColoredFormatted("  StrasbourgParkAPI: https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
         XCTAssertEqual(package, "StrasbourgParkAPI - https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
     }
+    
+    func testXcodebuildError() {
+        let formatted = noColoredFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
+        XCTAssertEqual(formatted, "[x] xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
+    }
 }

@@ -410,4 +410,8 @@ enum Pattern: String {
     /// $2 = package url
     /// $3 = package version
     case packageGraphResolvedItem = #"\s*([^\s:]+):\s([^ ]+)\s@\s(\d+\.\d+\.\d+)"#;
+    
+    /// Regular expression captured groups:
+    /// $1 = whole error
+    case xcodebuildError = #"(xcodebuild: error:.*)$"#;
 }
