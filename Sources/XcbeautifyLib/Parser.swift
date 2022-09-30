@@ -222,6 +222,9 @@ public class Parser {
             case Matcher.parallelTestCaseFailedMatcher:
                 outputType = OutputType.error
                 return line.beautify(pattern: .parallelTestCaseFailed, colored: colored, additionalLines: additionalLines)
+            case Matcher.xcodebuildErrorMatcher:
+                outputType = OutputType.error
+                return line.beautify(pattern: .xcodebuildError, colored: colored, additionalLines: additionalLines)
             case Matcher.shellCommandMatcher:
                 outputType = OutputType.task
                 return line.beautify(pattern: .shellCommand, colored: colored, additionalLines: additionalLines)

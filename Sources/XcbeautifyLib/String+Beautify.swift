@@ -113,7 +113,8 @@ extension String {
              .fatalError,
              .ldError,
              .podsError,
-             .moduleIncludesError:
+             .moduleIncludesError,
+             .xcodebuildError:
             return formatError(pattern: pattern)
         case .compileError:
             return formatCompileError(pattern: pattern, additionalLines: additionalLines)
