@@ -29,6 +29,9 @@ struct Xcbeautify: ParsableCommand {
     @Option(help: "The path to use when generating reports")
     var reportPath = "build/reports"
 
+	@Option(help: "The the name of JUnit report file name")
+	var junitReportFileName = "junit.xml"
+
     func run() throws {
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
         let junitReporter = JunitReporter()
@@ -66,7 +69,7 @@ struct Xcbeautify: ParsableCommand {
             for reportType in Set(report) {
                 switch reportType {
                 case .junit:
-                    let junitOutputPath = outputPath.appendingPathComponent("junit.xml")
+                    let junitOutputPath = outputPath.appendingPathComponent(junitReportFileName)
                     let report = try junitReporter.generateReport()
                     try report.write(to: junitOutputPath)
                 }
