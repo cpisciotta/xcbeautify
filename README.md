@@ -21,7 +21,7 @@ Similar to `xcpretty`, but faster.
   bring anywhere. This also means less Ruby-dependant in your development
   environment and CI.
 
-**Note:** `xcbeautify` does not support generating JUnit or HTML test reports.
+**Note:** `xcbeautify` support generating JUnit reports. 
 In fact, you shouldn't rely on `xcodebuild`'s output to generate test reports.
 We suggest using [trainer](https://github.com/KrauseFx/trainer) or
 [XCTestHTMLReport](https://github.com/TitouanVanBelle/XCTestHTMLReport) to
