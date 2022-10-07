@@ -29,7 +29,7 @@ struct Xcbeautify: ParsableCommand {
     @Option(help: "The path to use when generating reports")
     var reportPath = "build/reports"
 
-    @Option(help: "The the name of JUnit report file name")
+    @Option(help: "The name of JUnit report file name")
     var junitReportFilename = "junit.xml"
 
     func run() throws {
