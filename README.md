@@ -16,17 +16,11 @@ Similar to `xcpretty`, but faster.
 - [x] Supports Xcode's parallel testing output.
 - [x] Supports formatting Swift Package Manager output.
 - [x] Supports formatting Bazel output.
+- [x] Supports generating JUnit reports.
 - [x] Supports macOS & Linux.
 - [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
   bring anywhere. This also means less Ruby-dependant in your development
   environment and CI.
-
-**Note:** `xcbeautify` support generating JUnit reports. 
-In fact, you shouldn't rely on `xcodebuild`'s output to generate test reports.
-We suggest using [trainer](https://github.com/KrauseFx/trainer) or
-[XCTestHTMLReport](https://github.com/TitouanVanBelle/XCTestHTMLReport) to
-generate test reports from `xcodebuild`'s generated `TestSummaries.plist`
-files.
 
 ## Fun fact
 
