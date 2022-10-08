@@ -142,7 +142,7 @@ Build with Bazel:
 bazel build //Sources/xcbeautify
 ```
 
-Release a new version, say `x.y.z`:
+Release a new version, e.g. `x.y.z`:
 
 ```bash
 make release version=x.y.z
