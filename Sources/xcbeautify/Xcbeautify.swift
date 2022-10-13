@@ -31,13 +31,28 @@ struct Xcbeautify: ParsableCommand {
 
     @Option(help: "The name of JUnit report file name")
     var junitReportFilename = "junit.xml"
+    
+    @Argument(help: "File to be processed")
+    var file = ""
 
     func run() throws {
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
         let junitReporter = JunitReporter()
 
+        var fileLines = [String]()
+        var index = 0
+        if !file.isEmpty {
+            fileLines = try String(contentsOfFile: file).components(separatedBy: "\n")
+        }
+        
         func readLine() -> String? {
-            let line = Swift.readLine()
+            var line: String?
+            if fileLines.isEmpty {
+                line = Swift.readLine()
+            } else if index < fileLines.count {
+                line = fileLines[index]
+                index += 1
+            }
             if let line = line {
                 if report.contains(.junit) {
                     junitReporter.add(line: line)
