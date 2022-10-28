@@ -383,4 +383,81 @@ class JunitReporterTests: XCTestCase {
         #endif
         XCTAssertEqual(xml, expectedXml)
     }
+
+    private let parallelTests = """
+      Test suite 'MobileWebURLRouteTest' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
+      Test suite 'BuildFlagTests' started on 'Clone 1 of iPhone 13 mini - xctest (32507)'
+      Test case 'URL_OutgoingEmailTests.test_outgoingEmailLinkName_urlContainsQueryItem_valueIsReturned()' passed on 'Clone 1 of iPhone 13 mini - xctest (32506)' (0.002 seconds)
+      Test case 'MobileWebURLRouteTest.testReportingDescriptionContainsUrl()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.003 seconds)
+      Test case 'URLRoutingComponentsTests.test_init_urlWithQueryItems_queryItemsReturnsCorrectly()' passed on 'Clone 1 of iPhone 13 mini - xctest (32504)' (0.004 seconds)
+      Test case 'BuildFlagTests.test_logClicksToConsole_isFalse()' passed on 'Clone 1 of iPhone 13 mini - xctest (32507)' (0.003 seconds)
+      Test case 'URL_OutgoingEmailTests.test_outgoingEmailToken_urlContainsQueryItem_valueIsReturned()' passed on 'Clone 1 of iPhone 13 mini - xctest (32506)' (0.003 seconds)
+      Test case 'MobileWebURLRouteTest.testRouteContainsUrl()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.002 seconds)
+      Test suite 'GeneratedTestingFlagTests' started on 'Clone 1 of iPhone 13 mini - xctest (32504)'
+      Test case 'BuildFlagTests.test_logEventsToConsole_isFalse()' passed on 'Clone 1 of iPhone 13 mini - xctest (32507)' (0.002 seconds)
+      Test case 'GeneratedTestingFlagTests.test_generatedTesting_expectedValue()' passed on 'Clone 1 of iPhone 13 mini - xctest (32504)' (0.001 seconds)
+      Test suite 'Event_EmailTests' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
+      Test case 'Event_EmailTests.test_path_isCorrectValue()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.001 seconds)
+      Test case 'UserCoordinatorTests.test_loginWithEmailPasswordAndSSO_callsAuthenticationService_thenCallsCompletion()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.015 seconds)
+      Test case 'UserCoordinatorTests.test_refreshLoginToken_failure_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.012 seconds)
+      Test case 'UserCoordinatorTests.test_refreshLoginToken_failure_recordsError()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.014 seconds)
+      Test case 'UserCoordinatorTests.test_refreshLoginToken_success_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.008 seconds)
+      Test case 'UserCoordinatorTests.test_refreshLoginToken_success_storesLoginToken()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.006 seconds)
+      Test case 'UserCoordinatorTests.test_refreshUser_failure_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
+      Test case 'UserCoordinatorTests.test_refreshUser_failure_logsError()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
+      Test case 'UserCoordinatorTests.test_refreshUser_success_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
+      Test case 'UserCoordinatorTests.test_refreshUser_success_userIsStoredInUserDefaults()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.006 seconds)
+      Test case 'UserCoordinatorTests.test_refreshUser_success_userPropertyIsUpdated()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.032 seconds)
+      Test case 'UserCoordinatorTests.test_resetPassword_requestSucceeds_completionCalledWithSuccess()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
+    """
+
+  private let expectedParallelXml = """
+      <testsuites name="PARALLEL_TESTS" tests="20" failures="0">
+          <testsuite name="URL_OutgoingEmailTests" tests="2" failures="0">
+              <testcase classname="URL_OutgoingEmailTests" name="test_outgoingEmailLinkName_urlContainsQueryItem_valueIsReturned" time="Clone 1 of iPhone 13 mini - xctest (32506)" />
+              <testcase classname="URL_OutgoingEmailTests" name="test_outgoingEmailToken_urlContainsQueryItem_valueIsReturned" time="Clone 1 of iPhone 13 mini - xctest (32506)" />
+          </testsuite>
+          <testsuite name="MobileWebURLRouteTest" tests="2" failures="0">
+              <testcase classname="MobileWebURLRouteTest" name="testReportingDescriptionContainsUrl" time="Clone 1 of iPhone 13 mini - xctest (32505)" />
+              <testcase classname="MobileWebURLRouteTest" name="testRouteContainsUrl" time="Clone 1 of iPhone 13 mini - xctest (32505)" />
+          </testsuite>
+          <testsuite name="URLRoutingComponentsTests" tests="1" failures="0">
+              <testcase classname="URLRoutingComponentsTests" name="test_init_urlWithQueryItems_queryItemsReturnsCorrectly" time="Clone 1 of iPhone 13 mini - xctest (32504)" />
+          </testsuite>
+          <testsuite name="BuildFlagTests" tests="2" failures="0">
+              <testcase classname="BuildFlagTests" name="test_logClicksToConsole_isFalse" time="Clone 1 of iPhone 13 mini - xctest (32507)" />
+              <testcase classname="BuildFlagTests" name="test_logEventsToConsole_isFalse" time="Clone 1 of iPhone 13 mini - xctest (32507)" />
+          </testsuite>
+          <testsuite name="GeneratedTestingFlagTests" tests="1" failures="0">
+              <testcase classname="GeneratedTestingFlagTests" name="test_generatedTesting_expectedValue" time="Clone 1 of iPhone 13 mini - xctest (32504)" />
+          </testsuite>
+          <testsuite name="Event_EmailTests" tests="1" failures="0">
+              <testcase classname="Event_EmailTests" name="test_path_isCorrectValue" time="Clone 1 of iPhone 13 mini - xctest (32505)" />
+          </testsuite>
+          <testsuite name="UserCoordinatorTests" tests="11" failures="0">
+              <testcase classname="UserCoordinatorTests" name="test_loginWithEmailPasswordAndSSO_callsAuthenticationService_thenCallsCompletion" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_failure_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_failure_recordsError" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_success_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_success_storesLoginToken" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_failure_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_failure_logsError" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userIsStoredInUserDefaults" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userPropertyIsUpdated" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_resetPassword_requestSucceeds_completionCalledWithSuccess" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+          </testsuite>
+      </testsuites>
+      """
+
+
+
+  func testParallelJunitReport() throws {
+      let reporter = JunitReporter()
+      parallelTests.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
+      let data = try reporter.generateReport()
+      let xml = String(data: data, encoding: .utf8)!
+      let expectedXml = expectedParallelXml
+      XCTAssertEqual(xml, expectedXml)
+  }
 }

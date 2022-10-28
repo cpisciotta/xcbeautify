@@ -8,17 +8,29 @@ import XMLCoder
 
 public final class JunitReporter {
     private var components: [JunitComponent] = []
-    
+    // Parallel output does not guarantee order - so it is _very_ hard
+    // to match to the parent suite. We can still capture test success/failure
+    // and output a generic result file.
+    private var parallelComponents: [JunitComponent] = []
+
     public init() { }
 
     public func add(line: String) {
+        // Remove any preceding or excessive spaces
+        let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
         switch line {
+            // Capture standard output
             case Matcher.failingTestMatcher:
-                components.append(.failingTest(line))
+                components.append(.failingTest(line, Matcher.failingTestMatcher))
             case Matcher.testCasePassedMatcher:
-                components.append(.testCasePassed(line))
-        case Matcher.testSuiteStartMatcher:
-                components.append(.testSuiteStart(line))
+                components.append(.testCasePassed(line, Matcher.testCasePassedMatcher))
+            case Matcher.testSuiteStartMatcher:
+                components.append(.testSuiteStart(line, Matcher.testSuiteStartMatcher))
+            // Capture parallel output
+            case Matcher.parallelTestCaseFailedMatcher:
+                parallelComponents.append(.failingTest(line, Matcher.parallelTestCaseFailedMatcher))
+            case Matcher.parallelTestCasePassedMatcher:
+                parallelComponents.append(.testCasePassed(line, Matcher.parallelTestCasePassedMatcher))
             default:
                 // Not needed for generating a junit report
                 break
@@ -28,6 +40,9 @@ public final class JunitReporter {
     public func generateReport() throws -> Data {
         let parser = JunitComponentParser()
         components.forEach { parser.parse(component: $0) }
+        // Prefix a fake test suite start for the parallel tests.
+        parallelComponents.insert(.testSuiteStart("Test suite 'PARALLEL_TESTS' started on 'Unknown'", Matcher.parallelTestSuiteStartedMatcher), at: 0)
+        parallelComponents.forEach { parser.parse(component: $0) }
         let encoder = XMLEncoder()
         encoder.keyEncodingStrategy = .lowercased
         encoder.outputFormatting = [.prettyPrinted]
@@ -42,15 +57,15 @@ private final class JunitComponentParser {
 
     func parse(component: JunitComponent) {
         switch component {
-        case let .testSuiteStart(line):
+        case let .testSuiteStart(line, regex):
             guard mainTestSuiteName == nil else {
                 break
             }
-            let groups = line.capturedGroups(with: .testSuiteStart)
+            let groups = line.capturedGroups(with: regex.pattern)
             mainTestSuiteName = groups[0]
 
-        case let .failingTest(line):
-            let groups = line.capturedGroups(with: .failingTest)
+        case let .failingTest(line, regex):
+            let groups = line.capturedGroups(with: regex.pattern)
             let testCase = Testcase(
                 classname: groups[1],
                 name: groups[2],
@@ -59,8 +74,8 @@ private final class JunitComponentParser {
             )
             testCases.append(testCase)
 
-        case let .testCasePassed(line):
-            let groups = line.capturedGroups(with: .testCasePassed)
+        case let .testCasePassed(line, regex):
+            let groups = line.capturedGroups(with: regex.pattern)
             let testCase = Testcase(classname: groups[0], name: groups[1], time: groups[2], failure: nil)
             testCases.append(testCase)
         }
@@ -86,10 +101,10 @@ private final class JunitComponentParser {
     }
 }
 
-private enum JunitComponent: Equatable {
-    case testSuiteStart(String)
-    case failingTest(String)
-    case testCasePassed(String)
+private enum JunitComponent {
+    case testSuiteStart(String, Regex)
+    case failingTest(String, Regex)
+    case testCasePassed(String, Regex)
 }
 
 private struct Testsuites: Encodable, DynamicNodeEncoding {
