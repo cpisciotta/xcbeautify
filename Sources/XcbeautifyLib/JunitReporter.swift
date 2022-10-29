@@ -21,31 +21,24 @@ public final class JunitReporter {
         switch line {
             // Capture standard output
             case Matcher.failingTestMatcher:
-                components.append(.failingTest(generateFailingTest(line: line,
-                                                                   regex: Matcher.failingTestMatcher)))
+                components.append(.failingTest(generateFailingTest(line: line)))
             case Matcher.testCasePassedMatcher:
-                components.append(.testCasePassed(generatePassingTest(line: line,
-                                                                      regex: Matcher.testCasePassedMatcher)))
+                components.append(.testCasePassed(generatePassingTest(line: line)))
             case Matcher.testSuiteStartMatcher:
-                components.append(.testSuiteStart(generateSuiteStart(line: line,
-                                                                     regex: Matcher.testSuiteStartMatcher)))
+                components.append(.testSuiteStart(generateSuiteStart(line: line)))
             // Capture parallel output
             case Matcher.parallelTestCaseFailedMatcher:
-                parallelComponents.append(
-                  .failingTest(generateFailingTest(line: line,
-                                                   regex: Matcher.parallelTestCaseFailedMatcher)))
+                parallelComponents.append(.failingTest(generateParallelFailingTest(line: line)))
             case Matcher.parallelTestCasePassedMatcher:
-                parallelComponents.append(
-                  .testCasePassed(generatePassingTest(line: line,
-                                                      regex: Matcher.parallelTestCasePassedMatcher)))
+                parallelComponents.append(.testCasePassed(generatePassingParallelTest(line: line)))
             default:
                 // Not needed for generating a junit report
                 break
         }
     }
 
-    private func generateFailingTest(line: String, regex: Regex) -> Testcase {
-        let groups = line.capturedGroups(with: regex.pattern)
+    private func generateFailingTest(line: String) -> Testcase {
+        let groups = line.capturedGroups(with: Matcher.failingTestMatcher.pattern)
         return Testcase(
             classname: groups[1],
             name: groups[2],
@@ -54,13 +47,29 @@ public final class JunitReporter {
         )
     }
 
-    private func generatePassingTest(line: String, regex: Regex) -> Testcase {
-        let groups = line.capturedGroups(with: regex.pattern)
+    private func generateParallelFailingTest(line: String) -> Testcase {
+        // Parallel tests do not provide meaningful failure messages
+        let groups = line.capturedGroups(with: Matcher.parallelTestCaseFailedMatcher.pattern)
+        return Testcase(
+            classname: groups[0],
+            name: groups[1],
+            time: nil,
+            failure: .init(message: "Parallel test failed")
+        )
+    }
+
+    private func generatePassingTest(line: String) -> Testcase {
+        let groups = line.capturedGroups(with: Matcher.testCasePassedMatcher.pattern)
         return Testcase(classname: groups[0], name: groups[1], time: groups[2], failure: nil)
     }
 
-    private func generateSuiteStart(line: String, regex: Regex) -> String {
-        let groups = line.capturedGroups(with: regex.pattern)
+    private func generatePassingParallelTest(line: String) -> Testcase {
+      let groups = line.capturedGroups(with: Matcher.parallelTestCasePassedMatcher.pattern)
+      return Testcase(classname: groups[0], name: groups[1], time: groups[3], failure: nil)
+    }
+  
+    private func generateSuiteStart(line: String) -> String {
+        let groups = line.capturedGroups(with: Matcher.testSuiteStartMatcher.pattern)
         return groups[0]
     }
     

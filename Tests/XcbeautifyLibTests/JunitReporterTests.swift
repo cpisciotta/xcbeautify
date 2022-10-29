@@ -399,6 +399,7 @@ class JunitReporterTests: XCTestCase {
       Test suite 'Event_EmailTests' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
       Test case 'Event_EmailTests.test_path_isCorrectValue()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.001 seconds)
       Test case 'UserCoordinatorTests.test_loginWithEmailPasswordAndSSO_callsAuthenticationService_thenCallsCompletion()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.015 seconds)
+      Test case 'BuildFlagTests.test_failIntentionally()' failed on 'Clone 1 of iPhone 13 mini - xctest (59522)' (0.278 seconds)
       Test case 'UserCoordinatorTests.test_refreshLoginToken_failure_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.012 seconds)
       Test case 'UserCoordinatorTests.test_refreshLoginToken_failure_recordsError()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.014 seconds)
       Test case 'UserCoordinatorTests.test_refreshLoginToken_success_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.008 seconds)
@@ -412,40 +413,43 @@ class JunitReporterTests: XCTestCase {
     """
 
   private let expectedParallelXml = """
-      <testsuites name="PARALLEL_TESTS" tests="20" failures="0">
+      <testsuites name="PARALLEL_TESTS" tests="21" failures="1">
           <testsuite name="URL_OutgoingEmailTests" tests="2" failures="0">
-              <testcase classname="URL_OutgoingEmailTests" name="test_outgoingEmailLinkName_urlContainsQueryItem_valueIsReturned" time="Clone 1 of iPhone 13 mini - xctest (32506)" />
-              <testcase classname="URL_OutgoingEmailTests" name="test_outgoingEmailToken_urlContainsQueryItem_valueIsReturned" time="Clone 1 of iPhone 13 mini - xctest (32506)" />
+              <testcase classname="URL_OutgoingEmailTests" name="test_outgoingEmailLinkName_urlContainsQueryItem_valueIsReturned" time="0.002" />
+              <testcase classname="URL_OutgoingEmailTests" name="test_outgoingEmailToken_urlContainsQueryItem_valueIsReturned" time="0.003" />
           </testsuite>
           <testsuite name="MobileWebURLRouteTest" tests="2" failures="0">
-              <testcase classname="MobileWebURLRouteTest" name="testReportingDescriptionContainsUrl" time="Clone 1 of iPhone 13 mini - xctest (32505)" />
-              <testcase classname="MobileWebURLRouteTest" name="testRouteContainsUrl" time="Clone 1 of iPhone 13 mini - xctest (32505)" />
+              <testcase classname="MobileWebURLRouteTest" name="testReportingDescriptionContainsUrl" time="0.003" />
+              <testcase classname="MobileWebURLRouteTest" name="testRouteContainsUrl" time="0.002" />
           </testsuite>
           <testsuite name="URLRoutingComponentsTests" tests="1" failures="0">
-              <testcase classname="URLRoutingComponentsTests" name="test_init_urlWithQueryItems_queryItemsReturnsCorrectly" time="Clone 1 of iPhone 13 mini - xctest (32504)" />
+              <testcase classname="URLRoutingComponentsTests" name="test_init_urlWithQueryItems_queryItemsReturnsCorrectly" time="0.004" />
           </testsuite>
-          <testsuite name="BuildFlagTests" tests="2" failures="0">
-              <testcase classname="BuildFlagTests" name="test_logClicksToConsole_isFalse" time="Clone 1 of iPhone 13 mini - xctest (32507)" />
-              <testcase classname="BuildFlagTests" name="test_logEventsToConsole_isFalse" time="Clone 1 of iPhone 13 mini - xctest (32507)" />
+          <testsuite name="BuildFlagTests" tests="3" failures="1">
+              <testcase classname="BuildFlagTests" name="test_logClicksToConsole_isFalse" time="0.003" />
+              <testcase classname="BuildFlagTests" name="test_logEventsToConsole_isFalse" time="0.002" />
+              <testcase classname="BuildFlagTests" name="test_failIntentionally">
+                  <failure message="Parallel test failed" />
+              </testcase>
           </testsuite>
           <testsuite name="GeneratedTestingFlagTests" tests="1" failures="0">
-              <testcase classname="GeneratedTestingFlagTests" name="test_generatedTesting_expectedValue" time="Clone 1 of iPhone 13 mini - xctest (32504)" />
+              <testcase classname="GeneratedTestingFlagTests" name="test_generatedTesting_expectedValue" time="0.001" />
           </testsuite>
           <testsuite name="Event_EmailTests" tests="1" failures="0">
-              <testcase classname="Event_EmailTests" name="test_path_isCorrectValue" time="Clone 1 of iPhone 13 mini - xctest (32505)" />
+              <testcase classname="Event_EmailTests" name="test_path_isCorrectValue" time="0.001" />
           </testsuite>
           <testsuite name="UserCoordinatorTests" tests="11" failures="0">
-              <testcase classname="UserCoordinatorTests" name="test_loginWithEmailPasswordAndSSO_callsAuthenticationService_thenCallsCompletion" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_failure_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_failure_recordsError" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_success_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_success_storesLoginToken" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshUser_failure_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshUser_failure_logsError" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_completionIsCalled" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userIsStoredInUserDefaults" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userPropertyIsUpdated" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
-              <testcase classname="UserCoordinatorTests" name="test_resetPassword_requestSucceeds_completionCalledWithSuccess" time="Clone 1 of iPhone 13 mini - xctest (32503)" />
+              <testcase classname="UserCoordinatorTests" name="test_loginWithEmailPasswordAndSSO_callsAuthenticationService_thenCallsCompletion" time="0.015" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_failure_completionIsCalled" time="0.012" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_failure_recordsError" time="0.014" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_success_completionIsCalled" time="0.008" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshLoginToken_success_storesLoginToken" time="0.006" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_failure_completionIsCalled" time="0.005" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_failure_logsError" time="0.005" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_completionIsCalled" time="0.005" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userIsStoredInUserDefaults" time="0.006" />
+              <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userPropertyIsUpdated" time="0.032" />
+              <testcase classname="UserCoordinatorTests" name="test_resetPassword_requestSucceeds_completionCalledWithSuccess" time="0.005" />
           </testsuite>
       </testsuites>
       """
