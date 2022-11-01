@@ -76,7 +76,7 @@ final class XcbeautifyLibTests: XCTestCase {
 
     func testCompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
-        let outputError = "[x] /path/file.swift:64:69: cannot find \'input\' in scope\n\n"
+        let outputError = "[x] /path/file.swift:64:69: cannot find 'input' in scope\n\n"
         XCTAssertEqual(noColoredFormatted(inputError), outputError)
 
         let inputFatal = "/path/file.swift:64:69: fatal error: cannot find 'input' in scope"
@@ -108,18 +108,33 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testCompileXib() {
+        let input = "CompileXIB /path/file.xib (in target 'MyApp' from project 'MyProject')"
+        let output = "[MyApp] Compiling file.xib"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCopyHeader() {
+        let input = "CpHeader /path/to/destination/file.h /path/file.h (in target 'MyApp' from project 'MyProject')"
+        let output = "[MyApp] Copying file.h"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCopyPlist() {
+        let input = "CopyPlistFile /path/to/destination/file.plist /path/file.plist (in target 'MyApp' from project 'MyProject')"
+        let output = "[MyApp] Copying file.plist"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCopyStrings() {
+        let input = "CopyStringsFile /path/to/destination/file.strings /path/file.strings (in target 'MyApp' from project 'MyProject')"
+        let output = "[MyApp] Copying file.strings"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCpresource() {
+        let input = "CpResource /path/to/destination/file.ttf /path/file.ttf (in target 'MyApp' from project 'MyProject')"
+        let output = "[MyApp] Copying file.ttf"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testCursor() {
@@ -221,10 +236,16 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testFatalError() {
+        let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
+        let output = "[x] fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testFileMissingError() {
-    }
+        let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
+        let output = "[x] /path/file.swift: error: no such file or directory:"
+        XCTAssertEqual(noColoredFormatted(input), output)
+   }
 
     func testGenerateCoverageData() {
         let formatted = noColoredFormatted("Generating coverage data...")
@@ -237,15 +258,29 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testGenerateDsym() {
+        let input = "GenerateDSYMFile /path/file.dSYM /path/to/file (in target 'MyApp' from project 'MyProject')"
+        let output = "[MyApp] Generating file.dSYM"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testGenericWarning() {
+        let input = "warning: some warning here 123"
+        let output = "[!] some warning here 123"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testLdError() {
+        let inputLdLibraryError = "ld: library not found for -lPods-Yammer"
+        XCTAssertEqual(noColoredFormatted(inputLdLibraryError), "[x] ld: library not found for -lPods-Yammer")
+
+        let inputLdSymbolsError = "ld: symbol(s) not found for architecture x86_64"
+        XCTAssertEqual(noColoredFormatted(inputLdSymbolsError), "[x] ld: symbol(s) not found for architecture x86_64")
     }
 
     func testLdWarning() {
+        let input = "ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"
+        let output = "[!] ld: embedded dylibs/frameworks only run on iOS 8 or later"
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testLibtool() {
@@ -342,6 +377,9 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testPodsError() {
+        let input = "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
+        let output = "[x] error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testPreprocess() {
@@ -378,6 +416,9 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testProvisioningProfileRequired() {
+        let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
+        let output = #"[x] MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testRestartingTests() {
@@ -451,6 +492,9 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testTiffutil() {
+        let input = "TiffUtil file.tiff"
+        XCTAssertNil(noColoredFormatted(input))
+        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testTouch() {
@@ -464,12 +508,18 @@ final class XcbeautifyLibTests: XCTestCase {
     }
 
     func testWillNotBeCodeSigned() {
+        let input = "FrameworkName will not be code signed because its settings don't specify a development team."
+        let output = "[!] FrameworkName will not be code signed because its settings don't specify a development team."
+        XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testWriteAuxiliaryFiles() {
     }
 
     func testWriteFile() {
+        let input = "write-file /path/file.SwiftFileList"
+        XCTAssertNil(noColoredFormatted(input))
+        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testPackageGraphResolved() {
