@@ -8,26 +8,77 @@ import XMLCoder
 
 public final class JunitReporter {
     private var components: [JunitComponent] = []
-    
+    // Parallel output does not guarantee order - so it is _very_ hard
+    // to match to the parent suite. We can still capture test success/failure
+    // and output a generic result file.
+    private var parallelComponents: [JunitComponent] = []
+
     public init() { }
 
     public func add(line: String) {
+        // Remove any preceding or excessive spaces
+        let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
         switch line {
+            // Capture standard output
             case Matcher.failingTestMatcher:
-                components.append(.failingTest(line))
+                components.append(.failingTest(generateFailingTest(line: line)))
             case Matcher.testCasePassedMatcher:
-                components.append(.testCasePassed(line))
-        case Matcher.testSuiteStartMatcher:
-                components.append(.testSuiteStart(line))
+                components.append(.testCasePassed(generatePassingTest(line: line)))
+            case Matcher.testSuiteStartMatcher:
+                components.append(.testSuiteStart(generateSuiteStart(line: line)))
+            // Capture parallel output
+            case Matcher.parallelTestCaseFailedMatcher:
+                parallelComponents.append(.failingTest(generateParallelFailingTest(line: line)))
+            case Matcher.parallelTestCasePassedMatcher:
+                parallelComponents.append(.testCasePassed(generatePassingParallelTest(line: line)))
             default:
                 // Not needed for generating a junit report
                 break
         }
     }
+
+    private func generateFailingTest(line: String) -> Testcase {
+        let groups = line.capturedGroups(with: Matcher.failingTestMatcher.pattern)
+        return Testcase(
+            classname: groups[1],
+            name: groups[2],
+            time: nil,
+            failure: .init(message: "\(groups[0]) - \(groups[3])")
+        )
+    }
+
+    private func generateParallelFailingTest(line: String) -> Testcase {
+        // Parallel tests do not provide meaningful failure messages
+        let groups = line.capturedGroups(with: Matcher.parallelTestCaseFailedMatcher.pattern)
+        return Testcase(
+            classname: groups[0],
+            name: groups[1],
+            time: nil,
+            failure: .init(message: "Parallel test failed")
+        )
+    }
+
+    private func generatePassingTest(line: String) -> Testcase {
+        let groups = line.capturedGroups(with: Matcher.testCasePassedMatcher.pattern)
+        return Testcase(classname: groups[0], name: groups[1], time: groups[2], failure: nil)
+    }
+
+    private func generatePassingParallelTest(line: String) -> Testcase {
+      let groups = line.capturedGroups(with: Matcher.parallelTestCasePassedMatcher.pattern)
+      return Testcase(classname: groups[0], name: groups[1], time: groups[3], failure: nil)
+    }
+  
+    private func generateSuiteStart(line: String) -> String {
+        let groups = line.capturedGroups(with: Matcher.testSuiteStartMatcher.pattern)
+        return groups[0]
+    }
     
     public func generateReport() throws -> Data {
         let parser = JunitComponentParser()
         components.forEach { parser.parse(component: $0) }
+        // Prefix a fake test suite start for the parallel tests.
+        parallelComponents.insert(.testSuiteStart("PARALLEL_TESTS"), at: 0)
+        parallelComponents.forEach { parser.parse(component: $0) }
         let encoder = XMLEncoder()
         encoder.keyEncodingStrategy = .lowercased
         encoder.outputFormatting = [.prettyPrinted]
@@ -42,26 +93,14 @@ private final class JunitComponentParser {
 
     func parse(component: JunitComponent) {
         switch component {
-        case let .testSuiteStart(line):
+        case let .testSuiteStart(suiteName):
             guard mainTestSuiteName == nil else {
                 break
             }
-            let groups = line.capturedGroups(with: .testSuiteStart)
-            mainTestSuiteName = groups[0]
+            mainTestSuiteName = suiteName
 
-        case let .failingTest(line):
-            let groups = line.capturedGroups(with: .failingTest)
-            let testCase = Testcase(
-                classname: groups[1],
-                name: groups[2],
-                time: nil,
-                failure: .init(message: "\(groups[0]) - \(groups[3])")
-            )
-            testCases.append(testCase)
-
-        case let .testCasePassed(line):
-            let groups = line.capturedGroups(with: .testCasePassed)
-            let testCase = Testcase(classname: groups[0], name: groups[1], time: groups[2], failure: nil)
+        case let .failingTest(testCase),
+          let .testCasePassed(testCase):
             testCases.append(testCase)
         }
     }
@@ -86,10 +125,10 @@ private final class JunitComponentParser {
     }
 }
 
-private enum JunitComponent: Equatable {
+private enum JunitComponent {
     case testSuiteStart(String)
-    case failingTest(String)
-    case testCasePassed(String)
+    case failingTest(Testcase)
+    case testCasePassed(Testcase)
 }
 
 private struct Testsuites: Encodable, DynamicNodeEncoding {
