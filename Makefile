@@ -4,14 +4,13 @@ VERSION=$(version)
 PREFIX?=/usr/local
 
 CD=cd
-CP=$(shell whereis cp) -Rf
-GIT=$(shell which git)
-HUB=$(shell which hub)
-MKDIR=$(shell which mkdir) -p
-RM=$(shell whereis rm) -rf
+CP=/bin/cp -Rf
+GIT=/usr/bin/git
+MKDIR=/bin/mkdir -p
+RM=/bin/rm -rf
 SED=/usr/bin/sed
-SWIFT=$(shell which swift)
-ZIP=$(shell whereis zip) -r
+SWIFT=/usr/bin/swift
+ZIP=/usr/bin/zip -r
 
 SHARED_SWIFT_BUILD_FLAGS = --configuration release --disable-sandbox
 
