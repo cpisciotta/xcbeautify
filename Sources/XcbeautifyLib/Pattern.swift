@@ -340,6 +340,8 @@ enum Pattern: String {
     /// $1 = whole error
     case provisioningProfileRequired = #"^(.*requires a provisioning profile.*)$"#
 
+    case xcodebuild = #".*xcodebuild.*"#
+
     /// Regular expression captured groups:
     /// $1 = whole error
     case noCertificate = #"^(No certificate matching.*)$"#

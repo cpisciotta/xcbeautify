@@ -55,6 +55,7 @@ struct Xcbeautify: ParsableCommand {
         while let line = readLine() {
             guard let formatted = parser.parse(line: line) else { continue }
             output.write(parser.outputType, formatted)
+            //output.write(parser.outputType, "formatted" + line)
         }
         
         if let summary = parser.summary {

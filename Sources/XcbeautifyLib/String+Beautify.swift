@@ -128,6 +128,8 @@ extension String {
             return formatError(pattern: pattern)
         case .provisioningProfileRequired:
             return formatError(pattern: pattern)
+        case .xcodebuild:
+            return nil
         case .noCertificate:
             return formatError(pattern: pattern)
         case .cursor:

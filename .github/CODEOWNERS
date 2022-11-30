@@ -1,0 +1,5 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @wbd-beam-admins or wbd-swift-admins will be requested for
+# review when someone opens a pull request.
+*       @wbd-streaming/wbd-beam-admins @wbd-streaming/wbd-swift-admins
