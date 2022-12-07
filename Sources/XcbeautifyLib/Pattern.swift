@@ -414,4 +414,10 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = whole error
     case xcodebuildError = #"^(xcodebuild: error:.*)$"#;
+
+    /// Regular expresion captured groups:
+    /// $1 = duplicate key
+    /// $2 = value kept
+    /// $3 = value ignored
+    case duplicateLocalizedStringKey = #"Key "(.*)" used with multiple values. Value "(.*)" kept. Value "(.*)" ignored."#
 }

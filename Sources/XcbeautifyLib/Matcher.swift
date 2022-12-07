@@ -21,6 +21,7 @@ struct Matcher {
     static let copyStringsMatcher = Regex(pattern: .copyStrings)
     static let cpresourceMatcher = Regex(pattern: .cpresource)
     static let cursorMatcher = Regex(pattern: .cursor)
+    static let dupliateLocalizedStringKey = Regex(pattern: .duplicateLocalizedStringKey)
     static let executedMatcher = Regex(pattern: .executed)
     static let executedWithSkippedMatcher = Regex(pattern: .executedWithSkipped)
     static let failingTestMatcher = Regex(pattern: .failingTest)

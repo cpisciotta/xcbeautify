@@ -150,6 +150,8 @@ extension String {
             return formatPackageEnd(pattern: pattern)
         case .packageGraphResolvedItem:
             return formatPackgeItem(pattern: pattern)
+        case .duplicateLocalizedStringKey:
+            return formatDuplicateLocalizedStringKey(pattern: pattern)
         }
     }
 
@@ -529,5 +531,14 @@ extension String {
         let url = groups[1]
         let version = groups[2]
         return _colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
+    }
+
+    private func formatDuplicateLocalizedStringKey(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let key = groups[0]
+        let kept = groups[1]
+        let ignored = groups[2]
+        return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " +
+            "Key \"\(key)\" used with multiple values. Value \"\(kept)\" kept. Value \"\(ignored)\" ignored."
     }
 }
