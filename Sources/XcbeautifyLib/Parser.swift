@@ -89,7 +89,7 @@ public class Parser {
         innerParser(Matcher.packageGraphResolvingEnded, outputType: .task),
         innerParser(Matcher.packageGraphResolvedItem, outputType: .task),
         innerParser(Matcher.xcodebuildErrorMatcher, outputType: .error),
-        innerParser(Matcher.dupliateLocalizedStringKey, outputType: .warning)
+        innerParser(Matcher.duplicateLocalizedStringKey, outputType: .warning)
     ]
     
     // MARK: - Init
