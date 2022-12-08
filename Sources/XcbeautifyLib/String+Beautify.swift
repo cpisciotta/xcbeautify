@@ -538,7 +538,7 @@ extension String {
         let key = groups[0]
         let kept = groups[1]
         let ignored = groups[2]
-        return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " +
-            "Key \"\(key)\" used with multiple values. Value \"\(kept)\" kept. Value \"\(ignored)\" ignored."
+        let string = "Key \"\(key)\" used with multiple values. Value \"\(kept)\" kept. Value \"\(ignored)\" ignored."
+        return _colored ? Symbol.warning.rawValue + " " + string.f.Yellow : Symbol.asciiWarning.rawValue + " " + string
     }
 }
