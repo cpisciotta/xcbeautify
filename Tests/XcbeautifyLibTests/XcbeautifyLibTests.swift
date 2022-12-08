@@ -541,4 +541,10 @@ final class XcbeautifyLibTests: XCTestCase {
         let formatted = noColoredFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
         XCTAssertEqual(formatted, "[x] xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
     }
+
+    func testDuplicateLocalizedStringKey() {
+        let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
+        XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
+        XCTAssertEqual(parser.outputType, .warning)
+    }
 }
