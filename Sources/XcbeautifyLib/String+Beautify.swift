@@ -535,10 +535,7 @@ extension String {
 
     private func formatDuplicateLocalizedStringKey(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
-        let key = groups[0]
-        let kept = groups[1]
-        let ignored = groups[2]
-        let string = "Key \"\(key)\" used with multiple values. Value \"\(kept)\" kept. Value \"\(ignored)\" ignored."
-        return _colored ? Symbol.warning.rawValue + " " + string.f.Yellow : Symbol.asciiWarning.rawValue + " " + string
+        let message = groups[0]
+        return _colored ? Symbol.warning.rawValue + " " + message.f.Yellow : Symbol.asciiWarning.rawValue + " " + message
     }
 }
