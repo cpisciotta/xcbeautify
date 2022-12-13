@@ -326,6 +326,10 @@ enum Pattern: String {
     /// $1 = whole warning
     case willNotBeCodeSigned = #"^(.* will not be code signed because .*)$"#
 
+    /// Regular expresion captured groups:
+    /// $1 = warning message.
+    case duplicateLocalizedStringKey = #"^[\d\s-:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$"#
+
     // MARK: - Error
 
     /// Regular expression captured groups:
