@@ -545,7 +545,7 @@ extension String {
     }
 
     private func formatPackageEnd() -> String? {
-        return _colored ? "Resolved Package Graph".s.Bold.f.Green : "Resolved Package Graph"
+        return _colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 
     private func formatPackgeItem(pattern: Pattern) -> String?  {

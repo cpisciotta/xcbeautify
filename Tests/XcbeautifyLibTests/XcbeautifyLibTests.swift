@@ -526,7 +526,7 @@ final class XcbeautifyLibTests: XCTestCase {
 
         // Start
         let start = noColoredFormatted("Resolve Package Graph")
-        XCTAssertEqual(start, "Resolve Package Graph")
+        XCTAssertEqual(start, "Resolving Package Graph")
 
         // Ended
         let ended = noColoredFormatted("Resolved source packages:")
