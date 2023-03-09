@@ -405,9 +405,13 @@ enum Pattern: String {
     /// $2 = filename
     case undefinedSymbolLocation = #".+ in (.+)\((.+)\.o\)$"#
 
+    case packageFetching = #"^Fetching from (.*?)$"#;
+    case packageUpdating = #"^Updating from (.*?)$"#;
+    case packageCheckingOut = #"^Checking out (.*?) of package (.*?)$"#;
+
     /// Regular expression captures groups:
-    case packageGraphResolvingStart = #"^\s*(Resolve Package Graph)\s*$"#
-    case packageGraphResolvingEnded = #"^(Resolved source packages):$"#
+    case packageGraphResolvingStart = #"^\s*Resolve Package Graph\s*$"#
+    case packageGraphResolvingEnded = #"^Resolved source packages:$"#
 
     /// Regular expression captures groups:
     /// $1 = package name
