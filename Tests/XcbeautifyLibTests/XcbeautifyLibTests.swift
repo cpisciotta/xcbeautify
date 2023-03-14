@@ -542,6 +542,19 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertEqual(formatted, "[x] xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
     }
 
+    func testXcodeprojError() {
+        // Given
+        let errorText = #"/path/to/project.xcodeproj: error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
+        let expectedFormatted = #"[x] error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
+
+        // When
+        let actualFormatted = noColoredFormatted(errorText)
+
+        // Then
+        XCTAssertEqual(actualFormatted, expectedFormatted)
+        XCTAssertEqual(parser.outputType, .error)
+    }
+
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
