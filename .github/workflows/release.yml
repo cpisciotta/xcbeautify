@@ -57,13 +57,13 @@ jobs:
           asset_path: .build/arm64-apple-macosx/release/xcbeautify.zip
           asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-arm64-apple-macosx.zip
           asset_content_type: application/zip
-      - name: Publish To CocoaPods
-        env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        run: |
-          gem install bundler:2.2.4
-          bundle install
-          bundle exec pod trunk push --allow-warnings
+#      - name: Publish To CocoaPods
+#        env:
+#          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+#        run: |
+#          gem install bundler:2.2.4
+#          bundle install
+#          bundle exec pod trunk push --allow-warnings
   ubuntu_x86_64:
     name: Release Linux x86_64
     runs-on: ubuntu-latest
