@@ -84,4 +84,5 @@ struct Matcher {
     static let writeFileMatcher = Regex(pattern: .writeFile)
     static let xcodebuildErrorMatcher = Regex(pattern: .xcodebuildError)
     static let xcodeprojErrorMatcher = Regex(pattern: .xcodeprojError)
+    static let xcodeprojWarningMatcher = Regex(pattern: .xcodeprojWarning)
 }

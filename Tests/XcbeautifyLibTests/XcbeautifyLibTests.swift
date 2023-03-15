@@ -600,6 +600,19 @@ final class XcbeautifyLibTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .error)
     }
 
+    func testXcodeprojWarning() {
+        // Given
+        let errorText = #"/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"#
+        let expectedFormatted = #"[!] warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"#
+
+        // When
+        let actualFormatted = noColoredFormatted(errorText)
+
+        // Then
+        XCTAssertEqual(actualFormatted, expectedFormatted)
+        XCTAssertEqual(parser.outputType, .warning)
+    }
+
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)

@@ -424,6 +424,10 @@ enum Pattern: String {
     case xcodebuildError = #"^(xcodebuild: error:.*)$"#
 
     /// Regular expression captured groups:
+    /// $1 = whole warning, excluding the path to the .xcodeproj file
+    case xcodeprojWarning = #".*.xcodeproj: (warning:.*)$"#
+
+    /// Regular expression captured groups:
     /// $1 = whole error, excluding the path to the .xcodeproj file
     case xcodeprojError = #".*.xcodeproj: (error:.*)$"#
 }

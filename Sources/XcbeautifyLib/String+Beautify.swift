@@ -109,7 +109,8 @@ extension String {
             return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
         case .ldWarning:
             return formatLdWarning(pattern: pattern)
-        case .genericWarning:
+        case .genericWarning,
+             .xcodeprojWarning:
             return formatWarning(pattern: pattern)
         case .willNotBeCodeSigned:
             return formatWillNotBeCodesignWarning(pattern: pattern)
