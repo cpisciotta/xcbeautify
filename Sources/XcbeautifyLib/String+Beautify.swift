@@ -145,10 +145,16 @@ extension String {
             return formatCompleteError()
         case .undefinedSymbolLocation:
             return formatCompleteWarning()
+        case .packageFetching:
+            return formatPackageFetching(pattern: pattern)
+        case .packageUpdating:
+            return formatPackageUpdating(pattern: pattern)
+        case .packageCheckingOut:
+            return formatPackageCheckingOut(pattern: pattern)
         case .packageGraphResolvingStart:
             return formatPackageStart()
         case .packageGraphResolvingEnded:
-            return formatPackageEnd(pattern: pattern)
+            return formatPackageEnd()
         case .packageGraphResolvedItem:
             return formatPackgeItem(pattern: pattern)
         case .duplicateLocalizedStringKey:
@@ -516,14 +522,31 @@ extension String {
         return f.Red
     }
 
-    private func formatPackageStart() -> String? {
-        return _colored ? self.s.Bold.f.Cyan : self
+    private func formatPackageFetching(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let source = groups[0]
+        return "Fetching " + source
     }
 
-    private func formatPackageEnd(pattern: Pattern) -> String? {
+    private func formatPackageUpdating(pattern: Pattern) -> String? {
         let groups = capturedGroups(with: pattern)
-        let ended = groups[0]
-        return _colored ? ended.s.Bold.f.Green : ended
+        let source = groups[0]
+        return "Updating " + source
+    }
+
+    private func formatPackageCheckingOut(pattern: Pattern) -> String? {
+        let groups = capturedGroups(with: pattern)
+        let version = groups[0]
+        let package = groups[1]
+        return _colored ? "Checking out " + package.s.Bold + " @ " + version.f.Green : "Checking out \(package) @ \(version)"
+    }
+
+    private func formatPackageStart() -> String? {
+        return _colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
+    }
+
+    private func formatPackageEnd() -> String? {
+        return _colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 
     private func formatPackgeItem(pattern: Pattern) -> String?  {
