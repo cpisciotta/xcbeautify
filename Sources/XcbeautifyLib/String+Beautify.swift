@@ -109,8 +109,7 @@ extension String {
             return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
         case .ldWarning:
             return formatLdWarning(pattern: pattern)
-        case .genericWarning,
-             .xcodeprojWarning:
+        case .genericWarning:
             return formatWarning(pattern: pattern)
         case .willNotBeCodeSigned:
             return formatWillNotBeCodesignWarning(pattern: pattern)
@@ -119,8 +118,7 @@ extension String {
              .ldError,
              .podsError,
              .moduleIncludesError,
-             .xcodebuildError,
-             .xcodeprojError:
+             .xcodebuildError:
             return formatError(pattern: pattern)
         case .compileError:
             return formatCompileError(pattern: pattern, additionalLines: additionalLines)
