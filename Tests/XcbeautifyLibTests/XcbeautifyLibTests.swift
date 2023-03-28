@@ -590,7 +590,11 @@ final class XcbeautifyLibTests: XCTestCase {
     func testXcodeprojError() {
         // Given
         let errorText = #"/path/to/project.xcodeproj: error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
-        let expectedFormatted = #"[x] error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
+        let expectedFormatted = #"""
+            [x] /path/to/project.xcodeproj: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')
+
+
+            """#
 
         // When
         let actualFormatted = noColoredFormatted(errorText)
@@ -598,6 +602,23 @@ final class XcbeautifyLibTests: XCTestCase {
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
         XCTAssertEqual(parser.outputType, .error)
+    }
+
+    func testXcodeprojWarning() {
+        // Given
+        let errorText = #"/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"#
+        let expectedFormatted = #"""
+            [!]  /Users/xxxxx/Example/Pods/Pods.xcodeproj: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')
+
+
+            """#
+
+        // When
+        let actualFormatted = noColoredFormatted(errorText)
+
+        // Then
+        XCTAssertEqual(actualFormatted, expectedFormatted)
+        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testDuplicateLocalizedStringKey() {

@@ -311,7 +311,7 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
-    case compileWarning = #"^(([^:]*):\d*:\d*):\swarning:\s(.*)$"#
+    case compileWarning = #"^(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = ld prefix
@@ -352,7 +352,7 @@ enum Pattern: String {
     /// $1 = file path (could be a relative path if you build with Bazel)
     /// $2 = is fatal error
     /// $3 = reason
-    case compileError = #"^(([^:]*):\d*:\d*):\s(?:fatal\s)?error:\s(.*)$"#
+    case compileError = #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = cursor (with whitespaces and tildes)
@@ -422,8 +422,4 @@ enum Pattern: String {
     /// Regular expression captured groups:
     /// $1 = whole error
     case xcodebuildError = #"^(xcodebuild: error:.*)$"#
-
-    /// Regular expression captured groups:
-    /// $1 = whole error, excluding the path to the .xcodeproj file
-    case xcodeprojError = #".*.xcodeproj: (error:.*)$"#
 }
