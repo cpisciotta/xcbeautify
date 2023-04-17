@@ -128,7 +128,10 @@ enum Pattern: String {
     case uiFailingTest = #"^\s{4}t = \s+\d+\.\d+s\s+Assertion Failure: (.*:\d+): (.*)$"#
 
     /// Regular expression captured groups:
-    case restartingTests = #"^Restarting after unexpected exit.+$"#
+    /// $1 = test suite + test case
+    /// $2 = test suite
+    /// $3 = test case
+    case restartingTest = #"^Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));"#
 
     /// Nothing returned here for now.
     case generateCoverageData = #"^generating\s+coverage\s+data\.*"#
