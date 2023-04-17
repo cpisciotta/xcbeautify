@@ -22,6 +22,8 @@ public final class JunitReporter {
             // Capture standard output
             case Matcher.failingTestMatcher:
                 components.append(.failingTest(generateFailingTest(line: line)))
+            case Matcher.restartingTestMatcher:
+                components.append(.failingTest(generateRestartingTest(line: line)))
             case Matcher.testCasePassedMatcher:
                 components.append(.testCasePassed(generatePassingTest(line: line)))
             case Matcher.testSuiteStartMatcher:
@@ -44,6 +46,16 @@ public final class JunitReporter {
             name: groups[2],
             time: nil,
             failure: .init(message: "\(groups[0]) - \(groups[3])")
+        )
+    }
+    
+    private func generateRestartingTest(line: String) -> Testcase {
+        let groups = line.capturedGroups(with: Matcher.restartingTestMatcher.pattern)
+        return Testcase(
+            classname: groups[2],
+            name: groups[3],
+            time: nil,
+            failure: .init(message: line)
         )
     }
 
