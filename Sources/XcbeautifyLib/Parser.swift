@@ -32,7 +32,7 @@ public class Parser {
         innerParser(Matcher.cpresourceMatcher, outputType: .task),
         innerParser(Matcher.failingTestMatcher, outputType: .error),
         innerParser(Matcher.uiFailingTestMatcher, outputType: .error),
-        innerParser(Matcher.restartingTestsMatcher, outputType: .test),
+        innerParser(Matcher.restartingTestMatcher, outputType: .test),
         innerParser(Matcher.generateCoverageDataMatcher, outputType: .task),
         innerParser(Matcher.generatedCoverageReportMatcher, outputType: .task),
         innerParser(Matcher.generateDsymMatcher, outputType: .task),

@@ -54,7 +54,7 @@ extension String {
             return nil
         case .failingTest,
              .uiFailingTest,
-             .restartingTests,
+             .restartingTest,
              .testCasePassed,
              .testCasePending,
              .testCaseMeasured,
@@ -347,7 +347,7 @@ extension String {
             let file = groups[0]
             let failingReason = groups[1]
             return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
-        case .restartingTests:
+        case .restartingTest:
             return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
         case .testCasePending:
             let testCase = groups[1]

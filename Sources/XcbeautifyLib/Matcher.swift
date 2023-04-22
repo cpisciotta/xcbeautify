@@ -63,7 +63,7 @@ struct Matcher {
     static let processPchCommandMatcher = Regex(pattern: .processPchCommand)
     static let processPchMatcher = Regex(pattern: .processPch)
     static let provisioningProfileRequiredMatcher = Regex(pattern: .provisioningProfileRequired)
-    static let restartingTestsMatcher = Regex(pattern: .restartingTests)
+    static let restartingTestMatcher = Regex(pattern: .restartingTest)
     static let shellCommandMatcher = Regex(pattern: .shellCommand)
     static let symbolReferencedFromMatcher = Regex(pattern: .symbolReferencedFrom)
     static let testCaseMeasuredMatcher = Regex(pattern: .testCaseMeasured)

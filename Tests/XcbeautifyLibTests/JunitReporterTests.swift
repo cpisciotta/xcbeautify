@@ -177,6 +177,8 @@ class JunitReporterTests: XCTestCase {
         Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteAuxiliaryFiles]' passed (0.000 seconds).
         Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' started.
         Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' passed (0.000 seconds).
+        Restarting after unexpected exit, crash, or test timeout in SwiftTests.testExample(); summary will include totals from previous launches.
+        Restarting after unexpected exit, crash, or test timeout in -[ObjCTests testExample]; summary will include totals from previous launches.
         Test Suite 'XcbeautifyLibTests' failed at 2021-11-05 01:08:23.443.
              Executed 77 tests, with 1 failure (0 unexpected) in 0.147 (0.149) seconds
         Test Suite 'xcbeautifyPackageTests.xctest' failed at 2021-11-05 01:08:23.443.
@@ -186,7 +188,7 @@ class JunitReporterTests: XCTestCase {
         """
 
     private let expectedMacOsXml = """
-        <testsuites name="All tests" tests="83" failures="1">
+        <testsuites name="All tests" tests="85" failures="3">
             <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
                 <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testEarlyReturnIfEmptyString" time="0.054" />
                 <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
@@ -276,11 +278,21 @@ class JunitReporterTests: XCTestCase {
                 <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testWriteAuxiliaryFiles" time="0.000" />
                 <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testWriteFile" time="0.000" />
             </testsuite>
+            <testsuite name="SwiftTests" tests="1" failures="1">
+                <testcase classname="SwiftTests" name="testExample">
+                    <failure message="Restarting after unexpected exit, crash, or test timeout in SwiftTests.testExample(); summary will include totals from previous launches." />
+                </testcase>
+            </testsuite>
+            <testsuite name="ObjCTests" tests="1" failures="1">
+                <testcase classname="ObjCTests" name="testExample">
+                    <failure message="Restarting after unexpected exit, crash, or test timeout in -[ObjCTests testExample]; summary will include totals from previous launches." />
+                </testcase>
+            </testsuite>
         </testsuites>
         """
 
     private let expectedLinuxXml = """
-        <testsuites name="All tests" tests="83" failures="1">
+        <testsuites name="All tests" tests="85" failures="3">
             <testsuite name="-[XcbeautifyLibTests" tests="83" failures="1">
                 <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testEarlyReturnIfEmptyString]" time="0.054" />
                 <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
@@ -367,6 +379,16 @@ class JunitReporterTests: XCTestCase {
                 <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWillNotBeCodeSigned]" time="0.000" />
                 <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteAuxiliaryFiles]" time="0.000" />
                 <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteFile]" time="0.000" />
+            </testsuite>
+            <testsuite name="SwiftTests" tests="1" failures="1">
+                <testcase classname="SwiftTests" name="testExample">
+                    <failure message="Restarting after unexpected exit, crash, or test timeout in SwiftTests.testExample(); summary will include totals from previous launches." />
+                </testcase>
+            </testsuite>
+            <testsuite name="ObjCTests" tests="1" failures="1">
+                <testcase classname="ObjCTests" name="testExample">
+                    <failure message="Restarting after unexpected exit, crash, or test timeout in -[ObjCTests testExample]; summary will include totals from previous launches." />
+                </testcase>
             </testsuite>
         </testsuites>
         """
