@@ -314,6 +314,16 @@ final class XcbeautifyLibTests: XCTestCase {
     func testNoCertificate() {
     }
 
+    func testTestCaseWithSpacesPassed() {
+        let formatted = noColoredFormatted("Test Case '-[MyProject.MyTestSuite some component, when the disk is full, will display an error]' passed (0.005 seconds).")
+        XCTAssertEqual(formatted, "    ✔ some component, when the disk is full, will display an error (0.005 seconds)")
+    }
+
+    func testTestCaseWithSpacesFailed() {
+        let formatted = noColoredFormatted("/Users/jsmith/MyProject/Example.swift:12: error: -[MyProject.MyTestSuite one, when added to two, produces three] : expected to equal <3>, got <4>")
+        XCTAssertEqual(formatted, "    ✖ one, when added to two, produces three, expected to equal <3>, got <4>")
+    }
+
     func testParallelTestCaseFailed() {
         let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "    ✖ testBuildTarget on 'xctest (49438)' (0.131 seconds)")
@@ -342,6 +352,11 @@ final class XcbeautifyLibTests: XCTestCase {
     func testParallelTestCaseAppKitPassed() {
         let formatted = noColoredFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds).")
         XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131) seconds)")
+    }
+
+    func testParallelTestCaseAppKitWithSpacesPassed() {
+        let formatted = noColoredFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests test build target]' passed on 'xctest (49438)' (0.131 seconds).")
+        XCTAssertEqual(formatted, "    ✔ test build target (0.131) seconds)")
     }
 
     func testParallelTestingStarted() {
