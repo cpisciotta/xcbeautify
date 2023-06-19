@@ -3,7 +3,7 @@ public class Parser {
     private let colored: Bool
 
     private let renderer: OutputRendering
-    
+
     private let additionalLines: () -> String?
 
     private(set) var summary: TestSummary? = nil
@@ -106,12 +106,7 @@ public class Parser {
         additionalLines: @escaping () -> (String?)
     ) {
         self.colored = colored
-
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
-        }
-
+        self.renderer = TerminalRenderer(colored: colored)
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }

@@ -50,4 +50,7 @@ extension OutputType: CustomStringConvertible {
 public enum Renderer: String {
     /// The default `OutputRendering` type for local and general use. Maps to `TerminalRenderer`.
     case terminal
+
+    /// Formats output suitable for GitHub Actions annotations. Maps to `GitHubRenderer`.
+    case gitHubActions = "github-actions"
 }
