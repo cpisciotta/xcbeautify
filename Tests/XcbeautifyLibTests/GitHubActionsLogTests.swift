@@ -6,7 +6,7 @@ final class GitHubActionsLogTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, outputFormat: .gitHubActions, additionalLines: { nil } )
+        parser = Parser(colored: false, renderer: .gitHubActions, additionalLines: { nil } )
     }
 
     private func logFormatted(_ string: String) -> String? {
