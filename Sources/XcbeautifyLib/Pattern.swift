@@ -119,7 +119,7 @@ enum Pattern: String {
     #if os(Linux)
     case failingTest = #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#
     #else
-    case failingTest = #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#
+    case failingTest = #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#
     #endif
 
     /// Regular expression captured groups:
@@ -168,7 +168,7 @@ enum Pattern: String {
     #if os(Linux)
     case testCasePassed = #"^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#
     #else
-    case testCasePassed = #"^\s*Test Case\s'-\[(.*)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#
+    case testCasePassed = #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#
     #endif
 
     /// Regular expression captured groups:
@@ -177,21 +177,21 @@ enum Pattern: String {
     #if os(Linux)
     case testCaseStarted = #"^Test Case '(.*)\.(.*)' started at"#
     #else
-    case testCaseStarted = #"^Test Case '-\[(.*) (.*)\]' started.$"#
+    case testCaseStarted = #"^Test Case '-\[(.*?) (.*)\]' started.$"#
     #endif
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
-    case testCasePending = #"^Test Case\s'-\[(.*)\s(.*)PENDING\]'\spassed"#
+    case testCasePending = #"^Test Case\s'-\[(.*?)\s(.*)PENDING\]'\spassed"#
 
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    case testCaseMeasured = #"^[^:]*:[^:]*:\sTest Case\s'(.*)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#
+    case testCaseMeasured = #"^[^:]*:[^:]*:\sTest Case\s'(.*?)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#
     #else
-    case testCaseMeasured = #"^[^:]*:[^:]*:\sTest Case\s'-\[(.*)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#
+    case testCaseMeasured = #"^[^:]*:[^:]*:\sTest Case\s'-\[(.*?)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#
     #endif
 
     /// Regular expression captured groups:
@@ -205,7 +205,7 @@ enum Pattern: String {
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
-    case parallelTestCaseAppKitPassed = #"^\s*Test case\s'-\[(.*)\s(.*)\]'\spassed\son\s'.*'\s\((\d*\.\d{3})\sseconds\)"#
+    case parallelTestCaseAppKitPassed = #"^\s*Test case\s'-\[(.*?)\s(.*)\]'\spassed\son\s'.*'\s\((\d*\.\d{3})\sseconds\)"#
 
     /// Regular expression captured groups:
     /// $1 = suite
