@@ -309,7 +309,8 @@ struct TerminalRenderer: OutputRendering {
     }
 
     // TODO: Print symbol and reference location
-    func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {        let reason = group.reason
+    func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
+        let reason = group.reason
         return colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
     }
 
