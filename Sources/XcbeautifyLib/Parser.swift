@@ -3,7 +3,7 @@ public class Parser {
     private let colored: Bool
 
     private let renderer: OutputRendering
-
+    
     private let additionalLines: () -> String?
 
     private(set) var summary: TestSummary? = nil
@@ -100,13 +100,20 @@ public class Parser {
     // MARK: - Init
     
     public init(
-        colored: Bool = true,
+        colored: Bool,
         renderer: Renderer,
         preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
     ) {
         self.colored = colored
-        self.renderer = TerminalRenderer(colored: colored)
+
+        switch renderer {
+        case .terminal:
+            self.renderer = TerminalRenderer(colored: colored)
+        case .gitHubActions:
+            self.renderer = GitHubRenderer()
+        }
+
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }
