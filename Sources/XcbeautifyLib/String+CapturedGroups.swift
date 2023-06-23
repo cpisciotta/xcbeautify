@@ -274,8 +274,8 @@ extension String {
             guard let fileName = results[safe: 0] else { return EmptyCaptureGroup() }
             return TIFFutilCaptureGroup(filename: fileName)
         case .touch:
-            assert(results.count >= 2)
-            guard let fileName = results[safe: 0], let target = results[safe: 1] else { return EmptyCaptureGroup() }
+            assert(results.count >= 3)
+            guard let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return TouchCaptureGroup(filename: fileName, target: target)
         case .writeFile:
             assert(results.count >= 1)

@@ -104,7 +104,7 @@ extension String {
         case (.processPch, let group as ProcessPchCaptureGroup):
             return formatProcessPch(pattern: pattern)
         case (.touch, let group as TouchCaptureGroup):
-            return formatTouch(pattern: pattern)
+            return formatTouch(group: group)
         case (.phaseSuccess, let group as PhaseSuccessCaptureGroup):
             let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
             return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
@@ -301,10 +301,9 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
-    private func formatTouch(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[1]
-        guard let target = groups.last else { return nil }
+    private func formatTouch(group: TouchCaptureGroup) -> String? {
+        let filename = group.filename
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
