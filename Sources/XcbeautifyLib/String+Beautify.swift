@@ -127,7 +127,7 @@ extension String {
         case (.tiffutil, let group as TIFFutilCaptureGroup):
             return nil
         case (.compileWarning, let group as CompileWarningCaptureGroup):
-            return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
+            return formatCompileWarning(group: group, additionalLines: additionalLines)
         case (.ldWarning, let group as LDWarningCaptureGroup):
             return formatLdWarning(pattern: pattern)
         case (.genericWarning, let group as GenericWarningCaptureGroup):
@@ -448,10 +448,9 @@ extension String {
         return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " + self
     }
 
-    private func formatCompileWarning(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filePath = groups[0]
-        let reason = groups[2]
+    private func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
+        let filePath = group.filePath
+        let reason = group.reason
 
         // Read 2 additional lines to get the warning line and cursor position
         let line: String = additionalLines() ?? ""
