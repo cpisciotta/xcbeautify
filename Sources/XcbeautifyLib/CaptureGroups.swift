@@ -6,6 +6,12 @@ protocol ErrorCaptureGroup: CaptureGroup {
     var wholeError: String { get }
 }
 
+protocol TargetCaptureGroup: CaptureGroup {
+    var target: String { get }
+    var project: String { get }
+    var configuration: String { get }
+}
+
 struct EmptyCaptureGroup: CaptureGroup { }
 
 struct AnalyzeCaptureGroup: CaptureGroup {
@@ -14,19 +20,19 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     let target: String
 }
 
-struct BuildTargetCaptureGroup: CaptureGroup {
+struct BuildTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
 }
 
-struct AggregateTargetCaptureGroup: CaptureGroup {
+struct AggregateTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
 }
 
-struct AnalyzeTargetCaptureGroup: CaptureGroup {
+struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
@@ -44,7 +50,7 @@ struct CleanRemoveCaptureGroup: CaptureGroup {
     let directory: String
 }
 
-struct CleanTargetCaptureGroup: CaptureGroup {
+struct CleanTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
