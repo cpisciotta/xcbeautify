@@ -86,7 +86,7 @@ extension String {
         case (.codesign, let group as CodesignCaptureGroup):
             return format(command: "Signing", pattern: pattern)
         case (.codesignFramework, let group as CodesignFrameworkCaptureGroup):
-            return formatCodeSignFramework(pattern: pattern)
+            return formatCodeSignFramework(group: group)
         case (.copyHeader, let group as CopyHeaderCaptureGroup):
             return formatCopy(pattern: pattern)
         case (.copyPlist, let group as CopyPlistCaptureGroup):
@@ -239,9 +239,8 @@ extension String {
         return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
 
-    private func formatCodeSignFramework(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let frameworkPath = groups[0]
+    private func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String? {
+        let frameworkPath = group.frameworkPath
         return _colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 

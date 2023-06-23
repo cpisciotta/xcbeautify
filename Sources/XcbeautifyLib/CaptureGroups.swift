@@ -48,7 +48,7 @@ struct CodesignCaptureGroup: CaptureGroup {
 }
 
 struct CodesignFrameworkCaptureGroup: CaptureGroup {
-    let file: String
+    let frameworkPath: String
 }
 
 #if os(Linux)

@@ -90,8 +90,8 @@ extension String {
             return CodesignCaptureGroup(file: file)
         case .codesignFramework:
             assert(results.count >= 1)
-            guard let file = results[safe: 0] else { return EmptyCaptureGroup() }
-            return CodesignFrameworkCaptureGroup(file: file)
+            guard let frameworkPath = results[safe: 0] else { return EmptyCaptureGroup() }
+            return CodesignFrameworkCaptureGroup(frameworkPath: frameworkPath)
 #if os(Linux)
         case .compile:
             assert(results.count >= 2)
