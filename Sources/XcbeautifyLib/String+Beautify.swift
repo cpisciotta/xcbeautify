@@ -171,7 +171,7 @@ extension String {
         case (.undefinedSymbolLocation, let group as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning()
         case (.packageFetching, let group as PackageFetchingCaptureGroup):
-            return formatPackageFetching(pattern: pattern)
+            return formatPackageFetching(group: group)
         case (.packageUpdating, let group as PackageUpdatingCaptureGroup):
             return formatPackageUpdating(pattern: pattern)
         case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
@@ -525,9 +525,8 @@ extension String {
         return f.Red
     }
 
-    private func formatPackageFetching(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let source = groups[0]
+    private func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String? {
+        let source = group.source
         return "Fetching " + source
     }
 

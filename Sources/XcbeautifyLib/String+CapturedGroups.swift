@@ -378,8 +378,9 @@ extension String {
             guard let target = results[safe: 0], let fileName = results[safe: 1] else { return EmptyCaptureGroup() }
             return UndefinedSymbolLocationCaptureGroup(target: target, filename: fileName)
         case .packageFetching:
-            assert(results.count >= 0)
-            return PackageFetchingCaptureGroup()
+            assert(results.count >= 1)
+            guard let source = results[safe: 0] else { return EmptyCaptureGroup() }
+            return PackageFetchingCaptureGroup(source: source)
         case .packageUpdating:
             assert(results.count >= 0)
             return PackageUpdatingCaptureGroup()

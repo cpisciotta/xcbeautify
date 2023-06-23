@@ -379,7 +379,9 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
     let filename: String
 }
 
-struct PackageFetchingCaptureGroup: CaptureGroup { }
+struct PackageFetchingCaptureGroup: CaptureGroup {
+    let source: String
+}
 
 struct PackageUpdatingCaptureGroup: CaptureGroup { }
 
