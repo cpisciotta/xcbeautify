@@ -220,7 +220,9 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
     let device: String
 }
 
-struct PhaseSuccessCaptureGroup: CaptureGroup { }
+struct PhaseSuccessCaptureGroup: CaptureGroup {
+    let phase: String
+}
 
 struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
     let phaseName: String

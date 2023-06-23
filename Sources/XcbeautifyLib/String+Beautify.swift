@@ -102,8 +102,7 @@ extension String {
         case (.touch, let group as TouchCaptureGroup):
             return formatTouch(group: group)
         case (.phaseSuccess, let group as PhaseSuccessCaptureGroup):
-            let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
-            return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
+            return formatPhaseSuccess(group: group)
         case (.phaseScriptExecution, let group as PhaseScriptExecutionCaptureGroup):
             return formatPhaseScriptExecution(group: group)
         case (.preprocess, let group as PreprocessCaptureGroup):
@@ -292,6 +291,11 @@ extension String {
         let filename = group.filename
         let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
+    }
+
+    private func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String? {
+        let phase = group.phase.capitalized
+        return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
     }
 
     private func formatLinking(group: LinkingCaptureGroup) -> String? {

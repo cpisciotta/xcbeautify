@@ -223,8 +223,9 @@ extension String {
             guard let suite = results[safe: 0], let device = results[safe: 1] else { return EmptyCaptureGroup() }
             return ParallelTestSuiteStartedCaptureGroup(suite: suite, device: device)
         case .phaseSuccess:
-            assert(results.count >= 0)
-            return PhaseSuccessCaptureGroup()
+            assert(results.count >= 1)
+            guard let phase = results[safe: 0] else { return EmptyCaptureGroup() }
+            return PhaseSuccessCaptureGroup(phase: phase)
         case .phaseScriptExecution:
             assert(results.count >= 2)
             guard let phaseName = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
