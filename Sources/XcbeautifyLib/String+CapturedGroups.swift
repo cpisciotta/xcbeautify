@@ -245,9 +245,11 @@ extension String {
             guard let sourceFile = results[safe: 0], let targetFile = results[safe: 1], let buildTarget = results[safe: 2] else { return EmptyCaptureGroup() }
             return PbxcpCaptureGroup(sourceFile: sourceFile, targetFile: targetFile, buildTarget: buildTarget)
         case .processInfoPlist:
-            assert(results.count >= 3)
-            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results[safe: 2] else { return EmptyCaptureGroup() }
-            return ProcessInfoPlistCaptureGroup(filePath: filePath, filename: fileName, target: target)
+            assert(results.count >= 2)
+            guard let filePath = results[safe: 0], let fileName = results[safe: 1] else { return EmptyCaptureGroup() }
+            // Xcode 10+ includes target output
+            // TODO: Test with target included
+            return ProcessInfoPlistCaptureGroup(filePath: filePath, filename: fileName, target: results.last)
         case .testsRunCompletion:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let result = results[safe: 1], let time = results[safe: 2] else { return EmptyCaptureGroup() }
