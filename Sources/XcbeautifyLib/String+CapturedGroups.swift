@@ -78,8 +78,9 @@ extension String {
             guard let commandPath = results[safe: 0], let arguments = results[safe: 1] else { return EmptyCaptureGroup() }
             return ShellCommandCaptureGroup(commandPath: commandPath, arguments: arguments)
         case .cleanRemove:
-            assert(results.count >= 0)
-            return CleanRemoveCaptureGroup()
+            assert(results.count >= 1)
+            guard let directory = results[safe: 0] else { return EmptyCaptureGroup() }
+            return CleanRemoveCaptureGroup(directory: directory.lastPathComponent)
         case .cleanTarget:
             assert(results.count >= 3)
             guard let target = results[safe: 0], let project = results[safe: 1], let configuration = results[safe: 2] else { return EmptyCaptureGroup() }

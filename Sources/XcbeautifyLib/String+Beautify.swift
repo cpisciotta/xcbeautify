@@ -121,7 +121,7 @@ extension String {
         case (.shellCommand, let group as ShellCommandCaptureGroup):
             return nil
         case (.cleanRemove, let group as CleanRemoveCaptureGroup):
-            return formatCleanRemove(pattern: pattern)
+            return formatCleanRemove(group: group)
         case (.executed, let group as ExecutedCaptureGroup):
             return nil
         case (.executedWithSkipped, let group as ExecutedWithSkippedCaptureGroup):
@@ -232,9 +232,8 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 
-    private func formatCleanRemove(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let directory = groups[0].lastPathComponent
+    private func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String? {
+        let directory = group.directory
         return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
 

@@ -36,7 +36,9 @@ struct ShellCommandCaptureGroup: CaptureGroup {
     let arguments: String
 }
 
-struct CleanRemoveCaptureGroup: CaptureGroup { }
+struct CleanRemoveCaptureGroup: CaptureGroup {
+    let directory: String
+}
 
 struct CleanTargetCaptureGroup: CaptureGroup {
     let target: String
