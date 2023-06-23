@@ -161,7 +161,7 @@ extension String {
             return GeneratedCoverageReportCaptureGroup(coverageReportFilePath: coverageReportFilePath)
         case .generateDsym:
             assert(results.count >= 2)
-            guard let dsym = results[safe: 0], let target = results[safe: 1] else { return EmptyCaptureGroup() }
+            guard let dsym = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
             return GenerateDSYMCaptureGroup(dsym: dsym, target: target)
         case .libtool:
             assert(results.count >= 2)

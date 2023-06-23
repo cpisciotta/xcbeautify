@@ -38,7 +38,7 @@ extension String {
         case (.generatedCoverageReport, let group as GeneratedCoverageReportCaptureGroup):
             return formatCoverageReport(group: group)
         case (.generateDsym, let group as GenerateDSYMCaptureGroup):
-            return formatGenerateDsym(pattern: pattern)
+            return formatGenerateDsym(group: group)
         case (.libtool, let group as LibtoolCaptureGroup):
             return formatLibtool(pattern: pattern)
         case (.linking, let group as LinkingCaptureGroup):
@@ -280,10 +280,9 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 
-    private func formatGenerateDsym(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let dsym = groups[0]
-        guard let target = groups.last else { return nil }
+    private func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String? {
+        let dsym = group.dsym
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
     }
 
