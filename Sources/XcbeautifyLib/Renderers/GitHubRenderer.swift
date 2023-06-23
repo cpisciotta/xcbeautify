@@ -304,7 +304,8 @@ struct GitHubRenderer: OutputRendering {
     }
 
     // TODO: Print symbol and reference location
-    func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {        let reason = group.reason
+    func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
+        let reason = group.reason
         return "\(Symbol.asciiError) \(reason)"
     }
 
