@@ -383,7 +383,9 @@ struct PackageFetchingCaptureGroup: CaptureGroup {
     let source: String
 }
 
-struct PackageUpdatingCaptureGroup: CaptureGroup { }
+struct PackageUpdatingCaptureGroup: CaptureGroup {
+    let source: String
+}
 
 struct PackageCheckingOutCaptureGroup: CaptureGroup { }
 

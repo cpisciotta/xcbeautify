@@ -173,7 +173,7 @@ extension String {
         case (.packageFetching, let group as PackageFetchingCaptureGroup):
             return formatPackageFetching(group: group)
         case (.packageUpdating, let group as PackageUpdatingCaptureGroup):
-            return formatPackageUpdating(pattern: pattern)
+            return formatPackageUpdating(group: group)
         case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
             return formatPackageCheckingOut(pattern: pattern)
         case (.packageGraphResolvingStart, let group as PackageGraphResolvingStartCaptureGroup):
@@ -530,9 +530,8 @@ extension String {
         return "Fetching " + source
     }
 
-    private func formatPackageUpdating(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let source = groups[0]
+    private func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String? {
+        let source = group.source
         return "Updating " + source
     }
 
