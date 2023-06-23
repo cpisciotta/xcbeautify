@@ -159,7 +159,7 @@ public class Parser {
             return
         }
         
-        let groups = line.capturedGroups(with: .executed)
+        let groups: [String] = line.capturedGroups(with: .executed)
         summary = TestSummary(
             testsCount: Int(groups[0]) ?? 0,
             skippedCount: 0,
@@ -177,7 +177,7 @@ public class Parser {
             return
         }
         
-        let groups = line.capturedGroups(with: .executedWithSkipped)
+        let groups: [String] = line.capturedGroups(with: .executedWithSkipped)
         summary = TestSummary(
             testsCount: Int(groups[0]) ?? 0,
             skippedCount: Int(groups[1]) ?? 0,

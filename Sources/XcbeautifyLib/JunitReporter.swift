@@ -40,7 +40,7 @@ public final class JunitReporter {
     }
 
     private func generateFailingTest(line: String) -> Testcase {
-        let groups = line.capturedGroups(with: Matcher.failingTestMatcher.pattern)
+        let groups: [String] = line.capturedGroups(with: Matcher.failingTestMatcher.pattern)
         return Testcase(
             classname: groups[1],
             name: groups[2],
@@ -50,7 +50,7 @@ public final class JunitReporter {
     }
     
     private func generateRestartingTest(line: String) -> Testcase {
-        let groups = line.capturedGroups(with: Matcher.restartingTestMatcher.pattern)
+        let groups: [String] = line.capturedGroups(with: Matcher.restartingTestMatcher.pattern)
         return Testcase(
             classname: groups[1],
             name: groups[2],
@@ -61,7 +61,7 @@ public final class JunitReporter {
 
     private func generateParallelFailingTest(line: String) -> Testcase {
         // Parallel tests do not provide meaningful failure messages
-        let groups = line.capturedGroups(with: Matcher.parallelTestCaseFailedMatcher.pattern)
+        let groups: [String] = line.capturedGroups(with: Matcher.parallelTestCaseFailedMatcher.pattern)
         return Testcase(
             classname: groups[0],
             name: groups[1],
@@ -71,17 +71,17 @@ public final class JunitReporter {
     }
 
     private func generatePassingTest(line: String) -> Testcase {
-        let groups = line.capturedGroups(with: Matcher.testCasePassedMatcher.pattern)
+        let groups: [String] = line.capturedGroups(with: Matcher.testCasePassedMatcher.pattern)
         return Testcase(classname: groups[0], name: groups[1], time: groups[2], failure: nil)
     }
 
     private func generatePassingParallelTest(line: String) -> Testcase {
-      let groups = line.capturedGroups(with: Matcher.parallelTestCasePassedMatcher.pattern)
-      return Testcase(classname: groups[0], name: groups[1], time: groups[3], failure: nil)
+        let groups: [String] = line.capturedGroups(with: Matcher.parallelTestCasePassedMatcher.pattern)
+        return Testcase(classname: groups[0], name: groups[1], time: groups[3], failure: nil)
     }
   
     private func generateSuiteStart(line: String) -> String {
-        let groups = line.capturedGroups(with: Matcher.testSuiteStartMatcher.pattern)
+        let groups: [String] = line.capturedGroups(with: Matcher.testSuiteStartMatcher.pattern)
         return groups[0]
     }
     

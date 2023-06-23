@@ -164,7 +164,7 @@ extension String {
     // MARK: - Private
 
     private func formatTargetCommand(command: String, pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let target = groups[0]
         let project = groups[1]
         let configuration = groups[2]
@@ -172,7 +172,7 @@ extension String {
     }
 
     private func format(command: String, pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let sourceFile = groups[0]
         return _colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
     }
@@ -194,33 +194,33 @@ extension String {
     }
 
     private func formatAnalyze(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[1]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 
     private func formatCleanRemove(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let directory = groups[0].lastPathComponent
         return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
 
     private func formatCodeSignFramework(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let frameworkPath = groups[0]
         return _colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 
     private func formatProcessPch(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[0]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
     }
 
     private func formatProcessPchCommand(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         guard let filePath = groups.last else { return nil }
         return _colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
@@ -237,21 +237,21 @@ extension String {
     }
     
     private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[fileIndex]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 
     private func formatCopy(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[0].lastPathComponent
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 
     private func formatGenerateDsym(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let dsym = groups[0]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
@@ -272,34 +272,34 @@ extension String {
     }
 
     private func formatLibtool(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[0]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
     private func formatTouch(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[1]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
     private func formatLinking(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filename = groups[0].lastPathComponent
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
     }
     
     private func formatLinkingLinux(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let target = groups[0]
         return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
     }
 
     private func formatPhaseScriptExecution() -> String? {
-        let groups = capturedGroups(with: .phaseScriptExecution)
+        let groups: [String] = capturedGroups(with: .phaseScriptExecution)
         let phaseName = groups[0]
         // Strip backslashed added by xcodebuild before spaces in the build phase name
         let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
@@ -308,7 +308,7 @@ extension String {
     }
 
     private func formatTestHeading(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let testSuite = groups[0]
 
         switch pattern {
@@ -332,7 +332,7 @@ extension String {
 
     private func formatTest(pattern: Pattern) -> String? {
         let indent = "    "
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
 
         switch pattern {
         case .testCasePassed:
@@ -388,7 +388,7 @@ extension String {
     }
 
     private func formatError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         guard let errorMessage = groups.first else { return nil }
         return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
     }
@@ -398,7 +398,7 @@ extension String {
     }
 
     private func formatCompileError(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filePath = groups[0]
         let reason = groups[2]
 
@@ -420,14 +420,14 @@ extension String {
     }
 
     private func formatFileMissingError(pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let reason = groups[0]
         let filePath = groups[1]
         return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
     }
 
     private func formatWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         guard let warningMessage = groups.first else { return nil }
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
@@ -437,7 +437,7 @@ extension String {
     }
 
     private func formatCompileWarning(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let filePath = groups[0]
         let reason = groups[2]
 
@@ -459,14 +459,14 @@ extension String {
     }
 
     private func formatLdWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let prefix = groups[0]
         let message = groups[1]
         return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
     private func formatProcessInfoPlist(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let plist = groups[1]
 
         // Xcode 9 output
@@ -481,20 +481,20 @@ extension String {
 
     // TODO: Print symbol and reference location
     private func formatLinkerUndefinedSymbolsError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let reason = groups[0]
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
     // TODO: Print file path
     private func formatLinkerDuplicateSymbolsError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let reason = groups[0]
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
     private func formatWillNotBeCodesignWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         guard let warningMessage = groups.first else { return nil }
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
@@ -522,19 +522,19 @@ extension String {
     }
 
     private func formatPackageFetching(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let source = groups[0]
         return "Fetching " + source
     }
 
     private func formatPackageUpdating(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let source = groups[0]
         return "Updating " + source
     }
 
     private func formatPackageCheckingOut(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let version = groups[0]
         let package = groups[1]
         return _colored ? "Checking out " + package.s.Bold + " @ " + version.f.Green : "Checking out \(package) @ \(version)"
@@ -549,7 +549,7 @@ extension String {
     }
 
     private func formatPackgeItem(pattern: Pattern) -> String?  {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let name = groups[0]
         let url = groups[1]
         let version = groups[2]
@@ -557,7 +557,7 @@ extension String {
     }
 
     private func formatDuplicateLocalizedStringKey(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
+        let groups: [String] = capturedGroups(with: pattern)
         let message = groups[0]
         return _colored ? Symbol.warning.rawValue + " " + message.f.Yellow : Symbol.asciiWarning.rawValue + " " + message
     }
