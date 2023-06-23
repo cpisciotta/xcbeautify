@@ -135,27 +135,27 @@ extension String {
         case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
             return formatWillNotBeCodesignWarning(group: group)
         case (.clangError, let group as ClangErrorCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.fatalError, let group as FatalErrorCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.ldError, let group as LDErrorCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.podsError, let group as PodsErrorCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.moduleIncludesError, let group as ModuleIncludesErrorCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.xcodebuildError, let group as XcodebuildErrorCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.compileError, let group as CompileErrorCaptureGroup):
             return formatCompileError(group: group, additionalLines: additionalLines)
         case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
             return formatFileMissingError(group: group)
-        case (.checkDependenciesErrors, let group as CheckDependenciesCaptureGroup):
-            return formatError(pattern: pattern)
+        case (.checkDependenciesErrors, let group as CheckDependenciesErrorsCaptureGroup):
+            return formatError(group: group)
         case (.provisioningProfileRequired, let group as ProvisioningProfileRequiredCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.noCertificate, let group as NoCertificateCaptureGroup):
-            return formatError(pattern: pattern)
+            return formatError(group: group)
         case (.cursor, let group as CursorCaptureGroup):
             return nil
         case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
@@ -421,9 +421,8 @@ extension String {
         return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
     }
 
-    private func formatError(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        guard let errorMessage = groups.first else { return nil }
+    private func formatError(group: ErrorCaptureGroup) -> String? {
+        let errorMessage = group.wholeError
         return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
     }
 

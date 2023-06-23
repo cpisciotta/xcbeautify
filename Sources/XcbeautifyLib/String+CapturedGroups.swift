@@ -363,16 +363,16 @@ extension String {
             return LinkerUndefinedSymbolsCaptureGroup(reason: reason)
         case .podsError:
             assert(results.count >= 1)
-            guard let reason = results[safe: 0] else { return EmptyCaptureGroup() }
-            return PodsErrorCaptureGroup(reason: reason)
+            guard let wholeError = results[safe: 0] else { return EmptyCaptureGroup() }
+            return PodsErrorCaptureGroup(wholeError: wholeError)
         case .symbolReferencedFrom:
             assert(results.count >= 1)
             guard let reference = results[safe: 0] else { return EmptyCaptureGroup() }
             return SymbolReferencedFromCaptureGroup(reference: reference)
         case .moduleIncludesError:
             assert(results.count >= 1)
-            guard let errorReason = results[safe: 0] else { return EmptyCaptureGroup() }
-            return ModuleIncludesErrorCaptureGroup(errorReason: errorReason)
+            guard let wholeError = results[safe: 0] else { return EmptyCaptureGroup() }
+            return ModuleIncludesErrorCaptureGroup(wholeError: wholeError)
         case .undefinedSymbolLocation:
             assert(results.count >= 2)
             guard let target = results[safe: 0], let fileName = results[safe: 1] else { return EmptyCaptureGroup() }
