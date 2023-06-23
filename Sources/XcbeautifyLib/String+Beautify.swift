@@ -7,157 +7,190 @@ extension String {
     func beautify(pattern: Pattern, colored: Bool, additionalLines: @escaping () -> (String?)) -> String? {
         _colored = colored
 
-        switch pattern {
-        case .analyze:
+        let group: CaptureGroup = self.capturedGroups(with: pattern)
+
+        switch (pattern, group) {
+        case (.analyze, let group as AnalyzeCaptureGroup):
             return formatAnalyze(pattern: pattern)
-        case .compile:
         #if os(Linux)
+        case (.compile, let group as CompileCaptureGroup):
             return formatCompileLinux(pattern: pattern)
         #else
-            fallthrough
+        case (.compile, let group as CompileCaptureGroup):
+            return formatCompile(pattern: .compile)
         #endif
-        case .compileXib,
-             .compileStoryboard:
+        case (.compileXib, let group as CompileXibCaptureGroup):
             return formatCompile(pattern: pattern)
-        case .compileCommand:
+        case (.compileStoryboard, let group as CompileStoryboardCaptureGroup):
+            return formatCompile(pattern: pattern)
+        case (.compileCommand, let group as CompileCommandCaptureGroup):
             return formatCompileCommand(pattern: pattern)
-        case .buildTarget:
+        case (.buildTarget, let group as BuildTargetCaptureGroup):
             return formatTargetCommand(command: "Build", pattern: pattern)
-        case .analyzeTarget:
+        case (.analyzeTarget, let group as AnalyzeTargetCaptureGroup):
             return formatTargetCommand(command: "Analyze", pattern: pattern)
-        case .aggregateTarget:
+        case (.aggregateTarget, let group as AggregateTargetCaptureGroup):
             return formatTargetCommand(command: "Aggregate", pattern: pattern)
-        case .cleanTarget:
+        case (.cleanTarget, let group as CleanTargetCaptureGroup):
             return formatTargetCommand(command: "Clean", pattern: pattern)
-        case .generateCoverageData,
-             .generatedCoverageReport:
+        case (.generateCoverageData, let group as GenerateCoverageDataCaptureGroup):
             return formatCodeCoverage(pattern: pattern)
-        case .generateDsym:
+        case (.generatedCoverageReport, let group as GeneratedCoverageReportCaptureGroup):
+            return formatCodeCoverage(pattern: pattern)
+        case (.generateDsym, let group as GenerateDSYMCaptureGroup):
             return formatGenerateDsym(pattern: pattern)
-        case .libtool:
+        case (.libtool, let group as LibtoolCaptureGroup):
             return formatLibtool(pattern: pattern)
-        case .linking:
+        case (.linking, let group as LinkingCaptureGroup):
         #if os(Linux)
             return formatLinkingLinux(pattern: pattern)
         #else
             return formatLinking(pattern: pattern)
         #endif
-        case .testSuiteStarted,
-             .testSuiteStart,
-             .parallelTestingStarted,
-             .parallelTestingPassed,
-             .parallelTestingFailed,
-             .parallelTestSuiteStarted:
+        case (.testSuiteStarted, let group as TestSuiteStartedCaptureGroup):
             return formatTestHeading(pattern: pattern)
-        case .testSuiteAllTestsPassed,
-             .testSuiteAllTestsFailed:
+        case (.testSuiteStart, let group as TestSuiteStartCaptureGroup):
+            return formatTestHeading(pattern: pattern)
+        case (.parallelTestingStarted, let group as ParallelTestingStartedCaptureGroup):
+            return formatTestHeading(pattern: pattern)
+        case (.parallelTestingPassed, let group as ParallelTestingPassedCaptureGroup):
+            return formatTestHeading(pattern: pattern)
+        case (.parallelTestingFailed, let group as ParallelTestingFailedCaptureGroup):
+            return formatTestHeading(pattern: pattern)
+        case (.parallelTestSuiteStarted, let group as ParallelTestSuiteStartedCaptureGroup):
+            return formatTestHeading(pattern: pattern)
+        case (.testSuiteAllTestsPassed, let _ as TestSuiteAllTestsPassedCaptureGroup):
             return nil
-        case .failingTest,
-             .uiFailingTest,
-             .restartingTest,
-             .testCasePassed,
-             .testCasePending,
-             .testCaseMeasured,
-             .testsRunCompletion,
-             .parallelTestCasePassed,
-             .parallelTestCaseAppKitPassed,
-             .parallelTestCaseFailed:
+        case (.testSuiteAllTestsFailed, let _ as TestSuiteAllTestsFailedCaptureGroup):
+            return nil
+        case (.failingTest, let group as FailingTestCaptureGroup):
             return formatTest(pattern: pattern)
-        case .codesign:
+        case (.uiFailingTest, let group as UIFailingTestCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.restartingTest, let group as RestartingTestCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.testCasePassed, let group as TestCasePassedCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.testCasePending, let group as TestCasePendingCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.testCaseMeasured, let group as TestCaseMeasuredCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.testsRunCompletion, let group as TestsRunCompletionCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.parallelTestCasePassed, let group as ParallelTestCasePassedCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.parallelTestCaseAppKitPassed, let group as ParallelTestCaseAppKitPassedCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.parallelTestCaseFailed, let group as ParallelTestCaseFailedCaptureGroup):
+            return formatTest(pattern: pattern)
+        case (.codesign, let group as CodesignCaptureGroup):
             return format(command: "Signing", pattern: pattern)
-        case .codesignFramework:
+        case (.codesignFramework, let group as CodesignFrameworkCaptureGroup):
             return formatCodeSignFramework(pattern: pattern)
-        case .copyHeader,
-             .copyPlist,
-             .copyStrings,
-             .cpresource,
-             .pbxcp:
+        case (.copyHeader, let group as CopyHeaderCaptureGroup):
             return formatCopy(pattern: pattern)
-        case .checkDependencies:
+        case (.copyPlist, let group as CopyPlistCaptureGroup):
+            return formatCopy(pattern: pattern)
+        case (.copyStrings, let group as CopyStringsCaptureGroup):
+            return formatCopy(pattern: pattern)
+        case (.cpresource, let group as CpresourceCaptureGroup):
+            return formatCopy(pattern: pattern)
+        case (.pbxcp, let group as PbxcpCaptureGroup):
+            return formatCopy(pattern: pattern)
+        case (.checkDependencies, let _ as CheckDependenciesCaptureGroup):
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
-        case .processInfoPlist:
+        case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
             return formatProcessInfoPlist(pattern: .processInfoPlist)
-        case .processPch:
+        case (.processPch, let group as ProcessPchCaptureGroup):
             return formatProcessPch(pattern: pattern)
-        case .touch:
+        case (.touch, let group as TouchCaptureGroup):
             return formatTouch(pattern: pattern)
-        case .phaseSuccess:
+        case (.phaseSuccess, let _ as PhaseSuccessCaptureGroup):
             let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
             return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
-        case .phaseScriptExecution:
+        case (.phaseScriptExecution, let _ as PhaseScriptExecutionCaptureGroup):
             return formatPhaseScriptExecution()
-        case .preprocess:
+        case (.preprocess, let _ as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
-        case .processPchCommand:
+        case (.processPchCommand, let group as ProcessPchCaptureGroup):
             return formatProcessPchCommand(pattern: pattern)
-        case .writeFile:
+        case (.writeFile, let _ as WriteFileCaptureGroup):
             return nil
-        case .writeAuxiliaryFiles:
+        case (.writeAuxiliaryFiles, let _ as WriteAuxiliaryFilesCaptureGroup):
             return nil
-        case .shellCommand:
+        case (.shellCommand, let _ as ShellCommandCaptureGroup):
             return nil
-        case .cleanRemove:
+        case (.cleanRemove, let group as CleanRemoveCaptureGroup):
             return formatCleanRemove(pattern: pattern)
-        case .executed,
-             .executedWithSkipped:
+        case (.executed, let _ as ExecutedCaptureGroup):
             return nil
-        case .testCaseStarted:
+        case (.executedWithSkipped, let _ as ExecutedWithSkippedCaptureGroup):
             return nil
-        case .tiffutil:
+        case (.testCaseStarted, let _ as TestCaseStartedCaptureGroup):
             return nil
-        case .compileWarning:
+        case (.tiffutil, let _ as TIFFutilCaptureGroup):
+            return nil
+        case (.compileWarning, let _ as CompileWarningCaptureGroup):
             return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
-        case .ldWarning:
+        case (.ldWarning, let group as LDWarningCaptureGroup):
             return formatLdWarning(pattern: pattern)
-        case .genericWarning:
+        case (.genericWarning, let group as GenericWarningCaptureGroup):
             return formatWarning(pattern: pattern)
-        case .willNotBeCodeSigned:
+        case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
             return formatWillNotBeCodesignWarning(pattern: pattern)
-        case .clangError,
-             .fatalError,
-             .ldError,
-             .podsError,
-             .moduleIncludesError,
-             .xcodebuildError:
+        case (.clangError, let group as ClangErrorCaptureGroup):
             return formatError(pattern: pattern)
-        case .compileError:
+        case (.fatalError, let group as FatalErrorCaptureGroup):
+            return formatError(pattern: pattern)
+        case (.ldError, let group as LDErrorCaptureGroup):
+            return formatError(pattern: pattern)
+        case (.podsError, let group as PodsErrorCaptureGroup):
+            return formatError(pattern: pattern)
+        case (.moduleIncludesError, let group as ModuleIncludesErrorCaptureGroup):
+            return formatError(pattern: pattern)
+        case (.xcodebuildError, let group as XcodebuildErrorCaptureGroup):
+            return formatError(pattern: pattern)
+        case (.compileError, let _ as CompileErrorCaptureGroup):
             return formatCompileError(pattern: pattern, additionalLines: additionalLines)
-        case .fileMissingError:
+        case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
             return formatFileMissingError(pattern: pattern)
-        case .checkDependenciesErrors:
+        case (.checkDependenciesErrors, let group as CheckDependenciesCaptureGroup):
             return formatError(pattern: pattern)
-        case .provisioningProfileRequired:
+        case (.provisioningProfileRequired, let group as ProvisioningProfileRequiredCaptureGroup):
             return formatError(pattern: pattern)
-        case .noCertificate:
+        case (.noCertificate, let group as NoCertificateCaptureGroup):
             return formatError(pattern: pattern)
-        case .cursor:
+        case (.cursor, let _ as CursorCaptureGroup):
             return nil
-        case .linkerDuplicateSymbolsLocation:
+        case (.linkerDuplicateSymbolsLocation, let _ as LinkerDuplicateSymbolsLocationCaptureGroup):
             return nil
-        case .linkerDuplicateSymbols:
+        case (.linkerDuplicateSymbols, let group as LinkerDuplicateSymbolsCaptureGroup):
             return formatLinkerDuplicateSymbolsError(pattern: pattern)
-        case .linkerUndefinedSymbolLocation:
+        case (.linkerUndefinedSymbolLocation, let _ as LinkerUndefinedSymbolLocationCaptureGroup):
             return nil
-        case .linkerUndefinedSymbols:
+        case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
             return formatLinkerUndefinedSymbolsError(pattern: pattern)
-        case .symbolReferencedFrom:
+        case (.symbolReferencedFrom, let _ as SymbolReferencedFromCaptureGroup):
             return formatCompleteError()
-        case .undefinedSymbolLocation:
+        case (.undefinedSymbolLocation, let _ as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning()
-        case .packageFetching:
+        case (.packageFetching, let group as PackageFetchingCaptureGroup):
             return formatPackageFetching(pattern: pattern)
-        case .packageUpdating:
+        case (.packageUpdating, let group as PackageUpdatingCaptureGroup):
             return formatPackageUpdating(pattern: pattern)
-        case .packageCheckingOut:
+        case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
             return formatPackageCheckingOut(pattern: pattern)
-        case .packageGraphResolvingStart:
+        case (.packageGraphResolvingStart, let _ as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
-        case .packageGraphResolvingEnded:
+        case (.packageGraphResolvingEnded, let _ as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
-        case .packageGraphResolvedItem:
+        case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
             return formatPackgeItem(pattern: pattern)
-        case .duplicateLocalizedStringKey:
+        case (.duplicateLocalizedStringKey, let group as DuplicateLocalizedStringKeyCaptureGroup):
             return formatDuplicateLocalizedStringKey(pattern: pattern)
+        case (_, _):
+            assertionFailure()
+            return nil
         }
     }
 
