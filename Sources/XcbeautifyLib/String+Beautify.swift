@@ -34,9 +34,9 @@ extension String {
         case (.cleanTarget, let group as CleanTargetCaptureGroup):
             return formatTargetCommand(command: "Clean", pattern: pattern)
         case (.generateCoverageData, let group as GenerateCoverageDataCaptureGroup):
-            return formatCodeCoverage(pattern: pattern)
+            return formatGenerateCoverageData(group: group)
         case (.generatedCoverageReport, let group as GeneratedCoverageReportCaptureGroup):
-            return formatCodeCoverage(pattern: pattern)
+            return formatCoverageReport(group: group)
         case (.generateDsym, let group as GenerateDSYMCaptureGroup):
             return formatGenerateDsym(pattern: pattern)
         case (.libtool, let group as LibtoolCaptureGroup):
@@ -287,18 +287,13 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
     }
 
-    private func formatCodeCoverage(pattern: Pattern) -> String? {
-        switch pattern {
-        case .generateCoverageData:
-            return _colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
-        case .generatedCoverageReport:
-            let filePath = capturedGroups(with: pattern)[0]
-            return _colored
-                ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)"
-                : "Generated code coverage report: \(filePath)"
-        default:
-            return nil
-        }
+    private func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String? {
+        return _colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
+    }
+
+    private func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String? {
+        let filePath = group.coverageReportFilePath
+        return _colored ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)" : "Generated code coverage report: \(filePath)"
     }
 
     private func formatLibtool(pattern: Pattern) -> String? {
