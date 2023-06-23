@@ -161,7 +161,7 @@ extension String {
         case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
             return nil
         case (.linkerDuplicateSymbols, let group as LinkerDuplicateSymbolsCaptureGroup):
-            return formatLinkerDuplicateSymbolsError(pattern: pattern)
+            return formatLinkerDuplicateSymbolsError(group: group)
         case (.linkerUndefinedSymbolLocation, let group as LinkerUndefinedSymbolLocationCaptureGroup):
             return nil
         case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
@@ -495,9 +495,8 @@ extension String {
     }
 
     // TODO: Print file path
-    private func formatLinkerDuplicateSymbolsError(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let reason = groups[0]
+    private func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String? {
+        let reason = group.reason
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
