@@ -58,18 +58,13 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
     let frameworkPath: String
 }
 
-#if os(Linux)
 struct CompileCaptureGroup: CaptureGroup {
-    let filename: String
-    let target: String
-}
-#else
-struct CompileCaptureGroup: CaptureGroup {
+#if !os(Linux)
     let filePath: String
+#endif
     let filename: String
     let target: String
 }
-#endif
 
 struct CompileCommandCaptureGroup: CaptureGroup {
     let compilerCommand: String
