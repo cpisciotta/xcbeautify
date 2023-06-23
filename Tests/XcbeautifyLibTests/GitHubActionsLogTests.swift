@@ -452,9 +452,9 @@ final class GitHubActionsLogTests: XCTestCase {
 
     func testProvisioningProfileRequired() {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
-        let output = #"::warning ::MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
+        let output = #"::error ::MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         XCTAssertEqual(logFormatted(input), output)
-        XCTAssertEqual(parser.outputType, .warning)
+        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testRestartingTests() {
@@ -470,9 +470,9 @@ final class GitHubActionsLogTests: XCTestCase {
     }
 
     func testSymbolReferencedFrom() {
-        let formatted = logFormatted( "  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(formatted, "::warning ::\"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(parser.outputType, .warning)
+        let formatted = logFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        XCTAssertEqual(formatted, "::error ::\"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testUndefinedSymbolLocation() {
