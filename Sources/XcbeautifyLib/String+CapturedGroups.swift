@@ -235,7 +235,7 @@ extension String {
             return ProcessPchCaptureGroup(file: file, buildTarget: buildTarget)
         case .processPchCommand:
             assert(results.count >= 1)
-            guard let filePath = results[safe: 0] else { return EmptyCaptureGroup() }
+            guard let filePath = results.last else { return EmptyCaptureGroup() }
             return ProcessPchCommandCaptureGroup(filePath: filePath)
         case .preprocess:
             assert(results.count >= 1)

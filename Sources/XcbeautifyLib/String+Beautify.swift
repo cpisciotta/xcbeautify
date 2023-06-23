@@ -109,7 +109,7 @@ extension String {
         case (.preprocess, let group as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
         case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
-            return formatProcessPchCommand(pattern: pattern)
+            return formatProcessPchCommand(group: group)
         case (.writeFile, let group as WriteFileCaptureGroup):
             return nil
         case (.writeAuxiliaryFiles, let group as WriteAuxiliaryFilesCaptureGroup):
@@ -244,9 +244,8 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
     }
 
-    private func formatProcessPchCommand(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        guard let filePath = groups.last else { return nil }
+    private func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String? {
+        let filePath = group.filePath
         return _colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
 
