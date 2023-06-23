@@ -227,7 +227,7 @@ extension String {
             return PhaseSuccessCaptureGroup()
         case .phaseScriptExecution:
             assert(results.count >= 2)
-            guard let phaseName = results[safe: 0], let target = results[safe: 1] else { return EmptyCaptureGroup() }
+            guard let phaseName = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
             return PhaseScriptExecutionCaptureGroup(phaseName: phaseName, target: target)
         case .processPch:
             assert(results.count >= 2)

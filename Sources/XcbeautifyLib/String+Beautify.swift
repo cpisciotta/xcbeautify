@@ -105,7 +105,7 @@ extension String {
             let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
             return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
         case (.phaseScriptExecution, let group as PhaseScriptExecutionCaptureGroup):
-            return formatPhaseScriptExecution()
+            return formatPhaseScriptExecution(group: group)
         case (.preprocess, let group as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
         case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
@@ -313,12 +313,11 @@ extension String {
 #endif
     }
 
-    private func formatPhaseScriptExecution() -> String? {
-        let groups: [String] = capturedGroups(with: .phaseScriptExecution)
-        let phaseName = groups[0]
+    private func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String? {
+        let phaseName = group.phaseName
+        let target = group.target
         // Strip backslashed added by xcodebuild before spaces in the build phase name
         let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
-        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
     }
 
