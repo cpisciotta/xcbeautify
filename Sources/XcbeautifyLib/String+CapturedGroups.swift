@@ -248,9 +248,15 @@ extension String {
         case .processInfoPlist:
             assert(results.count >= 2)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1] else { return EmptyCaptureGroup() }
-            // Xcode 10+ includes target output
+
             // TODO: Test with target included
-            return ProcessInfoPlistCaptureGroup(filePath: filePath, filename: fileName, target: results.last)
+            if results.count == 2 {
+                // Xcode 9 excludes target output
+                return ProcessInfoPlistCaptureGroup(filePath: filePath, filename: fileName, target: nil)
+            } else {
+                // Xcode 10+ includes target output
+                return ProcessInfoPlistCaptureGroup(filePath: filePath, filename: fileName, target: results.last)
+            }
         case .testsRunCompletion:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let result = results[safe: 1], let time = results[safe: 2] else { return EmptyCaptureGroup() }

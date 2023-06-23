@@ -96,7 +96,7 @@ extension String {
         case (.checkDependencies, let group as CheckDependenciesCaptureGroup):
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
-            return formatProcessInfoPlist(pattern: .processInfoPlist)
+            return formatProcessInfoPlist(group: group)
         case (.processPch, let group as ProcessPchCaptureGroup):
             return formatProcessPch(pattern: pattern)
         case (.touch, let group as TouchCaptureGroup):
@@ -475,18 +475,16 @@ extension String {
         return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
-    private func formatProcessInfoPlist(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let plist = groups[1]
+    private func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String? {
+        let plist = group.filename
 
-        // Xcode 9 output
-        if groups.count == 2 {
+        if let target = group.target {
+            // Xcode 10+ output
+            return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
+        } else {
+            // Xcode 9 output
             return _colored ? "Processing".s.Bold + " " + plist : "Processing" + " " + plist
         }
-
-        // Xcode 10+ output
-        guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
     }
 
     // TODO: Print symbol and reference location
