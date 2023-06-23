@@ -44,17 +44,17 @@ extension String {
         case (.linking, let group as LinkingCaptureGroup):
             return formatLinking(group: group)
         case (.testSuiteStarted, let group as TestSuiteStartedCaptureGroup):
-            return formatTestHeading(pattern: pattern)
+            return formatTestSuiteStarted(group: group)
         case (.testSuiteStart, let group as TestSuiteStartCaptureGroup):
-            return formatTestHeading(pattern: pattern)
+            return formatTestSuiteStart(group: group)
         case (.parallelTestingStarted, let group as ParallelTestingStartedCaptureGroup):
-            return formatTestHeading(pattern: pattern)
+            return formatParallelTestingStarted(group: group)
         case (.parallelTestingPassed, let group as ParallelTestingPassedCaptureGroup):
-            return formatTestHeading(pattern: pattern)
+            return formatParallelTestingPassed(group: group)
         case (.parallelTestingFailed, let group as ParallelTestingFailedCaptureGroup):
-            return formatTestHeading(pattern: pattern)
+            return formatParallelTestingFailed(group: group)
         case (.parallelTestSuiteStarted, let group as ParallelTestSuiteStartedCaptureGroup):
-            return formatTestHeading(pattern: pattern)
+            return formatParallelTestSuiteStarted(group: group)
         case (.testSuiteAllTestsPassed, let group as TestSuiteAllTestsPassedCaptureGroup):
             return nil
         case (.testSuiteAllTestsFailed, let group as TestSuiteAllTestsFailedCaptureGroup):
@@ -319,27 +319,34 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
     }
 
-    private func formatTestHeading(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let testSuite = groups[0]
+    private func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String? {
+        let testSuite = group.testSuiteName
+        return _colored ? testSuite.s.Bold : testSuite
+    }
 
-        switch pattern {
-        case .testSuiteStart:
-            return _colored ? testSuite.s.Bold : testSuite
-        case .testSuiteStarted,
-             .parallelTestSuiteStarted:
-            let deviceDescription = pattern == .parallelTestSuiteStarted ? " on '\(groups[1])'" : ""
-            let heading = "Test Suite \(testSuite) started\(deviceDescription)"
-            return _colored ? heading.s.Bold.f.Cyan : heading
-        case .parallelTestingStarted:
-            return _colored ? s.Bold.f.Cyan : self
-        case .parallelTestingPassed:
-            return _colored ? s.Bold.f.Green : self
-        case .parallelTestingFailed:
-            return _colored ? s.Bold.f.Red : self
-        default:
-            return nil
-        }
+    private func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String? {
+        let testSuite = group.suite
+        let heading = "Test Suite \(testSuite) started"
+        return _colored ? heading.s.Bold.f.Cyan : heading
+    }
+
+    private func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String? {
+        let testSuite = group.suite
+        let deviceDescription = " on '\(group.device)'"
+        let heading = "Test Suite \(testSuite) started\(deviceDescription)"
+        return _colored ? heading.s.Bold.f.Cyan : heading
+    }
+
+    private func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String? {
+        return _colored ? s.Bold.f.Cyan : self
+    }
+
+    private func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String? {
+        return _colored ? s.Bold.f.Green : self
+    }
+
+    private func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String? {
+        return _colored ? s.Bold.f.Red : self
     }
 
     private func formatTest(pattern: Pattern) -> String? {
