@@ -333,8 +333,8 @@ extension String {
             return FatalErrorCaptureGroup(wholeError: wholeError)
         case .fileMissingError:
             assert(results.count >= 2)
-            guard let wholeError = results[safe: 0], let filePath = results[safe: 1] else { return EmptyCaptureGroup() }
-            return FileMissingErrorCaptureGroup(wholeError: wholeError, filePath: filePath)
+            guard let reason = results[safe: 0], let filePath = results[safe: 1] else { return EmptyCaptureGroup() }
+            return FileMissingErrorCaptureGroup(reason: reason, filePath: filePath)
         case .ldError:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return EmptyCaptureGroup() }

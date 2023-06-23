@@ -149,7 +149,7 @@ extension String {
         case (.compileError, let group as CompileErrorCaptureGroup):
             return formatCompileError(group: group, additionalLines: additionalLines)
         case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
-            return formatFileMissingError(pattern: pattern)
+            return formatFileMissingError(group: group)
         case (.checkDependenciesErrors, let group as CheckDependenciesCaptureGroup):
             return formatError(pattern: pattern)
         case (.provisioningProfileRequired, let group as ProvisioningProfileRequiredCaptureGroup):
@@ -432,10 +432,9 @@ extension String {
             """
     }
 
-    private func formatFileMissingError(pattern: Pattern) -> String {
-        let groups: [String] = capturedGroups(with: pattern)
-        let reason = groups[0]
-        let filePath = groups[1]
+    private func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
+        let reason = group.reason
+        let filePath = group.filePath
         return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
     }
 

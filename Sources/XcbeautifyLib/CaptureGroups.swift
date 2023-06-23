@@ -338,7 +338,7 @@ struct FatalErrorCaptureGroup: CaptureGroup {
 }
 
 struct FileMissingErrorCaptureGroup: CaptureGroup {
-    let wholeError: String
+    let reason: String
     let filePath: String
 }
 
