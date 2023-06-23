@@ -2,6 +2,10 @@ import Foundation
 
 protocol CaptureGroup { }
 
+protocol ErrorCaptureGroup: CaptureGroup {
+    var wholeError: String { get }
+}
+
 struct EmptyCaptureGroup: CaptureGroup { }
 
 struct AnalyzeCaptureGroup: CaptureGroup {
