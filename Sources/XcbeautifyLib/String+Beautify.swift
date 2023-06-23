@@ -14,7 +14,7 @@ extension String {
             return formatAnalyze(group: group)
         #if os(Linux)
         case (.compile, let group as CompileCaptureGroup):
-            return formatCompileLinux(pattern: pattern)
+            return formatCompile(pattern: pattern)
         #else
         case (.compile, let group as CompileCaptureGroup):
             return formatCompile(pattern: .compile)
@@ -252,17 +252,10 @@ extension String {
     private func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
         return nil
     }
+
     private func formatCompile(pattern: Pattern) -> String? {
-        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
-    }
-    
-    private func formatCompileLinux(pattern: Pattern) -> String? {
-        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 0)
-    }
-    
-    private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
         let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[fileIndex]
+        let filename = groups[1]
         guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
