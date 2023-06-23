@@ -183,7 +183,7 @@ extension String {
         case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
             return formatPackgeItem(group: group)
         case (.duplicateLocalizedStringKey, let group as DuplicateLocalizedStringKeyCaptureGroup):
-            return formatDuplicateLocalizedStringKey(pattern: pattern)
+            return formatDuplicateLocalizedStringKey(group: group)
         case (_, _):
             assertionFailure()
             return nil
@@ -556,9 +556,8 @@ extension String {
         return _colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
     }
 
-    private func formatDuplicateLocalizedStringKey(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let message = groups[0]
+    private func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String? {
+        let message = group.warningMessage
         return _colored ? Symbol.warning.rawValue + " " + message.f.Yellow : Symbol.asciiWarning.rawValue + " " + message
     }
 }
