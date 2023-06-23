@@ -129,7 +129,7 @@ extension String {
         case (.compileWarning, let group as CompileWarningCaptureGroup):
             return formatCompileWarning(group: group, additionalLines: additionalLines)
         case (.ldWarning, let group as LDWarningCaptureGroup):
-            return formatLdWarning(pattern: pattern)
+            return formatLdWarning(group: group)
         case (.genericWarning, let group as GenericWarningCaptureGroup):
             return formatWarning(pattern: pattern)
         case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
@@ -469,10 +469,9 @@ extension String {
             """
     }
 
-    private func formatLdWarning(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let prefix = groups[0]
-        let message = groups[1]
+    private func formatLdWarning(group: LDWarningCaptureGroup) -> String? {
+        let prefix = group.ldPrefix
+        let message = group.warningMessage
         return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
