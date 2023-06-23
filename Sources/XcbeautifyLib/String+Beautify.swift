@@ -26,13 +26,13 @@ extension String {
         case (.compileCommand, let group as CompileCommandCaptureGroup):
             return formatCompileCommand(group: group)
         case (.buildTarget, let group as BuildTargetCaptureGroup):
-            return formatTargetCommand(command: "Build", pattern: pattern)
+            return formatTargetCommand(command: "Build", group: group)
         case (.analyzeTarget, let group as AnalyzeTargetCaptureGroup):
-            return formatTargetCommand(command: "Analyze", pattern: pattern)
+            return formatTargetCommand(command: "Analyze", group: group)
         case (.aggregateTarget, let group as AggregateTargetCaptureGroup):
-            return formatTargetCommand(command: "Aggregate", pattern: pattern)
+            return formatTargetCommand(command: "Aggregate", group: group)
         case (.cleanTarget, let group as CleanTargetCaptureGroup):
-            return formatTargetCommand(command: "Clean", pattern: pattern)
+            return formatTargetCommand(command: "Clean", group: group)
         case (.generateCoverageData, let group as GenerateCoverageDataCaptureGroup):
             return formatGenerateCoverageData(group: group)
         case (.generatedCoverageReport, let group as GeneratedCoverageReportCaptureGroup):
@@ -191,11 +191,10 @@ extension String {
 
     // MARK: - Private
 
-    private func formatTargetCommand(command: String, pattern: Pattern) -> String {
-        let groups: [String] = capturedGroups(with: pattern)
-        let target = groups[0]
-        let project = groups[1]
-        let configuration = groups[2]
+    private func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String {
+        let target = group.target
+        let project = group.project
+        let configuration = group.configuration
         return _colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
     }
 
