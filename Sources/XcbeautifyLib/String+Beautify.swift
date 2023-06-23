@@ -98,7 +98,7 @@ extension String {
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
             return formatProcessInfoPlist(group: group)
         case (.processPch, let group as ProcessPchCaptureGroup):
-            return formatProcessPch(pattern: pattern)
+            return formatProcessPch(group: group)
         case (.touch, let group as TouchCaptureGroup):
             return formatTouch(group: group)
         case (.phaseSuccess, let group as PhaseSuccessCaptureGroup):
@@ -238,10 +238,9 @@ extension String {
         return _colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 
-    private func formatProcessPch(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[0]
-        guard let target = groups.last else { return nil }
+    private func formatProcessPch(group: ProcessPchCaptureGroup) -> String? {
+        let filename = group.file
+        let target = group.buildTarget
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
     }
 

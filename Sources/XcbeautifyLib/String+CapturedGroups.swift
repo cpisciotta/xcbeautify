@@ -231,7 +231,7 @@ extension String {
             return PhaseScriptExecutionCaptureGroup(phaseName: phaseName, target: target)
         case .processPch:
             assert(results.count >= 2)
-            guard let file = results[safe: 0], let buildTarget = results[safe: 1] else { return EmptyCaptureGroup() }
+            guard let file = results[safe: 0], let buildTarget = results.last else { return EmptyCaptureGroup() }
             return ProcessPchCaptureGroup(file: file, buildTarget: buildTarget)
         case .processPchCommand:
             assert(results.count >= 1)
