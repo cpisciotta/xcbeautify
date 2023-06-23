@@ -178,13 +178,16 @@ struct TestCasePendingCaptureGroup: CaptureGroup {
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     let suite: String
     let testCase: String
-    let time: String
+    let name: String
+    let unitName: String
+    let value: String
+    let deviation: String
 }
 
 struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
     let suite: String
     let testCase: String
-    let installedAppFileAndID: String
+    let device: String
     let time: String
 }
 
@@ -197,7 +200,7 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
 struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
     let suite: String
     let testCase: String
-    let installedAppFileAndID: String
+    let device: String
     let time: String
 }
 

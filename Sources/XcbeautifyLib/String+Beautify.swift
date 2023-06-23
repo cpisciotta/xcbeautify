@@ -60,25 +60,25 @@ extension String {
         case (.testSuiteAllTestsFailed, let group as TestSuiteAllTestsFailedCaptureGroup):
             return nil
         case (.failingTest, let group as FailingTestCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatFailingTest(group: group)
         case (.uiFailingTest, let group as UIFailingTestCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatUIFailingTest(group: group)
         case (.restartingTest, let group as RestartingTestCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatRestartingTest(group: group)
         case (.testCasePassed, let group as TestCasePassedCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatTestCasePassed(group: group)
         case (.testCasePending, let group as TestCasePendingCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatTestCasePending(group: group)
         case (.testCaseMeasured, let group as TestCaseMeasuredCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatTestCaseMeasured(group: group)
         case (.testsRunCompletion, let group as TestsRunCompletionCaptureGroup):
-            return formatTest(pattern: pattern)
+            return nil
         case (.parallelTestCasePassed, let group as ParallelTestCasePassedCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatParallelTestCasePassed(group: group)
         case (.parallelTestCaseAppKitPassed, let group as ParallelTestCaseAppKitPassedCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatParallelTestCaseAppKitPassed(group: group)
         case (.parallelTestCaseFailed, let group as ParallelTestCaseFailedCaptureGroup):
-            return formatTest(pattern: pattern)
+            return formatParallelTestCaseFailed(group: group)
         case (.codesign, let group as CodesignCaptureGroup):
             return format(command: "Signing", pattern: pattern)
         case (.codesignFramework, let group as CodesignFrameworkCaptureGroup):
@@ -349,61 +349,76 @@ extension String {
         return _colored ? s.Bold.f.Red : self
     }
 
-    private func formatTest(pattern: Pattern) -> String? {
+    private func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String? {
+        // TODO: Extract to shared property
         let indent = "    "
-        let groups: [String] = capturedGroups(with: pattern)
+        let testCase = group.testCase
+        let time = group.time
+        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
+    }
 
-        switch pattern {
-        case .testCasePassed:
-            let testCase = groups[1]
-            let time = groups[2]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
-        case .failingTest:
-            let testCase = groups[2]
-            let failingReason = groups[3]
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
-        case .uiFailingTest:
-            let file = groups[0]
-            let failingReason = groups[1]
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
-        case .restartingTest:
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
-        case .testCasePending:
-            let testCase = groups[1]
-            return _colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
-        case .testsRunCompletion:
-            return nil
-        case .testCaseMeasured:
-            let testCase = groups[1]
-            let name = groups[2]
-            let unitName = groups[3]
-            let value = groups[4]
-            let deviation = groups[5].coloredDeviation()
+    private func formatFailingTest(group: FailingTestCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let failingReason = group.reason
+        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
+    }
 
-            let formattedValue: String
-            if unitName == "seconds" {
-                formattedValue = value.coloredTime()
-            } else {
-                formattedValue = value
-            }
-            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
-        case .parallelTestCasePassed:
-            let testCase = groups[1]
-            let device = groups[2]
-            let time = groups[3]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
-        case .parallelTestCaseAppKitPassed:
-            let testCase = groups[1]
-            let time = groups[2]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
-        case .parallelTestCaseFailed:
-            let testCase = groups[1]
-            let device = groups[2]
-            let time = groups[3]
-            return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
-        default:
-            return nil
+    private func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String? {
+        let indent = "    "
+        let file = group.file
+        let failingReason = group.reason
+        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
+    }
+
+    private func formatRestartingTest(group: RestartingTestCaptureGroup) -> String? {
+        let indent = "    "
+        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
+    }
+
+    private func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        return _colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
+    }
+
+    private func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let name = group.name
+        let unitName = group.unitName
+        let value = group.value
+        let deviation = group.deviation.coloredDeviation()
+
+        let formattedValue: String
+        if unitName == "seconds" {
+            formattedValue = value.coloredTime()
+        } else {
+            formattedValue = value
         }
+        return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
+    }
+
+    private func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
+    }
+
+    private func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let time = group.time
+        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
+    }
+
+    private func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String? {
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
     }
 
     private func formatError(pattern: Pattern) -> String? {

@@ -191,21 +191,21 @@ extension String {
             guard let suite = results[safe: 0], let testCase = results[safe: 1] else { return EmptyCaptureGroup() }
             return TestCasePendingCaptureGroup(suite: suite, testCase: testCase)
         case .testCaseMeasured:
-            assert(results.count >= 3)
-            guard let suite = results[safe: 0], let testCase = results[safe: 1], let time = results[safe: 2] else { return EmptyCaptureGroup() }
-            return TestCaseMeasuredCaptureGroup(suite: suite, testCase: testCase, time: time)
+            assert(results.count >= 6)
+            guard let suite = results[safe: 0], let testCase = results[safe: 1], let name = results[safe: 2], let unitName = results[safe: 3], let value = results[safe: 4], let deviation = results[safe: 5] else { return EmptyCaptureGroup() }
+            return TestCaseMeasuredCaptureGroup(suite: suite, testCase: testCase, name: name, unitName: unitName, value: value, deviation: deviation)
         case .parallelTestCasePassed:
             assert(results.count >= 4)
-            guard let suite = results[safe: 0], let testCase = results[safe: 1], let installedAppFileAndID = results[safe: 2], let time = results[safe: 3] else { return EmptyCaptureGroup() }
-            return ParallelTestCasePassedCaptureGroup(suite: suite, testCase: testCase, installedAppFileAndID: installedAppFileAndID, time: time)
+            guard let suite = results[safe: 0], let testCase = results[safe: 1], let device = results[safe: 2], let time = results[safe: 3] else { return EmptyCaptureGroup() }
+            return ParallelTestCasePassedCaptureGroup(suite: suite, testCase: testCase, device: device, time: time)
         case .parallelTestCaseAppKitPassed:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let time = results[safe: 2] else { return EmptyCaptureGroup() }
             return ParallelTestCaseAppKitPassedCaptureGroup(suite: suite, testCase: testCase, time: time)
         case .parallelTestCaseFailed:
             assert(results.count >= 4)
-            guard let suite = results[safe: 0], let testCase = results[safe: 1], let installedAppFileAndID = results[safe: 2], let time = results[safe: 3] else { return EmptyCaptureGroup() }
-            return ParallelTestCaseFailedCaptureGroup(suite: suite, testCase: testCase, installedAppFileAndID: installedAppFileAndID, time: time)
+            guard let suite = results[safe: 0], let testCase = results[safe: 1], let device = results[safe: 2], let time = results[safe: 3] else { return EmptyCaptureGroup() }
+            return ParallelTestCaseFailedCaptureGroup(suite: suite, testCase: testCase, device: device, time: time)
         case .parallelTestingStarted:
             assert(results.count >= 1)
             guard let device = results[safe: 0] else { return EmptyCaptureGroup() }
