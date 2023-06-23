@@ -181,7 +181,7 @@ extension String {
         case (.packageGraphResolvingEnded, let group as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
         case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
-            return formatPackgeItem(pattern: pattern)
+            return formatPackgeItem(group: group)
         case (.duplicateLocalizedStringKey, let group as DuplicateLocalizedStringKeyCaptureGroup):
             return formatDuplicateLocalizedStringKey(pattern: pattern)
         case (_, _):
@@ -549,11 +549,10 @@ extension String {
         return _colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 
-    private func formatPackgeItem(pattern: Pattern) -> String?  {
-        let groups: [String] = capturedGroups(with: pattern)
-        let name = groups[0]
-        let url = groups[1]
-        let version = groups[2]
+    private func formatPackgeItem(group: PackageGraphResolvedItemCaptureGroup) -> String?  {
+        let name = group.packageName
+        let url = group.packageURL
+        let version = group.packageVersion
         return _colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
     }
 
