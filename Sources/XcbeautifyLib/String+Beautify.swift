@@ -133,7 +133,7 @@ extension String {
         case (.genericWarning, let group as GenericWarningCaptureGroup):
             return formatWarning(pattern: pattern)
         case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
-            return formatWillNotBeCodesignWarning(pattern: pattern)
+            return formatWillNotBeCodesignWarning(group: group)
         case (.clangError, let group as ClangErrorCaptureGroup):
             return formatError(pattern: pattern)
         case (.fatalError, let group as FatalErrorCaptureGroup):
@@ -500,9 +500,8 @@ extension String {
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
-    private func formatWillNotBeCodesignWarning(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        guard let warningMessage = groups.first else { return nil }
+    private func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String? {
+        let warningMessage = group.wholeWarning
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
