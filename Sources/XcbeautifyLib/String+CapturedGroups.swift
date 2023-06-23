@@ -193,9 +193,9 @@ extension String {
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let time = results[safe: 2] else { return EmptyCaptureGroup() }
             return TestCaseMeasuredCaptureGroup(suite: suite, testCase: testCase, time: time)
         case .parallelTestCasePassed:
-            assert(results.count >= 1)
-            guard let device = results[safe: 0] else { return EmptyCaptureGroup() }
-            return ParallelTestingPassedCaptureGroup(device: device)
+            assert(results.count >= 4)
+            guard let suite = results[safe: 0], let testCase = results[safe: 1], let installedAppFileAndID = results[safe: 2], let time = results[safe: 3] else { return EmptyCaptureGroup() }
+            return ParallelTestCasePassedCaptureGroup(suite: suite, testCase: testCase, installedAppFileAndID: installedAppFileAndID, time: time)
         case .parallelTestCaseAppKitPassed:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let time = results[safe: 2] else { return EmptyCaptureGroup() }
