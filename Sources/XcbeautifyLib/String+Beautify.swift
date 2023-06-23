@@ -59,9 +59,9 @@ extension String {
             return formatTestHeading(pattern: pattern)
         case (.parallelTestSuiteStarted, let group as ParallelTestSuiteStartedCaptureGroup):
             return formatTestHeading(pattern: pattern)
-        case (.testSuiteAllTestsPassed, let _ as TestSuiteAllTestsPassedCaptureGroup):
+        case (.testSuiteAllTestsPassed, let group as TestSuiteAllTestsPassedCaptureGroup):
             return nil
-        case (.testSuiteAllTestsFailed, let _ as TestSuiteAllTestsFailedCaptureGroup):
+        case (.testSuiteAllTestsFailed, let group as TestSuiteAllTestsFailedCaptureGroup):
             return nil
         case (.failingTest, let group as FailingTestCaptureGroup):
             return formatTest(pattern: pattern)
@@ -97,7 +97,7 @@ extension String {
             return formatCopy(pattern: pattern)
         case (.pbxcp, let group as PbxcpCaptureGroup):
             return formatCopy(pattern: pattern)
-        case (.checkDependencies, let _ as CheckDependenciesCaptureGroup):
+        case (.checkDependencies, let group as CheckDependenciesCaptureGroup):
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
             return formatProcessInfoPlist(pattern: .processInfoPlist)
@@ -105,32 +105,32 @@ extension String {
             return formatProcessPch(pattern: pattern)
         case (.touch, let group as TouchCaptureGroup):
             return formatTouch(pattern: pattern)
-        case (.phaseSuccess, let _ as PhaseSuccessCaptureGroup):
+        case (.phaseSuccess, let group as PhaseSuccessCaptureGroup):
             let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
             return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
-        case (.phaseScriptExecution, let _ as PhaseScriptExecutionCaptureGroup):
+        case (.phaseScriptExecution, let group as PhaseScriptExecutionCaptureGroup):
             return formatPhaseScriptExecution()
-        case (.preprocess, let _ as PreprocessCaptureGroup):
+        case (.preprocess, let group as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
         case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
             return formatProcessPchCommand(pattern: pattern)
-        case (.writeFile, let _ as WriteFileCaptureGroup):
+        case (.writeFile, let group as WriteFileCaptureGroup):
             return nil
-        case (.writeAuxiliaryFiles, let _ as WriteAuxiliaryFilesCaptureGroup):
+        case (.writeAuxiliaryFiles, let group as WriteAuxiliaryFilesCaptureGroup):
             return nil
-        case (.shellCommand, let _ as ShellCommandCaptureGroup):
+        case (.shellCommand, let group as ShellCommandCaptureGroup):
             return nil
         case (.cleanRemove, let group as CleanRemoveCaptureGroup):
             return formatCleanRemove(pattern: pattern)
-        case (.executed, let _ as ExecutedCaptureGroup):
+        case (.executed, let group as ExecutedCaptureGroup):
             return nil
-        case (.executedWithSkipped, let _ as ExecutedWithSkippedCaptureGroup):
+        case (.executedWithSkipped, let group as ExecutedWithSkippedCaptureGroup):
             return nil
-        case (.testCaseStarted, let _ as TestCaseStartedCaptureGroup):
+        case (.testCaseStarted, let group as TestCaseStartedCaptureGroup):
             return nil
-        case (.tiffutil, let _ as TIFFutilCaptureGroup):
+        case (.tiffutil, let group as TIFFutilCaptureGroup):
             return nil
-        case (.compileWarning, let _ as CompileWarningCaptureGroup):
+        case (.compileWarning, let group as CompileWarningCaptureGroup):
             return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
         case (.ldWarning, let group as LDWarningCaptureGroup):
             return formatLdWarning(pattern: pattern)
@@ -150,7 +150,7 @@ extension String {
             return formatError(pattern: pattern)
         case (.xcodebuildError, let group as XcodebuildErrorCaptureGroup):
             return formatError(pattern: pattern)
-        case (.compileError, let _ as CompileErrorCaptureGroup):
+        case (.compileError, let group as CompileErrorCaptureGroup):
             return formatCompileError(pattern: pattern, additionalLines: additionalLines)
         case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
             return formatFileMissingError(pattern: pattern)
@@ -160,19 +160,19 @@ extension String {
             return formatError(pattern: pattern)
         case (.noCertificate, let group as NoCertificateCaptureGroup):
             return formatError(pattern: pattern)
-        case (.cursor, let _ as CursorCaptureGroup):
+        case (.cursor, let group as CursorCaptureGroup):
             return nil
-        case (.linkerDuplicateSymbolsLocation, let _ as LinkerDuplicateSymbolsLocationCaptureGroup):
+        case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
             return nil
         case (.linkerDuplicateSymbols, let group as LinkerDuplicateSymbolsCaptureGroup):
             return formatLinkerDuplicateSymbolsError(pattern: pattern)
-        case (.linkerUndefinedSymbolLocation, let _ as LinkerUndefinedSymbolLocationCaptureGroup):
+        case (.linkerUndefinedSymbolLocation, let group as LinkerUndefinedSymbolLocationCaptureGroup):
             return nil
         case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
             return formatLinkerUndefinedSymbolsError(pattern: pattern)
-        case (.symbolReferencedFrom, let _ as SymbolReferencedFromCaptureGroup):
+        case (.symbolReferencedFrom, let group as SymbolReferencedFromCaptureGroup):
             return formatCompleteError()
-        case (.undefinedSymbolLocation, let _ as UndefinedSymbolLocationCaptureGroup):
+        case (.undefinedSymbolLocation, let group as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning()
         case (.packageFetching, let group as PackageFetchingCaptureGroup):
             return formatPackageFetching(pattern: pattern)
@@ -180,9 +180,9 @@ extension String {
             return formatPackageUpdating(pattern: pattern)
         case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
             return formatPackageCheckingOut(pattern: pattern)
-        case (.packageGraphResolvingStart, let _ as PackageGraphResolvingStartCaptureGroup):
+        case (.packageGraphResolvingStart, let group as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
-        case (.packageGraphResolvingEnded, let _ as PackageGraphResolvingEndedCaptureGroup):
+        case (.packageGraphResolvingEnded, let group as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
         case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
             return formatPackgeItem(pattern: pattern)
