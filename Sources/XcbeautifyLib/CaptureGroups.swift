@@ -248,7 +248,7 @@ struct PbxcpCaptureGroup: CaptureGroup {
 struct ProcessInfoPlistCaptureGroup: CaptureGroup {
     let filePath: String
     let filename: String
-    let target: String?
+    let target: String? // Xcode 10+
 }
 
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
