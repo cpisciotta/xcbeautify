@@ -314,19 +314,19 @@ struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
     let warningMessage: String
 }
 
-struct ClangErrorCaptureGroup: CaptureGroup {
+struct ClangErrorCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
-struct CheckDependenciesErrorsCaptureGroup: CaptureGroup {
+struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
-struct ProvisioningProfileRequiredCaptureGroup: CaptureGroup {
+struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
-struct NoCertificateCaptureGroup: CaptureGroup {
+struct NoCertificateCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
@@ -340,7 +340,7 @@ struct CursorCaptureGroup: CaptureGroup {
     let cursor: String
 }
 
-struct FatalErrorCaptureGroup: CaptureGroup {
+struct FatalErrorCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
@@ -349,7 +349,7 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
     let filePath: String
 }
 
-struct LDErrorCaptureGroup: CaptureGroup {
+struct LDErrorCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
@@ -369,16 +369,16 @@ struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
     let reason: String
 }
 
-struct PodsErrorCaptureGroup: CaptureGroup {
-    let reason: String
+struct PodsErrorCaptureGroup: ErrorCaptureGroup {
+    let wholeError: String
 }
 
 struct SymbolReferencedFromCaptureGroup: CaptureGroup {
     let reference: String
 }
 
-struct ModuleIncludesErrorCaptureGroup: CaptureGroup {
-    let errorReason: String
+struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
+    let wholeError: String
 }
 
 struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
@@ -409,7 +409,7 @@ struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
     let packageVersion: String
 }
 
-struct XcodebuildErrorCaptureGroup: CaptureGroup {
+struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
     let wholeError: String
 }
 
