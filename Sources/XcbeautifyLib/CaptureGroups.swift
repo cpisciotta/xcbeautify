@@ -7,6 +7,7 @@ struct EmptyCaptureGroup: CaptureGroup { }
 struct AnalyzeCaptureGroup: CaptureGroup {
     let filePath: String
     let fileName: String
+    let target: String
 }
 
 struct BuildTargetCaptureGroup: CaptureGroup {

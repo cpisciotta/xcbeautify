@@ -11,7 +11,7 @@ extension String {
 
         switch (pattern, group) {
         case (.analyze, let group as AnalyzeCaptureGroup):
-            return formatAnalyze(pattern: pattern)
+            return formatAnalyze(group: group)
         #if os(Linux)
         case (.compile, let group as CompileCaptureGroup):
             return formatCompileLinux(pattern: pattern)
@@ -226,10 +226,9 @@ extension String {
         return formatted
     }
 
-    private func formatAnalyze(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[1]
-        guard let target = groups.last else { return nil }
+    private func formatAnalyze(group: AnalyzeCaptureGroup) -> String? {
+        let filename = group.fileName
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 
