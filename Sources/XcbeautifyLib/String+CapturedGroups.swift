@@ -386,8 +386,9 @@ extension String {
             guard let source = results[safe: 0] else { return EmptyCaptureGroup() }
             return PackageUpdatingCaptureGroup(source: source)
         case .packageCheckingOut:
-            assert(results.count >= 0)
-            return PackageCheckingOutCaptureGroup()
+            assert(results.count >= 2)
+            guard let version = results[safe: 0], let package = results[safe: 1] else { return EmptyCaptureGroup() }
+            return PackageCheckingOutCaptureGroup(version: version, package: package)
         case .packageGraphResolvingStart:
             assert(results.count >= 0)
             return PackageGraphResolvingStartCaptureGroup()

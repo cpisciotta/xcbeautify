@@ -175,7 +175,7 @@ extension String {
         case (.packageUpdating, let group as PackageUpdatingCaptureGroup):
             return formatPackageUpdating(group: group)
         case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
-            return formatPackageCheckingOut(pattern: pattern)
+            return formatPackageCheckingOut(group: group)
         case (.packageGraphResolvingStart, let group as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
         case (.packageGraphResolvingEnded, let group as PackageGraphResolvingEndedCaptureGroup):
@@ -535,10 +535,9 @@ extension String {
         return "Updating " + source
     }
 
-    private func formatPackageCheckingOut(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let version = groups[0]
-        let package = groups[1]
+    private func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String? {
+        let version = group.version
+        let package = group.package
         return _colored ? "Checking out " + package.s.Bold + " @ " + version.f.Green : "Checking out \(package) @ \(version)"
     }
 

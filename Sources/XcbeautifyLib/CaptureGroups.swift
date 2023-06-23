@@ -387,7 +387,10 @@ struct PackageUpdatingCaptureGroup: CaptureGroup {
     let source: String
 }
 
-struct PackageCheckingOutCaptureGroup: CaptureGroup { }
+struct PackageCheckingOutCaptureGroup: CaptureGroup {
+    let version: String
+    let package: String
+}
 
 struct PackageGraphResolvingStartCaptureGroup: CaptureGroup { }
 
