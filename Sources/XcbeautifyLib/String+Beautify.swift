@@ -112,7 +112,7 @@ extension String {
             return formatPhaseScriptExecution()
         case (.preprocess, let _ as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
-        case (.processPchCommand, let group as ProcessPchCaptureGroup):
+        case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
             return formatProcessPchCommand(pattern: pattern)
         case (.writeFile, let _ as WriteFileCaptureGroup):
             return nil
