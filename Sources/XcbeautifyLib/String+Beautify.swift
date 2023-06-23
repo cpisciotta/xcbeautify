@@ -24,7 +24,7 @@ extension String {
         case (.compileStoryboard, let group as CompileStoryboardCaptureGroup):
             return formatCompile(pattern: pattern)
         case (.compileCommand, let group as CompileCommandCaptureGroup):
-            return formatCompileCommand(pattern: pattern)
+            return formatCompileCommand(group: group)
         case (.buildTarget, let group as BuildTargetCaptureGroup):
             return formatTargetCommand(command: "Build", pattern: pattern)
         case (.analyzeTarget, let group as AnalyzeTargetCaptureGroup):
@@ -249,7 +249,7 @@ extension String {
         return _colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
 
-    private func formatCompileCommand(pattern: Pattern) -> String? {
+    private func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
         return nil
     }
     private func formatCompile(pattern: Pattern) -> String? {
