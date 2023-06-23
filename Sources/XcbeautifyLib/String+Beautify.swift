@@ -80,7 +80,7 @@ extension String {
         case (.parallelTestCaseFailed, let group as ParallelTestCaseFailedCaptureGroup):
             return formatParallelTestCaseFailed(group: group)
         case (.codesign, let group as CodesignCaptureGroup):
-            return format(command: "Signing", pattern: pattern)
+            return formatCodeSign(group: group)
         case (.codesignFramework, let group as CodesignFrameworkCaptureGroup):
             return formatCodeSignFramework(group: group)
         case (.copyHeader, let group as CopyHeaderCaptureGroup):
@@ -229,6 +229,12 @@ extension String {
     private func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String? {
         let directory = group.directory
         return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
+    }
+
+    private func formatCodeSign(group: CodesignCaptureGroup) -> String? {
+        let command = "Signing"
+        let sourceFile = group.file
+        return _colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
     }
 
     private func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String? {
