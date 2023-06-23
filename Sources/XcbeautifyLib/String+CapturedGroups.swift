@@ -39,17 +39,18 @@ extension String {
 
         let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
 
-        guard let match = matches.first else { return EmptyCaptureGroup() }
-
-        let lastRangeIndex = match.numberOfRanges - 1
-        guard lastRangeIndex >= 1 else { return EmptyCaptureGroup() }
-
         var results = [String]()
 
-        for i in 1...lastRangeIndex {
-            let capturedGroupIndex = match.range(at: i)
-            guard let matchedString = substring(with: capturedGroupIndex) else { continue }
-            results.append(matchedString)
+        if let match = matches.first {
+            let lastRangeIndex = match.numberOfRanges - 1
+
+            if lastRangeIndex >= 1 {
+                for i in 1...lastRangeIndex {
+                    let capturedGroupIndex = match.range(at: i)
+                    guard let matchedString = substring(with: capturedGroupIndex) else { continue }
+                    results.append(matchedString)
+                }
+            }
         }
 
         switch pattern {
