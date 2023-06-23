@@ -148,7 +148,7 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
 }
 
 struct LibtoolCaptureGroup: CaptureGroup {
-    let library: String
+    let fileName: String
     let target: String
 }
 

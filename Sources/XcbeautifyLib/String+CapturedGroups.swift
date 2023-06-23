@@ -165,8 +165,8 @@ extension String {
             return GenerateDSYMCaptureGroup(dsym: dsym, target: target)
         case .libtool:
             assert(results.count >= 2)
-            guard let library = results[safe: 0], let target = results[safe: 1] else { return EmptyCaptureGroup() }
-            return LibtoolCaptureGroup(library: library, target: target)
+            guard let fileName = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
+            return LibtoolCaptureGroup(fileName: fileName, target: target)
 #if os(Linux)
         case .linking:
             assert(results.count >= 1)

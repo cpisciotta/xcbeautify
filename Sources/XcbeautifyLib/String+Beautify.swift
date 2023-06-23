@@ -40,7 +40,7 @@ extension String {
         case (.generateDsym, let group as GenerateDSYMCaptureGroup):
             return formatGenerateDsym(group: group)
         case (.libtool, let group as LibtoolCaptureGroup):
-            return formatLibtool(pattern: pattern)
+            return formatLibtool(group: group)
         case (.linking, let group as LinkingCaptureGroup):
         #if os(Linux)
             return formatLinkingLinux(pattern: pattern)
@@ -295,10 +295,9 @@ extension String {
         return _colored ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)" : "Generated code coverage report: \(filePath)"
     }
 
-    private func formatLibtool(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[0]
-        guard let target = groups.last else { return nil }
+    private func formatLibtool(group: LibtoolCaptureGroup) -> String? {
+        let filename = group.fileName
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
