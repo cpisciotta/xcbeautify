@@ -165,7 +165,7 @@ extension String {
         case (.linkerUndefinedSymbolLocation, let group as LinkerUndefinedSymbolLocationCaptureGroup):
             return nil
         case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
-            return formatLinkerUndefinedSymbolsError(pattern: pattern)
+            return formatLinkerUndefinedSymbolsError(group: group)
         case (.symbolReferencedFrom, let group as SymbolReferencedFromCaptureGroup):
             return formatCompleteError()
         case (.undefinedSymbolLocation, let group as UndefinedSymbolLocationCaptureGroup):
@@ -490,9 +490,7 @@ extension String {
     }
 
     // TODO: Print symbol and reference location
-    private func formatLinkerUndefinedSymbolsError(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let reason = groups[0]
+    private func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String? {        let reason = group.reason
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
