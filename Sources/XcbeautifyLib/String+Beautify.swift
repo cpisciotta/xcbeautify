@@ -147,7 +147,7 @@ extension String {
         case (.xcodebuildError, let group as XcodebuildErrorCaptureGroup):
             return formatError(pattern: pattern)
         case (.compileError, let group as CompileErrorCaptureGroup):
-            return formatCompileError(pattern: pattern, additionalLines: additionalLines)
+            return formatCompileError(group: group, additionalLines: additionalLines)
         case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
             return formatFileMissingError(pattern: pattern)
         case (.checkDependenciesErrors, let group as CheckDependenciesCaptureGroup):
@@ -411,10 +411,9 @@ extension String {
         return _colored ? Symbol.error.rawValue + " " + self.f.Red : Symbol.asciiError.rawValue + " " + self
     }
 
-    private func formatCompileError(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filePath = groups[0]
-        let reason = groups[2]
+    private func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
+        let filePath = group.filePath
+        let reason = group.reason
 
         // Read 2 additional lines to get the error line and cursor position
         let line: String = additionalLines() ?? ""
