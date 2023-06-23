@@ -42,11 +42,7 @@ extension String {
         case (.libtool, let group as LibtoolCaptureGroup):
             return formatLibtool(group: group)
         case (.linking, let group as LinkingCaptureGroup):
-        #if os(Linux)
-            return formatLinkingLinux(pattern: pattern)
-        #else
-            return formatLinking(pattern: pattern)
-        #endif
+            return formatLinking(group: group)
         case (.testSuiteStarted, let group as TestSuiteStartedCaptureGroup):
             return formatTestHeading(pattern: pattern)
         case (.testSuiteStart, let group as TestSuiteStartCaptureGroup):
@@ -307,17 +303,14 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
-    private func formatLinking(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[0].lastPathComponent
-        guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
-    }
-    
-    private func formatLinkingLinux(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let target = groups[0]
+    private func formatLinking(group: LinkingCaptureGroup) -> String? {
+        let target = group.target
+#if os(Linux)
         return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
+#else
+        let filename = group.binaryFilename
+        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
+#endif
     }
 
     private func formatPhaseScriptExecution() -> String? {

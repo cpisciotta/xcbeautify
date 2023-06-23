@@ -152,16 +152,12 @@ struct LibtoolCaptureGroup: CaptureGroup {
     let target: String
 }
 
-#if os(Linux)
 struct LinkingCaptureGroup: CaptureGroup {
-    let target: String
-}
-#else
-struct LinkingCaptureGroup: CaptureGroup {
+#if !os(Linux)
     let binaryFilename: String
+#endif
     let target: String
 }
-#endif
 
 struct TestCasePassedCaptureGroup: CaptureGroup {
     let suite: String

@@ -175,8 +175,8 @@ extension String {
 #else
         case .linking:
             assert(results.count >= 2)
-            guard let binaryFileName = results[safe: 0], let target = results[safe: 1] else { return EmptyCaptureGroup() }
-            return LinkingCaptureGroup(binaryFilename: binaryFileName, target: target)
+            guard let binaryFileName = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
+            return LinkingCaptureGroup(binaryFilename: binaryFileName.lastPathComponent, target: target)
 #endif
         case .testCasePassed:
             assert(results.count >= 3)
