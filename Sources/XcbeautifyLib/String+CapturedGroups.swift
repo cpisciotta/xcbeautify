@@ -96,12 +96,12 @@ extension String {
 #if os(Linux)
         case .compile:
             assert(results.count >= 2)
-            guard let fileName = results[safe: 0], let target = results[safe: 1] else { return EmptyCaptureGroup() }
+            guard let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return CompileCaptureGroup(filename: fileName, target: target)
 #else
         case .compile:
             assert(results.count >= 3)
-            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results[safe: 2] else { return EmptyCaptureGroup() }
+            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return CompileCaptureGroup(filePath: filePath, filename: fileName, target: target)
 #endif
         case .compileCommand:
@@ -110,11 +110,11 @@ extension String {
             return CompileCommandCaptureGroup(compilerCommand: compilerCommand, filePath: filePath)
         case .compileXib:
             assert(results.count >= 3)
-            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results[safe: 2] else { return EmptyCaptureGroup() }
+            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return CompileXibCaptureGroup(filePath: filePath, filename: fileName, target: target)
         case .compileStoryboard:
             assert(results.count >= 3)
-            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results[safe: 2] else { return EmptyCaptureGroup() }
+            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return CompileStoryboardCaptureGroup(filePath: filePath, filename: fileName, target: target)
         case .copyHeader:
             assert(results.count >= 3)
