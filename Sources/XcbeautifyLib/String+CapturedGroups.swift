@@ -55,7 +55,7 @@ extension String {
 
         switch pattern {
         case .analyze:
-            assert(results.count >= 2)
+            assert(results.count >= 3)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return AnalyzeCaptureGroup(filePath: filePath, fileName: fileName, target: target)
         case .buildTarget:
