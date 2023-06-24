@@ -159,13 +159,13 @@ public class Parser {
             return
         }
         
-        let groups: [String] = line.capturedGroups(with: .executed)
+        let group: [String] = line.captureGroup(with: .executed)
         summary = TestSummary(
-            testsCount: Int(groups[0]) ?? 0,
+            testsCount: Int(group[0]) ?? 0,
             skippedCount: 0,
-            failuresCount: Int(groups[1]) ?? 0,
-            unexpectedCount: Int(groups[2]) ?? 0,
-            time: Double(groups[3]) ?? 0,
+            failuresCount: Int(group[1]) ?? 0,
+            unexpectedCount: Int(group[2]) ?? 0,
+            time: Double(group[3]) ?? 0,
             colored: colored,
             testSummary: summary)
         
@@ -177,13 +177,13 @@ public class Parser {
             return
         }
         
-        let groups: [String] = line.capturedGroups(with: .executedWithSkipped)
+        let group: [String] = line.captureGroup(with: .executedWithSkipped)
         summary = TestSummary(
-            testsCount: Int(groups[0]) ?? 0,
-            skippedCount: Int(groups[1]) ?? 0,
-            failuresCount: Int(groups[2]) ?? 0,
-            unexpectedCount: Int(groups[3]) ?? 0,
-            time: Double(groups[4]) ?? 0,
+            testsCount: Int(group[0]) ?? 0,
+            skippedCount: Int(group[1]) ?? 0,
+            failuresCount: Int(group[2]) ?? 0,
+            unexpectedCount: Int(group[3]) ?? 0,
+            time: Double(group[4]) ?? 0,
             colored: colored,
             testSummary: summary)
         

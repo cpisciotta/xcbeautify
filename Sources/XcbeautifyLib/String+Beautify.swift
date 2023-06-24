@@ -7,7 +7,7 @@ extension String {
     func beautify(pattern: Pattern, colored: Bool, additionalLines: @escaping () -> (String?)) -> String? {
         _colored = colored
 
-        let group: CaptureGroup = self.capturedGroups(with: pattern)
+        let group: CaptureGroup = self.captureGroup(with: pattern)
 
         switch (pattern, group) {
         case (.analyze, let group as AnalyzeCaptureGroup):
