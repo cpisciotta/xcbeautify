@@ -55,9 +55,9 @@ extension String {
             return formatParallelTestingFailed(group: group)
         case (.parallelTestSuiteStarted, let group as ParallelTestSuiteStartedCaptureGroup):
             return formatParallelTestSuiteStarted(group: group)
-        case (.testSuiteAllTestsPassed, let group as TestSuiteAllTestsPassedCaptureGroup):
+        case (.testSuiteAllTestsPassed, _ as TestSuiteAllTestsPassedCaptureGroup):
             return nil
-        case (.testSuiteAllTestsFailed, let group as TestSuiteAllTestsFailedCaptureGroup):
+        case (.testSuiteAllTestsFailed, _ as TestSuiteAllTestsFailedCaptureGroup):
             return nil
         case (.failingTest, let group as FailingTestCaptureGroup):
             return formatFailingTest(group: group)
@@ -71,7 +71,7 @@ extension String {
             return formatTestCasePending(group: group)
         case (.testCaseMeasured, let group as TestCaseMeasuredCaptureGroup):
             return formatTestCaseMeasured(group: group)
-        case (.testsRunCompletion, let group as TestsRunCompletionCaptureGroup):
+        case (.testsRunCompletion, _ as TestsRunCompletionCaptureGroup):
             return nil
         case (.parallelTestCasePassed, let group as ParallelTestCasePassedCaptureGroup):
             return formatParallelTestCasePassed(group: group)
@@ -93,7 +93,7 @@ extension String {
             return formatCopy(group: group)
         case (.pbxcp, let group as PbxcpCaptureGroup):
             return formatCopy(group: group)
-        case (.checkDependencies, let group as CheckDependenciesCaptureGroup):
+        case (.checkDependencies, _ as CheckDependenciesCaptureGroup):
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
             return formatProcessInfoPlist(group: group)
@@ -105,25 +105,25 @@ extension String {
             return formatPhaseSuccess(group: group)
         case (.phaseScriptExecution, let group as PhaseScriptExecutionCaptureGroup):
             return formatPhaseScriptExecution(group: group)
-        case (.preprocess, let group as PreprocessCaptureGroup):
+        case (.preprocess, _ as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
         case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
             return formatProcessPchCommand(group: group)
-        case (.writeFile, let group as WriteFileCaptureGroup):
+        case (.writeFile, _ as WriteFileCaptureGroup):
             return nil
-        case (.writeAuxiliaryFiles, let group as WriteAuxiliaryFilesCaptureGroup):
+        case (.writeAuxiliaryFiles, _ as WriteAuxiliaryFilesCaptureGroup):
             return nil
-        case (.shellCommand, let group as ShellCommandCaptureGroup):
+        case (.shellCommand, _ as ShellCommandCaptureGroup):
             return nil
         case (.cleanRemove, let group as CleanRemoveCaptureGroup):
             return formatCleanRemove(group: group)
-        case (.executed, let group as ExecutedCaptureGroup):
+        case (.executed, _ as ExecutedCaptureGroup):
             return nil
-        case (.executedWithSkipped, let group as ExecutedWithSkippedCaptureGroup):
+        case (.executedWithSkipped, _ as ExecutedWithSkippedCaptureGroup):
             return nil
-        case (.testCaseStarted, let group as TestCaseStartedCaptureGroup):
+        case (.testCaseStarted, _ as TestCaseStartedCaptureGroup):
             return nil
-        case (.tiffutil, let group as TIFFutilCaptureGroup):
+        case (.tiffutil, _ as TIFFutilCaptureGroup):
             return nil
         case (.compileWarning, let group as CompileWarningCaptureGroup):
             return formatCompileWarning(group: group, additionalLines: additionalLines)
@@ -155,19 +155,19 @@ extension String {
             return formatError(group: group)
         case (.noCertificate, let group as NoCertificateCaptureGroup):
             return formatError(group: group)
-        case (.cursor, let group as CursorCaptureGroup):
+        case (.cursor, _ as CursorCaptureGroup):
             return nil
-        case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
+        case (.linkerDuplicateSymbolsLocation, _ as LinkerDuplicateSymbolsLocationCaptureGroup):
             return nil
         case (.linkerDuplicateSymbols, let group as LinkerDuplicateSymbolsCaptureGroup):
             return formatLinkerDuplicateSymbolsError(group: group)
-        case (.linkerUndefinedSymbolLocation, let group as LinkerUndefinedSymbolLocationCaptureGroup):
+        case (.linkerUndefinedSymbolLocation, _ as LinkerUndefinedSymbolLocationCaptureGroup):
             return nil
         case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
             return formatLinkerUndefinedSymbolsError(group: group)
-        case (.symbolReferencedFrom, let group as SymbolReferencedFromCaptureGroup):
+        case (.symbolReferencedFrom, _ as SymbolReferencedFromCaptureGroup):
             return formatCompleteError()
-        case (.undefinedSymbolLocation, let group as UndefinedSymbolLocationCaptureGroup):
+        case (.undefinedSymbolLocation, _ as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning()
         case (.packageFetching, let group as PackageFetchingCaptureGroup):
             return formatPackageFetching(group: group)
@@ -175,9 +175,9 @@ extension String {
             return formatPackageUpdating(group: group)
         case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
             return formatPackageCheckingOut(group: group)
-        case (.packageGraphResolvingStart, let group as PackageGraphResolvingStartCaptureGroup):
+        case (.packageGraphResolvingStart, _ as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
-        case (.packageGraphResolvingEnded, let group as PackageGraphResolvingEndedCaptureGroup):
+        case (.packageGraphResolvingEnded, _ as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
         case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
             return formatPackgeItem(group: group)
