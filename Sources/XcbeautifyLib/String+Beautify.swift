@@ -130,7 +130,7 @@ extension String {
         case (.ldWarning, let group as LDWarningCaptureGroup):
             return formatLdWarning(group: group)
         case (.genericWarning, let group as GenericWarningCaptureGroup):
-            return formatWarning(pattern: pattern)
+            return formatWarning(group: group)
         case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
             return formatWillNotBeCodesignWarning(group: group)
         case (.clangError, let group as ClangErrorCaptureGroup):
@@ -459,9 +459,8 @@ extension String {
         return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
     }
 
-    private func formatWarning(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        guard let warningMessage = groups.first else { return nil }
+    private func formatWarning(group: GenericWarningCaptureGroup) -> String? {
+        let warningMessage = group.wholeWarning
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
