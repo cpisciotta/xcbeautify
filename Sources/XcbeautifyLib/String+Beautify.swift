@@ -84,15 +84,15 @@ extension String {
         case (.codesignFramework, let group as CodesignFrameworkCaptureGroup):
             return formatCodeSignFramework(group: group)
         case (.copyHeader, let group as CopyHeaderCaptureGroup):
-            return formatCopy(pattern: pattern)
+            return formatCopy(group: group)
         case (.copyPlist, let group as CopyPlistCaptureGroup):
-            return formatCopy(pattern: pattern)
+            return formatCopy(group: group)
         case (.copyStrings, let group as CopyStringsCaptureGroup):
-            return formatCopy(pattern: pattern)
+            return formatCopy(group: group)
         case (.cpresource, let group as CpresourceCaptureGroup):
-            return formatCopy(pattern: pattern)
+            return formatCopy(group: group)
         case (.pbxcp, let group as PbxcpCaptureGroup):
-            return formatCopy(pattern: pattern)
+            return formatCopy(group: group)
         case (.checkDependencies, let group as CheckDependenciesCaptureGroup):
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
@@ -263,10 +263,9 @@ extension String {
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 
-    private func formatCopy(pattern: Pattern) -> String? {
-        let groups: [String] = capturedGroups(with: pattern)
-        let filename = groups[0].lastPathComponent
-        guard let target = groups.last else { return nil }
+    private func formatCopy(group: CopyCaptureGroup) -> String? {
+        let filename = group.file
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 

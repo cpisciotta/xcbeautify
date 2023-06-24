@@ -17,6 +17,11 @@ protocol CompileFileCaptureGroup: CaptureGroup {
     var target: String { get }
 }
 
+protocol CopyCaptureGroup: CaptureGroup {
+    var file: String { get }
+    var target: String { get }
+}
+
 struct EmptyCaptureGroup: CaptureGroup { }
 
 struct AnalyzeCaptureGroup: CaptureGroup {
@@ -94,23 +99,25 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
     let target: String
 }
 
-struct CopyHeaderCaptureGroup: CaptureGroup {
-    let sourceFile: String
+struct CopyHeaderCaptureGroup: CopyCaptureGroup {
+    let file: String
     let targetFile: String
     let target: String
 }
 
-struct CopyPlistCaptureGroup: CaptureGroup {
-    let sourceFile: String
-    let targetFile: String
-}
-
-struct CopyStringsCaptureGroup: CaptureGroup {
+struct CopyPlistCaptureGroup: CopyCaptureGroup {
     let file: String
+    let target: String
 }
 
-struct CpresourceCaptureGroup: CaptureGroup {
-    let resource: String
+struct CopyStringsCaptureGroup: CopyCaptureGroup {
+    let file: String
+    let target: String
+}
+
+struct CpresourceCaptureGroup: CopyCaptureGroup {
+    let file: String
+    let target: String
 }
 
 struct ExecutedCaptureGroup: CaptureGroup {
@@ -253,10 +260,10 @@ struct PreprocessCaptureGroup: CaptureGroup {
     let file: String
 }
 
-struct PbxcpCaptureGroup: CaptureGroup {
-    let sourceFile: String
+struct PbxcpCaptureGroup: CopyCaptureGroup {
+    let file: String
     let targetFile: String
-    let buildTarget: String
+    let target: String
 }
 
 struct ProcessInfoPlistCaptureGroup: CaptureGroup {

@@ -118,20 +118,20 @@ extension String {
             return CompileStoryboardCaptureGroup(filePath: filePath, filename: fileName, target: target)
         case .copyHeader:
             assert(results.count >= 3)
-            guard let sourceFile = results[safe: 0], let targetFile = results[safe: 1], let target = results[safe: 2] else { return EmptyCaptureGroup() }
-            return CopyHeaderCaptureGroup(sourceFile: sourceFile, targetFile: targetFile, target: target)
+            guard let file = results[safe: 0], let targetFile = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
+            return CopyHeaderCaptureGroup(file: file.lastPathComponent, targetFile: targetFile, target: target)
         case .copyPlist:
             assert(results.count >= 2)
-            guard let sourceFile = results[safe: 0], let targetFile = results[safe: 1] else { return EmptyCaptureGroup() }
-            return CopyPlistCaptureGroup(sourceFile: sourceFile, targetFile: targetFile)
+            guard let file = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
+            return CopyPlistCaptureGroup(file: file.lastPathComponent, target: target)
         case .copyStrings:
-            assert(results.count >= 1)
-            guard let file = results[safe: 0] else { return EmptyCaptureGroup() }
-            return CopyStringsCaptureGroup(file: file)
+            assert(results.count >= 2)
+            guard let file = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
+            return CopyStringsCaptureGroup(file: file.lastPathComponent, target: target)
         case .cpresource:
-            assert(results.count >= 1)
-            guard let resource = results[safe: 0] else { return EmptyCaptureGroup() }
-            return CpresourceCaptureGroup(resource: resource)
+            assert(results.count >= 2)
+            guard let file = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
+            return CpresourceCaptureGroup(file: file.lastPathComponent, target: target)
         case .executed:
             assert(results.count >= 4)
             guard let numberOfTests = results[safe: 0], let numberOfFailures = results[safe: 1], let numberOfUnexpectedFailures = results[safe: 2], let wallClockTimeInSeconds = results[safe: 3] else { return EmptyCaptureGroup() }
@@ -244,8 +244,8 @@ extension String {
             return PreprocessCaptureGroup(file: file)
         case .pbxcp:
             assert(results.count >= 3)
-            guard let sourceFile = results[safe: 0], let targetFile = results[safe: 1], let buildTarget = results[safe: 2] else { return EmptyCaptureGroup() }
-            return PbxcpCaptureGroup(sourceFile: sourceFile, targetFile: targetFile, buildTarget: buildTarget)
+            guard let file = results[safe: 0], let targetFile = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
+            return PbxcpCaptureGroup(file: file.lastPathComponent, targetFile: targetFile, target: target)
         case .processInfoPlist:
             assert(results.count >= 2)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1] else { return EmptyCaptureGroup() }
