@@ -12,13 +12,8 @@ extension String {
         switch (pattern, group) {
         case (.analyze, let group as AnalyzeCaptureGroup):
             return formatAnalyze(group: group)
-        #if os(Linux)
         case (.compile, let group as CompileCaptureGroup):
             return formatCompile(group: group)
-        #else
-        case (.compile, let group as CompileCaptureGroup):
-            return formatCompile(group: group)
-        #endif
         case (.compileXib, let group as CompileXibCaptureGroup):
             return formatCompile(group: group)
         case (.compileStoryboard, let group as CompileStoryboardCaptureGroup):

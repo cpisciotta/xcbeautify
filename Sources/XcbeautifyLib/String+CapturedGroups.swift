@@ -82,13 +82,12 @@ extension String {
             guard let frameworkPath = results[safe: 0] else { return EmptyCaptureGroup() }
             return CodesignFrameworkCaptureGroup(frameworkPath: frameworkPath)
 
-#if os(Linux)
         case .compile:
+#if os(Linux)
             assert(results.count >= 2)
             guard let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return CompileCaptureGroup(filename: fileName, target: target)
 #else
-        case .compile:
             assert(results.count >= 3)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
             return CompileCaptureGroup(filePath: filePath, filename: fileName, target: target)
@@ -173,13 +172,12 @@ extension String {
             guard let fileName = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
             return LibtoolCaptureGroup(fileName: fileName, target: target)
 
-#if os(Linux)
         case .linking:
+#if os(Linux)
             assert(results.count >= 1)
             guard let target = results[safe: 0] else { return EmptyCaptureGroup() }
             return LinkingCaptureGroup(target: target)
 #else
-        case .linking:
             assert(results.count >= 2)
             guard let binaryFileName = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
             return LinkingCaptureGroup(binaryFilename: binaryFileName.lastPathComponent, target: target)
