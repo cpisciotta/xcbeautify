@@ -12,6 +12,11 @@ protocol TargetCaptureGroup: CaptureGroup {
     var configuration: String { get }
 }
 
+protocol CompileFileCaptureGroup: CaptureGroup {
+    var filename: String { get }
+    var target: String { get }
+}
+
 struct EmptyCaptureGroup: CaptureGroup { }
 
 struct AnalyzeCaptureGroup: CaptureGroup {
@@ -64,7 +69,7 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
     let frameworkPath: String
 }
 
-struct CompileCaptureGroup: CaptureGroup {
+struct CompileCaptureGroup: CompileFileCaptureGroup {
 #if !os(Linux)
     let filePath: String
 #endif
@@ -77,13 +82,13 @@ struct CompileCommandCaptureGroup: CaptureGroup {
     let filePath: String
 }
 
-struct CompileXibCaptureGroup: CaptureGroup {
+struct CompileXibCaptureGroup: CompileFileCaptureGroup {
     let filePath: String
     let filename: String
     let target: String
 }
 
-struct CompileStoryboardCaptureGroup: CaptureGroup {
+struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
     let filePath: String
     let filename: String
     let target: String
