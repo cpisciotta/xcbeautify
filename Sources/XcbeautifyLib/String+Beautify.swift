@@ -198,12 +198,6 @@ extension String {
         return _colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
     }
 
-    private func format(command: String, pattern: Pattern) -> String {
-        let groups: [String] = capturedGroups(with: pattern)
-        let sourceFile = groups[0]
-        return _colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
-    }
-
     private func format(command: String, pattern: Pattern, arguments: String) -> String? {
         let template = command.style.Bold + " " + arguments
 
