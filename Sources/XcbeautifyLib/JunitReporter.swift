@@ -20,18 +20,18 @@ public final class JunitReporter {
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
         switch line {
             // Capture standard output
-            case Regex.failingTestMatcher:
+            case Regex.failingTest:
                 components.append(.failingTest(generateFailingTest(line: line)))
-            case Regex.restartingTestMatcher:
+            case Regex.restartingTest:
                 components.append(.failingTest(generateRestartingTest(line: line)))
-            case Regex.testCasePassedMatcher:
+            case Regex.testCasePassed:
                 components.append(.testCasePassed(generatePassingTest(line: line)))
-            case Regex.testSuiteStartMatcher:
+            case Regex.testSuiteStart:
                 components.append(.testSuiteStart(generateSuiteStart(line: line)))
             // Capture parallel output
-            case Regex.parallelTestCaseFailedMatcher:
+            case Regex.parallelTestCaseFailed:
                 parallelComponents.append(.failingTest(generateParallelFailingTest(line: line)))
-            case Regex.parallelTestCasePassedMatcher:
+            case Regex.parallelTestCasePassed:
                 parallelComponents.append(.testCasePassed(generatePassingParallelTest(line: line)))
             default:
                 // Not needed for generating a junit report
