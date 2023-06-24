@@ -30,28 +30,7 @@ extension String {
 
 extension String {
     func captureGroup(with pattern: Pattern) -> CaptureGroup {
-        var regex: NSRegularExpression
-        do {
-            regex = try NSRegularExpression(pattern: pattern.rawValue, options: [.caseInsensitive])
-        } catch {
-            return EmptyCaptureGroup()
-        }
-
-        let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
-
-        var results = [String]()
-
-        if let match = matches.first {
-            let lastRangeIndex = match.numberOfRanges - 1
-
-            if lastRangeIndex >= 1 {
-                for i in 1...lastRangeIndex {
-                    let capturedGroupIndex = match.range(at: i)
-                    guard let matchedString = substring(with: capturedGroupIndex) else { continue }
-                    results.append(matchedString)
-                }
-            }
-        }
+        let results: [String] = captureGroup(with: pattern)
 
         switch pattern {
         case .analyze:
