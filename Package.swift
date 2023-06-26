@@ -10,7 +10,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "1.0.1")),
         .package(url: "https://github.com/getGuaka/Colorizer.git", .upToNextMinor(from: "0.2.1")),
-        .package(url: "https://github.com/MaxDesiatov/XMLCoder.git", .upToNextMinor(from: "0.13.1")),
+        .package(url: "https://github.com/MaxDesiatov/XMLCoder.git", .upToNextMinor(from: "0.17.1")),
     ],
     targets: [
         .target(
