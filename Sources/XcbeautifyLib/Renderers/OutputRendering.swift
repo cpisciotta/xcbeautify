@@ -20,8 +20,11 @@ protocol OutputRendering {
     func formatCompleteWarning(line: String) -> String
     func formatCopy(group: CopyCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
+    func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
     func formatError(group: ErrorCaptureGroup) -> String
+    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String?
+    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String?
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String
@@ -29,6 +32,8 @@ protocol OutputRendering {
     func formatLdWarning(group: LDWarningCaptureGroup) -> String
     func formatLibtool(group: LibtoolCaptureGroup) -> String
     func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String
+    func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String?
+    func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String
     func formatLinking(group: LinkingCaptureGroup) -> String
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String
@@ -50,16 +55,24 @@ protocol OutputRendering {
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String
+    func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
     func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String
+    func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
+    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String?
+    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String?
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup)  -> String?
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String
     func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String
+    func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String?
     func formatTouch(group: TouchCaptureGroup) -> String
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String
     func formatWarning(group: GenericWarningCaptureGroup) -> String
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
+    func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String?
+    func formatWriteFile(group: WriteFileCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -111,10 +124,10 @@ extension OutputRendering {
             return formatParallelTestingFailed(line: line, group: group)
         case (.parallelTestSuiteStarted, let group as ParallelTestSuiteStartedCaptureGroup):
             return formatParallelTestSuiteStarted(group: group)
-        case (.testSuiteAllTestsPassed, _ as TestSuiteAllTestsPassedCaptureGroup):
-            return nil
-        case (.testSuiteAllTestsFailed, _ as TestSuiteAllTestsFailedCaptureGroup):
-            return nil
+        case (.testSuiteAllTestsPassed, let group as TestSuiteAllTestsPassedCaptureGroup):
+            return formatTestSuiteAllTestsPassed(group: group)
+        case (.testSuiteAllTestsFailed, let group as TestSuiteAllTestsFailedCaptureGroup):
+            return formatTestSuiteAllTestsFailed(group: group)
         case (.failingTest, let group as FailingTestCaptureGroup):
             return formatFailingTest(group: group)
         case (.uiFailingTest, let group as UIFailingTestCaptureGroup):
@@ -127,8 +140,8 @@ extension OutputRendering {
             return formatTestCasePending(group: group)
         case (.testCaseMeasured, let group as TestCaseMeasuredCaptureGroup):
             return formatTestCaseMeasured(group: group)
-        case (.testsRunCompletion, _ as TestsRunCompletionCaptureGroup):
-            return nil
+        case (.testsRunCompletion, let group as TestsRunCompletionCaptureGroup):
+            return formatTestsRunCompletion(group: group)
         case (.parallelTestCasePassed, let group as ParallelTestCasePassedCaptureGroup):
             return formatParallelTestCasePassed(group: group)
         case (.parallelTestCaseAppKitPassed, let group as ParallelTestCaseAppKitPassedCaptureGroup):
@@ -149,7 +162,7 @@ extension OutputRendering {
             return formatCopy(group: group)
         case (.pbxcp, let group as PbxcpCaptureGroup):
             return formatCopy(group: group)
-        case (.checkDependencies, _ as CheckDependenciesCaptureGroup):
+        case (.checkDependencies, let group as CheckDependenciesCaptureGroup):
             return format(line: line, command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
             return formatProcessInfoPlist(group: group)
@@ -161,26 +174,26 @@ extension OutputRendering {
             return formatPhaseSuccess(group: group)
         case (.phaseScriptExecution, let group as PhaseScriptExecutionCaptureGroup):
             return formatPhaseScriptExecution(group: group)
-        case (.preprocess, _ as PreprocessCaptureGroup):
+        case (.preprocess, let group as PreprocessCaptureGroup):
             return format(line: line, command: "Preprocessing", pattern: pattern, arguments: "$1")
         case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
             return formatProcessPchCommand(group: group)
-        case (.writeFile, _ as WriteFileCaptureGroup):
-            return nil
-        case (.writeAuxiliaryFiles, _ as WriteAuxiliaryFilesCaptureGroup):
-            return nil
-        case (.shellCommand, _ as ShellCommandCaptureGroup):
-            return nil
+        case (.writeFile, let group as WriteFileCaptureGroup):
+            return formatWriteFile(group: group)
+        case (.writeAuxiliaryFiles, let group as WriteAuxiliaryFilesCaptureGroup):
+            return formatWriteAuxiliaryFiles(group: group)
+        case (.shellCommand, let group as ShellCommandCaptureGroup):
+            return formatShellCommand(group: group)
         case (.cleanRemove, let group as CleanRemoveCaptureGroup):
             return formatCleanRemove(group: group)
-        case (.executedWithoutSkipped, _ as ExecutedWithoutSkippedCaptureGroup):
-            return nil
-        case (.executedWithSkipped, _ as ExecutedWithSkippedCaptureGroup):
-            return nil
-        case (.testCaseStarted, _ as TestCaseStartedCaptureGroup):
-            return nil
-        case (.tiffutil, _ as TIFFutilCaptureGroup):
-            return nil
+        case (.executedWithoutSkipped, let group as ExecutedWithoutSkippedCaptureGroup):
+            return formatExecutedWithoutSkipped(group: group)
+        case (.executedWithSkipped, let group as ExecutedWithSkippedCaptureGroup):
+            return formatExecutedWithSkipped(group: group)
+        case (.testCaseStarted, let group as TestCaseStartedCaptureGroup):
+            return formatTestCasesStarted(group: group)
+        case (.tiffutil, let group as TIFFutilCaptureGroup):
+            return formatTIFFUtil(group: group)
         case (.compileWarning, let group as CompileWarningCaptureGroup):
             return formatCompileWarning(group: group, additionalLines: additionalLines)
         case (.ldWarning, let group as LDWarningCaptureGroup):
@@ -211,19 +224,19 @@ extension OutputRendering {
             return formatError(group: group)
         case (.noCertificate, let group as NoCertificateCaptureGroup):
             return formatError(group: group)
-        case (.cursor, _ as CursorCaptureGroup):
-            return nil
-        case (.linkerDuplicateSymbolsLocation, _ as LinkerDuplicateSymbolsLocationCaptureGroup):
-            return nil
+        case (.cursor, let group as CursorCaptureGroup):
+            return formatCursor(group: group)
+        case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
+            return formatLinkerDuplicateSymbolsLocation(group: group)
         case (.linkerDuplicateSymbols, let group as LinkerDuplicateSymbolsCaptureGroup):
             return formatLinkerDuplicateSymbolsError(group: group)
-        case (.linkerUndefinedSymbolLocation, _ as LinkerUndefinedSymbolLocationCaptureGroup):
-            return nil
+        case (.linkerUndefinedSymbolLocation, let group as LinkerUndefinedSymbolLocationCaptureGroup):
+            return formatLinkerUndefinedSymbolLocation(group: group)
         case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
             return formatLinkerUndefinedSymbolsError(group: group)
-        case (.symbolReferencedFrom, _ as SymbolReferencedFromCaptureGroup):
+        case (.symbolReferencedFrom, let group as SymbolReferencedFromCaptureGroup):
             return formatCompleteError(line: line)
-        case (.undefinedSymbolLocation, _ as UndefinedSymbolLocationCaptureGroup):
+        case (.undefinedSymbolLocation, let group as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning(line: line)
         case (.packageFetching, let group as PackageFetchingCaptureGroup):
             return formatPackageFetching(group: group)
@@ -231,9 +244,9 @@ extension OutputRendering {
             return formatPackageUpdating(group: group)
         case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
             return formatPackageCheckingOut(group: group)
-        case (.packageGraphResolvingStart, _ as PackageGraphResolvingStartCaptureGroup):
+        case (.packageGraphResolvingStart, let group as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
-        case (.packageGraphResolvingEnded, _ as PackageGraphResolvingEndedCaptureGroup):
+        case (.packageGraphResolvingEnded, let group as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
         case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
             return formatPackageItem(group: group)
@@ -243,5 +256,59 @@ extension OutputRendering {
             assertionFailure()
             return nil
         }
+    }
+}
+
+extension OutputRendering {
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup)  -> String? {
+        return nil
+    }
+
+    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatWriteFile(group: WriteFileCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatShellCommand(group: ShellCommandCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatCursor(group: CursorCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
+        return nil
+    }
+
+    func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String? {
+        return nil
     }
 }
