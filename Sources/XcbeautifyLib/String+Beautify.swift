@@ -7,174 +7,190 @@ extension String {
     func beautify(pattern: Pattern, colored: Bool, additionalLines: @escaping () -> (String?)) -> String? {
         _colored = colored
 
-        switch pattern {
-        case .analyze:
-            return formatAnalyze(pattern: pattern)
-        case .compile:
-        #if os(Linux)
-            return formatCompileLinux(pattern: pattern)
-        #else
-            fallthrough
-        #endif
-        case .compileXib,
-             .compileStoryboard:
-            return formatCompile(pattern: pattern)
-        case .compileCommand:
-            return formatCompileCommand(pattern: pattern)
-        case .buildTarget:
-            return formatTargetCommand(command: "Build", pattern: pattern)
-        case .analyzeTarget:
-            return formatTargetCommand(command: "Analyze", pattern: pattern)
-        case .aggregateTarget:
-            return formatTargetCommand(command: "Aggregate", pattern: pattern)
-        case .cleanTarget:
-            return formatTargetCommand(command: "Clean", pattern: pattern)
-        case .generateCoverageData,
-             .generatedCoverageReport:
-            return formatCodeCoverage(pattern: pattern)
-        case .generateDsym:
-            return formatGenerateDsym(pattern: pattern)
-        case .libtool:
-            return formatLibtool(pattern: pattern)
-        case .linking:
-        #if os(Linux)
-            return formatLinkingLinux(pattern: pattern)
-        #else
-            return formatLinking(pattern: pattern)
-        #endif
-        case .testSuiteStarted,
-             .testSuiteStart,
-             .parallelTestingStarted,
-             .parallelTestingPassed,
-             .parallelTestingFailed,
-             .parallelTestSuiteStarted:
-            return formatTestHeading(pattern: pattern)
-        case .testSuiteAllTestsPassed,
-             .testSuiteAllTestsFailed:
+        let group: CaptureGroup = self.captureGroup(with: pattern)
+
+        switch (pattern, group) {
+        case (.analyze, let group as AnalyzeCaptureGroup):
+            return formatAnalyze(group: group)
+        case (.compile, let group as CompileCaptureGroup):
+            return formatCompile(group: group)
+        case (.compileXib, let group as CompileXibCaptureGroup):
+            return formatCompile(group: group)
+        case (.compileStoryboard, let group as CompileStoryboardCaptureGroup):
+            return formatCompile(group: group)
+        case (.compileCommand, let group as CompileCommandCaptureGroup):
+            return formatCompileCommand(group: group)
+        case (.buildTarget, let group as BuildTargetCaptureGroup):
+            return formatTargetCommand(command: "Build", group: group)
+        case (.analyzeTarget, let group as AnalyzeTargetCaptureGroup):
+            return formatTargetCommand(command: "Analyze", group: group)
+        case (.aggregateTarget, let group as AggregateTargetCaptureGroup):
+            return formatTargetCommand(command: "Aggregate", group: group)
+        case (.cleanTarget, let group as CleanTargetCaptureGroup):
+            return formatTargetCommand(command: "Clean", group: group)
+        case (.generateCoverageData, let group as GenerateCoverageDataCaptureGroup):
+            return formatGenerateCoverageData(group: group)
+        case (.generatedCoverageReport, let group as GeneratedCoverageReportCaptureGroup):
+            return formatCoverageReport(group: group)
+        case (.generateDsym, let group as GenerateDSYMCaptureGroup):
+            return formatGenerateDsym(group: group)
+        case (.libtool, let group as LibtoolCaptureGroup):
+            return formatLibtool(group: group)
+        case (.linking, let group as LinkingCaptureGroup):
+            return formatLinking(group: group)
+        case (.testSuiteStarted, let group as TestSuiteStartedCaptureGroup):
+            return formatTestSuiteStarted(group: group)
+        case (.testSuiteStart, let group as TestSuiteStartCaptureGroup):
+            return formatTestSuiteStart(group: group)
+        case (.parallelTestingStarted, let group as ParallelTestingStartedCaptureGroup):
+            return formatParallelTestingStarted(group: group)
+        case (.parallelTestingPassed, let group as ParallelTestingPassedCaptureGroup):
+            return formatParallelTestingPassed(group: group)
+        case (.parallelTestingFailed, let group as ParallelTestingFailedCaptureGroup):
+            return formatParallelTestingFailed(group: group)
+        case (.parallelTestSuiteStarted, let group as ParallelTestSuiteStartedCaptureGroup):
+            return formatParallelTestSuiteStarted(group: group)
+        case (.testSuiteAllTestsPassed, _ as TestSuiteAllTestsPassedCaptureGroup):
             return nil
-        case .failingTest,
-             .uiFailingTest,
-             .restartingTest,
-             .testCasePassed,
-             .testCasePending,
-             .testCaseMeasured,
-             .testsRunCompletion,
-             .parallelTestCasePassed,
-             .parallelTestCaseAppKitPassed,
-             .parallelTestCaseFailed:
-            return formatTest(pattern: pattern)
-        case .codesign:
-            return format(command: "Signing", pattern: pattern)
-        case .codesignFramework:
-            return formatCodeSignFramework(pattern: pattern)
-        case .copyHeader,
-             .copyPlist,
-             .copyStrings,
-             .cpresource,
-             .pbxcp:
-            return formatCopy(pattern: pattern)
-        case .checkDependencies:
+        case (.testSuiteAllTestsFailed, _ as TestSuiteAllTestsFailedCaptureGroup):
+            return nil
+        case (.failingTest, let group as FailingTestCaptureGroup):
+            return formatFailingTest(group: group)
+        case (.uiFailingTest, let group as UIFailingTestCaptureGroup):
+            return formatUIFailingTest(group: group)
+        case (.restartingTest, let group as RestartingTestCaptureGroup):
+            return formatRestartingTest(group: group)
+        case (.testCasePassed, let group as TestCasePassedCaptureGroup):
+            return formatTestCasePassed(group: group)
+        case (.testCasePending, let group as TestCasePendingCaptureGroup):
+            return formatTestCasePending(group: group)
+        case (.testCaseMeasured, let group as TestCaseMeasuredCaptureGroup):
+            return formatTestCaseMeasured(group: group)
+        case (.testsRunCompletion, _ as TestsRunCompletionCaptureGroup):
+            return nil
+        case (.parallelTestCasePassed, let group as ParallelTestCasePassedCaptureGroup):
+            return formatParallelTestCasePassed(group: group)
+        case (.parallelTestCaseAppKitPassed, let group as ParallelTestCaseAppKitPassedCaptureGroup):
+            return formatParallelTestCaseAppKitPassed(group: group)
+        case (.parallelTestCaseFailed, let group as ParallelTestCaseFailedCaptureGroup):
+            return formatParallelTestCaseFailed(group: group)
+        case (.codesign, let group as CodesignCaptureGroup):
+            return formatCodeSign(group: group)
+        case (.codesignFramework, let group as CodesignFrameworkCaptureGroup):
+            return formatCodeSignFramework(group: group)
+        case (.copyHeader, let group as CopyHeaderCaptureGroup):
+            return formatCopy(group: group)
+        case (.copyPlist, let group as CopyPlistCaptureGroup):
+            return formatCopy(group: group)
+        case (.copyStrings, let group as CopyStringsCaptureGroup):
+            return formatCopy(group: group)
+        case (.cpresource, let group as CpresourceCaptureGroup):
+            return formatCopy(group: group)
+        case (.pbxcp, let group as PbxcpCaptureGroup):
+            return formatCopy(group: group)
+        case (.checkDependencies, _ as CheckDependenciesCaptureGroup):
             return format(command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
-        case .processInfoPlist:
-            return formatProcessInfoPlist(pattern: .processInfoPlist)
-        case .processPch:
-            return formatProcessPch(pattern: pattern)
-        case .touch:
-            return formatTouch(pattern: pattern)
-        case .phaseSuccess:
-            let phase = capturedGroups(with: .phaseSuccess)[0].capitalized
-            return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
-        case .phaseScriptExecution:
-            return formatPhaseScriptExecution()
-        case .preprocess:
+        case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
+            return formatProcessInfoPlist(group: group)
+        case (.processPch, let group as ProcessPchCaptureGroup):
+            return formatProcessPch(group: group)
+        case (.touch, let group as TouchCaptureGroup):
+            return formatTouch(group: group)
+        case (.phaseSuccess, let group as PhaseSuccessCaptureGroup):
+            return formatPhaseSuccess(group: group)
+        case (.phaseScriptExecution, let group as PhaseScriptExecutionCaptureGroup):
+            return formatPhaseScriptExecution(group: group)
+        case (.preprocess, _ as PreprocessCaptureGroup):
             return format(command: "Preprocessing", pattern: pattern, arguments: "$1")
-        case .processPchCommand:
-            return formatProcessPchCommand(pattern: pattern)
-        case .writeFile:
+        case (.processPchCommand, let group as ProcessPchCommandCaptureGroup):
+            return formatProcessPchCommand(group: group)
+        case (.writeFile, _ as WriteFileCaptureGroup):
             return nil
-        case .writeAuxiliaryFiles:
+        case (.writeAuxiliaryFiles, _ as WriteAuxiliaryFilesCaptureGroup):
             return nil
-        case .shellCommand:
+        case (.shellCommand, _ as ShellCommandCaptureGroup):
             return nil
-        case .cleanRemove:
-            return formatCleanRemove(pattern: pattern)
-        case .executed,
-             .executedWithSkipped:
+        case (.cleanRemove, let group as CleanRemoveCaptureGroup):
+            return formatCleanRemove(group: group)
+        case (.executed, _ as ExecutedCaptureGroup):
             return nil
-        case .testCaseStarted:
+        case (.executedWithSkipped, _ as ExecutedWithSkippedCaptureGroup):
             return nil
-        case .tiffutil:
+        case (.testCaseStarted, _ as TestCaseStartedCaptureGroup):
             return nil
-        case .compileWarning:
-            return formatCompileWarning(pattern: pattern, additionalLines: additionalLines)
-        case .ldWarning:
-            return formatLdWarning(pattern: pattern)
-        case .genericWarning:
-            return formatWarning(pattern: pattern)
-        case .willNotBeCodeSigned:
-            return formatWillNotBeCodesignWarning(pattern: pattern)
-        case .clangError,
-             .fatalError,
-             .ldError,
-             .podsError,
-             .moduleIncludesError,
-             .xcodebuildError:
-            return formatError(pattern: pattern)
-        case .compileError:
-            return formatCompileError(pattern: pattern, additionalLines: additionalLines)
-        case .fileMissingError:
-            return formatFileMissingError(pattern: pattern)
-        case .checkDependenciesErrors:
-            return formatError(pattern: pattern)
-        case .provisioningProfileRequired:
-            return formatError(pattern: pattern)
-        case .noCertificate:
-            return formatError(pattern: pattern)
-        case .cursor:
+        case (.tiffutil, _ as TIFFutilCaptureGroup):
             return nil
-        case .linkerDuplicateSymbolsLocation:
+        case (.compileWarning, let group as CompileWarningCaptureGroup):
+            return formatCompileWarning(group: group, additionalLines: additionalLines)
+        case (.ldWarning, let group as LDWarningCaptureGroup):
+            return formatLdWarning(group: group)
+        case (.genericWarning, let group as GenericWarningCaptureGroup):
+            return formatWarning(group: group)
+        case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
+            return formatWillNotBeCodesignWarning(group: group)
+        case (.clangError, let group as ClangErrorCaptureGroup):
+            return formatError(group: group)
+        case (.fatalError, let group as FatalErrorCaptureGroup):
+            return formatError(group: group)
+        case (.ldError, let group as LDErrorCaptureGroup):
+            return formatError(group: group)
+        case (.podsError, let group as PodsErrorCaptureGroup):
+            return formatError(group: group)
+        case (.moduleIncludesError, let group as ModuleIncludesErrorCaptureGroup):
+            return formatError(group: group)
+        case (.xcodebuildError, let group as XcodebuildErrorCaptureGroup):
+            return formatError(group: group)
+        case (.compileError, let group as CompileErrorCaptureGroup):
+            return formatCompileError(group: group, additionalLines: additionalLines)
+        case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
+            return formatFileMissingError(group: group)
+        case (.checkDependenciesErrors, let group as CheckDependenciesErrorsCaptureGroup):
+            return formatError(group: group)
+        case (.provisioningProfileRequired, let group as ProvisioningProfileRequiredCaptureGroup):
+            return formatError(group: group)
+        case (.noCertificate, let group as NoCertificateCaptureGroup):
+            return formatError(group: group)
+        case (.cursor, _ as CursorCaptureGroup):
             return nil
-        case .linkerDuplicateSymbols:
-            return formatLinkerDuplicateSymbolsError(pattern: pattern)
-        case .linkerUndefinedSymbolLocation:
+        case (.linkerDuplicateSymbolsLocation, _ as LinkerDuplicateSymbolsLocationCaptureGroup):
             return nil
-        case .linkerUndefinedSymbols:
-            return formatLinkerUndefinedSymbolsError(pattern: pattern)
-        case .symbolReferencedFrom:
+        case (.linkerDuplicateSymbols, let group as LinkerDuplicateSymbolsCaptureGroup):
+            return formatLinkerDuplicateSymbolsError(group: group)
+        case (.linkerUndefinedSymbolLocation, _ as LinkerUndefinedSymbolLocationCaptureGroup):
+            return nil
+        case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
+            return formatLinkerUndefinedSymbolsError(group: group)
+        case (.symbolReferencedFrom, _ as SymbolReferencedFromCaptureGroup):
             return formatCompleteError()
-        case .undefinedSymbolLocation:
+        case (.undefinedSymbolLocation, _ as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning()
-        case .packageFetching:
-            return formatPackageFetching(pattern: pattern)
-        case .packageUpdating:
-            return formatPackageUpdating(pattern: pattern)
-        case .packageCheckingOut:
-            return formatPackageCheckingOut(pattern: pattern)
-        case .packageGraphResolvingStart:
+        case (.packageFetching, let group as PackageFetchingCaptureGroup):
+            return formatPackageFetching(group: group)
+        case (.packageUpdating, let group as PackageUpdatingCaptureGroup):
+            return formatPackageUpdating(group: group)
+        case (.packageCheckingOut, let group as PackageCheckingOutCaptureGroup):
+            return formatPackageCheckingOut(group: group)
+        case (.packageGraphResolvingStart, _ as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
-        case .packageGraphResolvingEnded:
+        case (.packageGraphResolvingEnded, _ as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
-        case .packageGraphResolvedItem:
-            return formatPackgeItem(pattern: pattern)
-        case .duplicateLocalizedStringKey:
-            return formatDuplicateLocalizedStringKey(pattern: pattern)
+        case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
+            return formatPackgeItem(group: group)
+        case (.duplicateLocalizedStringKey, let group as DuplicateLocalizedStringKeyCaptureGroup):
+            return formatDuplicateLocalizedStringKey(group: group)
+        case (_, _):
+            assertionFailure()
+            return nil
         }
     }
 
     // MARK: - Private
 
-    private func formatTargetCommand(command: String, pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
-        let target = groups[0]
-        let project = groups[1]
-        let configuration = groups[2]
+    private func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String {
+        let target = group.target
+        let project = group.project
+        let configuration = group.configuration
         return _colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
-    }
-
-    private func format(command: String, pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
-        let sourceFile = groups[0]
-        return _colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
     }
 
     private func format(command: String, pattern: Pattern, arguments: String) -> String? {
@@ -193,203 +209,209 @@ extension String {
         return formatted
     }
 
-    private func formatAnalyze(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[1]
-        guard let target = groups.last else { return nil }
+    private func formatAnalyze(group: AnalyzeCaptureGroup) -> String? {
+        let filename = group.fileName
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 
-    private func formatCleanRemove(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let directory = groups[0].lastPathComponent
+    private func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String? {
+        let directory = group.directory
         return _colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
 
-    private func formatCodeSignFramework(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let frameworkPath = groups[0]
+    private func formatCodeSign(group: CodesignCaptureGroup) -> String? {
+        let command = "Signing"
+        let sourceFile = group.file
+        return _colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
+    }
+
+    private func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String? {
+        let frameworkPath = group.frameworkPath
         return _colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 
-    private func formatProcessPch(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[0]
-        guard let target = groups.last else { return nil }
+    private func formatProcessPch(group: ProcessPchCaptureGroup) -> String? {
+        let filename = group.file
+        let target = group.buildTarget
         return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
     }
 
-    private func formatProcessPchCommand(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        guard let filePath = groups.last else { return nil }
+    private func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String? {
+        let filePath = group.filePath
         return _colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
 
-    private func formatCompileCommand(pattern: Pattern) -> String? {
+    private func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
         return nil
     }
-    private func formatCompile(pattern: Pattern) -> String? {
-        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 2)
-    }
-    
-    private func formatCompileLinux(pattern: Pattern) -> String? {
-        return innerFormatCompile(pattern: pattern, fileIndex: 1, targetIndex: 0)
-    }
-    
-    private func innerFormatCompile(pattern: Pattern, fileIndex: Int, targetIndex: Int) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[fileIndex]
-        guard let target = groups.last else { return nil }
+
+    private func formatCompile(group: CompileFileCaptureGroup) -> String? {
+        let filename = group.filename
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
     }
 
-    private func formatCopy(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[0].lastPathComponent
-        guard let target = groups.last else { return nil }
+    private func formatCopy(group: CopyCaptureGroup) -> String? {
+        let filename = group.file
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 
-    private func formatGenerateDsym(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let dsym = groups[0]
-        guard let target = groups.last else { return nil }
+    private func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String? {
+        let dsym = group.dsym
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
     }
 
-    private func formatCodeCoverage(pattern: Pattern) -> String? {
-        switch pattern {
-        case .generateCoverageData:
-            return _colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
-        case .generatedCoverageReport:
-            let filePath = capturedGroups(with: pattern)[0]
-            return _colored
-                ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)"
-                : "Generated code coverage report: \(filePath)"
-        default:
-            return nil
-        }
+    private func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String? {
+        return _colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
     }
 
-    private func formatLibtool(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[0]
-        guard let target = groups.last else { return nil }
+    private func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String? {
+        let filePath = group.coverageReportFilePath
+        return _colored ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)" : "Generated code coverage report: \(filePath)"
+    }
+
+    private func formatLibtool(group: LibtoolCaptureGroup) -> String? {
+        let filename = group.fileName
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
-    private func formatTouch(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[1]
-        guard let target = groups.last else { return nil }
+    private func formatTouch(group: TouchCaptureGroup) -> String? {
+        let filename = group.filename
+        let target = group.target
         return _colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
-    private func formatLinking(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filename = groups[0].lastPathComponent
-        guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
-    }
-    
-    private func formatLinkingLinux(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let target = groups[0]
-        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
+    private func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String? {
+        let phase = group.phase.capitalized
+        return _colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
     }
 
-    private func formatPhaseScriptExecution() -> String? {
-        let groups = capturedGroups(with: .phaseScriptExecution)
-        let phaseName = groups[0]
+    private func formatLinking(group: LinkingCaptureGroup) -> String? {
+        let target = group.target
+#if os(Linux)
+        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
+#else
+        let filename = group.binaryFilename
+        return _colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
+#endif
+    }
+
+    private func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String? {
+        let phaseName = group.phaseName
+        let target = group.target
         // Strip backslashed added by xcodebuild before spaces in the build phase name
         let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
-        guard let target = groups.last else { return nil }
         return _colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
     }
 
-    private func formatTestHeading(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let testSuite = groups[0]
-
-        switch pattern {
-        case .testSuiteStart:
-            return _colored ? testSuite.s.Bold : testSuite
-        case .testSuiteStarted,
-             .parallelTestSuiteStarted:
-            let deviceDescription = pattern == .parallelTestSuiteStarted ? " on '\(groups[1])'" : ""
-            let heading = "Test Suite \(testSuite) started\(deviceDescription)"
-            return _colored ? heading.s.Bold.f.Cyan : heading
-        case .parallelTestingStarted:
-            return _colored ? s.Bold.f.Cyan : self
-        case .parallelTestingPassed:
-            return _colored ? s.Bold.f.Green : self
-        case .parallelTestingFailed:
-            return _colored ? s.Bold.f.Red : self
-        default:
-            return nil
-        }
+    private func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String? {
+        let testSuite = group.testSuiteName
+        return _colored ? testSuite.s.Bold : testSuite
     }
 
-    private func formatTest(pattern: Pattern) -> String? {
+    private func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String? {
+        let testSuite = group.suite
+        let heading = "Test Suite \(testSuite) started"
+        return _colored ? heading.s.Bold.f.Cyan : heading
+    }
+
+    private func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String? {
+        let testSuite = group.suite
+        let deviceDescription = " on '\(group.device)'"
+        let heading = "Test Suite \(testSuite) started\(deviceDescription)"
+        return _colored ? heading.s.Bold.f.Cyan : heading
+    }
+
+    private func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String? {
+        return _colored ? s.Bold.f.Cyan : self
+    }
+
+    private func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String? {
+        return _colored ? s.Bold.f.Green : self
+    }
+
+    private func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String? {
+        return _colored ? s.Bold.f.Red : self
+    }
+
+    private func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String? {
+        // TODO: Extract to shared property
         let indent = "    "
-        let groups = capturedGroups(with: pattern)
-
-        switch pattern {
-        case .testCasePassed:
-            let testCase = groups[1]
-            let time = groups[2]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
-        case .failingTest:
-            let testCase = groups[2]
-            let failingReason = groups[3]
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
-        case .uiFailingTest:
-            let file = groups[0]
-            let failingReason = groups[1]
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
-        case .restartingTest:
-            return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
-        case .testCasePending:
-            let testCase = groups[1]
-            return _colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
-        case .testsRunCompletion:
-            return nil
-        case .testCaseMeasured:
-            let testCase = groups[1]
-            let name = groups[2]
-            let unitName = groups[3]
-            let value = groups[4]
-            let deviation = groups[5].coloredDeviation()
-
-            let formattedValue: String
-            if unitName == "seconds" {
-                formattedValue = value.coloredTime()
-            } else {
-                formattedValue = value
-            }
-            return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
-        case .parallelTestCasePassed:
-            let testCase = groups[1]
-            let device = groups[2]
-            let time = groups[3]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
-        case .parallelTestCaseAppKitPassed:
-            let testCase = groups[1]
-            let time = groups[2]
-            return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
-        case .parallelTestCaseFailed:
-            let testCase = groups[1]
-            let device = groups[2]
-            let time = groups[3]
-            return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
-        default:
-            return nil
-        }
+        let testCase = group.testCase
+        let time = group.time
+        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
     }
 
-    private func formatError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        guard let errorMessage = groups.first else { return nil }
+    private func formatFailingTest(group: FailingTestCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let failingReason = group.reason
+        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
+    }
+
+    private func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String? {
+        let indent = "    "
+        let file = group.file
+        let failingReason = group.reason
+        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
+    }
+
+    private func formatRestartingTest(group: RestartingTestCaptureGroup) -> String? {
+        let indent = "    "
+        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
+    }
+
+    private func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        return _colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
+    }
+
+    private func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let name = group.name
+        let unitName = group.unitName
+        let value = group.value
+        let deviation = group.deviation.coloredDeviation()
+
+        let formattedValue: String
+        if unitName == "seconds" {
+            formattedValue = value.coloredTime()
+        } else {
+            formattedValue = value
+        }
+        return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
+    }
+
+    private func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
+    }
+
+    private func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String? {
+        let indent = "    "
+        let testCase = group.testCase
+        let time = group.time
+        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
+    }
+
+    private func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String? {
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
+    }
+
+    private func formatError(group: ErrorCaptureGroup) -> String? {
+        let errorMessage = group.wholeError
         return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
     }
 
@@ -397,10 +419,9 @@ extension String {
         return _colored ? Symbol.error.rawValue + " " + self.f.Red : Symbol.asciiError.rawValue + " " + self
     }
 
-    private func formatCompileError(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filePath = groups[0]
-        let reason = groups[2]
+    private func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
+        let filePath = group.filePath
+        let reason = group.reason
 
         // Read 2 additional lines to get the error line and cursor position
         let line: String = additionalLines() ?? ""
@@ -419,16 +440,14 @@ extension String {
             """
     }
 
-    private func formatFileMissingError(pattern: Pattern) -> String {
-        let groups = capturedGroups(with: pattern)
-        let reason = groups[0]
-        let filePath = groups[1]
+    private func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
+        let reason = group.reason
+        let filePath = group.filePath
         return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
     }
 
-    private func formatWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        guard let warningMessage = groups.first else { return nil }
+    private func formatWarning(group: GenericWarningCaptureGroup) -> String? {
+        let warningMessage = group.wholeWarning
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
@@ -436,10 +455,9 @@ extension String {
         return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " + self
     }
 
-    private func formatCompileWarning(pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let filePath = groups[0]
-        let reason = groups[2]
+    private func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
+        let filePath = group.filePath
+        let reason = group.reason
 
         // Read 2 additional lines to get the warning line and cursor position
         let line: String = additionalLines() ?? ""
@@ -458,44 +476,37 @@ extension String {
             """
     }
 
-    private func formatLdWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let prefix = groups[0]
-        let message = groups[1]
+    private func formatLdWarning(group: LDWarningCaptureGroup) -> String? {
+        let prefix = group.ldPrefix
+        let message = group.warningMessage
         return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
     }
 
-    private func formatProcessInfoPlist(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let plist = groups[1]
+    private func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String? {
+        let plist = group.filename
 
-        // Xcode 9 output
-        if groups.count == 2 {
+        if let target = group.target {
+            // Xcode 10+ output
+            return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
+        } else {
+            // Xcode 9 output
             return _colored ? "Processing".s.Bold + " " + plist : "Processing" + " " + plist
         }
-
-        // Xcode 10+ output
-        guard let target = groups.last else { return nil }
-        return _colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
     }
 
     // TODO: Print symbol and reference location
-    private func formatLinkerUndefinedSymbolsError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let reason = groups[0]
+    private func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String? {        let reason = group.reason
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
     // TODO: Print file path
-    private func formatLinkerDuplicateSymbolsError(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let reason = groups[0]
+    private func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String? {
+        let reason = group.reason
         return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
     }
 
-    private func formatWillNotBeCodesignWarning(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        guard let warningMessage = groups.first else { return nil }
+    private func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String? {
+        let warningMessage = group.wholeWarning
         return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
     }
 
@@ -521,22 +532,19 @@ extension String {
         return f.Red
     }
 
-    private func formatPackageFetching(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let source = groups[0]
+    private func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String? {
+        let source = group.source
         return "Fetching " + source
     }
 
-    private func formatPackageUpdating(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let source = groups[0]
+    private func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String? {
+        let source = group.source
         return "Updating " + source
     }
 
-    private func formatPackageCheckingOut(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let version = groups[0]
-        let package = groups[1]
+    private func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String? {
+        let version = group.version
+        let package = group.package
         return _colored ? "Checking out " + package.s.Bold + " @ " + version.f.Green : "Checking out \(package) @ \(version)"
     }
 
@@ -548,17 +556,15 @@ extension String {
         return _colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 
-    private func formatPackgeItem(pattern: Pattern) -> String?  {
-        let groups = capturedGroups(with: pattern)
-        let name = groups[0]
-        let url = groups[1]
-        let version = groups[2]
+    private func formatPackgeItem(group: PackageGraphResolvedItemCaptureGroup) -> String?  {
+        let name = group.packageName
+        let url = group.packageURL
+        let version = group.packageVersion
         return _colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
     }
 
-    private func formatDuplicateLocalizedStringKey(pattern: Pattern) -> String? {
-        let groups = capturedGroups(with: pattern)
-        let message = groups[0]
+    private func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String? {
+        let message = group.warningMessage
         return _colored ? Symbol.warning.rawValue + " " + message.f.Yellow : Symbol.asciiWarning.rawValue + " " + message
     }
 }
