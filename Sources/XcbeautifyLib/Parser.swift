@@ -100,7 +100,7 @@ public class Parser {
     // MARK: - Init
     
     public init(
-        colored: Bool,
+        colored: Bool = true,
         renderer: Renderer,
         preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
