@@ -24,9 +24,9 @@ protobuf_deps()
 http_archive(
     name = "Colorizer",
     build_file = "//external:External.BUILD",
-    sha256 = "b4bfc4d4172e8ee8be1bbfc39379b821cc93f2551df12ceb95fe5231513058ed",
-    strip_prefix = "Colorizer-0.2.0",
-    url = "https://github.com/getGuaka/Colorizer/archive/0.2.0.zip",
+    sha256 = "267aff5c4a6a7c7f329ca96b2d5683f17098b3cee859e01e96a77e2d08805750",
+    strip_prefix = "Colorizer-0.2.1",
+    url = "https://github.com/getGuaka/Colorizer/archive/0.2.1.zip",
 )
 
 http_archive(

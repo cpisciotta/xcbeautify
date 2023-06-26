@@ -8,9 +8,9 @@ let package = Package(
         .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.1"),
-        .package(url: "https://github.com/getGuaka/Colorizer.git", from: "0.1.0"),
-        .package(url: "https://github.com/MaxDesiatov/XMLCoder.git", from: "0.13.1"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "1.0.1")),
+        .package(url: "https://github.com/getGuaka/Colorizer.git", .upToNextMinor(from: "0.2.1")),
+        .package(url: "https://github.com/MaxDesiatov/XMLCoder.git", .upToNextMinor(from: "0.13.1")),
     ],
     targets: [
         .target(

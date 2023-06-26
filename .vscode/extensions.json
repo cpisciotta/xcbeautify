@@ -1,14 +1,3 @@
 {
-    "editor.formatOnSave": false,
-    "[markdown]": {
-      "editor.formatOnSave": false
-    },
-    "[ruby]": {
-      "editor.formatOnSave": true
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.exclude": {
-      "**/.git": true,
-      "**/.DS_Store": true
-    },
-  }
+  "recommendations": ["editorconfig.editorconfig", "esbenp.prettier-vscode", "BazelBuild.vscode-bazel"]
+}
