@@ -258,6 +258,7 @@ struct GitHubRenderer: OutputRendering {
 
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
         let filePath = group.filePath
+        let fileComponents = filePath.asFileComponents()
         let reason = group.reason
 
         // Read 2 additional lines to get the error line and cursor position
@@ -272,15 +273,16 @@ struct GitHubRenderer: OutputRendering {
 
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: filePath,
-            line: nil,
-            column: nil,
+            file: fileComponents.path,
+            line: fileComponents.line,
+            column: fileComponents.column,
             message: message
         )
     }
 
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
         let filePath = group.filePath
+        let fileComponents = filePath.asFileComponents()
         let reason = group.reason
 
         // Read 2 additional lines to get the warning line and cursor position
@@ -295,9 +297,9 @@ struct GitHubRenderer: OutputRendering {
 
         return outputGitHubActionsLog(
             annotationType: .warning,
-            file: filePath,
-            line: nil,
-            column: nil,
+            file: fileComponents.path,
+            line: fileComponents.line,
+            column: fileComponents.column,
             message: message
         )
     }
@@ -335,12 +337,14 @@ struct GitHubRenderer: OutputRendering {
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
         let indent = "    "
         let file = group.file
+        let fileComponents = file.asFileComponents()
         let testCase = group.testCase
         let failingReason = group.reason
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: file,
-            line: nil,
+            file: fileComponents.path,
+            line: fileComponents.line,
+            column: fileComponents.column,
             message: indent + testCase + ", " + failingReason
         )
     }
@@ -348,11 +352,13 @@ struct GitHubRenderer: OutputRendering {
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
         let reason = group.reason
         let filePath = group.filePath
+        let fileComponents = filePath.asFileComponents()
         let message = colored ? reason.f.Red : reason
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: filePath,
-            line: nil,
+            file: fileComponents.path,
+            line: fileComponents.line,
+            column: fileComponents.column,
             message: message
         )
     }
@@ -393,12 +399,14 @@ struct GitHubRenderer: OutputRendering {
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
         let indent = "    "
         let file = group.file
+        let fileComponents = file.asFileComponents()
         let failingReason = group.reason
         let message = indent + file + ", " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: file,
-            line: nil,
+            file: fileComponents.path,
+            line: fileComponents.line,
+            column: fileComponents.column,
             message: message
         )
     }
