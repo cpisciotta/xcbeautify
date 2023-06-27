@@ -27,7 +27,7 @@ jobs:
     needs: create_release
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build & Package
         run: make package
       - name: Darwin Universal
@@ -70,7 +70,7 @@ jobs:
     needs: create_release
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Package Linux x86_64
         run: make package-linux-x86_64
       - name: Upload Release Asset for Linux x86_64
