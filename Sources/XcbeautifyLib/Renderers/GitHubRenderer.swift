@@ -265,11 +265,18 @@ struct GitHubRenderer: OutputRendering {
         let line: String = additionalLines() ?? ""
         let cursor: String = additionalLines() ?? ""
 
-        let message = """
-            \(colored ? reason.f.Red : reason)
+        let message = colored ?
+            """
+            \(Symbol.error.rawValue): \(reason.f.Red)
             \(line)
-            \(colored ? cursor.f.Cyan : cursor)
-        """
+            \(cursor.f.Cyan)
+            """
+            :
+            """
+            \(Symbol.asciiError.rawValue): \(reason)
+            \(line)
+            \(cursor)
+            """
 
         return outputGitHubActionsLog(
             annotationType: .error,
@@ -289,11 +296,18 @@ struct GitHubRenderer: OutputRendering {
         let line: String = additionalLines() ?? ""
         let cursor: String = additionalLines() ?? ""
 
-        let message = """
-            \(colored ? reason.f.Yellow : reason)
+        let message = colored ?
+            """
+            \(Symbol.warning.rawValue): \(reason.f.Yellow)
             \(line)
-            \(colored ? cursor.f.Green : cursor)
-        """
+            \(cursor.f.Green)
+            """
+            :
+            """
+            \(Symbol.asciiWarning.rawValue): \(reason)
+            \(line)
+            \(cursor)
+            """
 
         return outputGitHubActionsLog(
             annotationType: .warning,
@@ -307,14 +321,14 @@ struct GitHubRenderer: OutputRendering {
     func formatCompleteError(line: String) -> String {
         return outputGitHubActionsLog(
             annotationType: .error,
-            message: colored ? line.f.Red : line
+            message: colored ? Symbol.error.rawValue + " " + line.f.Red : Symbol.asciiError.rawValue + " " + line
         )
     }
 
     func formatCompleteWarning(line: String) -> String {
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: colored ? line.f.Red : line
+            message: colored ? Symbol.warning.rawValue + " " + line.f.Yellow : Symbol.asciiWarning.rawValue + " " + line
         )
     }
 
@@ -322,7 +336,7 @@ struct GitHubRenderer: OutputRendering {
         let message = group.warningMessage
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: colored ? message.f.Yellow : message
+            message: colored ? Symbol.warning.rawValue + " " + message.f.Yellow : Symbol.asciiWarning.rawValue + " " + message
         )
     }
 
@@ -330,7 +344,7 @@ struct GitHubRenderer: OutputRendering {
         let errorMessage = group.wholeError
         return outputGitHubActionsLog(
             annotationType: .error,
-            message: colored ? errorMessage.f.Red : errorMessage
+            message: colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
         )
     }
 
@@ -340,12 +354,13 @@ struct GitHubRenderer: OutputRendering {
         let fileComponents = file.asFileComponents()
         let testCase = group.testCase
         let failingReason = group.reason
+        let message = colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
             file: fileComponents.path,
             line: fileComponents.line,
             column: fileComponents.column,
-            message: indent + testCase + ", " + failingReason
+            message: message
         )
     }
 
@@ -353,7 +368,7 @@ struct GitHubRenderer: OutputRendering {
         let reason = group.reason
         let filePath = group.filePath
         let fileComponents = filePath.asFileComponents()
-        let message = colored ? reason.f.Red : reason
+        let message = colored ? "\(Symbol.error.rawValue): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue): \(reason)"
         return outputGitHubActionsLog(
             annotationType: .error,
             file: fileComponents.path,
@@ -366,7 +381,7 @@ struct GitHubRenderer: OutputRendering {
     func formatLdWarning(group: LDWarningCaptureGroup) -> String {
         let prefix = group.ldPrefix
         let warningMessage = group.warningMessage
-        let message = colored ? "\(prefix.f.Yellow)\(warningMessage.f.Yellow)" : "\(prefix)\(warningMessage)"
+        let message = colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(warningMessage.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(warningMessage)"
         return outputGitHubActionsLog(
             annotationType: .warning,
             message: message
@@ -375,19 +390,19 @@ struct GitHubRenderer: OutputRendering {
 
     func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String {
         let reason = group.reason
-        let message = colored ? reason.f.Red : reason
+        let message = colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
         return outputGitHubActionsLog(annotationType: .error, message: message)
     }
 
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
         let reason = group.reason
-        let message = colored ? reason.f.Red : reason
+        let message = colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
         return outputGitHubActionsLog(annotationType: .error, message: message)
     }
 
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
         let indent = "    "
-        let message = indent + line
+        let message = colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + line : indent + TestStatus.fail.rawValue + " "  + line
         return outputGitHubActionsLog(
             annotationType: .error,
             file: nil,
@@ -401,7 +416,7 @@ struct GitHubRenderer: OutputRendering {
         let file = group.file
         let fileComponents = file.asFileComponents()
         let failingReason = group.reason
-        let message = indent + file + ", " + failingReason
+        let message = colored ? indent + TestStatus.fail.rawValue.foreground.Red + ": " + failingReason : indent + TestStatus.fail.rawValue + ": " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
             file: fileComponents.path,
@@ -413,7 +428,7 @@ struct GitHubRenderer: OutputRendering {
 
     func formatWarning(group: GenericWarningCaptureGroup) -> String {
         let warningMessage = group.wholeWarning
-        let message = colored ? warningMessage.f.Yellow : warningMessage
+        let message = colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
         return outputGitHubActionsLog(
             annotationType: .warning,
             message: message
@@ -422,7 +437,7 @@ struct GitHubRenderer: OutputRendering {
 
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String {
         let warningMessage = group.wholeWarning
-        let message = colored ? warningMessage.f.Yellow : warningMessage
+        let message = colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
         return outputGitHubActionsLog(
             annotationType: .warning,
             message: message
