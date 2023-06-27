@@ -431,3 +431,46 @@ struct GitHubRenderer: OutputRendering {
         }
     }
 }
+
+private struct FileComponents {
+    let path: String
+    let line: Int?
+    let column: Int?
+}
+
+private extension String {
+
+    func asFileComponents() -> FileComponents {
+        let components = self.split(separator: ":").map(String.init)
+
+        assert((1...3).contains(components.count))
+
+        // TODO: This block is likely unnecessary.
+        var path: String {
+            if let path = components[safe: 0] {
+                return path
+            } else {
+                return self
+            }
+        }
+
+        var line: Int? {
+            if let line = components[safe: 1] {
+                return Int(line)
+            } else {
+                return nil
+            }
+        }
+
+        var column: Int? {
+            if let column = components[safe: 2] {
+                return Int(column)
+            } else {
+                return nil
+            }
+        }
+
+        return FileComponents(path: path, line: line, column: column)
+    }
+
+}
