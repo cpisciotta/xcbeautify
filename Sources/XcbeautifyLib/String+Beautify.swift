@@ -8,165 +8,6 @@ struct TerminalRenderer: OutputRendering {
         self.colored = colored
     }
 
-    func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String {
-        let target = group.target
-        let project = group.project
-        let configuration = group.configuration
-        return colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
-    }
-
-    func format(line: String, command: String, pattern: Pattern, arguments: String) -> String? {
-        let template = command.style.Bold + " " + arguments
-
-        guard let formatted =
-            try? NSRegularExpression(pattern: pattern.rawValue)
-                .stringByReplacingMatches(
-                    in: line,
-                    range: NSRange(location: 0, length: line.count),
-                    withTemplate: template)
-            else {
-                return nil
-        }
-
-        return formatted
-    }
-
-    func formatAnalyze(group: AnalyzeCaptureGroup) -> String {
-        let filename = group.fileName
-        let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
-    }
-
-    func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String {
-        let directory = group.directory
-        return colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
-    }
-
-    func formatCodeSign(group: CodesignCaptureGroup) -> String {
-        let command = "Signing"
-        let sourceFile = group.file
-        return colored ? command.s.Bold + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
-    }
-
-    func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String {
-        let frameworkPath = group.frameworkPath
-        return colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
-    }
-
-    func formatProcessPch(group: ProcessPchCaptureGroup) -> String {
-        let filename = group.file
-        let target = group.buildTarget
-        return colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
-    }
-
-    func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String {
-        let filePath = group.filePath
-        return colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
-    }
-
-    func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
-        return nil
-    }
-
-    func formatCompile(group: CompileFileCaptureGroup) -> String {
-        let filename = group.filename
-        let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
-    }
-
-    func formatCopy(group: CopyCaptureGroup) -> String {
-        let filename = group.file
-        let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
-    }
-
-    func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String {
-        let dsym = group.dsym
-        let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
-    }
-
-    func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String {
-        return colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
-    }
-
-    func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String {
-        let filePath = group.coverageReportFilePath
-        return colored ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)" : "Generated code coverage report: \(filePath)"
-    }
-
-    func formatLibtool(group: LibtoolCaptureGroup) -> String {
-        let filename = group.fileName
-        let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
-    }
-
-    func formatTouch(group: TouchCaptureGroup) -> String {
-        let filename = group.filename
-        let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
-    }
-
-    func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String {
-        let phase = group.phase.capitalized
-        return colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
-    }
-
-    func formatLinking(group: LinkingCaptureGroup) -> String {
-        let target = group.target
-#if os(Linux)
-        return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
-#else
-        let filename = group.binaryFilename
-        return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
-#endif
-    }
-
-    func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String {
-        let phaseName = group.phaseName
-        let target = group.target
-        // Strip backslashed added by xcodebuild before spaces in the build phase name
-        let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
-        return colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
-    }
-
-    func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String {
-        let testSuite = group.testSuiteName
-        return colored ? testSuite.s.Bold : testSuite
-    }
-
-    func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String {
-        let testSuite = group.suite
-        let heading = "Test Suite \(testSuite) started"
-        return colored ? heading.s.Bold.f.Cyan : heading
-    }
-
-    func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String {
-        let testSuite = group.suite
-        let deviceDescription = " on '\(group.device)'"
-        let heading = "Test Suite \(testSuite) started\(deviceDescription)"
-        return colored ? heading.s.Bold.f.Cyan : heading
-    }
-
-    func formatParallelTestingStarted(line: String, group: ParallelTestingStartedCaptureGroup) -> String {
-        return colored ? line.s.Bold.f.Cyan : line
-    }
-
-    func formatParallelTestingPassed(line: String, group: ParallelTestingPassedCaptureGroup) -> String {
-        return colored ? line.s.Bold.f.Green : line
-    }
-
-    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
-        return colored ? line.s.Bold.f.Red : line
-    }
-
-    func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
-        // TODO: Extract to shared property
-        let testCase = group.testCase
-        let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
-    }
-
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
         let testCase = group.testCase
         let failingReason = group.reason
@@ -296,19 +137,6 @@ struct TerminalRenderer: OutputRendering {
         return colored ? "\(Symbol.warning) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning) \(prefix)\(message)"
     }
 
-    func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String {
-        let plist = group.filename
-
-        if let target = group.target {
-            // Xcode 10+ output
-            return colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
-        } else {
-            // Xcode 9 output
-            return colored ? "Processing".s.Bold + " " + plist : "Processing" + " " + plist
-        }
-    }
-
-    // TODO: Print symbol and reference location
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
         let reason = group.reason
         return colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
@@ -363,6 +191,10 @@ struct TerminalRenderer: OutputRendering {
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String {
         let message = group.warningMessage
         return colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
+    }
+
+    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
+        return colored ? line.s.Bold.f.Red : line
     }
 
     func format(testSummary: TestSummary) -> String {

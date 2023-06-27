@@ -9,29 +9,6 @@ struct GitHubRenderer: OutputRendering {
 
     let colored = false
 
-    func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String {
-        let target = group.target
-        let project = group.project
-        let configuration = group.configuration
-        return "\(command) target \(target) of project \(project) with configuration \(configuration)"
-    }
-
-    func format(line: String, command: String, pattern: Pattern, arguments: String) -> String? {
-        let template = command.style.Bold + " " + arguments
-
-        guard let formatted =
-                try? NSRegularExpression(pattern: pattern.rawValue)
-            .stringByReplacingMatches(
-                    in: line,
-                    range: NSRange(location: 0, length: line.count),
-                    withTemplate: template)
-            else {
-                return nil
-        }
-
-        return formatted
-    }
-
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String {
         let filename = group.fileName
         let target = group.target
@@ -169,25 +146,6 @@ struct GitHubRenderer: OutputRendering {
         return indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
     }
 
-    func formatFailingTest(group: FailingTestCaptureGroup) -> String {
-        let indent = "    "
-        let testCase = group.testCase
-        let failingReason = group.reason
-        return indent + TestStatus.fail + " "  + testCase + ", " + failingReason
-    }
-
-    func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
-        let indent = "    "
-        let file = group.file
-        let failingReason = group.reason
-        return indent + TestStatus.fail + " "  + file + ", " + failingReason
-    }
-
-    func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
-        let indent = "    "
-        return indent + TestStatus.fail + " "  + line
-    }
-
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
         let indent = "    "
         let testCase = group.testCase
@@ -233,64 +191,6 @@ struct GitHubRenderer: OutputRendering {
         return "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
     }
 
-    func formatError(group: ErrorCaptureGroup) -> String {
-        let errorMessage = group.wholeError
-        return Symbol.asciiError + " " + errorMessage
-    }
-
-    func formatCompleteError(line: String) -> String {
-        return Symbol.asciiError + " " + line
-    }
-
-    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
-        let filePath = group.filePath
-        let reason = group.reason
-
-        // Read 2 additional lines to get the error line and cursor position
-        let line: String = additionalLines() ?? ""
-        let cursor: String = additionalLines() ?? ""
-        return """
-            \(Symbol.asciiError) \(filePath): \(reason)
-            \(line)
-            \(cursor)
-            """
-    }
-
-    func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
-        let reason = group.reason
-        let filePath = group.filePath
-        return "\(Symbol.asciiError) \(filePath): \(reason)"
-    }
-
-    func formatWarning(group: GenericWarningCaptureGroup) -> String {
-        let warningMessage = group.wholeWarning
-        return Symbol.asciiWarning + " " + warningMessage
-    }
-
-    func formatCompleteWarning(line: String) -> String {
-        return Symbol.asciiWarning + " " + line
-    }
-
-    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
-        let filePath = group.filePath
-        let reason = group.reason
-
-        // Read 2 additional lines to get the warning line and cursor position
-        let line: String = additionalLines() ?? ""
-        let cursor: String = additionalLines() ?? ""
-        return """
-            \(Symbol.asciiWarning)  \(filePath): \(reason)
-            \(line)
-            \(cursor)
-            """
-    }
-
-    func formatLdWarning(group: LDWarningCaptureGroup) -> String {
-        let prefix = group.ldPrefix
-        let message = group.warningMessage
-        return "\(Symbol.asciiWarning) \(prefix)\(message)"
-    }
-
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String {
         let plist = group.filename
 
@@ -301,23 +201,6 @@ struct GitHubRenderer: OutputRendering {
             // Xcode 9 output
             return "Processing" + " " + plist
         }
-    }
-
-    // TODO: Print symbol and reference location
-    func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
-        let reason = group.reason
-        return "\(Symbol.asciiError) \(reason)"
-    }
-
-    // TODO: Print file path
-    func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String {
-        let reason = group.reason
-        return "\(Symbol.asciiError) \(reason)"
-    }
-
-    func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String {
-        let warningMessage = group.wholeWarning
-        return Symbol.asciiWarning + " " + warningMessage
     }
 
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
@@ -351,11 +234,6 @@ struct GitHubRenderer: OutputRendering {
         return "\(name) - \(url) @ \(version)"
     }
 
-    func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String {
-        let message = group.warningMessage
-        return Symbol.asciiWarning + " " + message
-    }
-
     private func outputGitHubActionsLog(
         annotationType: AnnotationType,
         file: String? = nil,
@@ -363,7 +241,9 @@ struct GitHubRenderer: OutputRendering {
         column: Int? = nil,
         message: String
     ) -> String {
-        guard let file else { return "::\(annotationType) ::\(message)" }
+        guard let file else {
+            return "::\(annotationType.rawValue) ::\(message)"
+        }
 
         guard let line else {
             return "::\(annotationType) file=\(file)::\(message)"
@@ -376,4 +256,178 @@ struct GitHubRenderer: OutputRendering {
         return "::\(annotationType) file=\(file),line=\(line),col=\(column)::\(message)"
     }
 
+    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+        let filePath = group.filePath
+        let reason = group.reason
+
+        // Read 2 additional lines to get the error line and cursor position
+        let line: String = additionalLines() ?? ""
+        let cursor: String = additionalLines() ?? ""
+
+        let message = """
+            \(colored ? reason.f.Red : reason)
+            \(line)
+            \(colored ? cursor.f.Cyan : cursor)
+        """
+
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            file: filePath,
+            line: nil,
+            column: nil,
+            message: message
+        )
+    }
+
+    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+        let filePath = group.filePath
+        let reason = group.reason
+
+        // Read 2 additional lines to get the warning line and cursor position
+        let line: String = additionalLines() ?? ""
+        let cursor: String = additionalLines() ?? ""
+
+        let message = """
+            \(colored ? reason.f.Yellow : reason)
+            \(line)
+            \(colored ? cursor.f.Green : cursor)
+        """
+
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            file: filePath,
+            line: nil,
+            column: nil,
+            message: message
+        )
+    }
+
+    func formatCompleteError(line: String) -> String {
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: colored ? line.f.Red : line
+        )
+    }
+
+    func formatCompleteWarning(line: String) -> String {
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            message: colored ? line.f.Red : line
+        )
+    }
+
+    func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String {
+        let message = group.warningMessage
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            message: colored ? message.f.Yellow : message
+        )
+    }
+
+    func formatError(group: ErrorCaptureGroup) -> String {
+        let errorMessage = group.wholeError
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: colored ? errorMessage.f.Red : errorMessage
+        )
+    }
+
+    func formatFailingTest(group: FailingTestCaptureGroup) -> String {
+        let indent = "    "
+        let file = group.file
+        let testCase = group.testCase
+        let failingReason = group.reason
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            file: file,
+            line: nil,
+            message: indent + testCase + ", " + failingReason
+        )
+    }
+
+    func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
+        let reason = group.reason
+        let filePath = group.filePath
+        let message = colored ? reason.f.Red : reason
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            file: filePath,
+            line: nil,
+            message: message
+        )
+    }
+
+    func formatLdWarning(group: LDWarningCaptureGroup) -> String {
+        let prefix = group.ldPrefix
+        let warningMessage = group.warningMessage
+        let message = colored ? "\(prefix.f.Yellow)\(warningMessage.f.Yellow)" : "\(prefix)\(warningMessage)"
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            message: message
+        )
+    }
+
+    func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String {
+        let reason = group.reason
+        let message = colored ? reason.f.Red : reason
+        return outputGitHubActionsLog(annotationType: .error, message: message)
+    }
+
+    func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
+        let reason = group.reason
+        let message = colored ? reason.f.Red : reason
+        return outputGitHubActionsLog(annotationType: .error, message: message)
+    }
+
+    func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
+        let indent = "    "
+        let message = indent + line
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            file: nil,
+            line: nil,
+            message: message
+        )
+    }
+
+    func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
+        let indent = "    "
+        let file = group.file
+        let failingReason = group.reason
+        let message = indent + file + ", " + failingReason
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            file: file,
+            line: nil,
+            message: message
+        )
+    }
+
+    func formatWarning(group: GenericWarningCaptureGroup) -> String {
+        let warningMessage = group.wholeWarning
+        let message = colored ? warningMessage.f.Yellow : warningMessage
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            message: message
+        )
+    }
+
+    func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String {
+        let warningMessage = group.wholeWarning
+        let message = colored ? warningMessage.f.Yellow : warningMessage
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            message: message
+        )
+    }
+
+    func format(testSummary: TestSummary) -> String {
+        if testSummary.isSuccess() {
+            let message = "Tests Passed: \(testSummary.description)"
+            return outputGitHubActionsLog(annotationType: .notice, message: message)
+        } else {
+            let message = "Tests Failed: \(testSummary.description)"
+            return outputGitHubActionsLog(annotationType: .error, message: message)
+        }
+    }
 }
