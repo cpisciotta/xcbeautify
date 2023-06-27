@@ -1,6 +1,6 @@
 import Foundation
 
-protocol OutputRendering {
+protocol OutputRendering: TestSummarizing {
     var colored: Bool { get }
 
     func beautify(line: String, pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String?
@@ -549,4 +549,14 @@ extension OutputRendering {
         return nil
     }
 
+}
+
+extension OutputRendering {
+    func formatTestSummary(isSuccess: Bool, description: String) -> String {
+        if isSuccess {
+            return colored ? "Tests Passed: \(description)".s.Bold.f.Green : "Tests Passed: \(description)"
+        } else {
+            return colored ? "Tests Failed: \(description)".s.Bold.f.Red : "Tests Failed: \(description)"
+        }
+    }
 }
