@@ -19,23 +19,23 @@ public final class JunitReporter {
         // Remove any preceding or excessive spaces
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
         switch line {
-            // Capture standard output
-            case Regex.failingTest:
-                components.append(.failingTest(generateFailingTest(line: line)))
-            case Regex.restartingTest:
-                components.append(.failingTest(generateRestartingTest(line: line)))
-            case Regex.testCasePassed:
-                components.append(.testCasePassed(generatePassingTest(line: line)))
-            case Regex.testSuiteStart:
-                components.append(.testSuiteStart(generateSuiteStart(line: line)))
-            // Capture parallel output
-            case Regex.parallelTestCaseFailed:
-                parallelComponents.append(.failingTest(generateParallelFailingTest(line: line)))
-            case Regex.parallelTestCasePassed:
-                parallelComponents.append(.testCasePassed(generatePassingParallelTest(line: line)))
-            default:
-                // Not needed for generating a junit report
-                break
+        // Capture standard output
+        case Regex.failingTest:
+            components.append(.failingTest(generateFailingTest(line: line)))
+        case Regex.restartingTest:
+            components.append(.failingTest(generateRestartingTest(line: line)))
+        case Regex.testCasePassed:
+            components.append(.testCasePassed(generatePassingTest(line: line)))
+        case Regex.testSuiteStart:
+            components.append(.testSuiteStart(generateSuiteStart(line: line)))
+        // Capture parallel output
+        case Regex.parallelTestCaseFailed:
+            parallelComponents.append(.failingTest(generateParallelFailingTest(line: line)))
+        case Regex.parallelTestCasePassed:
+            parallelComponents.append(.testCasePassed(generatePassingParallelTest(line: line)))
+        default:
+            // Not needed for generating a junit report
+            break
         }
     }
 
