@@ -111,7 +111,7 @@ public class Parser {
         case .terminal:
             self.renderer = TerminalRenderer(colored: colored)
         case .gitHubActions:
-            self.renderer = GitHubRenderer()
+            self.renderer = GitHubActionsRenderer()
         }
 
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines

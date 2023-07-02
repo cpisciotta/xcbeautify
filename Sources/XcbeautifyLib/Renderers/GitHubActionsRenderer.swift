@@ -1,6 +1,6 @@
 import Foundation
 
-struct GitHubRenderer: OutputRendering {
+struct GitHubActionsRenderer: OutputRendering {
     private enum AnnotationType: String {
         case notice
         case warning
@@ -209,7 +209,7 @@ struct GitHubRenderer: OutputRendering {
     }
 }
 
-extension GitHubRenderer {
+extension GitHubActionsRenderer {
     func formatTestSummary(isSuccess: Bool, description: String) -> String {
         if isSuccess {
             return outputGitHubActionsLog(
