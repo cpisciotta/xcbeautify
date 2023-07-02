@@ -10,12 +10,12 @@ enum TestStatus {
     static let measure = "◷"
 }
 
-enum Symbol: String {
-    case error = "❌"
-    case asciiError = "[x]"
+enum Symbol {
+    static let error = "❌"
+    static let asciiError = "[x]"
 
-    case warning = "⚠️"
-    case asciiWarning = "[!]"
+    static let warning = "⚠️"
+    static let asciiWarning = "[!]"
 }
 
 public enum OutputType {
