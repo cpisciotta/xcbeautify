@@ -1,3 +1,7 @@
+enum Format {
+    static let indent = "    "
+}
+
 enum TestStatus: String {
     case pass = "✔"
     case fail = "✖"
