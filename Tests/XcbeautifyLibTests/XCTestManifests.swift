@@ -54,7 +54,7 @@ extension XcbeautifyLibTests {
         ("testCopyStrings", testCopyStrings),
         ("testCpresource", testCpresource),
         ("testCursor", testCursor),
-        ("testExecuted", testExecuted),
+        ("testExecutedWithoutSkipped", testExecutedWithoutSkipped),
         ("testFailingTest", testFailingTest),
         ("testFatalError", testFatalError),
         ("testFileMissingError", testFileMissingError),

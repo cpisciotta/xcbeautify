@@ -113,7 +113,7 @@ public class Parser {
             
             // Some uncommon cases, which have additional logic and don't follow default flow
             
-            if Regex.executed.match(string: line) {
+            if Regex.executedWithoutSkipped.match(string: line) {
                 outputType = OutputType.task
                 parseSummary(line: line, colored: colored, skipped: false)
                 return nil
@@ -158,7 +158,7 @@ public class Parser {
         guard needToRecordSummary else { return }
         defer { needToRecordSummary = false }
 
-        let group: CaptureGroup = line.captureGroup(with: skipped ? .executedWithSkipped : .executed)
+        let group: CaptureGroup = line.captureGroup(with: skipped ? .executedWithSkipped : .executedWithoutSkipped)
         guard let group = group as? ExecutedCaptureGroup else { return }
 
         summary = TestSummary(

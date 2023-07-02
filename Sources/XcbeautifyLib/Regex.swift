@@ -41,7 +41,7 @@ extension Regex {
     static let cpresource = Regex(pattern: .cpresource)
     static let cursor = Regex(pattern: .cursor)
     static let duplicateLocalizedStringKey = Regex(pattern: .duplicateLocalizedStringKey)
-    static let executed = Regex(pattern: .executed)
+    static let executedWithoutSkipped = Regex(pattern: .executedWithoutSkipped)
     static let executedWithSkipped = Regex(pattern: .executedWithSkipped)
     static let failingTest = Regex(pattern: .failingTest)
     static let fatalError = Regex(pattern: .fatalError)

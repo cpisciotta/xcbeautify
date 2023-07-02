@@ -122,7 +122,7 @@ extension String {
             guard let file = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
             return CpresourceCaptureGroup(file: file.lastPathComponent, target: target)
 
-        case .executed:
+        case .executedWithoutSkipped:
             assert(results.count >= 4)
             guard let _numberOfTests = results[safe: 0], let _numberOfFailures = results[safe: 1], let _numberOfUnexpectedFailures = results[safe: 2], let _wallClockTimeInSeconds = results[safe: 3] else { return EmptyCaptureGroup() }
             guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return EmptyCaptureGroup() }

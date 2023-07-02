@@ -101,7 +101,7 @@ enum Pattern: String {
     /// $2 = number of failures
     /// $3 = number of unexpected failures
     /// $4 = wall clock time in seconds (e.g. 0.295)
-    case executed = #"^\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#
+    case executedWithoutSkipped = #"^\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#
     
     /// Regular expression captured groups:
     /// $1 = number of tests
