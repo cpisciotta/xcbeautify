@@ -39,9 +39,9 @@ public final class JunitReporter {
         }
     }
 
-    private func generateFailingTest(line: String) -> Testcase {
+    private func generateFailingTest(line: String) -> TestCase {
         let group: [String] = line.captureGroup(with: .failingTest)
-        return Testcase(
+        return TestCase(
             classname: group[1],
             name: group[2],
             time: nil,
@@ -49,9 +49,9 @@ public final class JunitReporter {
         )
     }
     
-    private func generateRestartingTest(line: String) -> Testcase {
+    private func generateRestartingTest(line: String) -> TestCase {
         let group: [String] = line.captureGroup(with: .restartingTest)
-        return Testcase(
+        return TestCase(
             classname: group[1],
             name: group[2],
             time: nil,
@@ -59,10 +59,10 @@ public final class JunitReporter {
         )
     }
 
-    private func generateParallelFailingTest(line: String) -> Testcase {
+    private func generateParallelFailingTest(line: String) -> TestCase {
         // Parallel tests do not provide meaningful failure messages
         let group: [String] = line.captureGroup(with: .parallelTestCaseFailed)
-        return Testcase(
+        return TestCase(
             classname: group[0],
             name: group[1],
             time: nil,
@@ -70,14 +70,14 @@ public final class JunitReporter {
         )
     }
 
-    private func generatePassingTest(line: String) -> Testcase {
+    private func generatePassingTest(line: String) -> TestCase {
         let group: [String] = line.captureGroup(with: .testCasePassed)
-        return Testcase(classname: group[0], name: group[1], time: group[2], failure: nil)
+        return TestCase(classname: group[0], name: group[1], time: group[2], failure: nil)
     }
 
-    private func generatePassingParallelTest(line: String) -> Testcase {
+    private func generatePassingParallelTest(line: String) -> TestCase {
         let group: [String] = line.captureGroup(with: .parallelTestCasePassed)
-        return Testcase(classname: group[0], name: group[1], time: group[3], failure: nil)
+        return TestCase(classname: group[0], name: group[1], time: group[3], failure: nil)
     }
   
     private func generateSuiteStart(line: String) -> String {
@@ -101,7 +101,7 @@ public final class JunitReporter {
 
 private final class JunitComponentParser {
     private var mainTestSuiteName: String?
-    private var testCases: [Testcase] = []
+    private var testCases: [TestCase] = []
 
     func parse(component: JunitComponent) {
         switch component {
@@ -139,8 +139,8 @@ private final class JunitComponentParser {
 
 private enum JunitComponent {
     case testSuiteStart(String)
-    case failingTest(Testcase)
-    case testCasePassed(Testcase)
+    case failingTest(TestCase)
+    case testCasePassed(TestCase)
 }
 
 private struct Testsuites: Encodable, DynamicNodeEncoding {
@@ -176,7 +176,7 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
 
 private struct Testsuite: Encodable, DynamicNodeEncoding {
     let name: String
-    var testcases: [Testcase]
+    var testcases: [TestCase]
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -205,7 +205,7 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
     }
 }
 
-private struct Testcase: Codable, DynamicNodeEncoding {
+private struct TestCase: Codable, DynamicNodeEncoding {
     let classname: String
     let name: String
     let time: String?
@@ -223,7 +223,7 @@ private struct Testcase: Codable, DynamicNodeEncoding {
     }
 }
 
-private extension Testcase {
+private extension TestCase {
     struct Failure: Codable, DynamicNodeEncoding {
         let message: String
         
