@@ -158,8 +158,8 @@ public class Parser {
         guard needToRecordSummary else { return }
         defer { needToRecordSummary = false }
 
-        let group: CaptureGroup = line.captureGroup(with: skipped ? .executedWithSkipped : .executedWithoutSkipped)
-        guard let group = group as? ExecutedCaptureGroup else { return }
+        let _group: CaptureGroup = line.captureGroup(with: skipped ? .executedWithSkipped : .executedWithoutSkipped)
+        guard let group = _group as? ExecutedCaptureGroup else { return }
 
         summary = TestSummary(
             testsCount: group.numberOfTests,
