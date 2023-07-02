@@ -86,12 +86,12 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testCompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
-        let outputError = "::error file=/path/file.swift,line=64,col=69::cannot find 'input' in scope"
+        let outputError = "::error file=/path/file.swift,line=64,col=69::cannot find 'input' in scope\n\n"
         XCTAssertEqual(logFormatted(inputError), outputError)
         XCTAssertEqual(parser.outputType, .error)
 
         let inputFatal = "/path/file.swift:64:69: fatal error: cannot find 'input' in scope"
-        let outputFatal = "::error file=/path/file.swift,line=64,col=69::cannot find 'input' in scope"
+        let outputFatal = "::error file=/path/file.swift,line=64,col=69::cannot find 'input' in scope\n\n"
         XCTAssertEqual(logFormatted(inputFatal), outputFatal)
         XCTAssertEqual(parser.outputType, .error)
     }
@@ -117,7 +117,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testCompileWarning() {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
-        let output = "::warning file=/path/file.swift,line=64,col=69::'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
+        let output = "::warning file=/path/file.swift,line=64,col=69::'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
         XCTAssertEqual(logFormatted(input), output)
         XCTAssertEqual(parser.outputType, .warning)
     }
@@ -257,14 +257,14 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
-        let output = "::error ::malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
+        let output = "::error ::fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         XCTAssertEqual(logFormatted(input), output)
         XCTAssertEqual(parser.outputType, .error)
     }
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "::error file=/path/file.swift::no such file or directory:"
+        let output = "::error file=/path/file.swift::error: no such file or directory:"
         XCTAssertEqual(logFormatted(input), output)
         XCTAssertEqual(parser.outputType, .error)
    }
@@ -347,13 +347,13 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testParallelTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
-        XCTAssertEqual(formatted, "::error ::testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "::error ::    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(parser.outputType, .error)
     }
 
     func testParallelTestCasePassed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'xctest (49438)' (0.131 seconds)")
-        XCTAssertEqual(formatted, "testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
     func testConcurrentDestinationTestSuiteStarted() {
@@ -363,19 +363,19 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testConcurrentDestinationTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'iPhone X' (77.158 seconds)")
-        XCTAssertEqual(formatted, "::error ::testBuildTarget on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "::error ::    testBuildTarget on 'iPhone X' (77.158 seconds)")
         XCTAssertEqual(parser.outputType, .error)
     }
 
     func testConcurrentDestinationTestCasePassed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'iPhone X' (77.158 seconds)")
-        XCTAssertEqual(formatted, "testBuildTarget on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "    testBuildTarget on 'iPhone X' (77.158 seconds)")
         XCTAssertEqual(parser.outputType, .test)
     }
 
     func testParallelTestCaseAppKitPassed() {
         let formatted = logFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds).")
-        XCTAssertEqual(formatted, "testBuildTarget (0.131) seconds)")
+        XCTAssertEqual(formatted, "    testBuildTarget (0.131) seconds)")
         XCTAssertEqual(parser.outputType, .test)
     }
 
@@ -413,7 +413,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testPodsError() {
         let input = "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
-        let output = "::error ::The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
+        let output = "::error ::error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
         XCTAssertEqual(logFormatted(input), output)
     }
 
@@ -459,7 +459,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testRestartingTests() {
         let formatted = logFormatted( "Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
-        XCTAssertEqual(formatted, "::error ::Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
+        XCTAssertEqual(formatted, "::error ::    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(parser.outputType, .test)
     }
 
@@ -477,14 +477,14 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testUndefinedSymbolLocation() {
         let formatted = logFormatted( "      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(formatted, "::warning ::MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        XCTAssertEqual(formatted, "::warning ::      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
 #if os(macOS)
         let formatted = logFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
-        XCTAssertEqual(formatted, #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
+        XCTAssertEqual(formatted, #"    test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
         XCTAssertEqual(parser.outputType, .test)
 #endif
     }
@@ -492,7 +492,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testTestCasePassed() {
 #if os(macOS)
         let formatted = logFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
-        XCTAssertEqual(formatted, "testBuildTarget (0.131 seconds)")
+        XCTAssertEqual(formatted, "    testBuildTarget (0.131 seconds)")
         XCTAssertEqual(parser.outputType, .test)
 #endif
     }
@@ -545,7 +545,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testUiFailingTest() {
         let formatted = logFormatted("    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>")
-        XCTAssertEqual(formatted, "::error file=<unknown>,line=0::App crashed in <external symbol>")
+        XCTAssertEqual(formatted, "::error file=<unknown>,line=0::    App crashed in <external symbol>")
         XCTAssertEqual(parser.outputType, .error)
     }
 
@@ -638,16 +638,14 @@ final class GitHubActionsRendererTests: XCTestCase {
     
     func testXcodebuildError() {
         let formatted = logFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
-        XCTAssertEqual(formatted, "::error ::xcodebuild: Existing file at -resultBundlePath \"/output/file.xcresult\"")
+        XCTAssertEqual(formatted, "::error ::xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
         XCTAssertEqual(parser.outputType, .error)
     }
 
     func testXcodeprojError() {
         // Given
         let errorText = #"/path/to/project.xcodeproj: error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
-        let expectedFormatted = #"""
-            ::error file=/path/to/project.xcodeproj::No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')
-            """#
+        let expectedFormatted = "::error file=/path/to/project.xcodeproj::No signing certificate \"iOS Distribution\" found: No \"iOS Distribution\" signing certificate matching team ID \"xxxxx\" with a private key was found. (in target 'target' from project 'project')\n\n"
 
         // When
         let actualFormatted = logFormatted(errorText)
@@ -660,7 +658,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testXcodeprojWarning() {
         // Given
         let errorText = "/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"
-        let expectedFormatted = "::warning file=/Users/xxxxx/Example/Pods/Pods.xcodeproj::The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"
+        let expectedFormatted = "::warning file=/Users/xxxxx/Example/Pods/Pods.xcodeproj::The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')\n\n"
 
         // When
         let actualFormatted = logFormatted(errorText)

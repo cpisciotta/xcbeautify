@@ -479,8 +479,8 @@ extension OutputRendering {
         let name = group.name
         let unitName = group.unitName
         let value = group.value
-        let deviation = group.deviation.coloredDeviation()
 
+        let deviation = colored ? group.deviation.coloredDeviation() : group.deviation
         let formattedValue = colored && unitName == "seconds" ? value.coloredTime() : value
 
         return indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
