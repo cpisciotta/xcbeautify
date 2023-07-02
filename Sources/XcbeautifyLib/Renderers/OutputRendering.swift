@@ -92,7 +92,7 @@ extension OutputRendering {
             return formatTargetCommand(command: "Analyze", group: group)
         case (.buildTarget, let group as BuildTargetCaptureGroup):
             return formatTargetCommand(command: "Build", group: group)
-        case (.checkDependencies, let group as CheckDependenciesCaptureGroup):
+        case (.checkDependencies, _ as CheckDependenciesCaptureGroup):
             return format(line: line, command: "Check Dependencies", pattern: .checkDependencies, arguments: "")
         case (.checkDependenciesErrors, let group as CheckDependenciesErrorsCaptureGroup):
             return formatError(group: group)
@@ -174,9 +174,9 @@ extension OutputRendering {
             return formatPackageFetching(group: group)
         case (.packageGraphResolvedItem, let group as PackageGraphResolvedItemCaptureGroup):
             return formatPackageItem(group: group)
-        case (.packageGraphResolvingEnded, let group as PackageGraphResolvingEndedCaptureGroup):
+        case (.packageGraphResolvingEnded, _ as PackageGraphResolvingEndedCaptureGroup):
             return formatPackageEnd()
-        case (.packageGraphResolvingStart, let group as PackageGraphResolvingStartCaptureGroup):
+        case (.packageGraphResolvingStart, _ as PackageGraphResolvingStartCaptureGroup):
             return formatPackageStart()
         case (.packageUpdating, let group as PackageUpdatingCaptureGroup):
             return formatPackageUpdating(group: group)
@@ -202,7 +202,7 @@ extension OutputRendering {
             return formatPhaseSuccess(group: group)
         case (.podsError, let group as PodsErrorCaptureGroup):
             return formatError(group: group)
-        case (.preprocess, let group as PreprocessCaptureGroup):
+        case (.preprocess, _ as PreprocessCaptureGroup):
             return format(line: line, command: "Preprocessing", pattern: pattern, arguments: "$1")
         case (.processInfoPlist, let group as ProcessInfoPlistCaptureGroup):
             return formatProcessInfoPlist(group: group)
@@ -216,7 +216,7 @@ extension OutputRendering {
             return formatRestartingTest(line: line, group: group)
         case (.shellCommand, let group as ShellCommandCaptureGroup):
             return formatShellCommand(group: group)
-        case (.symbolReferencedFrom, let group as SymbolReferencedFromCaptureGroup):
+        case (.symbolReferencedFrom, _ as SymbolReferencedFromCaptureGroup):
             return formatCompleteError(line: line)
         case (.testCaseMeasured, let group as TestCaseMeasuredCaptureGroup):
             return formatTestCaseMeasured(group: group)
@@ -242,7 +242,7 @@ extension OutputRendering {
             return formatTouch(group: group)
         case (.uiFailingTest, let group as UIFailingTestCaptureGroup):
             return formatUIFailingTest(group: group)
-        case (.undefinedSymbolLocation, let group as UndefinedSymbolLocationCaptureGroup):
+        case (.undefinedSymbolLocation, _ as UndefinedSymbolLocationCaptureGroup):
             return formatCompleteWarning(line: line)
         case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
             return formatWillNotBeCodesignWarning(group: group)
