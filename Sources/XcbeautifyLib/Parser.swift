@@ -115,13 +115,13 @@ public class Parser {
             
             if Regex.executed.match(string: line) {
                 outputType = OutputType.task
-                parseSummary(line: line, colored: colored)
+                parseSummary(line: line, colored: colored, skipped: false)
                 return nil
             }
 
             if Regex.executedWithSkipped.match(string: line) {
                 outputType = OutputType.task
-                parseSummarySkipped(line: line, colored: colored)
+                parseSummary(line: line, colored: colored, skipped: true)
                 return nil
             }
 
@@ -154,12 +154,12 @@ public class Parser {
     
     // MARK: Private
 
-    private func parseSummary(line: String, colored: Bool) {
+    private func parseSummary(line: String, colored: Bool, skipped: Bool) {
         guard needToRecordSummary else { return }
         defer { needToRecordSummary = false }
 
-        let group: CaptureGroup = line.captureGroup(with: .executed)
-        guard let group = group as? ExecutedWithoutSkippedCaptureGroup else { return }
+        let group: CaptureGroup = line.captureGroup(with: skipped ? .executedWithSkipped : .executed)
+        guard let group = group as? ExecutedCaptureGroup else { return }
 
         summary = TestSummary(
             testsCount: group.numberOfTests,
@@ -171,25 +171,7 @@ public class Parser {
             testSummary: summary
         )
     }
-    
-    private func parseSummarySkipped(line: String, colored: Bool) {
-        guard needToRecordSummary else { return }
-        defer { needToRecordSummary = false }
 
-        let group: CaptureGroup = line.captureGroup(with: .executedWithSkipped)
-        guard let group = group as? ExecutedWithSkippedCaptureGroup else { return }
-
-        summary = TestSummary(
-            testsCount: group.numberOfTests,
-            skippedCount: group.numberOfSkipped,
-            failuresCount: group.numberOfFailures,
-            unexpectedCount: group.numberOfUnexpectedFailures,
-            time: group.wallClockTimeInSeconds,
-            colored: colored,
-            testSummary: summary
-        )
-    }
-    
     private func innerParser(_ regex: Regex, outputType: OutputType) -> InnerParser {
         return InnerParser(additionalLines: additionalLines, colored: colored, regex: regex, outputType: outputType)
     }
