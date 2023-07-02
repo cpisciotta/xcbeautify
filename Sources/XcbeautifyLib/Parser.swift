@@ -155,39 +155,39 @@ public class Parser {
     // MARK: Private
 
     private func parseSummary(line: String, colored: Bool) {
-        guard needToRecordSummary else {
-            return
-        }
-        
-        let group: [String] = line.captureGroup(with: .executed)
+        guard needToRecordSummary else { return }
+        defer { needToRecordSummary = false }
+
+        let group: CaptureGroup = line.captureGroup(with: .executed)
+        guard let group = group as? ExecutedWithoutSkippedCaptureGroup else { return }
+
         summary = TestSummary(
-            testsCount: Int(group[0]) ?? 0,
-            skippedCount: 0,
-            failuresCount: Int(group[1]) ?? 0,
-            unexpectedCount: Int(group[2]) ?? 0,
-            time: Double(group[3]) ?? 0,
+            testsCount: group.numberOfTests,
+            skippedCount: group.numberOfSkipped,
+            failuresCount: group.numberOfFailures,
+            unexpectedCount: group.numberOfUnexpectedFailures,
+            time: group.wallClockTimeInSeconds,
             colored: colored,
-            testSummary: summary)
-        
-        needToRecordSummary = false
+            testSummary: summary
+        )
     }
     
     private func parseSummarySkipped(line: String, colored: Bool) {
-        if !needToRecordSummary {
-            return
-        }
-        
-        let group: [String] = line.captureGroup(with: .executedWithSkipped)
+        guard needToRecordSummary else { return }
+        defer { needToRecordSummary = false }
+
+        let group: CaptureGroup = line.captureGroup(with: .executedWithSkipped)
+        guard let group = group as? ExecutedWithSkippedCaptureGroup else { return }
+
         summary = TestSummary(
-            testsCount: Int(group[0]) ?? 0,
-            skippedCount: Int(group[1]) ?? 0,
-            failuresCount: Int(group[2]) ?? 0,
-            unexpectedCount: Int(group[3]) ?? 0,
-            time: Double(group[4]) ?? 0,
+            testsCount: group.numberOfTests,
+            skippedCount: group.numberOfSkipped,
+            failuresCount: group.numberOfFailures,
+            unexpectedCount: group.numberOfUnexpectedFailures,
+            time: group.wallClockTimeInSeconds,
             colored: colored,
-            testSummary: summary)
-        
-        needToRecordSummary = false
+            testSummary: summary
+        )
     }
     
     private func innerParser(_ regex: Regex, outputType: OutputType) -> InnerParser {
