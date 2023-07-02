@@ -136,6 +136,13 @@ struct GitHubActionsRenderer: OutputRendering {
         return outputGitHubActionsLog(annotationType: .error, message: reason)
     }
 
+    func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
+        let indent = "    "
+        let testCase = group.testCase
+        let time = group.time
+        return indent + testCase + " (\(time)) seconds)"
+    }
+
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
         let testCase = group.testCase
         let device = group.device
@@ -145,6 +152,14 @@ struct GitHubActionsRenderer: OutputRendering {
             annotationType: .error,
             message: message
         )
+    }
+
+    func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
+        let indent = "    "
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        return indent + testCase + " on '\(device)' (\(time) seconds)"
     }
 
     func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
@@ -161,6 +176,24 @@ struct GitHubActionsRenderer: OutputRendering {
             annotationType: .error,
             message: message
         )
+    }
+
+    func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
+        let indent = "    "
+        let testCase = group.testCase
+        let name = group.name
+        let unitName = group.unitName
+        let deviation = group.deviation
+        let value = group.value
+
+        return indent + testCase + " measured (\(value) \(unitName) ±\(deviation)% -- \(name))"
+    }
+
+    func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
+        let indent = "    "
+        let testCase = group.testCase
+        let time = group.time
+        return indent + testCase + " (\(time) seconds)"
     }
 
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {

@@ -41,6 +41,12 @@ struct TerminalRenderer: OutputRendering {
         return Format.indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
     }
 
+    func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
+        let testCase = group.testCase
+        let time = group.time
+        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
+    }
+
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
         let testCase = group.testCase
         let device = group.device

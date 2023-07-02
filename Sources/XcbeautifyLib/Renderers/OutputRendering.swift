@@ -396,21 +396,6 @@ extension OutputRendering {
         return "Updating " + source
     }
 
-    func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
-        let indent = "    "
-        let testCase = group.testCase
-        let time = group.time
-        return colored ? indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
-    }
-
-    func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
-        let indent = "    "
-        let testCase = group.testCase
-        let device = group.device
-        let time = group.time
-        return colored ? indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
-    }
-
     func formatParallelTestingPassed(line: String, group: ParallelTestingPassedCaptureGroup) -> String {
         return colored ? line.s.Bold.f.Green : line
     }
@@ -471,27 +456,6 @@ extension OutputRendering {
         let project = group.project
         let configuration = group.configuration
         return colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
-    }
-
-    func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
-        let indent = "    "
-        let testCase = group.testCase
-        let name = group.name
-        let unitName = group.unitName
-        let value = group.value
-
-        let deviation = colored ? group.deviation.coloredDeviation() : group.deviation
-        let formattedValue = colored && unitName == "seconds" ? value.coloredTime() : value
-
-        return indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
-    }
-
-    func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
-        // TODO: Extract to shared property
-        let indent = "    "
-        let testCase = group.testCase
-        let time = group.time
-        return colored ? indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
     }
 
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
