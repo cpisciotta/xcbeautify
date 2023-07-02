@@ -11,15 +11,10 @@ extension String {
             let lastRangeIndex = match.numberOfRanges - 1
             guard lastRangeIndex >= 1 else { return [] }
 
-            var results = [String]()
-
-            for i in 1...lastRangeIndex {
-                let capturedGroupIndex = match.range(at: i)
-                guard let matchedString = substring(with: capturedGroupIndex) else { continue }
-                results.append(matchedString)
+            return (1...lastRangeIndex).compactMap { index in
+                let capturedGroupIndex = match.range(at: index)
+                return substring(with: capturedGroupIndex)
             }
-
-            return results
         } catch {
             assertionFailure(error.localizedDescription)
             return []
