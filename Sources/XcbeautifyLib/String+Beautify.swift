@@ -112,7 +112,7 @@ extension String {
             return nil
         case (.cleanRemove, let group as CleanRemoveCaptureGroup):
             return formatCleanRemove(group: group)
-        case (.executed, _ as ExecutedCaptureGroup):
+        case (.executed, _ as ExecutedWithoutSkippedCaptureGroup):
             return nil
         case (.executedWithSkipped, _ as ExecutedWithSkippedCaptureGroup):
             return nil

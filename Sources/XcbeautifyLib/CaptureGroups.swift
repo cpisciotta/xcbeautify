@@ -22,6 +22,14 @@ protocol CopyCaptureGroup: CaptureGroup {
     var target: String { get }
 }
 
+protocol ExecutedCaptureGroup: CaptureGroup {
+    var numberOfTests: String { get }
+    var numberOfSkipped: String { get }
+    var numberOfFailures: String { get }
+    var numberOfUnexpectedFailures: String { get }
+    var wallClockTimeInSeconds: String { get }
+}
+
 struct EmptyCaptureGroup: CaptureGroup { }
 
 struct AnalyzeCaptureGroup: CaptureGroup {
@@ -120,14 +128,15 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
     let target: String
 }
 
-struct ExecutedCaptureGroup: CaptureGroup {
+struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     let numberOfTests: String
+    let numberOfSkipped = ""
     let numberOfFailures: String
     let numberOfUnexpectedFailures: String
     let wallClockTimeInSeconds: String
 }
 
-struct ExecutedWithSkippedCaptureGroup: CaptureGroup {
+struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     let numberOfTests: String
     let numberOfSkipped: String
     let numberOfFailures: String

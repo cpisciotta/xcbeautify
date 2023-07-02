@@ -131,7 +131,7 @@ extension String {
         case .executed:
             assert(results.count >= 4)
             guard let numberOfTests = results[safe: 0], let numberOfFailures = results[safe: 1], let numberOfUnexpectedFailures = results[safe: 2], let wallClockTimeInSeconds = results[safe: 3] else { return EmptyCaptureGroup() }
-            return ExecutedCaptureGroup(numberOfTests: numberOfTests, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
+            return ExecutedWithoutSkippedCaptureGroup(numberOfTests: numberOfTests, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
 
         case .executedWithSkipped:
             assert(results.count >= 5)
