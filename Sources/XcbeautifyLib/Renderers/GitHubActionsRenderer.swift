@@ -28,7 +28,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let cursor: String = additionalLines() ?? ""
 
         let message = """
-            \(Symbol.asciiError): \(reason)
+            \(reason)
             \(line)
             \(cursor)
             """
@@ -50,7 +50,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let cursor: String = additionalLines() ?? ""
 
         let message = """
-            \(Symbol.asciiWarning): \(reason)
+            \(reason)
             \(line)
             \(cursor)
             """
@@ -65,14 +65,14 @@ struct GitHubActionsRenderer: OutputRendering {
     func formatCompleteError(line: String) -> String {
         return outputGitHubActionsLog(
             annotationType: .error,
-            message: Symbol.asciiError + " " + line
+            message: line
         )
     }
 
     func formatCompleteWarning(line: String) -> String {
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: Symbol.asciiWarning + " " + line
+            message: line
         )
     }
 
@@ -80,7 +80,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let message = group.warningMessage
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: Symbol.asciiWarning + " " + message
+            message: message
         )
     }
 
@@ -88,7 +88,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let errorMessage = group.wholeError
         return outputGitHubActionsLog(
             annotationType: .error,
-            message: Symbol.asciiError + " " + errorMessage
+            message: errorMessage
         )
     }
 
@@ -98,7 +98,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let fileComponents = file.asFileComponents()
         let testCase = group.testCase
         let failingReason = group.reason
-        let message = indent + TestStatus.fail + " "  + testCase + ", " + failingReason
+        let message = indent + testCase + ", " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
             fileComponents: fileComponents,
@@ -110,41 +110,37 @@ struct GitHubActionsRenderer: OutputRendering {
         let reason = group.reason
         let filePath = group.filePath
         let fileComponents = filePath.asFileComponents()
-        let message = "\(Symbol.asciiError): \(reason)"
         return outputGitHubActionsLog(
             annotationType: .error,
             fileComponents: fileComponents,
-            message: message
+            message: reason
         )
     }
 
     func formatLdWarning(group: LDWarningCaptureGroup) -> String {
         let prefix = group.ldPrefix
         let warningMessage = group.warningMessage
-        let message = "\(Symbol.asciiWarning) \(prefix)\(warningMessage)"
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: message
+            message: "\(prefix)\(warningMessage)"
         )
     }
 
     func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String {
         let reason = group.reason
-        let message = "\(Symbol.asciiError) \(reason)"
-        return outputGitHubActionsLog(annotationType: .error, message: message)
+        return outputGitHubActionsLog(annotationType: .error, message: reason)
     }
 
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
         let reason = group.reason
-        let message = "\(Symbol.asciiError) \(reason)"
-        return outputGitHubActionsLog(annotationType: .error, message: message)
+        return outputGitHubActionsLog(annotationType: .error, message: reason)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        let message = "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
+        let message = "    \(testCase) on '\(device)' (\(time) seconds)"
         return outputGitHubActionsLog(
             annotationType: .error,
             message: message
@@ -160,7 +156,7 @@ struct GitHubActionsRenderer: OutputRendering {
 
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
         let indent = "    "
-        let message = indent + TestStatus.fail + " "  + line
+        let message = indent + line
         return outputGitHubActionsLog(
             annotationType: .error,
             message: message
@@ -172,7 +168,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let file = group.file
         let fileComponents = file.asFileComponents()
         let failingReason = group.reason
-        let message = indent + TestStatus.fail + ": " + failingReason
+        let message = indent + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
             fileComponents: fileComponents,
@@ -182,19 +178,17 @@ struct GitHubActionsRenderer: OutputRendering {
 
     func formatWarning(group: GenericWarningCaptureGroup) -> String {
         let warningMessage = group.wholeWarning
-        let message = Symbol.asciiWarning + " " + warningMessage
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: message
+            message: warningMessage
         )
     }
 
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String {
         let warningMessage = group.wholeWarning
-        let message = Symbol.asciiWarning + " " + warningMessage
         return outputGitHubActionsLog(
             annotationType: .warning,
-            message: message
+            message: warningMessage
         )
     }
 
@@ -214,12 +208,12 @@ extension GitHubActionsRenderer {
         if isSuccess {
             return outputGitHubActionsLog(
                 annotationType: .notice,
-                message: colored ? "Tests Passed: \(description)".s.Bold.f.Green : "Tests Passed: \(description)"
+                message: "Tests Passed: \(description)"
             )
         } else {
             return outputGitHubActionsLog(
                 annotationType: .error,
-                message: colored ? "Tests Failed: \(description)".s.Bold.f.Red : "Tests Failed: \(description)"
+                message: "Tests Failed: \(description)"
             )
         }
     }
