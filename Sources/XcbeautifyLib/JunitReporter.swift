@@ -46,20 +46,24 @@ public final class JunitReporter {
     }
 
     private func generateFailingTest(line: String) -> TestCase? {
-        let group: [String] = line.captureGroup(with: .failingTest)
+        let group: CaptureGroup = line.captureGroup(with: .failingTest)
+        guard let group = group as? FailingTestCaptureGroup else { return nil }
+
         return TestCase(
-            classname: group[1],
-            name: group[2],
+            classname: group.testSuite,
+            name: group.testCase,
             time: nil,
-            failure: .init(message: "\(group[0]) - \(group[3])")
+            failure: .init(message: "\(group.file) - \(group.reason)")
         )
     }
     
     private func generateRestartingTest(line: String) -> TestCase? {
-        let group: [String] = line.captureGroup(with: .restartingTest)
+        let group: CaptureGroup = line.captureGroup(with: .restartingTest)
+        guard let group = group as? RestartingTestCaptureGroup else { return nil }
+
         return TestCase(
-            classname: group[1],
-            name: group[2],
+            classname: group.testSuite,
+            name: group.testCase,
             time: nil,
             failure: .init(message: line)
         )
@@ -67,28 +71,33 @@ public final class JunitReporter {
 
     private func generateParallelFailingTest(line: String) -> TestCase? {
         // Parallel tests do not provide meaningful failure messages
-        let group: [String] = line.captureGroup(with: .parallelTestCaseFailed)
+        let group: CaptureGroup = line.captureGroup(with: .parallelTestCaseFailed)
+        guard let group = group as? ParallelTestCaseFailedCaptureGroup else { return nil }
+
         return TestCase(
-            classname: group[0],
-            name: group[1],
+            classname: group.suite,
+            name: group.testCase,
             time: nil,
             failure: .init(message: "Parallel test failed")
         )
     }
 
     private func generatePassingTest(line: String) -> TestCase? {
-        let group: [String] = line.captureGroup(with: .testCasePassed)
-        return TestCase(classname: group[0], name: group[1], time: group[2], failure: nil)
+        let group: CaptureGroup = line.captureGroup(with: .testCasePassed)
+        guard let group = group as? TestCasePassedCaptureGroup else { return nil }
+        return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
 
     private func generatePassingParallelTest(line: String) -> TestCase? {
-        let group: [String] = line.captureGroup(with: .parallelTestCasePassed)
-        return TestCase(classname: group[0], name: group[1], time: group[3], failure: nil)
+        let group: CaptureGroup = line.captureGroup(with: .parallelTestCasePassed)
+        guard let group = group as? ParallelTestCasePassedCaptureGroup else { return nil }
+        return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
   
     private func generateSuiteStart(line: String) -> String? {
-        let group: [String] = line.captureGroup(with: .testSuiteStart)
-        return group[0]
+        let group: CaptureGroup = line.captureGroup(with: .testSuiteStart)
+        guard let group = group as? TestSuiteStartCaptureGroup else { return nil }
+        return group.testSuiteName
     }
     
     public func generateReport() throws -> Data {
