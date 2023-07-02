@@ -4,10 +4,6 @@ import Colorizer
 struct TerminalRenderer: OutputRendering {
     let colored: Bool
 
-    init(colored: Bool) {
-        self.colored = colored
-    }
-
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
         let testCase = group.testCase
         let failingReason = group.reason
