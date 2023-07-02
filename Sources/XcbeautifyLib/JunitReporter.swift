@@ -21,25 +21,31 @@ public final class JunitReporter {
         switch line {
         // Capture standard output
         case Regex.failingTest:
-            components.append(.failingTest(generateFailingTest(line: line)))
+            guard let testCase = generateFailingTest(line: line) else { break }
+            components.append(.failingTest(testCase))
         case Regex.restartingTest:
-            components.append(.failingTest(generateRestartingTest(line: line)))
+            guard let testCase = generateRestartingTest(line: line) else { break }
+            components.append(.failingTest(testCase))
         case Regex.testCasePassed:
-            components.append(.testCasePassed(generatePassingTest(line: line)))
+            guard let testCase = generatePassingTest(line: line) else { break }
+            components.append(.testCasePassed(testCase))
         case Regex.testSuiteStart:
-            components.append(.testSuiteStart(generateSuiteStart(line: line)))
+            guard let testStart = generateSuiteStart(line: line) else { break }
+            components.append(.testSuiteStart(testStart))
         // Capture parallel output
         case Regex.parallelTestCaseFailed:
-            parallelComponents.append(.failingTest(generateParallelFailingTest(line: line)))
+            guard let testCase = generateParallelFailingTest(line: line) else { break }
+            parallelComponents.append(.failingTest(testCase))
         case Regex.parallelTestCasePassed:
-            parallelComponents.append(.testCasePassed(generatePassingParallelTest(line: line)))
+            guard let testCase = generatePassingParallelTest(line: line) else { break }
+            parallelComponents.append(.testCasePassed(testCase))
         default:
             // Not needed for generating a junit report
             break
         }
     }
 
-    private func generateFailingTest(line: String) -> TestCase {
+    private func generateFailingTest(line: String) -> TestCase? {
         let group: [String] = line.captureGroup(with: .failingTest)
         return TestCase(
             classname: group[1],
@@ -49,7 +55,7 @@ public final class JunitReporter {
         )
     }
     
-    private func generateRestartingTest(line: String) -> TestCase {
+    private func generateRestartingTest(line: String) -> TestCase? {
         let group: [String] = line.captureGroup(with: .restartingTest)
         return TestCase(
             classname: group[1],
@@ -59,7 +65,7 @@ public final class JunitReporter {
         )
     }
 
-    private func generateParallelFailingTest(line: String) -> TestCase {
+    private func generateParallelFailingTest(line: String) -> TestCase? {
         // Parallel tests do not provide meaningful failure messages
         let group: [String] = line.captureGroup(with: .parallelTestCaseFailed)
         return TestCase(
@@ -70,17 +76,17 @@ public final class JunitReporter {
         )
     }
 
-    private func generatePassingTest(line: String) -> TestCase {
+    private func generatePassingTest(line: String) -> TestCase? {
         let group: [String] = line.captureGroup(with: .testCasePassed)
         return TestCase(classname: group[0], name: group[1], time: group[2], failure: nil)
     }
 
-    private func generatePassingParallelTest(line: String) -> TestCase {
+    private func generatePassingParallelTest(line: String) -> TestCase? {
         let group: [String] = line.captureGroup(with: .parallelTestCasePassed)
         return TestCase(classname: group[0], name: group[1], time: group[3], failure: nil)
     }
   
-    private func generateSuiteStart(line: String) -> String {
+    private func generateSuiteStart(line: String) -> String? {
         let group: [String] = line.captureGroup(with: .testSuiteStart)
         return group[0]
     }
