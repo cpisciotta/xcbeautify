@@ -1,7 +1,7 @@
 import XCTest
 @testable import XcbeautifyLib
 
-final class GitHubActionsLogTests: XCTestCase {
+final class GitHubActionsRendererTests: XCTestCase {
     var parser: Parser!
 
     override func setUpWithError() throws {
