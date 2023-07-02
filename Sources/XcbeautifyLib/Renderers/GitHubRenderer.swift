@@ -134,10 +134,6 @@ struct GitHubRenderer: OutputRendering {
         return line
     }
 
-    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
-        return line
-    }
-
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
         // TODO: Extract to shared property
         let indent = "    "
@@ -182,13 +178,6 @@ struct GitHubRenderer: OutputRendering {
         let testCase = group.testCase
         let time = group.time
         return indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
-    }
-
-    func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let device = group.device
-        let time = group.time
-        return "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
     }
 
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String {
@@ -236,24 +225,11 @@ struct GitHubRenderer: OutputRendering {
 
     private func outputGitHubActionsLog(
         annotationType: AnnotationType,
-        file: String? = nil,
-        line: Int? = nil,
-        column: Int? = nil,
+        fileComponents: FileComponents? = nil,
         message: String
     ) -> String {
-        guard let file else {
-            return "::\(annotationType) ::\(message)"
-        }
-
-        guard let line else {
-            return "::\(annotationType) file=\(file)::\(message)"
-        }
-
-        guard let column else {
-            return "::\(annotationType) file=\(file),line=\(line)::\(message)"
-        }
-
-        return "::\(annotationType) file=\(file),line=\(line),col=\(column)::\(message)"
+        let formattedFileComponents = fileComponents?.formatted ?? ""
+        return "::\(annotationType.rawValue) \(formattedFileComponents)::\(message)"
     }
 
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
@@ -280,9 +256,7 @@ struct GitHubRenderer: OutputRendering {
 
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: fileComponents.path,
-            line: fileComponents.line,
-            column: fileComponents.column,
+            fileComponents: fileComponents,
             message: message
         )
     }
@@ -311,9 +285,7 @@ struct GitHubRenderer: OutputRendering {
 
         return outputGitHubActionsLog(
             annotationType: .warning,
-            file: fileComponents.path,
-            line: fileComponents.line,
-            column: fileComponents.column,
+            fileComponents: fileComponents,
             message: message
         )
     }
@@ -357,9 +329,7 @@ struct GitHubRenderer: OutputRendering {
         let message = colored ? indent + TestStatus.fail.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail + " "  + testCase + ", " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: fileComponents.path,
-            line: fileComponents.line,
-            column: fileComponents.column,
+            fileComponents: fileComponents,
             message: message
         )
     }
@@ -371,9 +341,7 @@ struct GitHubRenderer: OutputRendering {
         let message = colored ? "\(Symbol.error): \(reason.f.Red)" : "\(Symbol.asciiError): \(reason)"
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: fileComponents.path,
-            line: fileComponents.line,
-            column: fileComponents.column,
+            fileComponents: fileComponents,
             message: message
         )
     }
@@ -400,13 +368,30 @@ struct GitHubRenderer: OutputRendering {
         return outputGitHubActionsLog(annotationType: .error, message: message)
     }
 
+    func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        let message = colored ? "    \(TestStatus.fail.f.Red) \(testCase) on '\(device)' (\(time.coloredTime(colored: colored)) seconds)" : "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: message
+        )
+    }
+
+    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
+        let message = colored ? line.s.Bold.f.Red : line
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: message
+        )
+    }
+
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
         let indent = "    "
         let message = colored ? indent + TestStatus.fail.foreground.Red + " "  + line : indent + TestStatus.fail + " "  + line
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: nil,
-            line: nil,
             message: message
         )
     }
@@ -419,9 +404,7 @@ struct GitHubRenderer: OutputRendering {
         let message = colored ? indent + TestStatus.fail.foreground.Red + ": " + failingReason : indent + TestStatus.fail + ": " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
-            file: fileComponents.path,
-            line: fileComponents.line,
-            column: fileComponents.column,
+            fileComponents: fileComponents,
             message: message
         )
     }
@@ -473,9 +456,27 @@ extension GitHubRenderer {
 
 
 private struct FileComponents {
-    let path: String
-    let line: Int?
-    let column: Int?
+    private let path: String
+    private let line: Int?
+    private let column: Int?
+
+    init(path: String, line: Int?, column: Int?) {
+        self.path = path
+        self.line = line
+        self.column = column
+    }
+
+    var formatted: String {
+        guard let line else {
+            return "file=\(path)"
+        }
+
+        guard let column else {
+            return "file=\(path),line=\(line)"
+        }
+
+        return "file=\(path),line=\(line),col=\(column)"
+    }
 }
 
 private extension String {
