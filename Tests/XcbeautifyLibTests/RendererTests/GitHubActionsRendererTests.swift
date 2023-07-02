@@ -45,7 +45,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testClangError() {
         let formatted = logFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
-        XCTAssertEqual(formatted, "::error ::clang: linker command failed with exit code 1 (use -v to see invocation)")
+        XCTAssertEqual(formatted, "::error ::clang: error: linker command failed with exit code 1 (use -v to see invocation)")
         XCTAssertEqual(parser.outputType, .error)
     }
 
