@@ -2,12 +2,12 @@ enum Format {
     static let indent = "    "
 }
 
-enum TestStatus: String {
-    case pass = "✔"
-    case fail = "✖"
-    case pending = "⧖"
-    case completion = "▸"
-    case measure = "◷"
+enum TestStatus {
+    static let pass = "✔"
+    static let fail = "✖"
+    static let pending = "⧖"
+    static let completion = "▸"
+    static let measure = "◷"
 }
 
 enum Symbol: String {
