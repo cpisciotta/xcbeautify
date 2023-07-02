@@ -5,14 +5,21 @@ public struct TestSummary {
     let unexpectedCount: Int
     let time: Double
     let colored: Bool
-    
-    init(testsCount: Int, skippedCount: Int, failuresCount: Int, unexpectedCount: Int, time: Double, colored: Bool, testSummary: TestSummary?) {
-        self.testsCount = testsCount + (testSummary?.testsCount ?? 0)
-        self.skippedCount = skippedCount + (testSummary?.skippedCount ?? 0)
-        self.failuresCount = failuresCount + (testSummary?.failuresCount ?? 0)
-        self.unexpectedCount = unexpectedCount + (testSummary?.unexpectedCount ?? 0)
-        self.time = time + (testSummary?.time ?? 0)
-        self.colored = colored || (testSummary?.colored ?? false)
+
+    static func += (_left: inout TestSummary?, right: TestSummary) {
+        guard let left = _left else {
+            _left = right
+            return
+        }
+
+        _left = TestSummary(
+            testsCount: left.testsCount + right.testsCount,
+            skippedCount: left.skippedCount + right.skippedCount,
+            failuresCount: left.failuresCount + right.failuresCount,
+            unexpectedCount: left.unexpectedCount + right.unexpectedCount,
+            time: left.time + right.time,
+            colored: left.colored || right.colored
+        )
     }
 }
 

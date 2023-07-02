@@ -161,14 +161,13 @@ public class Parser {
         let _group: CaptureGroup = line.captureGroup(with: skipped ? .executedWithSkipped : .executedWithoutSkipped)
         guard let group = _group as? ExecutedCaptureGroup else { return }
 
-        summary = TestSummary(
+        summary += TestSummary(
             testsCount: group.numberOfTests,
             skippedCount: group.numberOfSkipped,
             failuresCount: group.numberOfFailures,
             unexpectedCount: group.numberOfUnexpectedFailures,
             time: group.wallClockTimeInSeconds,
-            colored: colored,
-            testSummary: summary
+            colored: colored
         )
     }
 
