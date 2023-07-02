@@ -23,11 +23,11 @@ protocol CopyCaptureGroup: CaptureGroup {
 }
 
 protocol ExecutedCaptureGroup: CaptureGroup {
-    var numberOfTests: String { get }
-    var numberOfSkipped: String { get }
-    var numberOfFailures: String { get }
-    var numberOfUnexpectedFailures: String { get }
-    var wallClockTimeInSeconds: String { get }
+    var numberOfTests: Int { get }
+    var numberOfSkipped: Int { get }
+    var numberOfFailures: Int { get }
+    var numberOfUnexpectedFailures: Int { get }
+    var wallClockTimeInSeconds: Double { get }
 }
 
 struct EmptyCaptureGroup: CaptureGroup { }
@@ -129,19 +129,19 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 }
 
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
-    let numberOfTests: String
-    let numberOfSkipped = ""
-    let numberOfFailures: String
-    let numberOfUnexpectedFailures: String
-    let wallClockTimeInSeconds: String
+    let numberOfTests: Int
+    let numberOfSkipped = 0
+    let numberOfFailures: Int
+    let numberOfUnexpectedFailures: Int
+    let wallClockTimeInSeconds: Double
 }
 
 struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
-    let numberOfTests: String
-    let numberOfSkipped: String
-    let numberOfFailures: String
-    let numberOfUnexpectedFailures: String
-    let wallClockTimeInSeconds: String
+    let numberOfTests: Int
+    let numberOfSkipped: Int
+    let numberOfFailures: Int
+    let numberOfUnexpectedFailures: Int
+    let wallClockTimeInSeconds: Double
 }
 
 struct FailingTestCaptureGroup: CaptureGroup {
