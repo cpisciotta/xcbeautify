@@ -482,36 +482,17 @@ private struct FileComponents {
 private extension String {
 
     func asFileComponents() -> FileComponents {
-        let components = self.split(separator: ":").map(String.init)
+        let _components = self.split(separator: ":").map(String.init)
+        assert((1...3).contains(_components.count))
 
-        assert((1...3).contains(components.count))
-
-        // TODO: This block is likely unnecessary.
-        var path: String {
-            if let path = components[safe: 0] {
-                return path
-            } else {
-                return self
-            }
+        guard let path = _components[safe: 0] else {
+            return FileComponents(path: self, line: nil, column: nil)
         }
 
-        var line: Int? {
-            if let line = components[safe: 1] {
-                return Int(line)
-            } else {
-                return nil
-            }
-        }
+        let components = _components.dropFirst().compactMap(Int.init)
+        assert((0...2).contains(components.count))
 
-        var column: Int? {
-            if let column = components[safe: 2] {
-                return Int(column)
-            } else {
-                return nil
-            }
-        }
-
-        return FileComponents(path: path, line: line, column: column)
+        return FileComponents(path: path, line: components[safe: 0], column: components[safe: 1])
     }
 
 }
