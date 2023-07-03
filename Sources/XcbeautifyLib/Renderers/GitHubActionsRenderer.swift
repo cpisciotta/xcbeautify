@@ -265,11 +265,11 @@ private struct FileComponents {
     }
 
     var formatted: String {
-        guard let line else {
+        guard let line = line else {
             return "file=\(path)"
         }
 
-        guard let column else {
+        guard let column = column else {
             return "file=\(path),line=\(line)"
         }
 
