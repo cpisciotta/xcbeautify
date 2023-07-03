@@ -1,17 +1,21 @@
-enum TestStatus: String {
-    case pass = "✔"
-    case fail = "✖"
-    case pending = "⧖"
-    case completion = "▸"
-    case measure = "◷"
+enum Format {
+    static let indent = "    "
 }
 
-enum Symbol: String {
-    case error = "❌"
-    case asciiError = "[x]"
+enum TestStatus {
+    static let pass = "✔"
+    static let fail = "✖"
+    static let pending = "⧖"
+    static let completion = "▸"
+    static let measure = "◷"
+}
 
-    case warning = "⚠️"
-    case asciiWarning = "[!]"
+enum Symbol {
+    static let error = "❌"
+    static let asciiError = "[x]"
+
+    static let warning = "⚠️"
+    static let asciiWarning = "[!]"
 }
 
 public enum OutputType {

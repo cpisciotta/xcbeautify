@@ -340,39 +340,33 @@ extension String {
 
     private func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String? {
         // TODO: Extract to shared property
-        let indent = "    "
         let testCase = group.testCase
         let time = group.time
-        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time) seconds)"
+        return _colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
     }
 
     private func formatFailingTest(group: FailingTestCaptureGroup) -> String? {
-        let indent = "    "
         let testCase = group.testCase
         let failingReason = group.reason
-        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + testCase + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + testCase + ", " + failingReason
+        return _colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + testCase + ", " + failingReason : Format.indent + TestStatus.fail + " "  + testCase + ", " + failingReason
     }
 
     private func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String? {
-        let indent = "    "
         let file = group.file
         let failingReason = group.reason
-        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + file + ", " + failingReason : indent + TestStatus.fail.rawValue + " "  + file + ", " + failingReason
+        return _colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + file + ", " + failingReason : Format.indent + TestStatus.fail + " "  + file + ", " + failingReason
     }
 
     private func formatRestartingTest(group: RestartingTestCaptureGroup) -> String? {
-        let indent = "    "
-        return _colored ? indent + TestStatus.fail.rawValue.foreground.Red + " "  + self : indent + TestStatus.fail.rawValue + " "  + self
+        return _colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + self : Format.indent + TestStatus.fail + " "  + self
     }
 
     private func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String? {
-        let indent = "    "
         let testCase = group.testCase
-        return _colored ? indent + TestStatus.pending.rawValue.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending.rawValue + " "  + testCase + " [PENDING]"
+        return _colored ? Format.indent + TestStatus.pending.foreground.Yellow + " "  + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " "  + testCase + " [PENDING]"
     }
 
     private func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String? {
-        let indent = "    "
         let testCase = group.testCase
         let name = group.name
         let unitName = group.unitName
@@ -385,38 +379,36 @@ extension String {
         } else {
             formattedValue = value
         }
-        return indent + (_colored ? TestStatus.measure.rawValue.foreground.Yellow : TestStatus.measure.rawValue) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
+        return Format.indent + (_colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
     }
 
     private func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String? {
-        let indent = "    "
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " on '\(device)' (\(time) seconds)"
+        return _colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
     }
 
     private func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String? {
-        let indent = "    "
         let testCase = group.testCase
         let time = group.time
-        return _colored ? indent + TestStatus.pass.rawValue.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : indent + TestStatus.pass.rawValue + " " + testCase + " (\(time)) seconds)"
+        return _colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
     }
 
     private func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String? {
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return _colored ? "    \(TestStatus.fail.rawValue.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail.rawValue) \(testCase) on '\(device)' (\(time) seconds)"
+        return _colored ? "    \(TestStatus.fail.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
     }
 
     private func formatError(group: ErrorCaptureGroup) -> String? {
         let errorMessage = group.wholeError
-        return _colored ? Symbol.error.rawValue + " " + errorMessage.f.Red : Symbol.asciiError.rawValue + " " + errorMessage
+        return _colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
     }
 
     private func formatCompleteError() -> String? {
-        return _colored ? Symbol.error.rawValue + " " + self.f.Red : Symbol.asciiError.rawValue + " " + self
+        return _colored ? Symbol.error + " " + self.f.Red : Symbol.asciiError + " " + self
     }
 
     private func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
@@ -428,13 +420,13 @@ extension String {
         let cursor: String = additionalLines() ?? ""
         return _colored ?
             """
-            \(Symbol.error.rawValue) \(filePath): \(reason.f.Red)
+            \(Symbol.error) \(filePath): \(reason.f.Red)
             \(line)
             \(cursor.f.Cyan)
             """
             :
             """
-            \(Symbol.asciiError.rawValue) \(filePath): \(reason)
+            \(Symbol.asciiError) \(filePath): \(reason)
             \(line)
             \(cursor)
             """
@@ -443,16 +435,16 @@ extension String {
     private func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
         let reason = group.reason
         let filePath = group.filePath
-        return _colored ? "\(Symbol.error.rawValue) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(filePath): \(reason)"
+        return _colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
     }
 
     private func formatWarning(group: GenericWarningCaptureGroup) -> String? {
         let warningMessage = group.wholeWarning
-        return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
+        return _colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
     }
 
     private func formatCompleteWarning() -> String? {
-        return _colored ? Symbol.warning.rawValue + " " + self.f.Yellow : Symbol.asciiWarning.rawValue + " " + self
+        return _colored ? Symbol.warning + " " + self.f.Yellow : Symbol.asciiWarning + " " + self
     }
 
     private func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
@@ -464,13 +456,13 @@ extension String {
         let cursor: String = additionalLines() ?? ""
         return _colored ?
             """
-            \(Symbol.warning.rawValue)  \(filePath): \(reason.f.Yellow)
+            \(Symbol.warning)  \(filePath): \(reason.f.Yellow)
             \(line)
             \(cursor.f.Green)
             """
             :
             """
-            \(Symbol.asciiWarning.rawValue)  \(filePath): \(reason)
+            \(Symbol.asciiWarning)  \(filePath): \(reason)
             \(line)
             \(cursor)
             """
@@ -479,7 +471,7 @@ extension String {
     private func formatLdWarning(group: LDWarningCaptureGroup) -> String? {
         let prefix = group.ldPrefix
         let message = group.warningMessage
-        return _colored ? "\(Symbol.warning.rawValue) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning.rawValue) \(prefix)\(message)"
+        return _colored ? "\(Symbol.warning) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning) \(prefix)\(message)"
     }
 
     private func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String? {
@@ -496,18 +488,18 @@ extension String {
 
     // TODO: Print symbol and reference location
     private func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String? {        let reason = group.reason
-        return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
+        return _colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
     }
 
     // TODO: Print file path
     private func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String? {
         let reason = group.reason
-        return _colored ? "\(Symbol.error.rawValue) \(reason.f.Red)" : "\(Symbol.asciiError.rawValue) \(reason)"
+        return _colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
     }
 
     private func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String? {
         let warningMessage = group.wholeWarning
-        return _colored ? Symbol.warning.rawValue + " " + warningMessage.f.Yellow : Symbol.asciiWarning.rawValue + " " + warningMessage
+        return _colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
     }
 
     private func formatSummary() -> String? {
@@ -565,6 +557,6 @@ extension String {
 
     private func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String? {
         let message = group.warningMessage
-        return _colored ? Symbol.warning.rawValue + " " + message.f.Yellow : Symbol.asciiWarning.rawValue + " " + message
+        return _colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
     }
 }
