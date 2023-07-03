@@ -459,9 +459,8 @@ extension OutputRendering {
     }
 
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
-        let indent = "    "
         let testCase = group.testCase
-        return colored ? indent + TestStatus.pending.foreground.Yellow + " "  + testCase + " [PENDING]" : indent + TestStatus.pending + " "  + testCase + " [PENDING]"
+        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " "  + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " "  + testCase + " [PENDING]"
     }
 
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String? {

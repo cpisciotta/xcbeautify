@@ -93,12 +93,11 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
-        let indent = "    "
         let file = group.file
         let fileComponents = file.asFileComponents()
         let testCase = group.testCase
         let failingReason = group.reason
-        let message = indent + testCase + ", " + failingReason
+        let message = Format.indent + testCase + ", " + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
             fileComponents: fileComponents,
@@ -137,10 +136,9 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
-        let indent = "    "
         let testCase = group.testCase
         let time = group.time
-        return indent + testCase + " (\(time)) seconds)"
+        return Format.indent + testCase + " (\(time)) seconds)"
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
@@ -155,11 +153,10 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
-        let indent = "    "
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return indent + testCase + " on '\(device)' (\(time) seconds)"
+        return Format.indent + testCase + " on '\(device)' (\(time) seconds)"
     }
 
     func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
@@ -170,8 +167,7 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
-        let indent = "    "
-        let message = indent + line
+        let message = Format.indent + line
         return outputGitHubActionsLog(
             annotationType: .error,
             message: message
@@ -179,29 +175,26 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
-        let indent = "    "
         let testCase = group.testCase
         let name = group.name
         let unitName = group.unitName
         let deviation = group.deviation
         let value = group.value
 
-        return indent + testCase + " measured (\(value) \(unitName) ±\(deviation)% -- \(name))"
+        return Format.indent + testCase + " measured (\(value) \(unitName) ±\(deviation)% -- \(name))"
     }
 
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
-        let indent = "    "
         let testCase = group.testCase
         let time = group.time
-        return indent + testCase + " (\(time) seconds)"
+        return Format.indent + testCase + " (\(time) seconds)"
     }
 
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
-        let indent = "    "
         let file = group.file
         let fileComponents = file.asFileComponents()
         let failingReason = group.reason
-        let message = indent + failingReason
+        let message = Format.indent + failingReason
         return outputGitHubActionsLog(
             annotationType: .error,
             fileComponents: fileComponents,
