@@ -33,7 +33,6 @@ extension GitHubActionsRendererTests {
         ("testCursor", testCursor),
         ("testDuplicateLocalizedStringKey", testDuplicateLocalizedStringKey),
         ("testExecuted", testExecuted),
-        ("testExecutedWithSkipped", testExecutedWithSkipped),
         ("testFailingTest", testFailingTest),
         ("testFatalError", testFatalError),
         ("testFileMissingError", testFileMissingError),
@@ -82,8 +81,6 @@ extension GitHubActionsRendererTests {
         ("testTestCasePending", testTestCasePending),
         ("testTestCaseStarted", testTestCaseStarted),
         ("testTestsRunCompletion", testTestsRunCompletion),
-        ("testTestSuiteAllTestsFailed", testTestSuiteAllTestsFailed),
-        ("testTestSuiteAllTestsPassed", testTestSuiteAllTestsPassed),
         ("testTestSuiteStart", testTestSuiteStart),
         ("testTestSuiteStarted", testTestSuiteStarted),
         ("testTiffutil", testTiffutil),
@@ -222,6 +219,7 @@ extension TerminalRendererTests {
 
 public func __allTests() -> [XCTestCaseEntry] {
     return [
+        testCase(GitHubActionsRendererTests.__allTests__GitHubActionsRendererTests),
         testCase(JunitReporterTests.__allTests__JunitReporterTests),
         testCase(OutputHandlerTests.__allTests__OutputHandlerTests),
         testCase(TerminalRendererTests.__allTests__TerminalRendererTests),
