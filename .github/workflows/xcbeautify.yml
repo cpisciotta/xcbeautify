@@ -12,7 +12,7 @@ jobs:
     name: Build on macOS
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         run: swift build --disable-sandbox --configuration release
       - name: Test
@@ -22,7 +22,7 @@ jobs:
     name: Build on Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: swift build
       - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
       - run: make package-linux-x86_64
