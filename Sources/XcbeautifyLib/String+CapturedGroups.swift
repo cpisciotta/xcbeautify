@@ -1,30 +1,24 @@
 import Foundation
 
 extension String {
-    func captureGroup(with pattern: Pattern) -> [String] {
-        var results = [String]()
-
-        var regex: NSRegularExpression
+    private func captureGroup(with pattern: Pattern) -> [String] {
         do {
-            regex = try NSRegularExpression(pattern: pattern.rawValue, options: [.caseInsensitive])
+            let regex = try NSRegularExpression(pattern: pattern.rawValue, options: [.caseInsensitive])
+
+            let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
+            guard let match = matches.first else { return [] }
+
+            let lastRangeIndex = match.numberOfRanges - 1
+            guard lastRangeIndex >= 1 else { return [] }
+
+            return (1...lastRangeIndex).compactMap { index in
+                let capturedGroupIndex = match.range(at: index)
+                return substring(with: capturedGroupIndex)
+            }
         } catch {
-            return results
+            assertionFailure(error.localizedDescription)
+            return []
         }
-
-        let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
-
-        guard let match = matches.first else { return results }
-
-        let lastRangeIndex = match.numberOfRanges - 1
-        guard lastRangeIndex >= 1 else { return results }
-
-        for i in 1...lastRangeIndex {
-            let capturedGroupIndex = match.range(at: i)
-            guard let matchedString = substring(with: capturedGroupIndex) else { continue }
-            results.append(matchedString)
-        }
-
-        return results
     }
 }
 
@@ -128,14 +122,16 @@ extension String {
             guard let file = results[safe: 0], let target = results.last else { return EmptyCaptureGroup() }
             return CpresourceCaptureGroup(file: file.lastPathComponent, target: target)
 
-        case .executed:
+        case .executedWithoutSkipped:
             assert(results.count >= 4)
-            guard let numberOfTests = results[safe: 0], let numberOfFailures = results[safe: 1], let numberOfUnexpectedFailures = results[safe: 2], let wallClockTimeInSeconds = results[safe: 3] else { return EmptyCaptureGroup() }
-            return ExecutedCaptureGroup(numberOfTests: numberOfTests, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
+            guard let _numberOfTests = results[safe: 0], let _numberOfFailures = results[safe: 1], let _numberOfUnexpectedFailures = results[safe: 2], let _wallClockTimeInSeconds = results[safe: 3] else { return EmptyCaptureGroup() }
+            guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return EmptyCaptureGroup() }
+            return ExecutedWithoutSkippedCaptureGroup(numberOfTests: numberOfTests, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
 
         case .executedWithSkipped:
             assert(results.count >= 5)
-            guard let numberOfTests = results[safe: 0], let numberOfSkipped = results[safe: 1], let numberOfFailures = results[safe: 2], let numberOfUnexpectedFailures = results[safe: 3], let wallClockTimeInSeconds = results[safe: 4] else { return EmptyCaptureGroup() }
+            guard let _numberOfTests = results[safe: 0], let _numberOfSkipped = results[safe: 1], let _numberOfFailures = results[safe: 2], let _numberOfUnexpectedFailures = results[safe: 3], let _wallClockTimeInSeconds = results[safe: 4] else { return EmptyCaptureGroup() }
+            guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return EmptyCaptureGroup() }
             return ExecutedWithSkippedCaptureGroup(numberOfTests: numberOfTests, numberOfSkipped: numberOfSkipped, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
 
         case .failingTest:

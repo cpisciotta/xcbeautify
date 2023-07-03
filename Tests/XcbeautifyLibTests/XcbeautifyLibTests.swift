@@ -140,7 +140,7 @@ final class XcbeautifyLibTests: XCTestCase {
     func testCursor() {
     }
 
-    func testExecuted() throws {
+    func testExecutedWithoutSkipped() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let input2 = "Executed 3 tests, with 2 failures (1 unexpected) in 0.112 (0.112) seconds"
 
