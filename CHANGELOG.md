@@ -2,6 +2,10 @@
 
 Please, check out guidelines: https://keepachangelog.com/en/1.0.0/
 
+## Unreleased
+
+- Updated `ArgumentParser` to 1.2.2 [#119](https://github.com/tuist/xcbeautify/pull/119)
+
 ## 0.9.0
 - Added support for the `NO_COLOR` environment variable (#50) @pieterclaerhout
 - Added resolve graph parsing and display (#47) @yageek
