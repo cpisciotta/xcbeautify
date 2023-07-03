@@ -31,7 +31,3 @@ extension TestSummary {
         return "\(failuresCount) failed, \(skippedCount) skipped, \(testsCount) total (\(timeFormatted) seconds)"
     }
 }
-
-protocol TestSummarizing {
-    func formatTestSummary(isSuccess: Bool, description: String) -> String
-}

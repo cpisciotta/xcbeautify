@@ -1,6 +1,6 @@
 import Foundation
 
-protocol OutputRendering: TestSummarizing {
+protocol OutputRendering {
     var colored: Bool { get }
 
     func beautify(line: String, pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String?
