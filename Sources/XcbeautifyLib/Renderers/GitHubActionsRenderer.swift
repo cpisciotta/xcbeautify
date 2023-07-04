@@ -7,6 +7,7 @@ struct GitHubActionsRenderer: OutputRendering {
         case error
     }
 
+    // Colored output is disallowed since GitHub Actions annotations don't properly render it.
     let colored: Bool = false
 
     private func outputGitHubActionsLog(
