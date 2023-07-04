@@ -87,7 +87,7 @@ extension OutputRendering {
         case (.aggregateTarget, let group as AggregateTargetCaptureGroup):
             return formatTargetCommand(command: "Aggregate", group: group)
         case (.analyze, let group as AnalyzeCaptureGroup):
-            return  formatAnalyze(group: group)
+            return formatAnalyze(group: group)
         case (.analyzeTarget, let group as AnalyzeTargetCaptureGroup):
             return formatTargetCommand(command: "Analyze", group: group)
         case (.buildTarget, let group as BuildTargetCaptureGroup):
@@ -265,12 +265,12 @@ extension OutputRendering {
         let template = command.style.Bold + " " + arguments
 
         guard let formatted = try? NSRegularExpression(pattern: pattern.rawValue)
-                .stringByReplacingMatches(
-                    in: line,
-                    range: NSRange(location: 0, length: line.count),
-                    withTemplate: template)
-            else {
-                return nil
+            .stringByReplacingMatches(
+                in: line,
+                range: NSRange(location: 0, length: line.count),
+                withTemplate: template)
+        else {
+            return nil
         }
 
         return formatted
@@ -380,7 +380,7 @@ extension OutputRendering {
         return "Fetching " + source
     }
 
-    func formatPackageItem(group: PackageGraphResolvedItemCaptureGroup) -> String  {
+    func formatPackageItem(group: PackageGraphResolvedItemCaptureGroup) -> String {
         let name = group.packageName
         let url = group.packageURL
         let version = group.packageVersion
