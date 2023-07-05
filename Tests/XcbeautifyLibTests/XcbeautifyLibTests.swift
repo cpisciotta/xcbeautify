@@ -434,6 +434,7 @@ final class XcbeautifyLibTests: XCTestCase {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         let output = #"[x] MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         XCTAssertEqual(noColoredFormatted(input), output)
+        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testRestartingTests() {
@@ -450,7 +451,7 @@ final class XcbeautifyLibTests: XCTestCase {
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted( "  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(parser.outputType, .warning)
+        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testUndefinedSymbolLocation() {
