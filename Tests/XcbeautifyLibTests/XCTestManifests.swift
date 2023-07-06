@@ -7,6 +7,7 @@ extension JunitReporterTests {
     // to regenerate.
     static let __allTests__JunitReporterTests = [
         ("testJunitReport", testJunitReport),
+        ("testParallelJunitReport", testParallelJunitReport),
     ]
 }
 
@@ -54,6 +55,7 @@ extension TerminalRendererTests {
         ("testCopyStrings", testCopyStrings),
         ("testCpresource", testCpresource),
         ("testCursor", testCursor),
+        ("testDuplicateLocalizedStringKey", testDuplicateLocalizedStringKey),
         ("testExecutedWithoutSkipped", testExecutedWithoutSkipped),
         ("testFailingTest", testFailingTest),
         ("testFatalError", testFatalError),
@@ -71,9 +73,14 @@ extension TerminalRendererTests {
         ("testLinkerUndefinedSymbols", testLinkerUndefinedSymbols),
         ("testLinking", testLinking),
         ("testModuleIncludesError", testModuleIncludesError),
+        ("testMultipleCodesigns", testMultipleCodesigns),
         ("testNoCertificate", testNoCertificate),
+        ("testPackageCheckingOut", testPackageCheckingOut),
+        ("testPackageFetching", testPackageFetching),
         ("testPackageGraphResolved", testPackageGraphResolved),
+        ("testPackageUpdating", testPackageUpdating),
         ("testParallelTestCaseAppKitPassed", testParallelTestCaseAppKitPassed),
+        ("testParallelTestCaseAppKitWithSpacesPassed", testParallelTestCaseAppKitWithSpacesPassed),
         ("testParallelTestCaseFailed", testParallelTestCaseFailed),
         ("testParallelTestCasePassed", testParallelTestCasePassed),
         ("testParallelTestingFailed", testParallelTestingFailed),
@@ -86,7 +93,9 @@ extension TerminalRendererTests {
         ("testPreprocess", testPreprocess),
         ("testProcessInfoPlist", testProcessInfoPlist),
         ("testProcessPch", testProcessPch),
+        ("testProcessPchArbitraryExtension", testProcessPchArbitraryExtension),
         ("testProcessPchCommand", testProcessPchCommand),
+        ("testProcessPchCommandArbitraryExtension", testProcessPchCommandArbitraryExtension),
         ("testProcessPchPlusPlus", testProcessPchPlusPlus),
         ("testProvisioningProfileRequired", testProvisioningProfileRequired),
         ("testRestartingTests", testRestartingTests),
@@ -106,6 +115,9 @@ extension TerminalRendererTests {
         ("testWillNotBeCodeSigned", testWillNotBeCodeSigned),
         ("testWriteAuxiliaryFiles", testWriteAuxiliaryFiles),
         ("testWriteFile", testWriteFile),
+        ("testXcodebuildError", testXcodebuildError),
+        ("testXcodeprojError", testXcodeprojError),
+        ("testXcodeprojWarning", testXcodeprojWarning),
     ]
 }
 
