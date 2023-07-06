@@ -363,6 +363,14 @@ struct TerminalRenderer: OutputRendering {
         let message = group.warningMessage
         return colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
     }
+
+    func format(testSummary: TestSummary) -> String {
+        if testSummary.isSuccess() {
+            return colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
+        } else {
+            return colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
+        }
+    }
 }
 
 private extension String {

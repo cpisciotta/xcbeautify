@@ -5,6 +5,8 @@ protocol OutputRendering {
 
     func beautify(line: String, pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String?
 
+    func format(testSummary: TestSummary) -> String
+
     func format(line: String, command: String, pattern: Pattern, arguments: String) -> String?
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
