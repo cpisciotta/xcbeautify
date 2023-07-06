@@ -4,7 +4,7 @@ import Colorizer
 private var _line = ""
 private var _colored = true
 
-struct TerminalRenderer {
+struct TerminalRenderer: OutputRendering {
 
     init(colored: Bool) {
         _colored = colored
