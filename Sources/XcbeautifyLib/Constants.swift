@@ -45,3 +45,9 @@ extension OutputType: CustomStringConvertible {
         }
     }
 }
+
+/// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.
+public enum Renderer: String {
+    /// The default `OutputRendering` type for local and general use. Maps to `TerminalRenderer`.
+    case terminal
+}
