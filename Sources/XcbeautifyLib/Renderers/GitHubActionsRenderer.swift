@@ -230,23 +230,6 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 }
 
-extension GitHubActionsRenderer {
-    func formatTestSummary(isSuccess: Bool, description: String) -> String {
-        if isSuccess {
-            return outputGitHubActionsLog(
-                annotationType: .notice,
-                message: "Tests Passed: \(description)"
-            )
-        } else {
-            return outputGitHubActionsLog(
-                annotationType: .error,
-                message: "Tests Failed: \(description)"
-            )
-        }
-    }
-}
-
-
 private struct FileComponents {
     private let path: String
     private let line: Int?

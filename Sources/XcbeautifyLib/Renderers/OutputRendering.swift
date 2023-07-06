@@ -509,13 +509,3 @@ extension OutputRendering {
     }
 
 }
-
-extension OutputRendering {
-    func formatTestSummary(isSuccess: Bool, description: String) -> String {
-        if isSuccess {
-            return colored ? "Tests Passed: \(description)".s.Bold.f.Green : "Tests Passed: \(description)"
-        } else {
-            return colored ? "Tests Failed: \(description)".s.Bold.f.Red : "Tests Failed: \(description)"
-        }
-    }
-}
