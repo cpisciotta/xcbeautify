@@ -1,12 +1,12 @@
 import XCTest
 @testable import XcbeautifyLib
 
-final class XcbeautifyLibTests: XCTestCase {
+final class TerminalRendererTests: XCTestCase {
     var parser: Parser!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, additionalLines: { nil } )
+        parser = Parser(colored: false, renderer: .terminal, additionalLines: { nil } )
     }
 
     private func noColoredFormatted(_ string: String) -> String? {

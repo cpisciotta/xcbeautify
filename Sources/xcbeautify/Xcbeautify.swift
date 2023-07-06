@@ -51,6 +51,7 @@ struct Xcbeautify: ParsableCommand {
         
         let parser = Parser(
             colored: !disableColoredOutput,
+            renderer: renderer,
             preserveUnbeautifiedLines: preserveUnbeautified,
             additionalLines: { readLine() }
         )

@@ -1,6 +1,8 @@
 public class Parser {
     
     private let colored: Bool
+
+    private let renderer: TerminalRenderer
     
     private let additionalLines: () -> String?
 
@@ -99,13 +101,21 @@ public class Parser {
     
     public init(
         colored: Bool = true,
+        renderer: Renderer,
         preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
     ) {
         self.colored = colored
+
+        switch renderer {
+        case .terminal:
+            self.renderer = TerminalRenderer(colored: colored)
+        }
+
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }
+
     public func parse(line: String) -> String? {
         
         // Find first parser that can parse specified string
@@ -172,7 +182,12 @@ public class Parser {
     }
 
     private func innerParser(_ regex: Regex, outputType: OutputType) -> InnerParser {
-        return InnerParser(additionalLines: additionalLines, colored: colored, regex: regex, outputType: outputType)
+        return InnerParser(
+            additionalLines: additionalLines,
+            renderer: renderer,
+            regex: regex,
+            outputType: outputType
+        )
     }
     
     private struct InnerParser {
@@ -183,12 +198,19 @@ public class Parser {
         }
         
         let additionalLines: () -> String?
-        let colored: Bool
+        let renderer: TerminalRenderer
         let regex: Regex
         let outputType: OutputType
         
         func parse(line: String) -> Result {
-            return .init(outputType: outputType, value: line.beautify(pattern: regex.pattern, colored: colored, additionalLines: additionalLines))
+            return Result(
+                outputType: outputType,
+                value: renderer.beautify(
+                    line: line,
+                    pattern: regex.pattern,
+                    additionalLines: additionalLines
+                )
+            )
         }
     }
 

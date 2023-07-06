@@ -1,13 +1,19 @@
 import Foundation
 import Colorizer
 
+private var _line = ""
 private var _colored = true
 
-extension String {
-    func beautify(pattern: Pattern, colored: Bool, additionalLines: @escaping () -> (String?)) -> String? {
-        _colored = colored
+struct TerminalRenderer {
 
-        let group: CaptureGroup = self.captureGroup(with: pattern)
+    init(colored: Bool) {
+        _colored = colored
+    }
+
+    func beautify(line: String, pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String? {
+        _line = line
+
+        let group: CaptureGroup = line.captureGroup(with: pattern)
 
         switch (pattern, group) {
         case (.analyze, let group as AnalyzeCaptureGroup):
@@ -121,7 +127,7 @@ extension String {
         case (.tiffutil, _ as TIFFutilCaptureGroup):
             return nil
         case (.compileWarning, let group as CompileWarningCaptureGroup):
-            return formatCompileWarning(group: group, additionalLines: additionalLines)
+            return formatCompileWarning(group: group, additional_lines: additionalLines)
         case (.ldWarning, let group as LDWarningCaptureGroup):
             return formatLdWarning(group: group)
         case (.genericWarning, let group as GenericWarningCaptureGroup):
@@ -141,7 +147,7 @@ extension String {
         case (.xcodebuildError, let group as XcodebuildErrorCaptureGroup):
             return formatError(group: group)
         case (.compileError, let group as CompileErrorCaptureGroup):
-            return formatCompileError(group: group, additionalLines: additionalLines)
+            return formatCompileError(group: group, additional_lines: additionalLines)
         case (.fileMissingError, let group as FileMissingErrorCaptureGroup):
             return formatFileMissingError(group: group)
         case (.checkDependenciesErrors, let group as CheckDependenciesErrorsCaptureGroup):
@@ -199,8 +205,8 @@ extension String {
         guard let formatted =
             try? NSRegularExpression(pattern: pattern.rawValue)
                 .stringByReplacingMatches(
-                    in: self,
-                    range: NSRange(location: 0, length: count),
+                    in: _line,
+                    range: NSRange(location: 0, length: _line.count),
                     withTemplate: template)
             else {
                 return nil
@@ -327,15 +333,15 @@ extension String {
     }
 
     private func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String? {
-        return _colored ? s.Bold.f.Cyan : self
+        return _colored ? _line.s.Bold.f.Cyan : _line
     }
 
     private func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String? {
-        return _colored ? s.Bold.f.Green : self
+        return _colored ? _line.s.Bold.f.Green : _line
     }
 
     private func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String? {
-        return _colored ? s.Bold.f.Red : self
+        return _colored ? _line.s.Bold.f.Red : _line
     }
 
     private func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String? {
@@ -358,7 +364,7 @@ extension String {
     }
 
     private func formatRestartingTest(group: RestartingTestCaptureGroup) -> String? {
-        return _colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + self : Format.indent + TestStatus.fail + " "  + self
+        return _colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + _line : Format.indent + TestStatus.fail + " "  + _line
     }
 
     private func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String? {
@@ -408,26 +414,26 @@ extension String {
     }
 
     private func formatCompleteError() -> String? {
-        return _colored ? Symbol.error + " " + self.f.Red : Symbol.asciiError + " " + self
+        return _colored ? Symbol.error + " " + _line.f.Red : Symbol.asciiError + " " + _line
     }
 
-    private func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
+    private func formatCompileError(group: CompileErrorCaptureGroup, additional_lines: @escaping () -> (String?)) -> String? {
         let filePath = group.filePath
         let reason = group.reason
 
-        // Read 2 additional lines to get the error line and cursor position
-        let line: String = additionalLines() ?? ""
-        let cursor: String = additionalLines() ?? ""
+        // Read 2 additional _lines to get the error _line and cursor position
+        let _line: String = additional_lines() ?? ""
+        let cursor: String = additional_lines() ?? ""
         return _colored ?
             """
             \(Symbol.error) \(filePath): \(reason.f.Red)
-            \(line)
+            \(_line)
             \(cursor.f.Cyan)
             """
             :
             """
             \(Symbol.asciiError) \(filePath): \(reason)
-            \(line)
+            \(_line)
             \(cursor)
             """
     }
@@ -444,26 +450,26 @@ extension String {
     }
 
     private func formatCompleteWarning() -> String? {
-        return _colored ? Symbol.warning + " " + self.f.Yellow : Symbol.asciiWarning + " " + self
+        return _colored ? Symbol.warning + " " + _line.f.Yellow : Symbol.asciiWarning + " " + _line
     }
 
-    private func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String? {
+    private func formatCompileWarning(group: CompileWarningCaptureGroup, additional_lines: @escaping () -> (String?)) -> String? {
         let filePath = group.filePath
         let reason = group.reason
 
-        // Read 2 additional lines to get the warning line and cursor position
-        let line: String = additionalLines() ?? ""
-        let cursor: String = additionalLines() ?? ""
+        // Read 2 additional _lines to get the warning _line and cursor position
+        let _line: String = additional_lines() ?? ""
+        let cursor: String = additional_lines() ?? ""
         return _colored ?
             """
             \(Symbol.warning)  \(filePath): \(reason.f.Yellow)
-            \(line)
+            \(_line)
             \(cursor.f.Green)
             """
             :
             """
             \(Symbol.asciiWarning)  \(filePath): \(reason)
-            \(line)
+            \(_line)
             \(cursor)
             """
     }
@@ -503,25 +509,7 @@ extension String {
     }
 
     private func formatSummary() -> String? {
-        return _colored ? self.f.Green.s.Bold : self
-    }
-
-    private func coloredTime() -> String {
-        guard _colored,
-              let time = Double(self)
-        else { return self }
-        if time < 0.025 { return self }
-        if time < 0.100 { return f.Yellow }
-        return f.Red
-    }
-
-    private func coloredDeviation() -> String {
-        guard _colored,
-              let deviation = Double(self)
-        else { return self }
-        if deviation < 1 { return self }
-        if deviation < 10 { return f.Yellow }
-        return f.Red
+        return _colored ? _line.f.Green.s.Bold : _line
     }
 
     private func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String? {
@@ -558,5 +546,25 @@ extension String {
     private func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String? {
         let message = group.warningMessage
         return _colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
+    }
+}
+
+private extension String {
+    func coloredTime() -> String {
+        guard _colored,
+              let time = Double(self)
+        else { return self }
+        if time < 0.025 { return self }
+        if time < 0.100 { return f.Yellow }
+        return f.Red
+    }
+
+    func coloredDeviation() -> String {
+        guard _colored,
+              let deviation = Double(self)
+        else { return self }
+        if deviation < 1 { return self }
+        if deviation < 10 { return f.Yellow }
+        return f.Red
     }
 }
