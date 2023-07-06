@@ -2,7 +2,7 @@ public class Parser {
     
     private let colored: Bool
 
-    private let renderer: TerminalRenderer
+    private let renderer: OutputRendering
     
     private let additionalLines: () -> String?
 
@@ -198,7 +198,7 @@ public class Parser {
         }
         
         let additionalLines: () -> String?
-        let renderer: TerminalRenderer
+        let renderer: OutputRendering
         let regex: Regex
         let outputType: OutputType
         
