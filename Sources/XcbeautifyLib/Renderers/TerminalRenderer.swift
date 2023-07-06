@@ -30,14 +30,10 @@ struct TerminalRenderer: OutputRendering {
         let name = group.name
         let unitName = group.unitName
         let value = group.value
-        let deviation = colored ? group.deviation.coloredDeviation() : group.deviation
 
-        let formattedValue: String
-        if unitName == "seconds", colored {
-            formattedValue = value.coloredTime()
-        } else {
-            formattedValue = value
-        }
+        let deviation = colored ? group.deviation.coloredDeviation() : group.deviation
+        let formattedValue = colored && unitName == "seconds" ? value.coloredTime() : value
+
         return Format.indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
     }
 
