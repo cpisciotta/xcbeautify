@@ -6,9 +6,9 @@ public class Parser {
     
     private let additionalLines: () -> String?
 
-    public var summary: TestSummary? = nil
+    private(set) var summary: TestSummary? = nil
 
-    public var needToRecordSummary = false
+    private(set) var needToRecordSummary = false
 
     public var preserveUnbeautifiedLines = false
 
@@ -161,7 +161,11 @@ public class Parser {
         return result.value
     }
 
-    
+    public func formattedSummary() -> String? {
+        guard let summary = summary else { return nil }
+        return renderer.format(testSummary: summary)
+    }
+
     // MARK: Private
 
     private func parseSummary(line: String, colored: Bool, skipped: Bool) {
@@ -176,8 +180,7 @@ public class Parser {
             skippedCount: group.numberOfSkipped,
             failuresCount: group.numberOfFailures,
             unexpectedCount: group.numberOfUnexpectedFailures,
-            time: group.wallClockTimeInSeconds,
-            colored: colored
+            time: group.wallClockTimeInSeconds
         )
     }
 
