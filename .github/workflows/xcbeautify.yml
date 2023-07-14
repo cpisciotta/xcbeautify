@@ -7,11 +7,17 @@ on:
   pull_request: {}
   merge_group: {}
 
+env:
+  SWIFT_VERSION: 5.8
+
 jobs:
   macos:
     name: Build on macOS
     runs-on: macOS-latest
     steps:
+      - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+        with:
+          swift-version: ${{ env.SWIFT_VERSION }}
       - uses: actions/checkout@v3
       - name: Build
         run: swift build --disable-sandbox --configuration release
@@ -22,6 +28,9 @@ jobs:
     name: Build on Ubuntu
     runs-on: ubuntu-latest
     steps:
+      - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+        with:
+          swift-version: ${{ env.SWIFT_VERSION }}
       - uses: actions/checkout@v3
       - run: swift build
       - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
