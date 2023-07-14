@@ -66,8 +66,9 @@ struct Xcbeautify: ParsableCommand {
         }
 
         if !report.isEmpty {
-            let outputPath = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-                .appendingPathComponent(reportPath)
+            let outputPath = URL(fileURLWithPath: reportPath,
+                                 relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+
             try FileManager.default.createDirectory(at: outputPath, withIntermediateDirectories: true)
 
             for reportType in Set(report) {
