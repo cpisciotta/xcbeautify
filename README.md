@@ -120,7 +120,7 @@ set -o pipefail && bazel test //path/to/package:target 2>&1 | xcbeautify
 
 ### GitHub Actions
 
-`xcbeautify` features an integrated GitHub Actions renderer that harnesses [Workflow commands](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions) to highlight errors directly within the GitHub user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer github-actions`` flag during execution:
+`xcbeautify` features an integrated GitHub Actions renderer that harnesses [workflow commands](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions) to highlight warnings, errors, and results directly within the GitHub user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer github-actions` flag during execution:
 
 ```
 set -o pipefail && xcodebuild [flags] | xcbeautify --renderer github-actions
