@@ -4,6 +4,7 @@ Please, check out guidelines: https://keepachangelog.com/en/1.0.0/
 
 ## Unreleased
 
+- Added support for a GitHub Actions renderer to surface errors through GitHub's UI [#107](https://github.com/tuist/xcbeautify/pull/107) by [@cpisciotta](https://github.com/cpisciotta)
 - Added support for `CompileSwift` and `SwiftCompile` outputs [#128](https://github.com/tuist/xcbeautify/pull/128) by [@cpisciotta](https://github.com/cpisciotta).
 - Added support for passing absolute paths via the `--report-path` flag [#129](https://github.com/tuist/xcbeautify/pull/129) by [@cpisciotta](https://github.com/cpisciotta).
 
