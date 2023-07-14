@@ -110,6 +110,8 @@ public class Parser {
         switch renderer {
         case .terminal:
             self.renderer = TerminalRenderer(colored: colored)
+        case .gitHubActions:
+            self.renderer = GitHubActionsRenderer()
         }
 
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
