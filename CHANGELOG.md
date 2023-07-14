@@ -4,6 +4,8 @@ Please, check out guidelines: https://keepachangelog.com/en/1.0.0/
 
 ## Unreleased
 
+- **Breaking** Removed support for CocoaPods [#135](https://github.com/tuist/xcbeautify/pull/135) by [@pepicrft](https://github.com/pepicrft)
+
 ## 0.21.0
 
 - Added support for a GitHub Actions renderer to surface errors through GitHub's UI [#107](https://github.com/tuist/xcbeautify/pull/107) by [@cpisciotta](https://github.com/cpisciotta)
