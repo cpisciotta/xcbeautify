@@ -84,7 +84,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(inputFatal), outputFatal)
     }
 
-    func testCompile() {
+    func testCompileSwift() {
 #if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
@@ -93,6 +93,15 @@ final class TerminalRendererTests: XCTestCase {
         let output = "[xcbeautify] Compiling setup.swift"
         XCTAssertEqual(noColoredFormatted(input1), output)
         XCTAssertEqual(noColoredFormatted(input2), output)
+#endif
+    }
+
+    func testSwiftCompile() {
+#if os(macOS)
+        // SPM output
+        let input = "SwiftCompile normal x86_64 Compiling\\ Unimplemented.swift /Path/xctest-dynamic-overlay/Sources/XCTestDynamicOverlay/Unimplemented.swift (in target 'XCTestDynamicOverlay' from project 'xctest-dynamic-overlay')"
+        let output = "[XCTestDynamicOverlay] Compiling Unimplemented.swift"
+        XCTAssertEqual(noColoredFormatted(input), output)
 #endif
     }
 
