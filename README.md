@@ -1,6 +1,6 @@
 # xcbeautify
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Build Status](https://github.com/tuist/xcbeautify/workflows/build/badge.svg?branch=main)](https://github.com/tuist/xcbeautify/actions)
@@ -170,6 +170,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nikolaykasyanov"><img src="https://avatars.githubusercontent.com/u/136644?v=4?s=100" width="100px;" alt="Nikolay Kasyanov"/><br /><sub><b>Nikolay Kasyanov</b></sub></a><br /><a href="https://github.com/tuist/xcbeautify/commits?author=nikolaykasyanov" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.charlespisciotta.com"><img src="https://avatars.githubusercontent.com/u/38054839?v=4?s=100" width="100px;" alt="Charles Pisciotta"/><br /><sub><b>Charles Pisciotta</b></sub></a><br /><a href="https://github.com/tuist/xcbeautify/commits?author=cpisciotta" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
