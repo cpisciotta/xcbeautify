@@ -52,6 +52,7 @@ public class OutputHandler {
         case OutputType.test:
             if isCI {
                 writer(content)
+                lastFormatted = nil
             } else {
                 fallthrough
             }
