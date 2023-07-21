@@ -43,9 +43,16 @@ public class OutputHandler {
             writer(content)
         case OutputType.result:
             writer(content)
+        case OutputType.testCase:
+            if isCI {
+                writer(content)
+            }
+        case OutputType.nonContextualError:
+            writer(content)
         case OutputType.test:
             if isCI {
                 writer(content)
+                lastFormatted = nil
             } else {
                 fallthrough
             }

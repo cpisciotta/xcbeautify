@@ -22,6 +22,8 @@ public enum OutputType {
     case undefined
     case task
     case test
+    case testCase
+    case nonContextualError
     case warning
     case error
     case result
@@ -42,6 +44,10 @@ extension OutputType: CustomStringConvertible {
             return "error"
         case .result:
             return "result"
+        case .testCase:
+            return "testCase"
+        case .nonContextualError:
+            return "nonContextualError"
         }
     }
 }
