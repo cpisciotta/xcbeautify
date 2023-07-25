@@ -57,7 +57,7 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
     /// $3 = target
-    case compile = #"^[SwiftCompile|CompileSwift].*?((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#
+    case compile = #"^Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#
     #endif
 
     /// Regular expression captured groups:
