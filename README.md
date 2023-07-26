@@ -50,15 +50,6 @@ brew install xcbeautify
 mint install tuist/xcbeautify
 ```
 
-### CocoaPods
-
-```ruby
-pod 'xcbeautify'
-```
-
-The `xcbeautify` binary will be installed at `Pods/xcbeautify/xcbeautify`
-
-
 ### Swift Package Manager
 
 Create a directory in the same location as the `xcodeproj` file, for example `BuildTools`.  
