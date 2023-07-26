@@ -2,9 +2,15 @@
 
 Please, check out guidelines: https://keepachangelog.com/en/1.0.0/
 
-## Unreleased
+## 1.0.0
 
 - **Breaking** Removed support for CocoaPods [#135](https://github.com/tuist/xcbeautify/pull/135) by [@pepicrft](https://github.com/pepicrft)
+
+## 0.21.1
+
+- Fixed handling -q for certain scenarios involving test cases (#139) by @grigorye
+- Convert xcbeautify from Target to Executable Target (#140) by @cpisciotta
+- Revert "Refactor Pattern to Support SPM Compilation" (#141) by @cpisciotta
 
 ## 0.21.0
 
