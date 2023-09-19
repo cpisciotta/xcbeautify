@@ -35,6 +35,12 @@ struct Xcbeautify: ParsableCommand {
     @Option(help: "The name of JUnit report file name")
     var junitReportFilename = "junit.xml"
 
+    @Flag(help: "Tell the renderer to treat warnings as errors (github-actions only)")
+    var renderWarningsAsErrors = false
+
+    @Flag(help: "Tell the renderer to skip annotations for warnings (github-actions only)")
+    var renderQuietWarnings = false
+
     func run() throws {
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
         let junitReporter = JunitReporter()
@@ -52,6 +58,8 @@ struct Xcbeautify: ParsableCommand {
         let parser = Parser(
             colored: !disableColoredOutput,
             renderer: renderer,
+            warningsAsErrors: renderWarningsAsErrors,
+            quietWarnings: renderQuietWarnings,
             preserveUnbeautifiedLines: preserveUnbeautified,
             additionalLines: { readLine() }
         )

@@ -102,16 +102,18 @@ public class Parser {
     public init(
         colored: Bool = true,
         renderer: Renderer,
+        warningsAsErrors: Bool = false,
+        quietWarnings: Bool = false,
         preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
     ) {
         self.colored = colored
 
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer()
+        self.renderer = switch (renderer) {
+            case .terminal:
+                TerminalRenderer(colored: colored)
+            case .gitHubActions:
+                GitHubActionsRenderer(warningsAsErrors: warningsAsErrors, quietWarnings: quietWarnings)
         }
 
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines

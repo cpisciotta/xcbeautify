@@ -1,6 +1,12 @@
 import Foundation
 
 struct GitHubActionsRenderer: OutputRendering {
+
+    init(warningsAsErrors: Bool, quietWarnings: Bool) {
+        self.warningsAsErrors = warningsAsErrors
+        self.quietWarnings = quietWarnings
+    }
+
     private enum AnnotationType: String {
         case notice
         case warning
@@ -9,13 +15,21 @@ struct GitHubActionsRenderer: OutputRendering {
 
     // Colored output is disallowed since GitHub Actions annotations don't properly render it.
     let colored: Bool = false
+    let warningsAsErrors: Bool
+    let quietWarnings: Bool
 
     private func outputGitHubActionsLog(
         annotationType: AnnotationType,
         fileComponents: FileComponents? = nil,
         message: String
     ) -> String {
+        if self.quietWarnings && annotationType == .warning {
+            return message
+        }
+
         let formattedFileComponents = fileComponents?.formatted ?? ""
+        let annotationType = annotationType == .warning && warningsAsErrors ? .error : annotationType
+
         return "::\(annotationType) \(formattedFileComponents)::\(message)"
     }
 
