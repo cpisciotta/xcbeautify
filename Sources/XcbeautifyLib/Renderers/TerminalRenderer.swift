@@ -140,10 +140,19 @@ struct TerminalRenderer: OutputRendering {
         return colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
     }
 
-    // TODO: Print file path
     func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String {
         let reason = group.reason
         return colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
+    }
+    
+    func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
+        let filePath = group.filePath
+        return Format.indent + (colored ? "\(filePath.f.Red)" : "\(filePath)")
+    }
+    
+    func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String? {
+        let symbolLocation = group.symbolLocation
+        return colored ? "\(Symbol.error) \(symbolLocation.f.Red)" : "\(Symbol.asciiError) \(symbolLocation)"
     }
 
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String {

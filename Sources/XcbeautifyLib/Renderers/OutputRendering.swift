@@ -243,7 +243,7 @@ extension OutputRendering {
         case (.uiFailingTest, let group as UIFailingTestCaptureGroup):
             return formatUIFailingTest(group: group)
         case (.undefinedSymbolLocation, _ as UndefinedSymbolLocationCaptureGroup):
-            return formatCompleteWarning(line: line)
+            return formatCompleteError(line: line)
         case (.willNotBeCodeSigned, let group as WillNotBeCodeSignedCaptureGroup):
             return formatWillNotBeCodesignWarning(group: group)
         case (.writeAuxiliaryFiles, let group as WriteAuxiliaryFilesCaptureGroup):

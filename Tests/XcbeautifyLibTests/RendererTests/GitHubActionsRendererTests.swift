@@ -316,6 +316,9 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testLinkerDuplicateSymbolsLocation() {
+        let input = "    /Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)"
+        let output = "::warning file=/Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)::"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
     func testLinkerDuplicateSymbols() {
@@ -477,8 +480,8 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testUndefinedSymbolLocation() {
         let formatted = logFormatted( "      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(formatted, "::warning ::      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(parser.outputType, .warning)
+        XCTAssertEqual(formatted, "::error ::      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testTestCaseMeasured() {

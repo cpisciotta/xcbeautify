@@ -390,8 +390,8 @@ extension String {
 
         case .linkerDuplicateSymbolsLocation:
             assert(results.count >= 1)
-            guard let reason = results[safe: 0] else { return EmptyCaptureGroup() }
-            return LinkerDuplicateSymbolsCaptureGroup(reason: reason)
+            guard let filePath = results[safe: 0] else { return EmptyCaptureGroup() }
+            return LinkerDuplicateSymbolsLocationCaptureGroup(filePath: filePath)
 
         case .linkerDuplicateSymbols:
             assert(results.count >= 1)

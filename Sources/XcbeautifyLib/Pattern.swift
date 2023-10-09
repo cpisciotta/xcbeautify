@@ -314,12 +314,12 @@ enum Pattern: String {
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
-    case compileWarning = #"^(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#
+    case compileWarning = #"^(?!ld)(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#
 
     /// Regular expression captured groups:
     /// $1 = ld prefix
     /// $2 = warning message
-    case ldWarning = #"^(ld: )warning: (.*)"#
+    case ldWarning = #"^(ld: )warning: (?!.*duplicate symbol)(.*)"#
 
     /// Regular expression captured groups:
     /// $1 = whole warning
@@ -373,7 +373,7 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    case ldError = #"^(ld:.*)"#
+    case ldError = #"^(ld:(?!.*warning:).*)"#
 
     /// Regular expression captured groups:
     /// $1 = file path
@@ -381,7 +381,7 @@ enum Pattern: String {
 
     /// Regular expression captured groups:
     /// $1 = reason
-    case linkerDuplicateSymbols = #"^(duplicate symbol .*):$"#
+    case linkerDuplicateSymbols = #"^.*(duplicate symbol .*):$"#
 
     /// Regular expression captured groups:
     /// $1 = symbol location

@@ -130,6 +130,15 @@ struct GitHubActionsRenderer: OutputRendering {
         let reason = group.reason
         return outputGitHubActionsLog(annotationType: .error, message: reason)
     }
+    
+    func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
+        let fileComponents = group.filePath.asFileComponents()
+        return outputGitHubActionsLog(
+            annotationType: .warning,
+            fileComponents: fileComponents,
+            message: ""
+        )
+    }
 
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
         let reason = group.reason
