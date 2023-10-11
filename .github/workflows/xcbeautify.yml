@@ -18,7 +18,7 @@ jobs:
       - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         run: swift build --disable-sandbox --configuration release
       - name: Test
@@ -31,7 +31,7 @@ jobs:
       - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: swift build
       - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
       - run: make package-linux-x86_64
