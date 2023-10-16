@@ -146,8 +146,8 @@ struct TerminalRenderer: OutputRendering {
     }
     
     func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
-        let filePath = group.filePath
-        return Format.indent + (colored ? "\(filePath.f.Red)" : "\(filePath)")
+        let wholeError = group.wholeError
+        return (colored ? "\(Symbol.error) \(Format.indent)\(wholeError.f.Red)" : "\(Symbol.asciiError) \(Format.indent)\(wholeError)")
     }
     
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String? {

@@ -317,7 +317,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testLinkerDuplicateSymbolsLocation() {
         let input = "    /Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)"
-        let output = "::warning file=/Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)::"
+        let output = "::error ::/Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)"
         XCTAssertEqual(logFormatted(input), output)
     }
 

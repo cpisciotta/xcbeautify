@@ -314,7 +314,7 @@ final class TerminalRendererTests: XCTestCase {
 
     func testLinkerDuplicateSymbolsLocation() {
         let input = "    /Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)"
-        let output = "    /Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)"
+        let output = "[x]     /Volumes/xxx/XcbeautifyLib.framework/XcbeautifyLib(Regex.o)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 

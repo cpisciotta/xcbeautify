@@ -83,8 +83,8 @@ extension String {
             return CompileCaptureGroup(filename: fileName, target: target)
 #else
             assert(results.count >= 3)
-            guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
-            return CompileCaptureGroup(filePath: filePath, filename: fileName, target: target)
+            guard let wholeError = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return EmptyCaptureGroup() }
+            return CompileCaptureGroup(wholeError: wholeError, filename: fileName, target: target)
 #endif
 
         case .compileCommand:
@@ -391,7 +391,7 @@ extension String {
         case .linkerDuplicateSymbolsLocation:
             assert(results.count >= 1)
             guard let filePath = results[safe: 0] else { return EmptyCaptureGroup() }
-            return LinkerDuplicateSymbolsLocationCaptureGroup(filePath: filePath)
+            return LinkerDuplicateSymbolsLocationCaptureGroup(wholeError: filePath)
 
         case .linkerDuplicateSymbols:
             assert(results.count >= 1)

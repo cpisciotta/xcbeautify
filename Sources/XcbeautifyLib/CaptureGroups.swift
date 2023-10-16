@@ -84,7 +84,7 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
 
 struct CompileCaptureGroup: CompileFileCaptureGroup {
 #if !os(Linux)
-    let filePath: String
+    let wholeError: String
 #endif
     let filename: String
     let target: String
@@ -378,7 +378,7 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
-    let filePath: String
+    let wholeError: String
 }
 
 struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {

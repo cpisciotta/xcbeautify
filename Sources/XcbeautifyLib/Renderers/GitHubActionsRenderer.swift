@@ -132,11 +132,10 @@ struct GitHubActionsRenderer: OutputRendering {
     }
     
     func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
-        let fileComponents = group.filePath.asFileComponents()
+        let wholeError = group.wholeError
         return outputGitHubActionsLog(
-            annotationType: .warning,
-            fileComponents: fileComponents,
-            message: ""
+            annotationType: .error,
+            message: wholeError
         )
     }
 
