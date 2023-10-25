@@ -84,7 +84,7 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
 
 struct CompileCaptureGroup: CompileFileCaptureGroup {
 #if !os(Linux)
-    let wholeError: String
+    let filePath: String
 #endif
     let filename: String
     let target: String
