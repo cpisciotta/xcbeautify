@@ -158,6 +158,8 @@ extension OutputRendering {
             return formatLinkerDuplicateSymbolsError(group: group)
         case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
             return formatLinkerDuplicateSymbolsLocation(group: group)
+        case (.linkerDuplicateSymbolsLocation, let group as LinkerDuplicateSymbolsCaptureGroup):
+            return formatLinkerDuplicateSymbolsLocation(group: group)
         case (.linkerUndefinedSymbolLocation, let group as LinkerUndefinedSymbolLocationCaptureGroup):
             return formatLinkerUndefinedSymbolLocation(group: group)
         case (.linkerUndefinedSymbols, let group as LinkerUndefinedSymbolsCaptureGroup):
