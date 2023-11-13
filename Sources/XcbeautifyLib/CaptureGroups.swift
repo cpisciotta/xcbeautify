@@ -378,7 +378,7 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
-    let filePath: String
+    let wholeError: String
 }
 
 struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
