@@ -1,6 +1,6 @@
 import Foundation
 
-protocol CaptureGroup { }
+public protocol CaptureGroup { }
 
 protocol ErrorCaptureGroup: CaptureGroup {
     var wholeError: String { get }
