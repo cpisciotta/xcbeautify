@@ -65,7 +65,8 @@ struct Xcbeautify: ParsableCommand {
             output.write(parser.outputType, formatted)
         }
         
-        if let formattedSummary = parser.formattedSummary() {
+        if let summary = parser.summary {
+            let formattedSummary = formatter.formatTestSummary(testSummary: summary)
             output.write(.result, formattedSummary)
         }
 

@@ -1,4 +1,4 @@
-struct TestSummary {
+public struct TestSummary {
     let testsCount: Int
     let skippedCount: Int
     let failuresCount: Int

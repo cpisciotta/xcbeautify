@@ -198,4 +198,8 @@ public struct XCFormatter {
             return nil
         }
     }
+
+    public func formatTestSummary(testSummary: TestSummary) -> String {
+        renderer.format(testSummary: testSummary)
+    }
 }

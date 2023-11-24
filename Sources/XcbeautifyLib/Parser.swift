@@ -2,7 +2,7 @@ public class Parser {
 
     private let additionalLines: () -> String?
 
-    private(set) var summary: TestSummary? = nil
+    public private(set) var summary: TestSummary? = nil
 
     private(set) var needToRecordSummary = false
 
@@ -142,12 +142,6 @@ public class Parser {
         innerParsers.insert(innerParsers.remove(at: idx), at: 0)
         
         return result.captureGroup
-    }
-
-    public func formattedSummary() -> String? {
-        guard let summary = summary else { return nil }
-        return nil
-//        return renderer.format(testSummary: summary)
     }
 
     // MARK: Private
