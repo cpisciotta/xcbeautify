@@ -1,16 +1,10 @@
 public class Parser {
-    
-    private let colored: Bool
 
-    private let renderer: OutputRendering
-    
     private let additionalLines: () -> String?
 
     private(set) var summary: TestSummary? = nil
 
     private(set) var needToRecordSummary = false
-
-    public var preserveUnbeautifiedLines = false
 
     public var outputType: OutputType = OutputType.undefined
     
@@ -100,26 +94,13 @@ public class Parser {
     // MARK: - Init
     
     public init(
-        colored: Bool = true,
-        renderer: Renderer,
-        preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
     ) {
-        self.colored = colored
-
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer()
-        }
-
-        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }
 
-    public func parse(line: String) -> String? {
-        
+    public func parse(line: String) -> CaptureGroup? {
+
         // Find first parser that can parse specified string
         guard let idx = innerParsers.firstIndex(where: { $0.regex.match(string: line)}) else {
             
@@ -127,13 +108,13 @@ public class Parser {
             
             if Regex.executedWithoutSkipped.match(string: line) {
                 outputType = OutputType.task
-                parseSummary(line: line, colored: colored, skipped: false)
+                parseSummary(line: line, skipped: false)
                 return nil
             }
 
             if Regex.executedWithSkipped.match(string: line) {
                 outputType = OutputType.task
-                parseSummary(line: line, colored: colored, skipped: true)
+                parseSummary(line: line, skipped: true)
                 return nil
             }
 
@@ -149,7 +130,7 @@ public class Parser {
             
             // Nothing found?
             outputType = OutputType.undefined
-            return preserveUnbeautifiedLines ? line : nil
+            return nil
         }
         
         let parser = innerParsers[idx]
@@ -160,17 +141,18 @@ public class Parser {
         // Move found parser to the top, so next time it will be checked first
         innerParsers.insert(innerParsers.remove(at: idx), at: 0)
         
-        return result.value
+        return result.captureGroup
     }
 
     public func formattedSummary() -> String? {
         guard let summary = summary else { return nil }
-        return renderer.format(testSummary: summary)
+        return nil
+//        return renderer.format(testSummary: summary)
     }
 
     // MARK: Private
 
-    private func parseSummary(line: String, colored: Bool, skipped: Bool) {
+    private func parseSummary(line: String, skipped: Bool) {
         guard needToRecordSummary else { return }
         defer { needToRecordSummary = false }
 
@@ -188,8 +170,6 @@ public class Parser {
 
     private func innerParser(_ regex: Regex, outputType: OutputType) -> InnerParser {
         return InnerParser(
-            additionalLines: additionalLines,
-            renderer: renderer,
             regex: regex,
             outputType: outputType
         )
@@ -199,22 +179,16 @@ public class Parser {
         
         fileprivate struct Result {
             let outputType: OutputType
-            let value: String?
+            let captureGroup: CaptureGroup
         }
         
-        let additionalLines: () -> String?
-        let renderer: OutputRendering
         let regex: Regex
         let outputType: OutputType
         
         func parse(line: String) -> Result {
             return Result(
                 outputType: outputType,
-                value: renderer.beautify(
-                    line: line,
-                    pattern: regex.pattern,
-                    additionalLines: additionalLines
-                )
+                captureGroup: line.captureGroup(with: regex.pattern)
             )
         }
     }

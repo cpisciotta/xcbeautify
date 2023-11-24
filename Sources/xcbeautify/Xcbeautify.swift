@@ -50,14 +50,17 @@ struct Xcbeautify: ParsableCommand {
         }
         
         let parser = Parser(
-            colored: !disableColoredOutput,
-            renderer: renderer,
-            preserveUnbeautifiedLines: preserveUnbeautified,
             additionalLines: { readLine() }
         )
 
+        let formatter = XCFormatter(
+            renderer: renderer,
+            colored: !disableColoredOutput
+        )
+
         while let line = readLine() {
-            guard let formatted = parser.parse(line: line) else { continue }
+            guard let captureGroup = parser.parse(line: line) else { continue }
+            guard let formatted = formatter.beautify(captureGroup: captureGroup) else { continue }
             output.write(parser.outputType, formatted)
         }
         
