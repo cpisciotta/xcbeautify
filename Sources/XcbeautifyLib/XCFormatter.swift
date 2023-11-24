@@ -3,10 +3,12 @@ import Foundation
 public struct XCFormatter {
     private let renderer: OutputRendering
     private let colored: Bool
+    private let additionalLines: () -> String?
 
     public init(
         renderer: Renderer,
-        colored: Bool
+        colored: Bool,
+        additionalLines: @escaping () -> String?
     ) {
         switch renderer {
         case .terminal:
@@ -15,9 +17,13 @@ public struct XCFormatter {
             self.renderer = GitHubActionsRenderer()
         }
         self.colored = colored
+        self.additionalLines = additionalLines
     }
 
-    public func beautify(captureGroup: CaptureGroup) -> String? {
-        return nil
+    public func beautify(
+        captureGroup: CaptureGroup,
+        line: String
+    ) -> String? {
+        renderer.beautify(captureGroup: captureGroup, line: line, additionalLines: additionalLines)
     }
 }

@@ -8,12 +8,12 @@ final class TerminalRendererTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         parser = Parser(additionalLines: { nil } )
-        formatter = XCFormatter(renderer: .terminal, colored: false)
+        formatter = XCFormatter(renderer: .terminal, colored: false, additionalLines: { nil })
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
         guard let captureGroup = parser.parse(line: string) else { return nil }
-        return formatter.beautify(captureGroup: captureGroup)
+        return formatter.beautify(captureGroup: captureGroup, line: string)
     }
 
     func testAggregateTarget() {

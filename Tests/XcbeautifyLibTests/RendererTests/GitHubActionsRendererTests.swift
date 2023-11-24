@@ -8,12 +8,12 @@ final class GitHubActionsRendererTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         parser = Parser(additionalLines: { nil } )
-        formatter = XCFormatter(renderer: .gitHubActions, colored: false)
+        formatter = XCFormatter(renderer: .gitHubActions, colored: false, additionalLines: { nil })
     }
 
     private func logFormatted(_ string: String) -> String? {
         guard let captureGroup = parser.parse(line: string) else { return nil }
-        return formatter.beautify(captureGroup: captureGroup)
+        return formatter.beautify(captureGroup: captureGroup, line: string)
     }
 
     func testAggregateTarget() {
