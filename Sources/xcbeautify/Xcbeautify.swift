@@ -24,7 +24,7 @@ struct Xcbeautify: ParsableCommand {
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
     @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions ).")
-    var renderer: XcbeautifyLib.Renderer = .terminal
+    var renderer: Renderer = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" ? .gitHubActions : .terminal
 
     @Option(help: "Generate the specified reports")
     var report: [Report] = []
