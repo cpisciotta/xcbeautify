@@ -65,7 +65,7 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testMultipleCodesigns() {
-        let formattedApp = noColoredFormatted("CodeSign build/Release/MyApp.app")
+        let formattedApp = noColoredFormatted("CodeSign build/Release/MyApp.app (in target 'X' from project 'Y' at path 'Z')")
         let formattedFramework = noColoredFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
         XCTAssertEqual(formattedApp, "Signing MyApp.app")
         XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
