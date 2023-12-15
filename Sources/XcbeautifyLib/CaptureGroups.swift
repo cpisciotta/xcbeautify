@@ -1,6 +1,7 @@
 import Foundation
 
 protocol CaptureGroup {
+    static var outputType: OutputType { get }
     static var regex: XcbeautifyLib.Regex { get }
 }
 
@@ -38,6 +39,8 @@ protocol ExecutedCaptureGroup: CaptureGroup {
 }
 
 struct AnalyzeCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
@@ -49,6 +52,8 @@ struct AnalyzeCaptureGroup: CaptureGroup {
 }
 
 struct BuildTargetCaptureGroup: TargetCaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = project
@@ -61,6 +66,8 @@ struct BuildTargetCaptureGroup: TargetCaptureGroup {
 }
 
 struct AggregateTargetCaptureGroup: TargetCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = project
@@ -73,6 +80,8 @@ struct AggregateTargetCaptureGroup: TargetCaptureGroup {
 }
 
 struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = project
@@ -86,10 +95,13 @@ struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
 
 /// Nothing returned here for now
 struct CheckDependenciesCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Check dependencies"#)
 }
 
 struct ShellCommandCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = command path
     /// $2 = arguments
@@ -100,6 +112,8 @@ struct ShellCommandCaptureGroup: CaptureGroup {
 }
 
 struct CleanRemoveCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Nothing returned here for now
     static let regex = Regex(pattern: #"^Clean.Remove(.*)"#)
 
@@ -107,6 +121,8 @@ struct CleanRemoveCaptureGroup: CaptureGroup {
 }
 
 struct CleanTargetCaptureGroup: TargetCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = project
@@ -119,6 +135,8 @@ struct CleanTargetCaptureGroup: TargetCaptureGroup {
 }
 
 struct CodesignCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = file
     static let regex = Regex(pattern: #"^CodeSign\s(((?!.framework/Versions/A)(?:\ |[^ ]))*?)( \(in target '.*' from project '.*' at path '.*'\))?$"#)
@@ -127,6 +145,8 @@ struct CodesignCaptureGroup: CaptureGroup {
 }
 
 struct CodesignFrameworkCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = file
     static let regex = Regex(pattern: #"^CodeSign\s((?:\ |[^ ])*.framework)\/Versions/A"#)
@@ -135,6 +155,8 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
 }
 
 struct CompileCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+    
 #if os(Linux)
 /// Regular expression captured groups:
 /// $1 = filename (e.g. KWNull.m)
@@ -156,6 +178,8 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
 }
 
 struct CompileCommandCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = compiler command
     /// $2 = file path
@@ -166,6 +190,8 @@ struct CompileCommandCaptureGroup: CaptureGroup {
 }
 
 struct CompileXibCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. MainMenu.xib)
@@ -178,6 +204,8 @@ struct CompileXibCaptureGroup: CompileFileCaptureGroup {
 }
 
 struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. Main.storyboard)
@@ -190,6 +218,8 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
 }
 
 struct CopyHeaderCaptureGroup: CopyCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
@@ -202,6 +232,8 @@ struct CopyHeaderCaptureGroup: CopyCaptureGroup {
 }
 
 struct CopyPlistCaptureGroup: CopyCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
@@ -212,6 +244,8 @@ struct CopyPlistCaptureGroup: CopyCaptureGroup {
 }
 
 struct CopyStringsCaptureGroup: CopyCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = file
     static let regex = Regex(pattern: #"^CopyStringsFile\s(.*\.strings)\s(.*\.strings) \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
@@ -221,6 +255,8 @@ struct CopyStringsCaptureGroup: CopyCaptureGroup {
 }
 
 struct CpresourceCaptureGroup: CopyCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = resource
     static let regex = Regex(pattern: #"^CpResource\s(.*)\s\/(.*) \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
@@ -230,6 +266,8 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 }
 
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = number of tests
     /// $2 = number of failures
@@ -245,6 +283,8 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
 }
 
 struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = number of tests
     /// $2 = number of skipped
@@ -261,6 +301,8 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
 }
 
 struct FailingTestCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+    
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = test suite
@@ -279,6 +321,8 @@ struct FailingTestCaptureGroup: CaptureGroup {
 }
 
 struct UIFailingTestCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+    
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = reason
@@ -289,6 +333,8 @@ struct UIFailingTestCaptureGroup: CaptureGroup {
 }
 
 struct RestartingTestCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+    
     /// Regular expression captured groups:
     /// $1 = test suite + test case
     /// $2 = test suite
@@ -301,18 +347,23 @@ struct RestartingTestCaptureGroup: CaptureGroup {
 }
 
 struct GenerateCoverageDataCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = coverage report file path
     static let regex = Regex(pattern: #"^generating\s+coverage\s+data\.*"#)
 }
 
 struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^generated\s+coverage\s+report:\s+(.+)"#)
 
     let coverageReportFilePath: String
 }
 
 struct GenerateDSYMCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = dsym
     /// $2 = target
@@ -323,6 +374,8 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
 }
 
 struct LibtoolCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+    
     /// Regular expression captured groups:
     /// $1 = library
     /// $2 = target
@@ -333,6 +386,8 @@ struct LibtoolCaptureGroup: CaptureGroup {
 }
 
 struct LinkingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+    
 #if os(Linux)
     /// Regular expression captured groups:
     /// $1 = target
@@ -351,6 +406,8 @@ struct LinkingCaptureGroup: CaptureGroup {
 }
 
 struct TestCasePassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+    
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
@@ -367,6 +424,8 @@ struct TestCasePassedCaptureGroup: CaptureGroup {
 }
 
 struct TestCaseStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
@@ -381,6 +440,8 @@ struct TestCaseStartedCaptureGroup: CaptureGroup {
 }
 
 struct TestCasePendingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
@@ -391,6 +452,8 @@ struct TestCasePendingCaptureGroup: CaptureGroup {
 }
 
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
@@ -409,6 +472,8 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
@@ -423,6 +488,7 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -436,6 +502,8 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
@@ -450,6 +518,8 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestingStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
     /// Regular expression captured groups:
     /// $1 = device
     static let regex = Regex(pattern: #"^Testing\s+started\s+on\s+'(.*)'"#)
@@ -458,6 +528,8 @@ struct ParallelTestingStartedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestingPassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
     /// Regular expression captured groups:
     /// $1 = device
     static let regex = Regex(pattern: #"^Testing\s+passed\s+on\s+'(.*)'"#)
@@ -466,6 +538,8 @@ struct ParallelTestingPassedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestingFailedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .nonContextualError
+
     /// Regular expression captured groups:
     /// $1 = device
     static let regex = Regex(pattern: #"^Testing\s+failed\s+on\s+'(.*)'"#)
@@ -474,6 +548,8 @@ struct ParallelTestingFailedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = device
@@ -484,12 +560,15 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
 }
 
 struct PhaseSuccessCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
     static let regex = Regex(pattern: #"^\*\*\s(.*)\sSUCCEEDED\s\*\*"#)
 
     let phase: String
 }
 
 struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = phase name
     /// $2 = target
@@ -500,6 +579,8 @@ struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
 }
 
 struct ProcessPchCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
@@ -510,6 +591,8 @@ struct ProcessPchCaptureGroup: CaptureGroup {
 }
 
 struct ProcessPchCommandCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 file path
     static let regex = Regex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#)
@@ -518,6 +601,8 @@ struct ProcessPchCommandCaptureGroup: CaptureGroup {
 }
 
 struct PreprocessCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = file
     static let regex = Regex(pattern: #"^Preprocess\s(?:(?:\ |[^ ])*)\s((?:\ |[^ ])*)$"#)
@@ -526,6 +611,8 @@ struct PreprocessCaptureGroup: CaptureGroup {
 }
 
 struct PbxcpCaptureGroup: CopyCaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
@@ -538,6 +625,8 @@ struct PbxcpCaptureGroup: CopyCaptureGroup {
 }
 
 struct ProcessInfoPlistCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
@@ -550,6 +639,8 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
 }
 
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = result
@@ -566,6 +657,8 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
 }
 
 struct TestSuiteStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = time
@@ -580,6 +673,8 @@ struct TestSuiteStartedCaptureGroup: CaptureGroup {
 }
 
 struct TestSuiteStartCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
     /// Regular expression captured groups:
     /// $1 = test suite name
     static let regex = Regex(pattern: #"^\s*Test Suite '(.*)' started at"#)
@@ -588,14 +683,18 @@ struct TestSuiteStartCaptureGroup: CaptureGroup {
 }
 
 struct TestSuiteAllTestsPassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
     static let regex = Regex(pattern: #"^\s*Test Suite 'All tests' passed at"#)
 }
 
 struct TestSuiteAllTestsFailedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
     static let regex = Regex(pattern: #"^\s*Test Suite 'All tests' failed at"#)
 }
 
 struct TIFFutilCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = filename
     static let regex = Regex(pattern: #"^TiffUtil\s(.*)"#)
@@ -604,6 +703,8 @@ struct TIFFutilCaptureGroup: CaptureGroup {
 }
 
 struct TouchCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = filename
     /// $3 = target
@@ -614,6 +715,8 @@ struct TouchCaptureGroup: CaptureGroup {
 }
 
 struct WriteFileCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captured groups:
     /// $1 = file path
     static let regex = Regex(pattern: #"^write-file\s(.*)"#)
@@ -622,10 +725,14 @@ struct WriteFileCaptureGroup: CaptureGroup {
 }
 
 struct WriteAuxiliaryFilesCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     static let regex = Regex(pattern: #"^Write auxiliary files"#)
 }
 
 struct CompileWarningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
@@ -638,6 +745,8 @@ struct CompileWarningCaptureGroup: CaptureGroup {
 }
 
 struct LDWarningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expression captured groups:
     /// $1 = ld prefix
     /// $2 = warning message
@@ -648,6 +757,8 @@ struct LDWarningCaptureGroup: CaptureGroup {
 }
 
 struct GenericWarningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expression captured groups:
     /// $1 = whole warning
     static let regex = Regex(pattern: #"^warning:\s(.*)$"#)
@@ -656,6 +767,8 @@ struct GenericWarningCaptureGroup: CaptureGroup {
 }
 
 struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expression captured groups:
     /// $1 = whole warning
     static let regex = Regex(pattern: #"^(.* will not be code signed because .*)$"#)
@@ -664,6 +777,8 @@ struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
 }
 
 struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expresion captured groups:
     /// $1 = warning message.
     static let regex = Regex(pattern: #"^[\d\s-:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$"#)
@@ -672,6 +787,8 @@ struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
 }
 
 struct ClangErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error
     static let regex = Regex(pattern: #"^(clang: error:.*)$"#)
@@ -680,6 +797,8 @@ struct ClangErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error
     static let regex = Regex(pattern: #"^(Code\s?Sign error:.*|Code signing is required for product type .* in SDK .*|No profile matching .* found:.*|Provisioning profile .* doesn't .*|Swift is unavailable on .*|.?Use Legacy Swift Language Version.*)$"#)
@@ -688,6 +807,8 @@ struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
 }
 
 struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error
     static let regex = Regex(pattern: #"^(.*requires a provisioning profile.*)$"#)
@@ -696,6 +817,8 @@ struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
 }
 
 struct NoCertificateCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expression captured groups:
     /// $1 = whole error
     static let regex = Regex(pattern: #"^(No certificate matching.*)$"#)
@@ -704,6 +827,8 @@ struct NoCertificateCaptureGroup: ErrorCaptureGroup {
 }
 
 struct CompileErrorCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = file path (could be a relative path if you build with Bazel)
     /// $2 = is fatal error
@@ -716,6 +841,8 @@ struct CompileErrorCaptureGroup: CaptureGroup {
 }
 
 struct CursorCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
     /// Regular expression captured groups:
     /// $1 = cursor (with whitespaces and tildes)
     static let regex = Regex(pattern: #"^([\s~]*\^[\s~]*)$"#)
@@ -724,6 +851,8 @@ struct CursorCaptureGroup: CaptureGroup {
 }
 
 struct FatalErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error.
     /// it varies a lot, not sure if it makes sense to catch everything separately
@@ -733,6 +862,8 @@ struct FatalErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct FileMissingErrorCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error.
     /// $2 = file path
@@ -743,6 +874,8 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
 }
 
 struct LDErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error
     static let regex = Regex(pattern: #"^(ld:.*)"#)
@@ -751,6 +884,8 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = file path
     static let regex = Regex(pattern: #"^\s+(\/.*\.o[\)]?)$"#)
@@ -759,6 +894,8 @@ struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
 }
 
 struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = reason
     static let regex = Regex(pattern: #"^(duplicate symbol .*):$"#)
@@ -767,6 +904,8 @@ struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
 }
 
 struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = symbol location
     static let regex = Regex(pattern: #"^(.* in .*\.o)$"#)
@@ -775,6 +914,8 @@ struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
 }
 
 struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = reason
     static let regex = Regex(pattern: #"^(Undefined symbols for architecture .*):$"#)
@@ -783,6 +924,8 @@ struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
 }
 
 struct PodsErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = reason
     static let regex = Regex(pattern: #"^(error:\s.*)"#)
@@ -791,6 +934,8 @@ struct PodsErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct SymbolReferencedFromCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = reference
     static let regex = Regex(pattern: #"\s+\"(.*)\", referenced from:$"#)
@@ -799,6 +944,8 @@ struct SymbolReferencedFromCaptureGroup: CaptureGroup {
 }
 
 struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = error reason
     static let regex = Regex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#)
@@ -807,6 +954,7 @@ struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
 }
 
 struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = filename
@@ -817,18 +965,21 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
 }
 
 struct PackageFetchingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Fetching from (.*?)$"#)
 
     let source: String
 }
 
 struct PackageUpdatingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Updating from (.*?)$"#)
 
     let source: String
 }
 
 struct PackageCheckingOutCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Checking out (.*?) of package (.*?)$"#)
 
     let version: String
@@ -836,14 +987,18 @@ struct PackageCheckingOutCaptureGroup: CaptureGroup {
 }
 
 struct PackageGraphResolvingStartCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^\s*Resolve Package Graph\s*$"#)
 }
 
 struct PackageGraphResolvingEndedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Resolved source packages:$"#)
 }
 
 struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
     /// Regular expression captures groups:
     /// $1 = package name
     /// $2 = package url
@@ -856,6 +1011,8 @@ struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
 }
 
 struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
     /// Regular expression captured groups:
     /// $1 = whole error
     static let regex = Regex(pattern: #"^(xcodebuild: error:.*)$"#)
