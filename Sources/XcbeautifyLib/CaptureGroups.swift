@@ -30,8 +30,6 @@ protocol ExecutedCaptureGroup: CaptureGroup {
     var wallClockTimeInSeconds: Double { get }
 }
 
-struct EmptyCaptureGroup: CaptureGroup { }
-
 struct AnalyzeCaptureGroup: CaptureGroup {
     let filePath: String
     let fileName: String
