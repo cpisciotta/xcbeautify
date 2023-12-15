@@ -81,7 +81,10 @@ extension OutputRendering {
         pattern: Pattern,
         additionalLines: @escaping () -> (String?)
     ) -> String? {
-        let group: CaptureGroup = line.captureGroup(with: pattern)
+        guard let group: CaptureGroup = line.captureGroup(with: pattern) else {
+            assertionFailure("Expected a known CaptureGroup from the given Pattern!")
+            return nil
+        }
 
         switch (pattern, group) {
         case (.aggregateTarget, let group as AggregateTargetCaptureGroup):
