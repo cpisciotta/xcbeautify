@@ -3,11 +3,11 @@ import Foundation
 protocol OutputRendering {
     var colored: Bool { get }
 
-    func beautify(line: String, pattern: Pattern, additionalLines: @escaping () -> (String?)) -> String?
+    func beautify(line: String, pattern: String, additionalLines: @escaping () -> (String?)) -> String?
 
     func format(testSummary: TestSummary) -> String
 
-    func format(line: String, command: String, pattern: Pattern, arguments: String) -> String?
+    func format(line: String, command: String, pattern: String, arguments: String) -> String?
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
     func formatCodeSign(group: CodesignCaptureGroup) -> String
@@ -78,11 +78,11 @@ protocol OutputRendering {
 extension OutputRendering {
     func beautify(
         line: String,
-        pattern: Pattern,
+        pattern: String,
         additionalLines: @escaping () -> (String?)
     ) -> String? {
         guard let group: CaptureGroup = line.captureGroup(with: pattern) else {
-            assertionFailure("Expected a known CaptureGroup from the given Pattern!")
+            assertionFailure("Expected a known CaptureGroup from the given pattern!")
             return nil
         }
 
@@ -264,7 +264,7 @@ extension OutputRendering {
 
 extension OutputRendering {
 
-    func format(line: String, command: String, pattern: Pattern, arguments: String) -> String? {
+    func format(line: String, command: String, pattern: String, arguments: String) -> String? {
         let template = command.style.Bold + " " + arguments
 
         guard let formatted = try? NSRegularExpression(pattern: pattern)

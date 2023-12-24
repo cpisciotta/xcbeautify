@@ -1,7 +1,7 @@
 import Foundation
 
 extension String {
-    private func captureGroup(with pattern: Pattern) -> [String] {
+    private func captureGroup(with pattern: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
 
@@ -23,7 +23,7 @@ extension String {
 }
 
 extension String {
-    func captureGroup(with pattern: Pattern) -> CaptureGroup? {
+    func captureGroup(with pattern: String) -> CaptureGroup? {
         let results: [String] = captureGroup(with: pattern)
 
         switch pattern {

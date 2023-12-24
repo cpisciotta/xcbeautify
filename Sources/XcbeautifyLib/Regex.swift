@@ -1,13 +1,13 @@
 import Foundation
 
 class Regex {
-    let pattern: Pattern
+    let pattern: String
 
     private lazy var regex: NSRegularExpression? = {
         return try? NSRegularExpression(pattern: "^" + pattern, options: [.caseInsensitive])
     }()
 
-    fileprivate init(pattern: Pattern) {
+    fileprivate init(pattern: String) {
         self.pattern = pattern
     }
 
