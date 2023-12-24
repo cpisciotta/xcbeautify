@@ -18,30 +18,28 @@ public final class JunitReporter {
     public func add(line: String) {
         // Remove any preceding or excessive spaces
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
-        switch line {
-        // Capture standard output
-        case FailingTestCaptureGroup.regex:
-            guard let testCase = generateFailingTest(line: line) else { break }
+
+        if FailingTestCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateFailingTest(line: line) else { return }
             components.append(.failingTest(testCase))
-        case RestartingTestCaptureGroup.regex:
-            guard let testCase = generateRestartingTest(line: line) else { break }
+        } else if RestartingTestCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateRestartingTest(line: line) else { return }
             components.append(.failingTest(testCase))
-        case TestCasePassedCaptureGroup.regex:
-            guard let testCase = generatePassingTest(line: line) else { break }
+        } else if TestCasePassedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generatePassingTest(line: line) else { return }
             components.append(.testCasePassed(testCase))
-        case TestSuiteStartCaptureGroup.regex:
-            guard let testStart = generateSuiteStart(line: line) else { break }
+        } else if TestSuiteStartCaptureGroup.regex.match(string: line) {
+            guard let testStart = generateSuiteStart(line: line) else { return }
             components.append(.testSuiteStart(testStart))
-        // Capture parallel output
-        case ParallelTestCaseFailedCaptureGroup.regex:
-            guard let testCase = generateParallelFailingTest(line: line) else { break }
+        } else if ParallelTestCaseFailedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateParallelFailingTest(line: line) else { return }
             parallelComponents.append(.failingTest(testCase))
-        case ParallelTestCasePassedCaptureGroup.regex:
-            guard let testCase = generatePassingParallelTest(line: line) else { break }
+        } else if ParallelTestCasePassedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generatePassingParallelTest(line: line) else { return }
             parallelComponents.append(.testCasePassed(testCase))
-        default:
+        } else {
             // Not needed for generating a junit report
-            break
+            return
         }
     }
 
