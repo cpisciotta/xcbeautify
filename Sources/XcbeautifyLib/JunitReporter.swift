@@ -20,23 +20,23 @@ public final class JunitReporter {
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
         switch line {
         // Capture standard output
-        case Regex.failingTest:
+        case FailingTestCaptureGroup.regex:
             guard let testCase = generateFailingTest(line: line) else { break }
             components.append(.failingTest(testCase))
-        case Regex.restartingTest:
+        case RestartingTestCaptureGroup.regex:
             guard let testCase = generateRestartingTest(line: line) else { break }
             components.append(.failingTest(testCase))
-        case Regex.testCasePassed:
+        case TestCasePassedCaptureGroup.regex:
             guard let testCase = generatePassingTest(line: line) else { break }
             components.append(.testCasePassed(testCase))
-        case Regex.testSuiteStart:
+        case TestSuiteStartCaptureGroup.regex:
             guard let testStart = generateSuiteStart(line: line) else { break }
             components.append(.testSuiteStart(testStart))
         // Capture parallel output
-        case Regex.parallelTestCaseFailed:
+        case ParallelTestCaseFailedCaptureGroup.regex:
             guard let testCase = generateParallelFailingTest(line: line) else { break }
             parallelComponents.append(.failingTest(testCase))
-        case Regex.parallelTestCasePassed:
+        case ParallelTestCasePassedCaptureGroup.regex:
             guard let testCase = generatePassingParallelTest(line: line) else { break }
             parallelComponents.append(.testCasePassed(testCase))
         default:
