@@ -86,6 +86,8 @@ extension OutputRendering {
             return nil
         }
 
+        assert(pattern == group.pattern)
+
         switch (pattern, group) {
         case (AggregateTargetCaptureGroup.pattern, let group as AggregateTargetCaptureGroup):
             return formatTargetCommand(command: "Aggregate", group: group)
