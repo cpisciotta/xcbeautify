@@ -1,259 +1,88 @@
-enum Pattern: String {
-    case analyze
-    case buildTarget
-    case aggregateTarget
-    case analyzeTarget
-    case checkDependencies
-    case shellCommand
-    case cleanRemove
-    case cleanTarget
-    case codesign
-    case codesignFramework
-    case compile
-    case compileCommand
-    case compileXib
-    case compileStoryboard
-    case copyHeader
-    case copyPlist
-    case copyStrings
-    case cpresource
-    case executedWithoutSkipped
-    case executedWithSkipped
-    case failingTest
-    case uiFailingTest
-    case restartingTest
-    case generateCoverageData
-    case generatedCoverageReport
-    case generateDsym
-    case libtool
-    case linking
-    case testCasePassed
-    case testCaseStarted
-    case testCasePending
-    case testCaseMeasured
-    case parallelTestCasePassed
-    case parallelTestCaseAppKitPassed
-    case parallelTestCaseFailed
-    case parallelTestingStarted
-    case parallelTestingPassed
-    case parallelTestingFailed
-    case parallelTestSuiteStarted
-    case phaseSuccess
-    case phaseScriptExecution
-    case processPch
-    case processPchCommand
-    case preprocess
-    case pbxcp
-    case processInfoPlist
-    case testsRunCompletion
-    case testSuiteStarted
-    case testSuiteStart
-    case testSuiteAllTestsPassed
-    case testSuiteAllTestsFailed
-    case tiffutil
-    case touch
-    case writeFile
-    case writeAuxiliaryFiles
-    case compileWarning
-    case ldWarning
-    case genericWarning
-    case willNotBeCodeSigned
-    case duplicateLocalizedStringKey
-    case clangError
-    case checkDependenciesErrors
-    case provisioningProfileRequired
-    case noCertificate
-    case compileError
-    case cursor
-    case fatalError
-    case fileMissingError
-    case ldError
-    case linkerDuplicateSymbolsLocation
-    case linkerDuplicateSymbols
-    case linkerUndefinedSymbolLocation
-    case linkerUndefinedSymbols
-    case podsError
-    case symbolReferencedFrom
-    case moduleIncludesError
-    case undefinedSymbolLocation
-    case packageFetching
-    case packageUpdating
-    case packageCheckingOut
-    case packageGraphResolvingStart
-    case packageGraphResolvingEnded
-    case packageGraphResolvedItem
-    case xcodebuildError
+typealias Pattern = String
 
-    var rawValue: String {
-        switch self {
-        case .analyze:
-            return AnalyzeCaptureGroup.pattern
-        case .buildTarget:
-            return BuildTargetCaptureGroup.pattern
-        case .aggregateTarget:
-            return AggregateTargetCaptureGroup.pattern
-        case .analyzeTarget:
-            return AnalyzeTargetCaptureGroup.pattern
-        case .checkDependencies:
-            return CheckDependenciesCaptureGroup.pattern
-        case .shellCommand:
-            return ShellCommandCaptureGroup.pattern
-        case .cleanRemove:
-            return CleanRemoveCaptureGroup.pattern
-        case .cleanTarget:
-            return CleanTargetCaptureGroup.pattern
-        case .codesign:
-            return CodesignCaptureGroup.pattern
-        case .codesignFramework:
-            return CodesignFrameworkCaptureGroup.pattern
-        case .compile:
-            return CompileCaptureGroup.pattern
-        case .compileCommand:
-            return CompileCommandCaptureGroup.pattern
-        case .compileXib:
-            return CompileXibCaptureGroup.pattern
-        case .compileStoryboard:
-            return CompileStoryboardCaptureGroup.pattern
-        case .copyHeader:
-            return CopyHeaderCaptureGroup.pattern
-        case .copyPlist:
-            return CopyPlistCaptureGroup.pattern
-        case .copyStrings:
-            return CopyStringsCaptureGroup.pattern
-        case .cpresource:
-            return CpresourceCaptureGroup.pattern
-        case .executedWithoutSkipped:
-            return ExecutedWithoutSkippedCaptureGroup.pattern
-        case .executedWithSkipped:
-            return ExecutedWithSkippedCaptureGroup.pattern
-        case .failingTest:
-            return FailingTestCaptureGroup.pattern
-        case .uiFailingTest:
-            return UIFailingTestCaptureGroup.pattern
-        case .restartingTest:
-            return RestartingTestCaptureGroup.pattern
-        case .generateCoverageData:
-            return GenerateCoverageDataCaptureGroup.pattern
-        case .generatedCoverageReport:
-            return GeneratedCoverageReportCaptureGroup.pattern
-        case .generateDsym:
-            return GenerateDSYMCaptureGroup.pattern
-        case .libtool:
-            return LibtoolCaptureGroup.pattern
-        case .linking:
-            return LinkingCaptureGroup.pattern
-        case .testCasePassed:
-            return TestCasePassedCaptureGroup.pattern
-        case .testCaseStarted:
-            return TestCaseStartedCaptureGroup.pattern
-        case .testCasePending:
-            return TestCasePendingCaptureGroup.pattern
-        case .testCaseMeasured:
-            return TestCaseMeasuredCaptureGroup.pattern
-        case .parallelTestCasePassed:
-            return ParallelTestCasePassedCaptureGroup.pattern
-        case .parallelTestCaseAppKitPassed:
-            return ParallelTestCaseAppKitPassedCaptureGroup.pattern
-        case .parallelTestCaseFailed:
-            return ParallelTestCaseFailedCaptureGroup.pattern
-        case .parallelTestingStarted:
-            return ParallelTestingStartedCaptureGroup.pattern
-        case .parallelTestingPassed:
-            return ParallelTestingPassedCaptureGroup.pattern
-        case .parallelTestingFailed:
-            return ParallelTestingFailedCaptureGroup.pattern
-        case .parallelTestSuiteStarted:
-            return ParallelTestSuiteStartedCaptureGroup.pattern
-        case .phaseSuccess:
-            return PhaseSuccessCaptureGroup.pattern
-        case .phaseScriptExecution:
-            return PhaseScriptExecutionCaptureGroup.pattern
-        case .processPch:
-            return ProcessPchCaptureGroup.pattern
-        case .processPchCommand:
-            return ProcessPchCommandCaptureGroup.pattern
-        case .preprocess:
-            return PreprocessCaptureGroup.pattern
-        case .pbxcp:
-            return PbxcpCaptureGroup.pattern
-        case .processInfoPlist:
-            return ProcessInfoPlistCaptureGroup.pattern
-        case .testsRunCompletion:
-            return TestsRunCompletionCaptureGroup.pattern
-        case .testSuiteStarted:
-            return TestSuiteStartedCaptureGroup.pattern
-        case .testSuiteStart:
-            return TestSuiteStartCaptureGroup.pattern
-        case .testSuiteAllTestsPassed:
-            return TestSuiteAllTestsPassedCaptureGroup.pattern
-        case .testSuiteAllTestsFailed:
-            return TestSuiteAllTestsFailedCaptureGroup.pattern
-        case .tiffutil:
-            return TIFFutilCaptureGroup.pattern
-        case .touch:
-            return TouchCaptureGroup.pattern
-        case .writeFile:
-            return WriteFileCaptureGroup.pattern
-        case .writeAuxiliaryFiles:
-            return WriteAuxiliaryFilesCaptureGroup.pattern
-        case .compileWarning:
-            return CompileWarningCaptureGroup.pattern
-        case .ldWarning:
-            return LDWarningCaptureGroup.pattern
-        case .genericWarning:
-            return GenericWarningCaptureGroup.pattern
-        case .willNotBeCodeSigned:
-            return WillNotBeCodeSignedCaptureGroup.pattern
-        case .duplicateLocalizedStringKey:
-            return DuplicateLocalizedStringKeyCaptureGroup.pattern
-        case .clangError:
-            return ClangErrorCaptureGroup.pattern
-        case .checkDependenciesErrors:
-            return CheckDependenciesCaptureGroup.pattern
-        case .provisioningProfileRequired:
-            return ProvisioningProfileRequiredCaptureGroup.pattern
-        case .noCertificate:
-            return NoCertificateCaptureGroup.pattern
-        case .compileError:
-            return CompileErrorCaptureGroup.pattern
-        case .cursor:
-            return CursorCaptureGroup.pattern
-        case .fatalError:
-            return FatalErrorCaptureGroup.pattern
-        case .fileMissingError:
-            return FileMissingErrorCaptureGroup.pattern
-        case .ldError:
-            return LDErrorCaptureGroup.pattern
-        case .linkerDuplicateSymbolsLocation:
-            return LinkerDuplicateSymbolsLocationCaptureGroup.pattern
-        case .linkerDuplicateSymbols:
-            return LinkerDuplicateSymbolsCaptureGroup.pattern
-        case .linkerUndefinedSymbolLocation:
-            return LinkerUndefinedSymbolLocationCaptureGroup.pattern
-        case .linkerUndefinedSymbols:
-            return LinkerUndefinedSymbolsCaptureGroup.pattern
-        case .podsError:
-            return PodsErrorCaptureGroup.pattern
-        case .symbolReferencedFrom:
-            return SymbolReferencedFromCaptureGroup.pattern
-        case .moduleIncludesError:
-            return ModuleIncludesErrorCaptureGroup.pattern
-        case .undefinedSymbolLocation:
-            return UndefinedSymbolLocationCaptureGroup.pattern
-        case .packageFetching:
-            return PackageFetchingCaptureGroup.pattern
-        case .packageUpdating:
-            return PackageUpdatingCaptureGroup.pattern
-        case .packageCheckingOut:
-            return PackageCheckingOutCaptureGroup.pattern
-        case .packageGraphResolvingStart:
-            return PackageGraphResolvingStartCaptureGroup.pattern
-        case .packageGraphResolvingEnded:
-            return PackageGraphResolvingEndedCaptureGroup.pattern
-        case .packageGraphResolvedItem:
-            return PackageGraphResolvedItemCaptureGroup.pattern
-        case .xcodebuildError:
-            return XcodebuildErrorCaptureGroup.pattern
-        }
-    }
+extension Pattern {
+    static let analyze: Pattern = AnalyzeCaptureGroup.pattern
+    static let buildTarget: Pattern = BuildTargetCaptureGroup.pattern
+    static let aggregateTarget: Pattern = AggregateTargetCaptureGroup.pattern
+    static let analyzeTarget: Pattern = AnalyzeTargetCaptureGroup.pattern
+    static let checkDependencies: Pattern = CheckDependenciesCaptureGroup.pattern
+    static let shellCommand: Pattern = ShellCommandCaptureGroup.pattern
+    static let cleanRemove: Pattern = CleanRemoveCaptureGroup.pattern
+    static let cleanTarget: Pattern = CleanTargetCaptureGroup.pattern
+    static let codesign: Pattern = CodesignCaptureGroup.pattern
+    static let codesignFramework: Pattern = CodesignFrameworkCaptureGroup.pattern
+    static let compile: Pattern = CompileCaptureGroup.pattern
+    static let compileCommand: Pattern = CompileCommandCaptureGroup.pattern
+    static let compileXib: Pattern = CompileXibCaptureGroup.pattern
+    static let compileStoryboard: Pattern = CompileStoryboardCaptureGroup.pattern
+    static let copyHeader: Pattern = CopyHeaderCaptureGroup.pattern
+    static let copyPlist: Pattern = CopyPlistCaptureGroup.pattern
+    static let copyStrings: Pattern = CopyStringsCaptureGroup.pattern
+    static let cpresource: Pattern = CpresourceCaptureGroup.pattern
+    static let executedWithoutSkipped: Pattern = ExecutedWithoutSkippedCaptureGroup.pattern
+    static let executedWithSkipped: Pattern = ExecutedWithSkippedCaptureGroup.pattern
+    static let failingTest: Pattern = FailingTestCaptureGroup.pattern
+    static let uiFailingTest: Pattern = UIFailingTestCaptureGroup.pattern
+    static let restartingTest: Pattern = RestartingTestCaptureGroup.pattern
+    static let generateCoverageData: Pattern = GenerateCoverageDataCaptureGroup.pattern
+    static let generatedCoverageReport: Pattern = GeneratedCoverageReportCaptureGroup.pattern
+    static let generateDsym: Pattern = GenerateDSYMCaptureGroup.pattern
+    static let libtool: Pattern = LibtoolCaptureGroup.pattern
+    static let linking: Pattern = LinkingCaptureGroup.pattern
+    static let testCasePassed: Pattern = TestCasePassedCaptureGroup.pattern
+    static let testCaseStarted: Pattern = TestCaseStartedCaptureGroup.pattern
+    static let testCasePending: Pattern = TestCasePendingCaptureGroup.pattern
+    static let testCaseMeasured: Pattern = TestCaseMeasuredCaptureGroup.pattern
+    static let parallelTestCasePassed: Pattern = ParallelTestCasePassedCaptureGroup.pattern
+    static let parallelTestCaseAppKitPassed: Pattern = ParallelTestCaseAppKitPassedCaptureGroup.pattern
+    static let parallelTestCaseFailed: Pattern = ParallelTestCaseFailedCaptureGroup.pattern
+    static let parallelTestingStarted: Pattern = ParallelTestingStartedCaptureGroup.pattern
+    static let parallelTestingPassed: Pattern = ParallelTestingPassedCaptureGroup.pattern
+    static let parallelTestingFailed: Pattern = ParallelTestingFailedCaptureGroup.pattern
+    static let parallelTestSuiteStarted: Pattern = ParallelTestSuiteStartedCaptureGroup.pattern
+    static let phaseSuccess: Pattern = PhaseSuccessCaptureGroup.pattern
+    static let phaseScriptExecution: Pattern = PhaseScriptExecutionCaptureGroup.pattern
+    static let processPch: Pattern = ProcessPchCaptureGroup.pattern
+    static let processPchCommand: Pattern = ProcessPchCommandCaptureGroup.pattern
+    static let preprocess: Pattern = PreprocessCaptureGroup.pattern
+    static let pbxcp: Pattern = PbxcpCaptureGroup.pattern
+    static let processInfoPlist: Pattern = ProcessInfoPlistCaptureGroup.pattern
+    static let testsRunCompletion: Pattern = TestsRunCompletionCaptureGroup.pattern
+    static let testSuiteStarted: Pattern = TestSuiteStartedCaptureGroup.pattern
+    static let testSuiteStart: Pattern = TestSuiteStartCaptureGroup.pattern
+    static let testSuiteAllTestsPassed: Pattern = TestSuiteAllTestsPassedCaptureGroup.pattern
+    static let testSuiteAllTestsFailed: Pattern = TestSuiteAllTestsFailedCaptureGroup.pattern
+    static let tiffutil: Pattern = TIFFutilCaptureGroup.pattern
+    static let touch: Pattern = TouchCaptureGroup.pattern
+    static let writeFile: Pattern = WriteFileCaptureGroup.pattern
+    static let writeAuxiliaryFiles: Pattern = WriteAuxiliaryFilesCaptureGroup.pattern
+    static let compileWarning: Pattern = CompileWarningCaptureGroup.pattern
+    static let ldWarning: Pattern = LDWarningCaptureGroup.pattern
+    static let genericWarning: Pattern = GenericWarningCaptureGroup.pattern
+    static let willNotBeCodeSigned: Pattern = WillNotBeCodeSignedCaptureGroup.pattern
+    static let duplicateLocalizedStringKey: Pattern = DuplicateLocalizedStringKeyCaptureGroup.pattern
+    static let clangError: Pattern = ClangErrorCaptureGroup.pattern
+    static let checkDependenciesErrors: Pattern = CheckDependenciesCaptureGroup.pattern
+    static let provisioningProfileRequired: Pattern = ProvisioningProfileRequiredCaptureGroup.pattern
+    static let noCertificate: Pattern = NoCertificateCaptureGroup.pattern
+    static let compileError: Pattern = CompileErrorCaptureGroup.pattern
+    static let cursor: Pattern = CursorCaptureGroup.pattern
+    static let fatalError: Pattern = FatalErrorCaptureGroup.pattern
+    static let fileMissingError: Pattern = FileMissingErrorCaptureGroup.pattern
+    static let ldError: Pattern = LDErrorCaptureGroup.pattern
+    static let linkerDuplicateSymbolsLocation: Pattern = LinkerDuplicateSymbolsLocationCaptureGroup.pattern
+    static let linkerDuplicateSymbols: Pattern = LinkerDuplicateSymbolsCaptureGroup.pattern
+    static let linkerUndefinedSymbolLocation: Pattern = LinkerUndefinedSymbolLocationCaptureGroup.pattern
+    static let linkerUndefinedSymbols: Pattern = LinkerUndefinedSymbolsCaptureGroup.pattern
+    static let podsError: Pattern = PodsErrorCaptureGroup.pattern
+    static let symbolReferencedFrom: Pattern = SymbolReferencedFromCaptureGroup.pattern
+    static let moduleIncludesError: Pattern = ModuleIncludesErrorCaptureGroup.pattern
+    static let undefinedSymbolLocation: Pattern = UndefinedSymbolLocationCaptureGroup.pattern
+    static let packageFetching: Pattern = PackageFetchingCaptureGroup.pattern
+    static let packageUpdating: Pattern = PackageUpdatingCaptureGroup.pattern
+    static let packageCheckingOut: Pattern = PackageCheckingOutCaptureGroup.pattern
+    static let packageGraphResolvingStart: Pattern = PackageGraphResolvingStartCaptureGroup.pattern
+    static let packageGraphResolvingEnded: Pattern = PackageGraphResolvingEndedCaptureGroup.pattern
+    static let packageGraphResolvedItem: Pattern = PackageGraphResolvedItemCaptureGroup.pattern
+    static let xcodebuildError: Pattern = XcodebuildErrorCaptureGroup.pattern
 }
