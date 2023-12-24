@@ -6,6 +6,7 @@ protocol CaptureGroup {
 
 extension CaptureGroup {
     static var pattern: String { regex.pattern }
+    var pattern: String { Self.regex.pattern }
 }
 
 protocol ErrorCaptureGroup: CaptureGroup {
