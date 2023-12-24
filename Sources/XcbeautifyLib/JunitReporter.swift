@@ -46,38 +46,38 @@ public final class JunitReporter {
     }
 
     private func generateFailingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .failingTest) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: FailingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? FailingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
     
     private func generateRestartingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .restartingTest) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: RestartingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? RestartingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: line))
     }
 
     private func generateParallelFailingTest(line: String) -> TestCase? {
         // Parallel tests do not provide meaningful failure messages
-        guard let _group: CaptureGroup = line.captureGroup(with: .parallelTestCaseFailed) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCaseFailedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCaseFailedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
     }
 
     private func generatePassingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .testCasePassed) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: TestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
 
     private func generatePassingParallelTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .parallelTestCasePassed) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
   
     private func generateSuiteStart(line: String) -> String? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .testSuiteStart) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: TestSuiteStartCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestSuiteStartCaptureGroup else { return nil }
         return group.testSuiteName
     }

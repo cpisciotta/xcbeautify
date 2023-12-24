@@ -27,56 +27,56 @@ extension String {
         let results: [String] = captureGroup(with: pattern)
 
         switch pattern {
-        case Pattern.analyze:
+        case AnalyzeCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return nil }
             return AnalyzeCaptureGroup(filePath: filePath, fileName: fileName, target: target)
 
-        case Pattern.buildTarget:
+        case BuildTargetCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let target = results[safe: 0], let project = results[safe: 1], let configuration = results[safe: 2] else { return nil }
             return BuildTargetCaptureGroup(target: target, project: project, configuration: configuration)
 
-        case Pattern.aggregateTarget:
+        case AggregateTargetCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let target = results[safe: 0], let project = results[safe: 1], let configuration = results[safe: 2] else { return nil }
             return AggregateTargetCaptureGroup(target: target, project: project, configuration: configuration)
 
-        case Pattern.analyzeTarget:
+        case AnalyzeTargetCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let target = results[safe: 0], let project = results[safe: 1], let configuration = results[safe: 2] else { return nil }
             return AnalyzeTargetCaptureGroup(target: target, project: project, configuration: configuration)
 
-        case Pattern.checkDependencies:
+        case CheckDependenciesCaptureGroup.pattern:
             assert(results.count >= 0)
             return CheckDependenciesCaptureGroup()
 
-        case Pattern.shellCommand:
+        case ShellCommandCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let commandPath = results[safe: 0], let arguments = results[safe: 1] else { return nil }
             return ShellCommandCaptureGroup(commandPath: commandPath, arguments: arguments)
 
-        case Pattern.cleanRemove:
+        case CleanRemoveCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let directory = results[safe: 0] else { return nil }
             return CleanRemoveCaptureGroup(directory: directory.lastPathComponent)
 
-        case Pattern.cleanTarget:
+        case CleanTargetCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let target = results[safe: 0], let project = results[safe: 1], let configuration = results[safe: 2] else { return nil }
             return CleanTargetCaptureGroup(target: target, project: project, configuration: configuration)
 
-        case Pattern.codesign:
+        case CodesignCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let file = results[safe: 0] else { return nil }
             return CodesignCaptureGroup(file: file)
 
-        case Pattern.codesignFramework:
+        case CodesignFrameworkCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let frameworkPath = results[safe: 0] else { return nil }
             return CodesignFrameworkCaptureGroup(frameworkPath: frameworkPath)
 
-        case Pattern.compile:
+        case CompileCaptureGroup.pattern:
 #if os(Linux)
             assert(results.count >= 2)
             guard let fileName = results[safe: 1], let target = results.last else { return nil }
@@ -87,88 +87,88 @@ extension String {
             return CompileCaptureGroup(filePath: filePath, filename: fileName, target: target)
 #endif
 
-        case Pattern.compileCommand:
+        case CompileCommandCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let compilerCommand = results[safe: 0], let filePath = results[safe: 1] else { return nil }
             return CompileCommandCaptureGroup(compilerCommand: compilerCommand, filePath: filePath)
 
-        case Pattern.compileXib:
+        case CompileXibCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return nil }
             return CompileXibCaptureGroup(filePath: filePath, filename: fileName, target: target)
 
-        case Pattern.compileStoryboard:
+        case CompileStoryboardCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1], let target = results.last else { return nil }
             return CompileStoryboardCaptureGroup(filePath: filePath, filename: fileName, target: target)
 
-        case Pattern.copyHeader:
+        case CopyHeaderCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let file = results[safe: 0], let targetFile = results[safe: 1], let target = results.last else { return nil }
             return CopyHeaderCaptureGroup(file: file.lastPathComponent, targetFile: targetFile, target: target)
 
-        case Pattern.copyPlist:
+        case CopyPlistCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let file = results[safe: 0], let target = results.last else { return nil }
             return CopyPlistCaptureGroup(file: file.lastPathComponent, target: target)
 
-        case Pattern.copyStrings:
+        case CopyStringsCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let file = results[safe: 0], let target = results.last else { return nil }
             return CopyStringsCaptureGroup(file: file.lastPathComponent, target: target)
 
-        case Pattern.cpresource:
+        case CpresourceCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let file = results[safe: 0], let target = results.last else { return nil }
             return CpresourceCaptureGroup(file: file.lastPathComponent, target: target)
 
-        case Pattern.executedWithoutSkipped:
+        case ExecutedWithoutSkippedCaptureGroup.pattern:
             assert(results.count >= 4)
             guard let _numberOfTests = results[safe: 0], let _numberOfFailures = results[safe: 1], let _numberOfUnexpectedFailures = results[safe: 2], let _wallClockTimeInSeconds = results[safe: 3] else { return nil }
             guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
             return ExecutedWithoutSkippedCaptureGroup(numberOfTests: numberOfTests, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
 
-        case Pattern.executedWithSkipped:
+        case ExecutedWithSkippedCaptureGroup.pattern:
             assert(results.count >= 5)
             guard let _numberOfTests = results[safe: 0], let _numberOfSkipped = results[safe: 1], let _numberOfFailures = results[safe: 2], let _numberOfUnexpectedFailures = results[safe: 3], let _wallClockTimeInSeconds = results[safe: 4] else { return nil }
             guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
             return ExecutedWithSkippedCaptureGroup(numberOfTests: numberOfTests, numberOfSkipped: numberOfSkipped, numberOfFailures: numberOfFailures, numberOfUnexpectedFailures: numberOfUnexpectedFailures, wallClockTimeInSeconds: wallClockTimeInSeconds)
 
-        case Pattern.failingTest:
+        case FailingTestCaptureGroup.pattern:
             assert(results.count >= 4)
             guard let file = results[safe: 0], let testSuite = results[safe: 1], let testCase = results[safe: 2], let reason = results[safe: 3] else { return nil }
             return FailingTestCaptureGroup(file: file, testSuite: testSuite, testCase: testCase, reason: reason)
 
-        case Pattern.uiFailingTest:
+        case UIFailingTestCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let file = results[safe: 0], let reason = results[safe: 1] else { return nil }
             return UIFailingTestCaptureGroup(file: file, reason: reason)
 
-        case Pattern.restartingTest:
+        case RestartingTestCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let testSuiteAndTestCase = results[safe: 0], let testSuite = results[safe: 1], let testCase = results[safe: 2] else { return nil }
             return RestartingTestCaptureGroup(testSuiteAndTestCase: testSuiteAndTestCase, testSuite: testSuite, testCase: testCase)
 
-        case Pattern.generateCoverageData:
+        case GenerateCoverageDataCaptureGroup.pattern:
             assert(results.count >= 0)
             return GenerateCoverageDataCaptureGroup()
 
-        case Pattern.generatedCoverageReport:
+        case GeneratedCoverageReportCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let coverageReportFilePath = results[safe: 0] else { return nil }
             return GeneratedCoverageReportCaptureGroup(coverageReportFilePath: coverageReportFilePath)
 
-        case Pattern.generateDsym:
+        case GenerateDSYMCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let dsym = results[safe: 0], let target = results.last else { return nil }
             return GenerateDSYMCaptureGroup(dsym: dsym, target: target)
 
-        case Pattern.libtool:
+        case LibtoolCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let fileName = results[safe: 0], let target = results.last else { return nil }
             return LibtoolCaptureGroup(fileName: fileName, target: target)
 
-        case Pattern.linking:
+        case LinkingCaptureGroup.pattern:
 #if os(Linux)
             assert(results.count >= 1)
             guard let target = results[safe: 0] else { return nil }
@@ -179,92 +179,92 @@ extension String {
             return LinkingCaptureGroup(binaryFilename: binaryFileName.lastPathComponent, target: target)
 #endif
 
-        case Pattern.testCasePassed:
+        case TestCasePassedCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let time = results[safe: 2] else { return nil }
             return TestCasePassedCaptureGroup(suite: suite, testCase: testCase, time: time)
 
-        case Pattern.testCaseStarted:
+        case TestCaseStartedCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let suite = results[safe: 0], let testCase = results[safe: 1] else { return nil }
             return TestCaseStartedCaptureGroup(suite: suite, testCase: testCase)
 
-        case Pattern.testCasePending:
+        case TestCasePendingCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let suite = results[safe: 0], let testCase = results[safe: 1] else { return nil }
             return TestCasePendingCaptureGroup(suite: suite, testCase: testCase)
 
-        case Pattern.testCaseMeasured:
+        case TestCaseMeasuredCaptureGroup.pattern:
             assert(results.count >= 6)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let name = results[safe: 2], let unitName = results[safe: 3], let value = results[safe: 4], let deviation = results[safe: 5] else { return nil }
             return TestCaseMeasuredCaptureGroup(suite: suite, testCase: testCase, name: name, unitName: unitName, value: value, deviation: deviation)
 
-        case Pattern.parallelTestCasePassed:
+        case ParallelTestCasePassedCaptureGroup.pattern:
             assert(results.count >= 4)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let device = results[safe: 2], let time = results[safe: 3] else { return nil }
             return ParallelTestCasePassedCaptureGroup(suite: suite, testCase: testCase, device: device, time: time)
 
-        case Pattern.parallelTestCaseAppKitPassed:
+        case ParallelTestCaseAppKitPassedCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let time = results[safe: 2] else { return nil }
             return ParallelTestCaseAppKitPassedCaptureGroup(suite: suite, testCase: testCase, time: time)
 
-        case Pattern.parallelTestCaseFailed:
+        case ParallelTestCaseFailedCaptureGroup.pattern:
             assert(results.count >= 4)
             guard let suite = results[safe: 0], let testCase = results[safe: 1], let device = results[safe: 2], let time = results[safe: 3] else { return nil }
             return ParallelTestCaseFailedCaptureGroup(suite: suite, testCase: testCase, device: device, time: time)
 
-        case Pattern.parallelTestingStarted:
+        case ParallelTestingStartedCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let device = results[safe: 0] else { return nil }
             return ParallelTestingStartedCaptureGroup(device: device)
 
-        case Pattern.parallelTestingPassed:
+        case ParallelTestingPassedCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let device = results[safe: 0] else { return nil }
             return ParallelTestingPassedCaptureGroup(device: device)
 
-        case Pattern.parallelTestingFailed:
+        case ParallelTestingFailedCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let device = results[safe: 0] else { return nil }
             return ParallelTestingFailedCaptureGroup(device: device)
 
-        case Pattern.parallelTestSuiteStarted:
+        case ParallelTestSuiteStartedCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let suite = results[safe: 0], let device = results[safe: 1] else { return nil }
             return ParallelTestSuiteStartedCaptureGroup(suite: suite, device: device)
 
-        case Pattern.phaseSuccess:
+        case PhaseSuccessCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let phase = results[safe: 0] else { return nil }
             return PhaseSuccessCaptureGroup(phase: phase)
 
-        case Pattern.phaseScriptExecution:
+        case PhaseScriptExecutionCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let phaseName = results[safe: 0], let target = results.last else { return nil }
             return PhaseScriptExecutionCaptureGroup(phaseName: phaseName, target: target)
 
-        case Pattern.processPch:
+        case ProcessPchCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let file = results[safe: 0], let buildTarget = results.last else { return nil }
             return ProcessPchCaptureGroup(file: file, buildTarget: buildTarget)
 
-        case Pattern.processPchCommand:
+        case ProcessPchCommandCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let filePath = results.last else { return nil }
             return ProcessPchCommandCaptureGroup(filePath: filePath)
 
-        case Pattern.preprocess:
+        case PreprocessCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let file = results[safe: 0] else { return nil }
             return PreprocessCaptureGroup(file: file)
 
-        case Pattern.pbxcp:
+        case PbxcpCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let file = results[safe: 0], let targetFile = results[safe: 1], let target = results.last else { return nil }
             return PbxcpCaptureGroup(file: file.lastPathComponent, targetFile: targetFile, target: target)
 
-        case Pattern.processInfoPlist:
+        case ProcessInfoPlistCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1] else { return nil }
 
@@ -277,186 +277,186 @@ extension String {
                 return ProcessInfoPlistCaptureGroup(filePath: filePath, filename: fileName, target: results.last)
             }
 
-        case Pattern.testsRunCompletion:
+        case TestsRunCompletionCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let suite = results[safe: 0], let result = results[safe: 1], let time = results[safe: 2] else { return nil }
             return TestsRunCompletionCaptureGroup(suite: suite, result: result, time: time)
 
-        case Pattern.testSuiteStarted:
+        case TestSuiteStartedCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let suite = results[safe: 0], let time = results[safe: 1] else { return nil }
             return TestSuiteStartedCaptureGroup(suite: suite, time: time)
 
-        case Pattern.testSuiteStart:
+        case TestSuiteStartCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let testSuiteName = results[safe: 0] else { return nil }
             return TestSuiteStartCaptureGroup(testSuiteName: testSuiteName)
 
-        case Pattern.testSuiteAllTestsPassed:
+        case TestSuiteAllTestsPassedCaptureGroup.pattern:
             assert(results.count >= 0)
             return TestSuiteAllTestsPassedCaptureGroup()
 
-        case Pattern.testSuiteAllTestsFailed:
+        case TestSuiteAllTestsFailedCaptureGroup.pattern:
             assert(results.count >= 0)
             return TestSuiteAllTestsFailedCaptureGroup()
 
-        case Pattern.tiffutil:
+        case TIFFutilCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let fileName = results[safe: 0] else { return nil }
             return TIFFutilCaptureGroup(filename: fileName)
 
-        case Pattern.touch:
+        case TouchCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let fileName = results[safe: 1], let target = results.last else { return nil }
             return TouchCaptureGroup(filename: fileName, target: target)
 
-        case Pattern.writeFile:
+        case WriteFileCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let filePath = results[safe: 0] else { return nil }
             return WriteFileCaptureGroup(filePath: filePath)
 
-        case Pattern.writeAuxiliaryFiles:
+        case WriteAuxiliaryFilesCaptureGroup.pattern:
             assert(results.count >= 0)
             return WriteAuxiliaryFilesCaptureGroup()
 
-        case Pattern.compileWarning:
+        case CompileWarningCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let filePath = results[safe: 0], let fileName = results[safe: 1], let reason = results[safe: 2] else { return nil }
             return CompileWarningCaptureGroup(filePath: filePath, filename: fileName, reason: reason)
 
-        case Pattern.ldWarning:
+        case LDWarningCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let ldPrefix = results[safe: 0], let warningMessage = results[safe: 1] else { return nil }
             return LDWarningCaptureGroup(ldPrefix: ldPrefix, warningMessage: warningMessage)
 
-        case Pattern.genericWarning:
+        case GenericWarningCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeWarning = results[safe: 0] else { return nil }
             return GenericWarningCaptureGroup(wholeWarning: wholeWarning)
 
-        case Pattern.willNotBeCodeSigned:
+        case WillNotBeCodeSignedCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeWarning = results[safe: 0] else { return nil }
             return WillNotBeCodeSignedCaptureGroup(wholeWarning: wholeWarning)
 
-        case Pattern.duplicateLocalizedStringKey:
+        case DuplicateLocalizedStringKeyCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeMessage = results[safe: 0] else { return nil }
             return DuplicateLocalizedStringKeyCaptureGroup(warningMessage: wholeMessage)
 
-        case Pattern.clangError:
+        case ClangErrorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return ClangErrorCaptureGroup(wholeError: wholeError)
 
-        case Pattern.checkDependenciesErrors:
+        case CheckDependenciesErrorsCaptureGroup.pattern:
             assert(results.count >= 0)
             return CheckDependenciesCaptureGroup()
 
-        case Pattern.provisioningProfileRequired:
+        case ProvisioningProfileRequiredCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return ProvisioningProfileRequiredCaptureGroup(wholeError: wholeError)
 
-        case Pattern.noCertificate:
+        case NoCertificateCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return NoCertificateCaptureGroup(wholeError: wholeError)
 
-        case Pattern.compileError:
+        case CompileErrorCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let filePath = results[safe: 0], let isFatalError = results[safe: 1], let reason = results[safe: 2] else { return nil }
             return CompileErrorCaptureGroup(filePath: filePath, isFatalError: isFatalError, reason: reason)
 
-        case Pattern.cursor:
+        case CursorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let cursor = results[safe: 0] else { return nil }
             return CursorCaptureGroup(cursor: cursor)
 
-        case Pattern.fatalError:
+        case FatalErrorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return FatalErrorCaptureGroup(wholeError: wholeError)
 
-        case Pattern.fileMissingError:
+        case FileMissingErrorCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let reason = results[safe: 0], let filePath = results[safe: 1] else { return nil }
             return FileMissingErrorCaptureGroup(reason: reason, filePath: filePath)
 
-        case Pattern.ldError:
+        case LDErrorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return LDErrorCaptureGroup(wholeError: wholeError)
 
-        case Pattern.linkerDuplicateSymbolsLocation:
+        case LinkerDuplicateSymbolsLocationCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return LinkerDuplicateSymbolsLocationCaptureGroup(wholeError: wholeError)
 
-        case Pattern.linkerDuplicateSymbols:
+        case LinkerDuplicateSymbolsCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let reason = results[safe: 0] else { return nil }
             return LinkerDuplicateSymbolsCaptureGroup(reason: reason)
 
-        case Pattern.linkerUndefinedSymbolLocation:
+        case LinkerUndefinedSymbolLocationCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let reason = results[safe: 0] else { return nil }
             return LinkerUndefinedSymbolsCaptureGroup(reason: reason)
 
-        case Pattern.linkerUndefinedSymbols:
+        case LinkerUndefinedSymbolsCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let reason = results[safe: 0] else { return nil }
             return LinkerUndefinedSymbolsCaptureGroup(reason: reason)
 
-        case Pattern.podsError:
+        case PodsErrorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return PodsErrorCaptureGroup(wholeError: wholeError)
 
-        case Pattern.symbolReferencedFrom:
+        case SymbolReferencedFromCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let reference = results[safe: 0] else { return nil }
             return SymbolReferencedFromCaptureGroup(reference: reference)
 
-        case Pattern.moduleIncludesError:
+        case ModuleIncludesErrorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return ModuleIncludesErrorCaptureGroup(wholeError: wholeError)
 
-        case Pattern.undefinedSymbolLocation:
+        case UndefinedSymbolLocationCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let target = results[safe: 0], let fileName = results[safe: 1] else { return nil }
             return UndefinedSymbolLocationCaptureGroup(target: target, filename: fileName)
 
-        case Pattern.packageFetching:
+        case PackageFetchingCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let source = results[safe: 0] else { return nil }
             return PackageFetchingCaptureGroup(source: source)
 
-        case Pattern.packageUpdating:
+        case PackageUpdatingCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let source = results[safe: 0] else { return nil }
             return PackageUpdatingCaptureGroup(source: source)
 
-        case Pattern.packageCheckingOut:
+        case PackageCheckingOutCaptureGroup.pattern:
             assert(results.count >= 2)
             guard let version = results[safe: 0], let package = results[safe: 1] else { return nil }
             return PackageCheckingOutCaptureGroup(version: version, package: package)
 
-        case Pattern.packageGraphResolvingStart:
+        case PackageGraphResolvingStartCaptureGroup.pattern:
             assert(results.count >= 0)
             return PackageGraphResolvingStartCaptureGroup()
 
-        case Pattern.packageGraphResolvingEnded:
+        case PackageGraphResolvingEndedCaptureGroup.pattern:
             assert(results.count >= 0)
             return PackageGraphResolvingEndedCaptureGroup()
 
-        case Pattern.packageGraphResolvedItem:
+        case PackageGraphResolvedItemCaptureGroup.pattern:
             assert(results.count >= 3)
             guard let packageName = results[safe: 0], let packageURL = results[safe: 1], let packageVersion = results[safe: 2] else { return nil }
             return PackageGraphResolvedItemCaptureGroup(packageName: packageName, packageURL: packageURL, packageVersion: packageVersion)
 
-        case Pattern.xcodebuildError:
+        case XcodebuildErrorCaptureGroup.pattern:
             assert(results.count >= 1)
             guard let wholeError = results[safe: 0] else { return nil }
             return XcodebuildErrorCaptureGroup(wholeError: wholeError)
