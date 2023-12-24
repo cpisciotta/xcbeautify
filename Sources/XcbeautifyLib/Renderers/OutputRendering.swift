@@ -88,176 +88,176 @@ extension OutputRendering {
 
         assert(pattern == group.pattern)
 
-        switch (pattern, group) {
-        case (AggregateTargetCaptureGroup.pattern, let group as AggregateTargetCaptureGroup):
+        switch group {
+        case let group as AggregateTargetCaptureGroup:
             return formatTargetCommand(command: "Aggregate", group: group)
-        case (AnalyzeCaptureGroup.pattern, let group as AnalyzeCaptureGroup):
+        case let group as AnalyzeCaptureGroup:
             return formatAnalyze(group: group)
-        case (AnalyzeTargetCaptureGroup.pattern, let group as AnalyzeTargetCaptureGroup):
+        case let group as AnalyzeTargetCaptureGroup:
             return formatTargetCommand(command: "Analyze", group: group)
-        case (BuildTargetCaptureGroup.pattern, let group as BuildTargetCaptureGroup):
+        case let group as BuildTargetCaptureGroup:
             return formatTargetCommand(command: "Build", group: group)
-        case (CheckDependenciesCaptureGroup.pattern, _ as CheckDependenciesCaptureGroup):
+        case is CheckDependenciesCaptureGroup:
             return format(line: line, command: "Check Dependencies", pattern: CheckDependenciesCaptureGroup.pattern, arguments: "")
-        case (CheckDependenciesErrorsCaptureGroup.pattern, let group as CheckDependenciesErrorsCaptureGroup):
+        case let group as CheckDependenciesErrorsCaptureGroup:
             return formatError(group: group)
-        case (ClangErrorCaptureGroup.pattern, let group as ClangErrorCaptureGroup):
+        case let group as ClangErrorCaptureGroup:
             return formatError(group: group)
-        case (CleanRemoveCaptureGroup.pattern, let group as CleanRemoveCaptureGroup):
+        case let group as CleanRemoveCaptureGroup:
             return formatCleanRemove(group: group)
-        case (CleanTargetCaptureGroup.pattern, let group as CleanTargetCaptureGroup):
+        case let group as CleanTargetCaptureGroup:
             return formatTargetCommand(command: "Clean", group: group)
-        case (CodesignCaptureGroup.pattern, let group as CodesignCaptureGroup):
+        case let group as CodesignCaptureGroup:
             return formatCodeSign(group: group)
-        case (CodesignFrameworkCaptureGroup.pattern, let group as CodesignFrameworkCaptureGroup):
+        case let group as CodesignFrameworkCaptureGroup:
             return formatCodeSignFramework(group: group)
-        case (CompileCaptureGroup.pattern, let group as CompileCaptureGroup):
+        case let group as CompileCaptureGroup:
             return formatCompile(group: group)
-        case (CompileCommandCaptureGroup.pattern, let group as CompileCommandCaptureGroup):
+        case let group as CompileCommandCaptureGroup:
             return formatCompileCommand(group: group)
-        case (CompileErrorCaptureGroup.pattern, let group as CompileErrorCaptureGroup):
+        case let group as CompileErrorCaptureGroup:
             return formatCompileError(group: group, additionalLines: additionalLines)
-        case (CompileStoryboardCaptureGroup.pattern, let group as CompileStoryboardCaptureGroup):
+        case let group as CompileStoryboardCaptureGroup:
             return formatCompile(group: group)
-        case (CompileWarningCaptureGroup.pattern, let group as CompileWarningCaptureGroup):
+        case let group as CompileWarningCaptureGroup:
             return formatCompileWarning(group: group, additionalLines: additionalLines)
-        case (CompileXibCaptureGroup.pattern, let group as CompileXibCaptureGroup):
+        case let group as CompileXibCaptureGroup:
             return formatCompile(group: group)
-        case (CopyHeaderCaptureGroup.pattern, let group as CopyHeaderCaptureGroup):
+        case let group as CopyHeaderCaptureGroup:
             return formatCopy(group: group)
-        case (CopyPlistCaptureGroup.pattern, let group as CopyPlistCaptureGroup):
+        case let group as CopyPlistCaptureGroup:
             return formatCopy(group: group)
-        case (CopyStringsCaptureGroup.pattern, let group as CopyStringsCaptureGroup):
+        case let group as CopyStringsCaptureGroup:
             return formatCopy(group: group)
-        case (CpresourceCaptureGroup.pattern, let group as CpresourceCaptureGroup):
+        case let group as CpresourceCaptureGroup:
             return formatCopy(group: group)
-        case (CursorCaptureGroup.pattern, let group as CursorCaptureGroup):
+        case let group as CursorCaptureGroup:
             return formatCursor(group: group)
-        case (DuplicateLocalizedStringKeyCaptureGroup.pattern, let group as DuplicateLocalizedStringKeyCaptureGroup):
+        case let group as DuplicateLocalizedStringKeyCaptureGroup:
             return formatDuplicateLocalizedStringKey(group: group)
-        case (ExecutedWithoutSkippedCaptureGroup.pattern, let group as ExecutedWithoutSkippedCaptureGroup):
+        case let group as ExecutedWithoutSkippedCaptureGroup:
             return formatExecutedWithoutSkipped(group: group)
-        case (ExecutedWithSkippedCaptureGroup.pattern, let group as ExecutedWithSkippedCaptureGroup):
+        case let group as ExecutedWithSkippedCaptureGroup:
             return formatExecutedWithSkipped(group: group)
-        case (FailingTestCaptureGroup.pattern, let group as FailingTestCaptureGroup):
+        case let group as FailingTestCaptureGroup:
             return formatFailingTest(group: group)
-        case (FatalErrorCaptureGroup.pattern, let group as FatalErrorCaptureGroup):
+        case let group as FatalErrorCaptureGroup:
             return formatError(group: group)
-        case (FileMissingErrorCaptureGroup.pattern, let group as FileMissingErrorCaptureGroup):
+        case let group as FileMissingErrorCaptureGroup:
             return formatFileMissingError(group: group)
-        case (GenerateCoverageDataCaptureGroup.pattern, let group as GenerateCoverageDataCaptureGroup):
+        case let group as GenerateCoverageDataCaptureGroup:
             return formatGenerateCoverageData(group: group)
-        case (GeneratedCoverageReportCaptureGroup.pattern, let group as GeneratedCoverageReportCaptureGroup):
+        case let group as GeneratedCoverageReportCaptureGroup:
             return formatCoverageReport(group: group)
-        case (GenerateDSYMCaptureGroup.pattern, let group as GenerateDSYMCaptureGroup):
+        case let group as GenerateDSYMCaptureGroup:
             return formatGenerateDsym(group: group)
-        case (GenericWarningCaptureGroup.pattern, let group as GenericWarningCaptureGroup):
+        case let group as GenericWarningCaptureGroup:
             return formatWarning(group: group)
-        case (LDErrorCaptureGroup.pattern, let group as LDErrorCaptureGroup):
+        case let group as LDErrorCaptureGroup:
             return formatError(group: group)
-        case (LDWarningCaptureGroup.pattern, let group as LDWarningCaptureGroup):
+        case let group as LDWarningCaptureGroup:
             return formatLdWarning(group: group)
-        case (LibtoolCaptureGroup.pattern, let group as LibtoolCaptureGroup):
+        case let group as LibtoolCaptureGroup:
             return formatLibtool(group: group)
-        case (LinkerDuplicateSymbolsCaptureGroup.pattern, let group as LinkerDuplicateSymbolsCaptureGroup):
+        case let group as LinkerDuplicateSymbolsCaptureGroup:
             return formatLinkerDuplicateSymbolsError(group: group)
-        case (LinkerDuplicateSymbolsLocationCaptureGroup.pattern, let group as LinkerDuplicateSymbolsLocationCaptureGroup):
+        case let group as LinkerDuplicateSymbolsLocationCaptureGroup:
             return formatLinkerDuplicateSymbolsLocation(group: group)
-        case (LinkerUndefinedSymbolLocationCaptureGroup.pattern, let group as LinkerUndefinedSymbolLocationCaptureGroup):
+        case let group as LinkerUndefinedSymbolLocationCaptureGroup:
             return formatLinkerUndefinedSymbolLocation(group: group)
-        case (LinkerUndefinedSymbolsCaptureGroup.pattern, let group as LinkerUndefinedSymbolsCaptureGroup):
+        case let group as LinkerUndefinedSymbolsCaptureGroup:
             return formatLinkerUndefinedSymbolsError(group: group)
-        case (LinkingCaptureGroup.pattern, let group as LinkingCaptureGroup):
+        case let group as LinkingCaptureGroup:
             return formatLinking(group: group)
-        case (ModuleIncludesErrorCaptureGroup.pattern, let group as ModuleIncludesErrorCaptureGroup):
+        case let group as ModuleIncludesErrorCaptureGroup:
             return formatError(group: group)
-        case (NoCertificateCaptureGroup.pattern, let group as NoCertificateCaptureGroup):
+        case let group as NoCertificateCaptureGroup:
             return formatError(group: group)
-        case (PackageCheckingOutCaptureGroup.pattern, let group as PackageCheckingOutCaptureGroup):
+        case let group as PackageCheckingOutCaptureGroup:
             return formatPackageCheckingOut(group: group)
-        case (PackageFetchingCaptureGroup.pattern, let group as PackageFetchingCaptureGroup):
+        case let group as PackageFetchingCaptureGroup:
             return formatPackageFetching(group: group)
-        case (PackageGraphResolvedItemCaptureGroup.pattern, let group as PackageGraphResolvedItemCaptureGroup):
+        case let group as PackageGraphResolvedItemCaptureGroup:
             return formatPackageItem(group: group)
-        case (PackageGraphResolvingEndedCaptureGroup.pattern, _ as PackageGraphResolvingEndedCaptureGroup):
+        case is PackageGraphResolvingEndedCaptureGroup:
             return formatPackageEnd()
-        case (PackageGraphResolvingStartCaptureGroup.pattern, _ as PackageGraphResolvingStartCaptureGroup):
+        case is PackageGraphResolvingStartCaptureGroup:
             return formatPackageStart()
-        case (PackageUpdatingCaptureGroup.pattern, let group as PackageUpdatingCaptureGroup):
+        case let group as PackageUpdatingCaptureGroup:
             return formatPackageUpdating(group: group)
-        case (ParallelTestCaseAppKitPassedCaptureGroup.pattern, let group as ParallelTestCaseAppKitPassedCaptureGroup):
+        case let group as ParallelTestCaseAppKitPassedCaptureGroup:
             return formatParallelTestCaseAppKitPassed(group: group)
-        case (ParallelTestCaseFailedCaptureGroup.pattern, let group as ParallelTestCaseFailedCaptureGroup):
+        case let group as ParallelTestCaseFailedCaptureGroup:
             return formatParallelTestCaseFailed(group: group)
-        case (ParallelTestCasePassedCaptureGroup.pattern, let group as ParallelTestCasePassedCaptureGroup):
+        case let group as ParallelTestCasePassedCaptureGroup:
             return formatParallelTestCasePassed(group: group)
-        case (ParallelTestingFailedCaptureGroup.pattern, let group as ParallelTestingFailedCaptureGroup):
+        case let group as ParallelTestingFailedCaptureGroup:
             return formatParallelTestingFailed(line: line, group: group)
-        case (ParallelTestingPassedCaptureGroup.pattern, let group as ParallelTestingPassedCaptureGroup):
+        case let group as ParallelTestingPassedCaptureGroup:
             return formatParallelTestingPassed(line: line, group: group)
-        case (ParallelTestingStartedCaptureGroup.pattern, let group as ParallelTestingStartedCaptureGroup):
+        case let group as ParallelTestingStartedCaptureGroup:
             return formatParallelTestingStarted(line: line, group: group)
-        case (ParallelTestSuiteStartedCaptureGroup.pattern, let group as ParallelTestSuiteStartedCaptureGroup):
+        case let group as ParallelTestSuiteStartedCaptureGroup:
             return formatParallelTestSuiteStarted(group: group)
-        case (PbxcpCaptureGroup.pattern, let group as PbxcpCaptureGroup):
+        case let group as PbxcpCaptureGroup:
             return formatCopy(group: group)
-        case (PhaseScriptExecutionCaptureGroup.pattern, let group as PhaseScriptExecutionCaptureGroup):
+        case let group as PhaseScriptExecutionCaptureGroup:
             return formatPhaseScriptExecution(group: group)
-        case (PhaseSuccessCaptureGroup.pattern, let group as PhaseSuccessCaptureGroup):
+        case let group as PhaseSuccessCaptureGroup:
             return formatPhaseSuccess(group: group)
-        case (PodsErrorCaptureGroup.pattern, let group as PodsErrorCaptureGroup):
+        case let group as PodsErrorCaptureGroup:
             return formatError(group: group)
-        case (PreprocessCaptureGroup.pattern, _ as PreprocessCaptureGroup):
+        case is PreprocessCaptureGroup:
             return format(line: line, command: "Preprocessing", pattern: pattern, arguments: "$1")
-        case (ProcessInfoPlistCaptureGroup.pattern, let group as ProcessInfoPlistCaptureGroup):
+        case let group as ProcessInfoPlistCaptureGroup:
             return formatProcessInfoPlist(group: group)
-        case (ProcessPchCaptureGroup.pattern, let group as ProcessPchCaptureGroup):
+        case let group as ProcessPchCaptureGroup:
             return formatProcessPch(group: group)
-        case (ProcessPchCommandCaptureGroup.pattern, let group as ProcessPchCommandCaptureGroup):
+        case let group as ProcessPchCommandCaptureGroup:
             return formatProcessPchCommand(group: group)
-        case (ProvisioningProfileRequiredCaptureGroup.pattern, let group as ProvisioningProfileRequiredCaptureGroup):
+        case let group as ProvisioningProfileRequiredCaptureGroup:
             return formatError(group: group)
-        case (RestartingTestCaptureGroup.pattern, let group as RestartingTestCaptureGroup):
+        case let group as RestartingTestCaptureGroup:
             return formatRestartingTest(line: line, group: group)
-        case (ShellCommandCaptureGroup.pattern, let group as ShellCommandCaptureGroup):
+        case let group as ShellCommandCaptureGroup:
             return formatShellCommand(group: group)
-        case (SymbolReferencedFromCaptureGroup.pattern, _ as SymbolReferencedFromCaptureGroup):
+        case is SymbolReferencedFromCaptureGroup:
             return formatCompleteError(line: line)
-        case (TestCaseMeasuredCaptureGroup.pattern, let group as TestCaseMeasuredCaptureGroup):
+        case let group as TestCaseMeasuredCaptureGroup:
             return formatTestCaseMeasured(group: group)
-        case (TestCasePassedCaptureGroup.pattern, let group as TestCasePassedCaptureGroup):
+        case let group as TestCasePassedCaptureGroup:
             return formatTestCasePassed(group: group)
-        case (TestCasePendingCaptureGroup.pattern, let group as TestCasePendingCaptureGroup):
+        case let group as TestCasePendingCaptureGroup:
             return formatTestCasePending(group: group)
-        case (TestCaseStartedCaptureGroup.pattern, let group as TestCaseStartedCaptureGroup):
+        case let group as TestCaseStartedCaptureGroup:
             return formatTestCasesStarted(group: group)
-        case (TestsRunCompletionCaptureGroup.pattern, let group as TestsRunCompletionCaptureGroup):
+        case let group as TestsRunCompletionCaptureGroup:
             return formatTestsRunCompletion(group: group)
-        case (TestSuiteAllTestsFailedCaptureGroup.pattern, let group as TestSuiteAllTestsFailedCaptureGroup):
+        case let group as TestSuiteAllTestsFailedCaptureGroup:
             return formatTestSuiteAllTestsFailed(group: group)
-        case (TestSuiteAllTestsPassedCaptureGroup.pattern, let group as TestSuiteAllTestsPassedCaptureGroup):
+        case let group as TestSuiteAllTestsPassedCaptureGroup:
             return formatTestSuiteAllTestsPassed(group: group)
-        case (TestSuiteStartCaptureGroup.pattern, let group as TestSuiteStartCaptureGroup):
+        case let group as TestSuiteStartCaptureGroup:
             return formatTestSuiteStart(group: group)
-        case (TestSuiteStartedCaptureGroup.pattern, let group as TestSuiteStartedCaptureGroup):
+        case let group as TestSuiteStartedCaptureGroup:
             return formatTestSuiteStarted(group: group)
-        case (TIFFutilCaptureGroup.pattern, let group as TIFFutilCaptureGroup):
+        case let group as TIFFutilCaptureGroup:
             return formatTIFFUtil(group: group)
-        case (TouchCaptureGroup.pattern, let group as TouchCaptureGroup):
+        case let group as TouchCaptureGroup:
             return formatTouch(group: group)
-        case (UIFailingTestCaptureGroup.pattern, let group as UIFailingTestCaptureGroup):
+        case let group as UIFailingTestCaptureGroup:
             return formatUIFailingTest(group: group)
-        case (UndefinedSymbolLocationCaptureGroup.pattern, _ as UndefinedSymbolLocationCaptureGroup):
+        case is UndefinedSymbolLocationCaptureGroup:
             return formatCompleteWarning(line: line)
-        case (WillNotBeCodeSignedCaptureGroup.pattern, let group as WillNotBeCodeSignedCaptureGroup):
+        case let group as WillNotBeCodeSignedCaptureGroup:
             return formatWillNotBeCodesignWarning(group: group)
-        case (WriteAuxiliaryFilesCaptureGroup.pattern, let group as WriteAuxiliaryFilesCaptureGroup):
+        case let group as WriteAuxiliaryFilesCaptureGroup:
             return formatWriteAuxiliaryFiles(group: group)
-        case (WriteFileCaptureGroup.pattern, let group as WriteFileCaptureGroup):
+        case let group as WriteFileCaptureGroup:
             return formatWriteFile(group: group)
-        case (XcodebuildErrorCaptureGroup.pattern, let group as XcodebuildErrorCaptureGroup):
+        case let group as XcodebuildErrorCaptureGroup:
             return formatError(group: group)
-        case (_, _):
+        default:
             assertionFailure()
             return nil
         }
