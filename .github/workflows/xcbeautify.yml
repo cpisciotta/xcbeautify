@@ -15,7 +15,7 @@ jobs:
     name: Build on macOS
     runs-on: macOS-latest
     steps:
-      - uses: swift-actions/setup-swift@f51889efb55dccf13be0ee727e3d6c89a096fb4c
+      - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
       - uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
     name: Build on Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - uses: swift-actions/setup-swift@f51889efb55dccf13be0ee727e3d6c89a096fb4c
+      - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
       - uses: actions/checkout@v4
