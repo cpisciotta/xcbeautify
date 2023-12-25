@@ -126,13 +126,13 @@ public class Parser {
             // Some uncommon cases, which have additional logic and don't follow default flow
             
             if ExecutedWithoutSkippedCaptureGroup.regex.match(string: line) {
-                outputType = OutputType.task
+                outputType = ExecutedWithoutSkippedCaptureGroup.outputType
                 parseSummary(line: line, colored: colored, skipped: false)
                 return nil
             }
 
             if ExecutedWithSkippedCaptureGroup.regex.match(string: line) {
-                outputType = OutputType.task
+                outputType = ExecutedWithSkippedCaptureGroup.outputType
                 parseSummary(line: line, colored: colored, skipped: true)
                 return nil
             }
