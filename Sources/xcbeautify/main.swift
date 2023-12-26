@@ -1,1 +1,0 @@
-Xcbeautify.main()

@@ -2,7 +2,7 @@ import ArgumentParser
 import Foundation
 import XcbeautifyLib
 
-
+@main
 struct Xcbeautify: ParsableCommand {
     enum Report: String, ExpressibleByArgument {
         case junit
