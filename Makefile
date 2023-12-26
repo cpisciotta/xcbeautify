@@ -90,18 +90,12 @@ package: package-darwin-universal package-darwin-x86_64 package-darwin-arm64
 .PHONY: bump-version
 bump-version:
 	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
-	$(SED) -i '' "3s/.*/  s.version        = '$(VERSION)'/" xcbeautify.podspec
 
 .PHONY: release
 release: bump-version
-	$(GIT) commit Sources xcbeautify.podspec -m "Release version $(VERSION)"
 	$(GIT) push origin main
 	$(GIT) tag $(VERSION)
 	$(GIT) push origin $(VERSION)
-
-.PHONY: xcode
-xcode:
-	$(SWIFT) package generate-xcodeproj
 
 .PHONY: uninstall
 uninstall:
