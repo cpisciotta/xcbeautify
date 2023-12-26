@@ -3,6 +3,7 @@ import Foundation
 protocol CaptureGroup {
     static var outputType: OutputType { get }
     static var regex: XcbeautifyLib.Regex { get }
+    init?(groups: [String])
 }
 
 extension CaptureGroup {
@@ -49,6 +50,14 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     let filePath: String
     let fileName: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.fileName = fileName
+        self.target = target
+    }
 }
 
 struct BuildTargetCaptureGroup: TargetCaptureGroup {
@@ -63,6 +72,14 @@ struct BuildTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
+        self.target = target
+        self.project = project
+        self.configuration = configuration
+    }
 }
 
 struct AggregateTargetCaptureGroup: TargetCaptureGroup {
@@ -77,6 +94,14 @@ struct AggregateTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
+        self.target = target
+        self.project = project
+        self.configuration = configuration
+    }
 }
 
 struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
@@ -91,12 +116,27 @@ struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
+        self.target = target
+        self.project = project
+        self.configuration = configuration
+    }
 }
 
 /// Nothing returned here for now
 struct CheckDependenciesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Check dependencies"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct ShellCommandCaptureGroup: CaptureGroup {
@@ -109,6 +149,13 @@ struct ShellCommandCaptureGroup: CaptureGroup {
 
     let commandPath: String
     let arguments: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let commandPath = groups[safe: 0], let arguments = groups[safe: 1] else { return nil }
+        self.commandPath = commandPath
+        self.arguments = arguments
+    }
 }
 
 struct CleanRemoveCaptureGroup: CaptureGroup {
@@ -118,6 +165,12 @@ struct CleanRemoveCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Clean.Remove(.*)"#)
 
     let directory: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let directory = groups[safe: 0] else { return nil }
+        self.directory = directory.lastPathComponent
+    }
 }
 
 struct CleanTargetCaptureGroup: TargetCaptureGroup {
@@ -132,6 +185,14 @@ struct CleanTargetCaptureGroup: TargetCaptureGroup {
     let target: String
     let project: String
     let configuration: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
+        self.target = target
+        self.project = project
+        self.configuration = configuration
+    }
 }
 
 struct CodesignCaptureGroup: CaptureGroup {
@@ -142,6 +203,12 @@ struct CodesignCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^CodeSign\s(((?!.framework/Versions/A)(?:\ |[^ ]))*?)( \(in target '.*' from project '.*' at path '.*'\))?$"#)
 
     let file: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let file = groups[safe: 0] else { return nil }
+        self.file = file
+    }
 }
 
 struct CodesignFrameworkCaptureGroup: CaptureGroup {
@@ -152,29 +219,50 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^CodeSign\s((?:\ |[^ ])*.framework)\/Versions/A"#)
 
     let frameworkPath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let frameworkPath = groups[safe: 0] else { return nil }
+        self.frameworkPath = frameworkPath
+    }
 }
 
 struct CompileCaptureGroup: CompileFileCaptureGroup {
     static let outputType: OutputType = .task
     
 #if os(Linux)
-/// Regular expression captured groups:
-/// $1 = filename (e.g. KWNull.m)
-/// $2 = target
+    /// Regular expression captured groups:
+    /// $1 = filename (e.g. KWNull.m)
+    /// $2 = target
     static let regex = Regex(pattern: #"^\[\d+\/\d+\]\sCompiling\s([^ ]+)\s([^ \.]+\.(?:m|mm|c|cc|cpp|cxx|swift))"#)
 #else
-/// Regular expression captured groups:
-/// $1 = file path
-/// $2 = filename (e.g. KWNull.m)
-/// $3 = target
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = filename (e.g. KWNull.m)
+    /// $3 = target
     static let regex = Regex(pattern: #"^Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
 #endif
-    
+
 #if !os(Linux)
     let filePath: String
 #endif
     let filename: String
     let target: String
+
+    init?(groups: [String]) {
+#if os(Linux)
+        assert(groups.count >= 2)
+        guard let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        self.filename = fileName
+        self.target = target
+#else
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.filename = fileName
+        self.target = target
+#endif
+    }
 }
 
 struct CompileCommandCaptureGroup: CaptureGroup {
@@ -187,6 +275,13 @@ struct CompileCommandCaptureGroup: CaptureGroup {
 
     let compilerCommand: String
     let filePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let compilerCommand = groups[safe: 0], let filePath = groups[safe: 1] else { return nil }
+        self.compilerCommand = compilerCommand
+        self.filePath = filePath
+    }
 }
 
 struct CompileXibCaptureGroup: CompileFileCaptureGroup {
@@ -201,6 +296,14 @@ struct CompileXibCaptureGroup: CompileFileCaptureGroup {
     let filePath: String
     let filename: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.filename = fileName
+        self.target = target
+    }
 }
 
 struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
@@ -215,6 +318,14 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
     let filePath: String
     let filename: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.filename = fileName
+        self.target = target
+    }
 }
 
 struct CopyHeaderCaptureGroup: CopyCaptureGroup {
@@ -229,6 +340,14 @@ struct CopyHeaderCaptureGroup: CopyCaptureGroup {
     let file: String
     let targetFile: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let file = groups[safe: 0], let targetFile = groups[safe: 1], let target = groups.last else { return nil }
+        self.file = file.lastPathComponent
+        self.targetFile = targetFile
+        self.target = target
+    }
 }
 
 struct CopyPlistCaptureGroup: CopyCaptureGroup {
@@ -241,6 +360,13 @@ struct CopyPlistCaptureGroup: CopyCaptureGroup {
 
     let file: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let file = groups[safe: 0], let target = groups.last else { return nil }
+        self.file = file.lastPathComponent
+        self.target = target
+    }
 }
 
 struct CopyStringsCaptureGroup: CopyCaptureGroup {
@@ -252,6 +378,13 @@ struct CopyStringsCaptureGroup: CopyCaptureGroup {
 
     let file: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let file = groups[safe: 0], let target = groups.last else { return nil }
+        self.file = file.lastPathComponent
+        self.target = target
+    }
 }
 
 struct CpresourceCaptureGroup: CopyCaptureGroup {
@@ -263,6 +396,13 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 
     let file: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let file = groups[safe: 0], let target = groups.last else { return nil }
+        self.file = file.lastPathComponent
+        self.target = target
+    }
 }
 
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
@@ -280,6 +420,16 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     let numberOfFailures: Int
     let numberOfUnexpectedFailures: Int
     let wallClockTimeInSeconds: Double
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let _numberOfTests = groups[safe: 0], let _numberOfFailures = groups[safe: 1], let _numberOfUnexpectedFailures = groups[safe: 2], let _wallClockTimeInSeconds = groups[safe: 3] else { return nil }
+        guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
+        self.numberOfTests = numberOfTests
+        self.numberOfFailures = numberOfFailures
+        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
+        self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    }
 }
 
 struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
@@ -298,6 +448,17 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     let numberOfFailures: Int
     let numberOfUnexpectedFailures: Int
     let wallClockTimeInSeconds: Double
+
+    init?(groups: [String]) {
+        assert(groups.count >= 5)
+        guard let _numberOfTests = groups[safe: 0], let _numberOfSkipped = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
+        guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
+        self.numberOfTests = numberOfTests
+        self.numberOfSkipped = numberOfSkipped
+        self.numberOfFailures = numberOfFailures
+        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
+        self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    }
 }
 
 struct FailingTestCaptureGroup: CaptureGroup {
@@ -308,16 +469,25 @@ struct FailingTestCaptureGroup: CaptureGroup {
     /// $2 = test suite
     /// $3 = test case
     /// $4 = reason
-    #if os(Linux)
+#if os(Linux)
     static let regex = Regex(pattern: #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#)
-    #else
+#else
     static let regex = Regex(pattern: #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#)
-    #endif
+#endif
 
     let file: String
     let testSuite: String
     let testCase: String
     let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let file = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2], let reason = groups[safe: 3] else { return nil }
+        self.file = file
+        self.testSuite = testSuite
+        self.testCase = testCase
+        self.reason = reason
+    }
 }
 
 struct UIFailingTestCaptureGroup: CaptureGroup {
@@ -330,6 +500,13 @@ struct UIFailingTestCaptureGroup: CaptureGroup {
 
     let file: String
     let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let file = groups[safe: 0], let reason = groups[safe: 1] else { return nil }
+        self.file = file
+        self.reason = reason
+    }
 }
 
 struct RestartingTestCaptureGroup: CaptureGroup {
@@ -344,6 +521,14 @@ struct RestartingTestCaptureGroup: CaptureGroup {
     let testSuiteAndTestCase: String
     let testSuite: String
     let testCase: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let testSuiteAndTestCase = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2] else { return nil }
+        self.testSuiteAndTestCase = testSuiteAndTestCase
+        self.testSuite = testSuite
+        self.testCase = testCase
+    }
 }
 
 struct GenerateCoverageDataCaptureGroup: CaptureGroup {
@@ -352,6 +537,13 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = coverage report file path
     static let regex = Regex(pattern: #"^generating\s+coverage\s+data\.*"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
@@ -359,6 +551,12 @@ struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^generated\s+coverage\s+report:\s+(.+)"#)
 
     let coverageReportFilePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let coverageReportFilePath = groups[safe: 0] else { return nil }
+        self.coverageReportFilePath = coverageReportFilePath
+    }
 }
 
 struct GenerateDSYMCaptureGroup: CaptureGroup {
@@ -371,6 +569,13 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
 
     let dsym: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let dsym = groups[safe: 0], let target = groups.last else { return nil }
+        self.dsym = dsym
+        self.target = target
+    }
 }
 
 struct LibtoolCaptureGroup: CaptureGroup {
@@ -383,6 +588,13 @@ struct LibtoolCaptureGroup: CaptureGroup {
 
     let fileName: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let fileName = groups[safe: 0], let target = groups.last else { return nil }
+        self.fileName = fileName
+        self.target = target
+    }
 }
 
 struct LinkingCaptureGroup: CaptureGroup {
@@ -403,6 +615,19 @@ struct LinkingCaptureGroup: CaptureGroup {
     let binaryFilename: String
 #endif
     let target: String
+
+    init?(groups: [String]) {
+#if os(Linux)
+        assert(groups.count >= 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
+#else
+        assert(groups.count >= 2)
+        guard let binaryFileName = groups[safe: 0], let target = groups.last else { return nil }
+        self.binaryFilename = binaryFileName.lastPathComponent
+        self.target = target
+#endif
+    }
 }
 
 struct TestCasePassedCaptureGroup: CaptureGroup {
@@ -412,15 +637,23 @@ struct TestCasePassedCaptureGroup: CaptureGroup {
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
-    #if os(Linux)
+#if os(Linux)
     static let regex = Regex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#)
-    #else
-     static let regex = Regex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#)
-    #endif
+#else
+    static let regex = Regex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#)
+#endif
 
     let suite: String
     let testCase: String
     let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.time = time
+    }
 }
 
 struct TestCaseStartedCaptureGroup: CaptureGroup {
@@ -429,14 +662,21 @@ struct TestCaseStartedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
-    #if os(Linux)
+#if os(Linux)
     static let regex = Regex(pattern: #"^Test Case '(.*)\.(.*)' started at"#)
-    #else
+#else
     static let regex = Regex(pattern: #"^Test Case '-\[(.*?) (.*)\]' started.$"#)
-    #endif
+#endif
 
     let suite: String
     let testCase: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+    }
 }
 
 struct TestCasePendingCaptureGroup: CaptureGroup {
@@ -449,6 +689,13 @@ struct TestCasePendingCaptureGroup: CaptureGroup {
 
     let suite: String
     let testCase: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+    }
 }
 
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
@@ -457,11 +704,11 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
-    #if os(Linux)
+#if os(Linux)
     static let regex = Regex(pattern: #"^[^:]*:[^:]*:\sTest Case\s'(.*?)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#)
-    #else
+#else
     static let regex = Regex(pattern: #"^[^:]*:[^:]*:\sTest Case\s'-\[(.*?)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#)
-    #endif
+#endif
 
     let suite: String
     let testCase: String
@@ -469,6 +716,17 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     let unitName: String
     let value: String
     let deviation: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 6)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let name = groups[safe: 2], let unitName = groups[safe: 3], let value = groups[safe: 4], let deviation = groups[safe: 5] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.name = name
+        self.unitName = unitName
+        self.value = value
+        self.deviation = deviation
+    }
 }
 
 struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
@@ -485,6 +743,15 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
     let testCase: String
     let device: String
     let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.device = device
+        self.time = time
+    }
 }
 
 struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
@@ -499,6 +766,14 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
     let suite: String
     let testCase: String
     let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.time = time
+    }
 }
 
 struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
@@ -515,6 +790,15 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
     let testCase: String
     let device: String
     let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.device = device
+        self.time = time
+    }
 }
 
 struct ParallelTestingStartedCaptureGroup: CaptureGroup {
@@ -525,6 +809,12 @@ struct ParallelTestingStartedCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Testing\s+started\s+on\s+'(.*)'"#)
 
     let device: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let device = groups[safe: 0] else { return nil }
+        self.device = device
+    }
 }
 
 struct ParallelTestingPassedCaptureGroup: CaptureGroup {
@@ -535,6 +825,12 @@ struct ParallelTestingPassedCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Testing\s+passed\s+on\s+'(.*)'"#)
 
     let device: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let device = groups[safe: 0] else { return nil }
+        self.device = device
+    }
 }
 
 struct ParallelTestingFailedCaptureGroup: CaptureGroup {
@@ -545,6 +841,12 @@ struct ParallelTestingFailedCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Testing\s+failed\s+on\s+'(.*)'"#)
 
     let device: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let device = groups[safe: 0] else { return nil }
+        self.device = device
+    }
 }
 
 struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
@@ -557,6 +859,13 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
 
     let suite: String
     let device: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let suite = groups[safe: 0], let device = groups[safe: 1] else { return nil }
+        self.suite = suite
+        self.device = device
+    }
 }
 
 struct PhaseSuccessCaptureGroup: CaptureGroup {
@@ -564,6 +873,12 @@ struct PhaseSuccessCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^\*\*\s(.*)\sSUCCEEDED\s\*\*"#)
 
     let phase: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let phase = groups[safe: 0] else { return nil }
+        self.phase = phase
+    }
 }
 
 struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
@@ -576,6 +891,13 @@ struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
 
     let phaseName: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let phaseName = groups[safe: 0], let target = groups.last else { return nil }
+        self.phaseName = phaseName
+        self.target = target
+    }
 }
 
 struct ProcessPchCaptureGroup: CaptureGroup {
@@ -588,6 +910,13 @@ struct ProcessPchCaptureGroup: CaptureGroup {
 
     let file: String
     let buildTarget: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let file = groups[safe: 0], let buildTarget = groups.last else { return nil }
+        self.file = file
+        self.buildTarget = buildTarget
+    }
 }
 
 struct ProcessPchCommandCaptureGroup: CaptureGroup {
@@ -598,6 +927,12 @@ struct ProcessPchCommandCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#)
 
     let filePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let filePath = groups.last else { return nil }
+        self.filePath = filePath
+    }
 }
 
 struct PreprocessCaptureGroup: CaptureGroup {
@@ -608,6 +943,12 @@ struct PreprocessCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Preprocess\s(?:(?:\ |[^ ])*)\s((?:\ |[^ ])*)$"#)
 
     let file: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let file = groups[safe: 0] else { return nil }
+        self.file = file
+    }
 }
 
 struct PbxcpCaptureGroup: CopyCaptureGroup {
@@ -622,6 +963,14 @@ struct PbxcpCaptureGroup: CopyCaptureGroup {
     let file: String
     let targetFile: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let file = groups[safe: 0], let targetFile = groups[safe: 1], let target = groups.last else { return nil }
+        self.file = file.lastPathComponent
+        self.targetFile = targetFile
+        self.target = target
+    }
 }
 
 struct ProcessInfoPlistCaptureGroup: CaptureGroup {
@@ -636,6 +985,24 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
     let filePath: String
     let filename: String
     let target: String? // Xcode 10+
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1] else { return nil }
+
+        // TODO: Test with target included
+        if groups.count == 2 {
+            // Xcode 9 excludes target output
+            self.filePath = filePath
+            self.filename = fileName
+            self.target = nil
+        } else {
+            // Xcode 10+ includes target output
+            self.filePath = filePath
+            self.filename = fileName
+            self.target = groups.last
+        }
+    }
 }
 
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
@@ -645,15 +1012,23 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
     /// $1 = suite
     /// $2 = result
     /// $3 = time
-    #if os(Linux)
+#if os(Linux)
     static let regex = Regex(pattern: #"^\s*Test Suite '(.*)' (finished|passed|failed) at (.*)"#)
-    #else
+#else
     static let regex = Regex(pattern: #"^\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*)"#)
-    #endif
+#endif
 
     let suite: String
     let result: String
     let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let suite = groups[safe: 0], let result = groups[safe: 1], let time = groups[safe: 2] else { return nil }
+        self.suite = suite
+        self.result = result
+        self.time = time
+    }
 }
 
 struct TestSuiteStartedCaptureGroup: CaptureGroup {
@@ -662,14 +1037,21 @@ struct TestSuiteStartedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = time
-    #if os(Linux)
+#if os(Linux)
     static let regex = Regex(pattern: #"^\s*Test Suite '(.*)' started at(.*)"#)
-    #else
+#else
     static let regex = Regex(pattern: #"^\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' started at(.*)"#)
-    #endif
+#endif
 
     let suite: String
     let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let suite = groups[safe: 0], let time = groups[safe: 1] else { return nil }
+        self.suite = suite
+        self.time = time
+    }
 }
 
 struct TestSuiteStartCaptureGroup: CaptureGroup {
@@ -680,16 +1062,36 @@ struct TestSuiteStartCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^\s*Test Suite '(.*)' started at"#)
 
     let testSuiteName: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let testSuiteName = groups[safe: 0] else { return nil }
+        self.testSuiteName = testSuiteName
+    }
 }
 
 struct TestSuiteAllTestsPassedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
     static let regex = Regex(pattern: #"^\s*Test Suite 'All tests' passed at"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct TestSuiteAllTestsFailedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
     static let regex = Regex(pattern: #"^\s*Test Suite 'All tests' failed at"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct TIFFutilCaptureGroup: CaptureGroup {
@@ -700,6 +1102,12 @@ struct TIFFutilCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^TiffUtil\s(.*)"#)
 
     let filename: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let fileName = groups[safe: 0] else { return nil }
+        self.filename = fileName
+    }
 }
 
 struct TouchCaptureGroup: CaptureGroup {
@@ -712,6 +1120,13 @@ struct TouchCaptureGroup: CaptureGroup {
 
     let filename: String
     let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        self.filename = fileName
+        self.target = target
+    }
 }
 
 struct WriteFileCaptureGroup: CaptureGroup {
@@ -722,12 +1137,25 @@ struct WriteFileCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^write-file\s(.*)"#)
 
     let filePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let filePath = groups[safe: 0] else { return nil }
+        self.filePath = filePath
+    }
 }
 
 struct WriteAuxiliaryFilesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     static let regex = Regex(pattern: #"^Write auxiliary files"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct CompileWarningCaptureGroup: CaptureGroup {
@@ -742,6 +1170,14 @@ struct CompileWarningCaptureGroup: CaptureGroup {
     let filePath: String
     let filename: String
     let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.filename = fileName
+        self.reason = reason
+    }
 }
 
 struct LDWarningCaptureGroup: CaptureGroup {
@@ -754,6 +1190,13 @@ struct LDWarningCaptureGroup: CaptureGroup {
 
     let ldPrefix: String
     let warningMessage: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let ldPrefix = groups[safe: 0], let warningMessage = groups[safe: 1] else { return nil }
+        self.ldPrefix = ldPrefix
+        self.warningMessage = warningMessage
+    }
 }
 
 struct GenericWarningCaptureGroup: CaptureGroup {
@@ -764,6 +1207,12 @@ struct GenericWarningCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^warning:\s(.*)$"#)
 
     let wholeWarning: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeWarning = groups[safe: 0] else { return nil }
+        self.wholeWarning = wholeWarning
+    }
 }
 
 struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
@@ -774,6 +1223,12 @@ struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(.* will not be code signed because .*)$"#)
 
     let wholeWarning: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeWarning = groups[safe: 0] else { return nil }
+        self.wholeWarning = wholeWarning
+    }
 }
 
 struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
@@ -784,6 +1239,12 @@ struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^[\d\s-:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$"#)
 
     let warningMessage: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeMessage = groups[safe: 0] else { return nil }
+        self.warningMessage = wholeMessage
+    }
 }
 
 struct ClangErrorCaptureGroup: ErrorCaptureGroup {
@@ -794,6 +1255,12 @@ struct ClangErrorCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(clang: error:.*)$"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
@@ -804,6 +1271,12 @@ struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(Code\s?Sign error:.*|Code signing is required for product type .* in SDK .*|No profile matching .* found:.*|Provisioning profile .* doesn't .*|Swift is unavailable on .*|.?Use Legacy Swift Language Version.*)$"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups.first else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
@@ -814,6 +1287,12 @@ struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(.*requires a provisioning profile.*)$"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct NoCertificateCaptureGroup: ErrorCaptureGroup {
@@ -824,6 +1303,12 @@ struct NoCertificateCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(No certificate matching.*)$"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct CompileErrorCaptureGroup: CaptureGroup {
@@ -838,6 +1323,14 @@ struct CompileErrorCaptureGroup: CaptureGroup {
     let filePath: String
     let isFatalError: String
     let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let isFatalError = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.isFatalError = isFatalError
+        self.reason = reason
+    }
 }
 
 struct CursorCaptureGroup: CaptureGroup {
@@ -848,6 +1341,12 @@ struct CursorCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^([\s~]*\^[\s~]*)$"#)
 
     let cursor: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let cursor = groups[safe: 0] else { return nil }
+        self.cursor = cursor
+    }
 }
 
 struct FatalErrorCaptureGroup: ErrorCaptureGroup {
@@ -859,6 +1358,12 @@ struct FatalErrorCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(fatal error:.*)$"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct FileMissingErrorCaptureGroup: CaptureGroup {
@@ -871,6 +1376,13 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
 
     let reason: String
     let filePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let reason = groups[safe: 0], let filePath = groups[safe: 1] else { return nil }
+        self.reason = reason
+        self.filePath = filePath
+    }
 }
 
 struct LDErrorCaptureGroup: ErrorCaptureGroup {
@@ -881,6 +1393,12 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(ld:.*)"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
@@ -891,6 +1409,12 @@ struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^\s+(\/.*\.o[\)]?)$"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
@@ -901,6 +1425,12 @@ struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(duplicate symbol .*):$"#)
 
     let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let reason = groups[safe: 0] else { return nil }
+        self.reason = reason
+    }
 }
 
 struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
@@ -911,6 +1441,12 @@ struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(.* in .*\.o)$"#)
 
     let symbolLocation: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let symbolLocation = groups[safe: 0] else { return nil }
+        self.symbolLocation = symbolLocation
+    }
 }
 
 struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
@@ -921,6 +1457,12 @@ struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(Undefined symbols for architecture .*):$"#)
 
     let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let reason = groups[safe: 0] else { return nil }
+        self.reason = reason
+    }
 }
 
 struct PodsErrorCaptureGroup: ErrorCaptureGroup {
@@ -931,6 +1473,12 @@ struct PodsErrorCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(error:\s.*)"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct SymbolReferencedFromCaptureGroup: CaptureGroup {
@@ -941,6 +1489,12 @@ struct SymbolReferencedFromCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"\s+\"(.*)\", referenced from:$"#)
 
     let reference: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let reference = groups[safe: 0] else { return nil }
+        self.reference = reference
+    }
 }
 
 struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
@@ -951,6 +1505,12 @@ struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#)
 
     let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
 }
 
 struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
@@ -962,6 +1522,13 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
 
     let target: String
     let filename: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let target = groups[safe: 0], let fileName = groups[safe: 1] else { return nil }
+        self.target = target
+        self.filename = fileName
+    }
 }
 
 struct PackageFetchingCaptureGroup: CaptureGroup {
@@ -969,6 +1536,12 @@ struct PackageFetchingCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Fetching from (.*?)$"#)
 
     let source: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let source = groups[safe: 0] else { return nil }
+        self.source = source
+    }
 }
 
 struct PackageUpdatingCaptureGroup: CaptureGroup {
@@ -976,6 +1549,12 @@ struct PackageUpdatingCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Updating from (.*?)$"#)
 
     let source: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let source = groups[safe: 0] else { return nil }
+        self.source = source
+    }
 }
 
 struct PackageCheckingOutCaptureGroup: CaptureGroup {
@@ -984,16 +1563,37 @@ struct PackageCheckingOutCaptureGroup: CaptureGroup {
 
     let version: String
     let package: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let version = groups[safe: 0], let package = groups[safe: 1] else { return nil }
+        self.version = version
+        self.package = package
+    }
 }
 
 struct PackageGraphResolvingStartCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^\s*Resolve Package Graph\s*$"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct PackageGraphResolvingEndedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
     static let regex = Regex(pattern: #"^Resolved source packages:$"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
 }
 
 struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
@@ -1008,6 +1608,14 @@ struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
     let packageName: String
     let packageURL: String
     let packageVersion: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let packageName = groups[safe: 0], let packageURL = groups[safe: 1], let packageVersion = groups[safe: 2] else { return nil }
+        self.packageName = packageName
+        self.packageURL = packageURL
+        self.packageVersion = packageVersion
+    }
 }
 
 struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
@@ -1018,5 +1626,10 @@ struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
     static let regex = Regex(pattern: #"^(xcodebuild: error:.*)$"#)
 
     let wholeError: String
-}
 
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
