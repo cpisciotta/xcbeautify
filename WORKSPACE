@@ -32,7 +32,7 @@ http_archive(
 http_archive(
     name = "ArgumentParser",
     build_file = "//external:External.BUILD",
-    sha256 = "11753416686351748d61acfa86751335a7eb9293d96fc34bbef845884b4e1035",
-    strip_prefix = "swift-argument-parser-1.2.2",
-    url = "https://github.com/apple/swift-argument-parser/archive/1.2.2.zip",
+    sha256 = "936b05940edb71658b0995ff14a6bc5c6352ec858f00c0ca76555e06e7780797",
+    strip_prefix = "swift-argument-parser-1.3.0",
+    url = "https://github.com/apple/swift-argument-parser/archive/1.3.0.zip",
 )
