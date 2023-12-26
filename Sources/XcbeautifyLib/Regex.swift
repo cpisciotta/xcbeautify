@@ -1,13 +1,13 @@
 import Foundation
 
 class Regex {
-    let pattern: Pattern
+    let pattern: String
 
     private lazy var regex: NSRegularExpression? = {
-        return try? NSRegularExpression(pattern: "^" + pattern.rawValue, options: [.caseInsensitive])
+        return try? NSRegularExpression(pattern: "^" + pattern, options: [.caseInsensitive])
     }()
 
-    fileprivate init(pattern: Pattern) {
+    init(pattern: String) {
         self.pattern = pattern
     }
 
@@ -15,91 +15,4 @@ class Regex {
         let fullRange = NSRange(string.startIndex..., in: string)
         return regex?.rangeOfFirstMatch(in: string, range: fullRange).location != NSNotFound
     }
-}
-
-extension Regex {
-    static let aggregateTarget = Regex(pattern: .aggregateTarget)
-    static let analyze = Regex(pattern: .analyze)
-    static let analyzeTarget = Regex(pattern: .analyzeTarget)
-    static let buildTarget = Regex(pattern: .buildTarget)
-    static let checkDependenciesErrors = Regex(pattern: .checkDependenciesErrors)
-    static let checkDependencies = Regex(pattern: .checkDependencies)
-    static let clangError = Regex(pattern: .clangError)
-    static let cleanRemove = Regex(pattern: .cleanRemove)
-    static let cleanTarget = Regex(pattern: .cleanTarget)
-    static let codesignFramework = Regex(pattern: .codesignFramework)
-    static let codesign = Regex(pattern: .codesign)
-    static let compileCommand = Regex(pattern: .compileCommand)
-    static let compileError = Regex(pattern: .compileError)
-    static let compile = Regex(pattern: .compile)
-    static let compileStoryboard = Regex(pattern: .compileStoryboard)
-    static let compileWarning = Regex(pattern: .compileWarning)
-    static let compileXib = Regex(pattern: .compileXib)
-    static let copyHeader = Regex(pattern: .copyHeader)
-    static let copyPlist = Regex(pattern: .copyPlist)
-    static let copyStrings = Regex(pattern: .copyStrings)
-    static let cpresource = Regex(pattern: .cpresource)
-    static let cursor = Regex(pattern: .cursor)
-    static let duplicateLocalizedStringKey = Regex(pattern: .duplicateLocalizedStringKey)
-    static let executedWithoutSkipped = Regex(pattern: .executedWithoutSkipped)
-    static let executedWithSkipped = Regex(pattern: .executedWithSkipped)
-    static let failingTest = Regex(pattern: .failingTest)
-    static let fatalError = Regex(pattern: .fatalError)
-    static let fileMissingError = Regex(pattern: .fileMissingError)
-    static let generateCoverageData = Regex(pattern: .generateCoverageData)
-    static let generatedCoverageReport = Regex(pattern: .generatedCoverageReport)
-    static let generateDsym = Regex(pattern: .generateDsym)
-    static let genericWarning = Regex(pattern: .genericWarning)
-    static let ldError = Regex(pattern: .ldError)
-    static let ldWarning = Regex(pattern: .ldWarning)
-    static let libtool = Regex(pattern: .libtool)
-    static let linkerDuplicateSymbolsLocation = Regex(pattern: .linkerDuplicateSymbolsLocation)
-    static let linkerDuplicateSymbols = Regex(pattern: .linkerDuplicateSymbols)
-    static let linkerUndefinedSymbolLocation = Regex(pattern: .linkerUndefinedSymbolLocation)
-    static let linkerUndefinedSymbols = Regex(pattern: .linkerUndefinedSymbols)
-    static let linking = Regex(pattern: .linking)
-    static let moduleIncludesError = Regex(pattern: .moduleIncludesError)
-    static let noCertificate = Regex(pattern: .noCertificate)
-    static let packageFetching = Regex(pattern: .packageFetching)
-    static let packageUpdating = Regex(pattern: .packageUpdating)
-    static let packageCheckingOut = Regex(pattern: .packageCheckingOut)
-    static let packageGraphResolvingStart = Regex(pattern: .packageGraphResolvingStart)
-    static let packageGraphResolvingEnded = Regex(pattern: .packageGraphResolvingEnded)
-    static let packageGraphResolvedItem = Regex(pattern: .packageGraphResolvedItem)
-    static let parallelTestCaseFailed = Regex(pattern: .parallelTestCaseFailed)
-    static let parallelTestCasePassed = Regex(pattern: .parallelTestCasePassed)
-    static let parallelTestCaseAppKitPassed = Regex(pattern: .parallelTestCaseAppKitPassed)
-    static let parallelTestingStarted = Regex(pattern: .parallelTestingStarted)
-    static let parallelTestingPassed = Regex(pattern: .parallelTestingPassed)
-    static let parallelTestingFailed = Regex(pattern: .parallelTestingFailed)
-    static let parallelTestSuiteStarted = Regex(pattern: .parallelTestSuiteStarted)
-    static let pbxcp = Regex(pattern: .pbxcp)
-    static let phaseScriptExecution = Regex(pattern: .phaseScriptExecution)
-    static let phaseSuccess = Regex(pattern: .phaseSuccess)
-    static let podsError = Regex(pattern: .podsError)
-    static let preprocess = Regex(pattern: .preprocess)
-    static let processInfoPlist = Regex(pattern: .processInfoPlist)
-    static let processPchCommand = Regex(pattern: .processPchCommand)
-    static let processPch = Regex(pattern: .processPch)
-    static let provisioningProfileRequired = Regex(pattern: .provisioningProfileRequired)
-    static let restartingTest = Regex(pattern: .restartingTest)
-    static let shellCommand = Regex(pattern: .shellCommand)
-    static let symbolReferencedFrom = Regex(pattern: .symbolReferencedFrom)
-    static let testCaseMeasured = Regex(pattern: .testCaseMeasured)
-    static let testCasePassed = Regex(pattern: .testCasePassed)
-    static let testCasePending = Regex(pattern: .testCasePending)
-    static let testCaseStarted = Regex(pattern: .testCaseStarted)
-    static let testSuiteStart = Regex(pattern: .testSuiteStart)
-    static let testSuiteStarted = Regex(pattern: .testSuiteStarted)
-    static let testSuiteAllTestsPassed = Regex(pattern: .testSuiteAllTestsPassed)
-    static let testSuiteAllTestsFailed = Regex(pattern: .testSuiteAllTestsFailed)
-    static let testsRunCompletion = Regex(pattern: .testsRunCompletion)
-    static let tiffutil = Regex(pattern: .tiffutil)
-    static let touch = Regex(pattern: .touch)
-    static let uiFailingTest = Regex(pattern: .uiFailingTest)
-    static let undefinedSymbolLocation = Regex(pattern: .undefinedSymbolLocation)
-    static let willNotBeCodeSigned = Regex(pattern: .willNotBeCodeSigned)
-    static let writeAuxiliaryFiles = Regex(pattern: .writeAuxiliaryFiles)
-    static let writeFile = Regex(pattern: .writeFile)
-    static let xcodebuildError = Regex(pattern: .xcodebuildError)
 }

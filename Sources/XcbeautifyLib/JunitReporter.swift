@@ -18,66 +18,64 @@ public final class JunitReporter {
     public func add(line: String) {
         // Remove any preceding or excessive spaces
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
-        switch line {
-        // Capture standard output
-        case Regex.failingTest:
-            guard let testCase = generateFailingTest(line: line) else { break }
+
+        if FailingTestCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateFailingTest(line: line) else { return }
             components.append(.failingTest(testCase))
-        case Regex.restartingTest:
-            guard let testCase = generateRestartingTest(line: line) else { break }
+        } else if RestartingTestCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateRestartingTest(line: line) else { return }
             components.append(.failingTest(testCase))
-        case Regex.testCasePassed:
-            guard let testCase = generatePassingTest(line: line) else { break }
+        } else if TestCasePassedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generatePassingTest(line: line) else { return }
             components.append(.testCasePassed(testCase))
-        case Regex.testSuiteStart:
-            guard let testStart = generateSuiteStart(line: line) else { break }
+        } else if TestSuiteStartCaptureGroup.regex.match(string: line) {
+            guard let testStart = generateSuiteStart(line: line) else { return }
             components.append(.testSuiteStart(testStart))
-        // Capture parallel output
-        case Regex.parallelTestCaseFailed:
-            guard let testCase = generateParallelFailingTest(line: line) else { break }
+        } else if ParallelTestCaseFailedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateParallelFailingTest(line: line) else { return }
             parallelComponents.append(.failingTest(testCase))
-        case Regex.parallelTestCasePassed:
-            guard let testCase = generatePassingParallelTest(line: line) else { break }
+        } else if ParallelTestCasePassedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generatePassingParallelTest(line: line) else { return }
             parallelComponents.append(.testCasePassed(testCase))
-        default:
+        } else {
             // Not needed for generating a junit report
-            break
+            return
         }
     }
 
     private func generateFailingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .failingTest) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: FailingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? FailingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
     
     private func generateRestartingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .restartingTest) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: RestartingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? RestartingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: line))
     }
 
     private func generateParallelFailingTest(line: String) -> TestCase? {
         // Parallel tests do not provide meaningful failure messages
-        guard let _group: CaptureGroup = line.captureGroup(with: .parallelTestCaseFailed) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCaseFailedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCaseFailedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
     }
 
     private func generatePassingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .testCasePassed) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: TestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
 
     private func generatePassingParallelTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .parallelTestCasePassed) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
   
     private func generateSuiteStart(line: String) -> String? {
-        guard let _group: CaptureGroup = line.captureGroup(with: .testSuiteStart) else { return nil }
+        guard let _group: CaptureGroup = line.captureGroup(with: TestSuiteStartCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestSuiteStartCaptureGroup else { return nil }
         return group.testSuiteName
     }
