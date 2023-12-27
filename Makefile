@@ -87,12 +87,11 @@ install: build
 .PHONY: package
 package: package-darwin-universal package-darwin-x86_64 package-darwin-arm64
 
-.PHONY: bump-version
-bump-version:
-	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
-
 .PHONY: release
-release: bump-version
+release:
+	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
+	$(GIT) add Sources/xcbeautify/Version.swift
+	$(GIT) commit -m "Bump version to $(VERSION)"
 	$(GIT) push origin main
 	$(GIT) tag $(VERSION)
 	$(GIT) push origin $(VERSION)
