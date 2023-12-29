@@ -23,6 +23,13 @@ body:
     validations:
       required: false
   - type: textarea
+    id: suggested-output
+    attributes:
+      label: Suggested Output
+      description: If you have a suggestion about how xcbeautify should format this xcodebuild output, please add it here.
+    validations:
+      required: false
+  - type: textarea
     id: context
     attributes:
       label: Additional Context
