@@ -1,0 +1,31 @@
+name: New Output
+description: Use this template to report xcodebuild output that is not captured by xcbeautify.
+title: "[New Output] "
+labels: ["uncaptured output"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this report! Please provide information about the uncaptured xcodebuild output.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's the uncaptured output?
+      description: Please copy and paste the individual xcodebuild output here. If there's more than one, please submit separate reports.
+      placeholder: Add the xcodebuild output here.
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-regex
+    attributes:
+      label: Suggested Regex
+      description: xcodebuild output is formatted using different regular expressions. If you have a suggested regular expression, please add it here.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Please provide any additional information that would be helpful when supporting this output.
+    validations:
+      required: false
