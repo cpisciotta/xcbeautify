@@ -1336,7 +1336,7 @@ struct CompileErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
-    /// $1 = file path (could be a relative path if you build with Bazel)
+    /// $1 = file path
     /// $2 = is fatal error
     /// $3 = reason
     static let regex = Regex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(.*)$"#)

@@ -22,7 +22,6 @@ Similar to `xcpretty`, but faster.
 - [x] Supports the new build system's output.
 - [x] Supports Xcode's parallel testing output.
 - [x] Supports formatting Swift Package Manager output.
-- [x] Supports formatting Bazel output.
 - [x] Supports generating JUnit reports.
 - [x] Supports macOS & Linux.
 - [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
@@ -112,16 +111,6 @@ NSUnbufferedIO=YES xcodebuild [flags] 2>&1 | xcbeautify
 swift test [flags] 2>&1 | xcbeautify
 ```
 
-Parse Bazel's building and testing output:
-
-```sh
-set -o pipefail && bazel build //path/to/package:target 2>&1 | xcbeautify
-```
-
-```sh
-set -o pipefail && bazel test //path/to/package:target 2>&1 | xcbeautify
-```
-
 ### GitHub Actions
 
 | ![GitHub Actions Summary](assets/gh-summary.png) |
@@ -144,12 +133,6 @@ Generate Xcode project:
 
 ```sh
 make xcode
-```
-
-Build with Bazel:
-
-```sh
-bazel build //Sources/xcbeautify
 ```
 
 Release a new version, e.g. `x.y.z`:
