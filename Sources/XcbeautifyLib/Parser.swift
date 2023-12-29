@@ -14,87 +14,87 @@ public class Parser {
 
     public var outputType: OutputType = OutputType.undefined
     
-    private lazy var innerParsers: [InnerParser] = [
-        innerParser(captureGroup: AnalyzeCaptureGroup.self),
-        innerParser(captureGroup: BuildTargetCaptureGroup.self),
-        innerParser(captureGroup: AggregateTargetCaptureGroup.self),
-        innerParser(captureGroup: AnalyzeTargetCaptureGroup.self),
-        innerParser(captureGroup: CheckDependenciesCaptureGroup.self),
-        innerParser(captureGroup: CleanRemoveCaptureGroup.self),
-        innerParser(captureGroup: CleanTargetCaptureGroup.self),
-        innerParser(captureGroup: CodesignFrameworkCaptureGroup.self),
-        innerParser(captureGroup: CodesignCaptureGroup.self),
-        innerParser(captureGroup: CompileCaptureGroup.self),
-        innerParser(captureGroup: CompileCommandCaptureGroup.self),
-        innerParser(captureGroup: CompileXibCaptureGroup.self),
-        innerParser(captureGroup: CompileStoryboardCaptureGroup.self),
-        innerParser(captureGroup: CopyHeaderCaptureGroup.self),
-        innerParser(captureGroup: CopyPlistCaptureGroup.self),
-        innerParser(captureGroup: CopyStringsCaptureGroup.self),
-        innerParser(captureGroup: CpresourceCaptureGroup.self),
-        innerParser(captureGroup: FailingTestCaptureGroup.self),
-        innerParser(captureGroup: UIFailingTestCaptureGroup.self),
-        innerParser(captureGroup: RestartingTestCaptureGroup.self),
-        innerParser(captureGroup: GenerateCoverageDataCaptureGroup.self),
-        innerParser(captureGroup: GeneratedCoverageReportCaptureGroup.self),
-        innerParser(captureGroup: GenerateDSYMCaptureGroup.self),
-        innerParser(captureGroup: LibtoolCaptureGroup.self),
-        innerParser(captureGroup: LinkingCaptureGroup.self),
-        innerParser(captureGroup: TestCasePassedCaptureGroup.self),
-        innerParser(captureGroup: TestCaseStartedCaptureGroup.self),
-        innerParser(captureGroup: TestCasePendingCaptureGroup.self),
-        innerParser(captureGroup: TestCaseMeasuredCaptureGroup.self),
-        innerParser(captureGroup: PhaseSuccessCaptureGroup.self),
-        innerParser(captureGroup: PhaseScriptExecutionCaptureGroup.self),
-        innerParser(captureGroup: ProcessPchCaptureGroup.self),
-        innerParser(captureGroup: ProcessPchCommandCaptureGroup.self),
-        innerParser(captureGroup: PreprocessCaptureGroup.self),
-        innerParser(captureGroup: PbxcpCaptureGroup.self),
-        innerParser(captureGroup: ProcessInfoPlistCaptureGroup.self),
-        innerParser(captureGroup: TestsRunCompletionCaptureGroup.self),
-        innerParser(captureGroup: TestSuiteStartedCaptureGroup.self),
-        innerParser(captureGroup: TestSuiteStartCaptureGroup.self),
-        innerParser(captureGroup: TIFFutilCaptureGroup.self),
-        innerParser(captureGroup: TouchCaptureGroup.self),
-        innerParser(captureGroup: WriteFileCaptureGroup.self),
-        innerParser(captureGroup: WriteAuxiliaryFilesCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestCasePassedCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestCaseAppKitPassedCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestingStartedCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestingPassedCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestSuiteStartedCaptureGroup.self),
-        innerParser(captureGroup: LDWarningCaptureGroup.self),
-        innerParser(captureGroup: CompileWarningCaptureGroup.self),
-        innerParser(captureGroup: GenericWarningCaptureGroup.self),
-        innerParser(captureGroup: WillNotBeCodeSignedCaptureGroup.self),
-        innerParser(captureGroup: ClangErrorCaptureGroup.self),
-        innerParser(captureGroup: CheckDependenciesErrorsCaptureGroup.self),
-        innerParser(captureGroup: ProvisioningProfileRequiredCaptureGroup.self),
-        innerParser(captureGroup: NoCertificateCaptureGroup.self),
-        innerParser(captureGroup: FileMissingErrorCaptureGroup.self),
-        innerParser(captureGroup: XcodebuildErrorCaptureGroup.self),
-        innerParser(captureGroup: CompileErrorCaptureGroup.self),
-        innerParser(captureGroup: CursorCaptureGroup.self),
-        innerParser(captureGroup: FatalErrorCaptureGroup.self),
-        innerParser(captureGroup: LDErrorCaptureGroup.self),
-        innerParser(captureGroup: LinkerDuplicateSymbolsLocationCaptureGroup.self),
-        innerParser(captureGroup: LinkerDuplicateSymbolsCaptureGroup.self),
-        innerParser(captureGroup: LinkerUndefinedSymbolLocationCaptureGroup.self),
-        innerParser(captureGroup: LinkerUndefinedSymbolsCaptureGroup.self),
-        innerParser(captureGroup: PodsErrorCaptureGroup.self),
-        innerParser(captureGroup: SymbolReferencedFromCaptureGroup.self),
-        innerParser(captureGroup: ModuleIncludesErrorCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestingFailedCaptureGroup.self),
-        innerParser(captureGroup: ParallelTestCaseFailedCaptureGroup.self),
-        innerParser(captureGroup: ShellCommandCaptureGroup.self),
-        innerParser(captureGroup: UndefinedSymbolLocationCaptureGroup.self),
-        innerParser(captureGroup: PackageFetchingCaptureGroup.self),
-        innerParser(captureGroup: PackageUpdatingCaptureGroup.self),
-        innerParser(captureGroup: PackageCheckingOutCaptureGroup.self),
-        innerParser(captureGroup: PackageGraphResolvingStartCaptureGroup.self),
-        innerParser(captureGroup: PackageGraphResolvingEndedCaptureGroup.self),
-        innerParser(captureGroup: PackageGraphResolvedItemCaptureGroup.self),
-        innerParser(captureGroup: DuplicateLocalizedStringKeyCaptureGroup.self),
+    private lazy var captureGroupTypes: [CaptureGroup.Type] = [
+        AnalyzeCaptureGroup.self,
+        BuildTargetCaptureGroup.self,
+        AggregateTargetCaptureGroup.self,
+        AnalyzeTargetCaptureGroup.self,
+        CheckDependenciesCaptureGroup.self,
+        CleanRemoveCaptureGroup.self,
+        CleanTargetCaptureGroup.self,
+        CodesignFrameworkCaptureGroup.self,
+        CodesignCaptureGroup.self,
+        CompileCaptureGroup.self,
+        CompileCommandCaptureGroup.self,
+        CompileXibCaptureGroup.self,
+        CompileStoryboardCaptureGroup.self,
+        CopyHeaderCaptureGroup.self,
+        CopyPlistCaptureGroup.self,
+        CopyStringsCaptureGroup.self,
+        CpresourceCaptureGroup.self,
+        FailingTestCaptureGroup.self,
+        UIFailingTestCaptureGroup.self,
+        RestartingTestCaptureGroup.self,
+        GenerateCoverageDataCaptureGroup.self,
+        GeneratedCoverageReportCaptureGroup.self,
+        GenerateDSYMCaptureGroup.self,
+        LibtoolCaptureGroup.self,
+        LinkingCaptureGroup.self,
+        TestCasePassedCaptureGroup.self,
+        TestCaseStartedCaptureGroup.self,
+        TestCasePendingCaptureGroup.self,
+        TestCaseMeasuredCaptureGroup.self,
+        PhaseSuccessCaptureGroup.self,
+        PhaseScriptExecutionCaptureGroup.self,
+        ProcessPchCaptureGroup.self,
+        ProcessPchCommandCaptureGroup.self,
+        PreprocessCaptureGroup.self,
+        PbxcpCaptureGroup.self,
+        ProcessInfoPlistCaptureGroup.self,
+        TestsRunCompletionCaptureGroup.self,
+        TestSuiteStartedCaptureGroup.self,
+        TestSuiteStartCaptureGroup.self,
+        TIFFutilCaptureGroup.self,
+        TouchCaptureGroup.self,
+        WriteFileCaptureGroup.self,
+        WriteAuxiliaryFilesCaptureGroup.self,
+        ParallelTestCasePassedCaptureGroup.self,
+        ParallelTestCaseAppKitPassedCaptureGroup.self,
+        ParallelTestingStartedCaptureGroup.self,
+        ParallelTestingPassedCaptureGroup.self,
+        ParallelTestSuiteStartedCaptureGroup.self,
+        LDWarningCaptureGroup.self,
+        CompileWarningCaptureGroup.self,
+        GenericWarningCaptureGroup.self,
+        WillNotBeCodeSignedCaptureGroup.self,
+        ClangErrorCaptureGroup.self,
+        CheckDependenciesErrorsCaptureGroup.self,
+        ProvisioningProfileRequiredCaptureGroup.self,
+        NoCertificateCaptureGroup.self,
+        FileMissingErrorCaptureGroup.self,
+        XcodebuildErrorCaptureGroup.self,
+        CompileErrorCaptureGroup.self,
+        CursorCaptureGroup.self,
+        FatalErrorCaptureGroup.self,
+        LDErrorCaptureGroup.self,
+        LinkerDuplicateSymbolsLocationCaptureGroup.self,
+        LinkerDuplicateSymbolsCaptureGroup.self,
+        LinkerUndefinedSymbolLocationCaptureGroup.self,
+        LinkerUndefinedSymbolsCaptureGroup.self,
+        PodsErrorCaptureGroup.self,
+        SymbolReferencedFromCaptureGroup.self,
+        ModuleIncludesErrorCaptureGroup.self,
+        ParallelTestingFailedCaptureGroup.self,
+        ParallelTestCaseFailedCaptureGroup.self,
+        ShellCommandCaptureGroup.self,
+        UndefinedSymbolLocationCaptureGroup.self,
+        PackageFetchingCaptureGroup.self,
+        PackageUpdatingCaptureGroup.self,
+        PackageCheckingOutCaptureGroup.self,
+        PackageGraphResolvingStartCaptureGroup.self,
+        PackageGraphResolvingEndedCaptureGroup.self,
+        PackageGraphResolvedItemCaptureGroup.self,
+        DuplicateLocalizedStringKeyCaptureGroup.self,
     ]
     
     // MARK: - Init
@@ -121,8 +121,8 @@ public class Parser {
     public func parse(line: String) -> String? {
         
         // Find first parser that can parse specified string
-        guard let idx = innerParsers.firstIndex(where: { $0.regex.match(string: line)}) else {
-            
+        guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line)}) else {
+
             // Some uncommon cases, which have additional logic and don't follow default flow
             
             if ExecutedWithoutSkippedCaptureGroup.regex.match(string: line) {
@@ -151,16 +151,24 @@ public class Parser {
             outputType = OutputType.undefined
             return preserveUnbeautifiedLines ? line : nil
         }
-        
-        let parser = innerParsers[idx]
-        
-        let result = parser.parse(line: line)
-        outputType = result.outputType
-        
+
+        guard let captureGroupType = captureGroupTypes[safe: idx] else {
+            assertionFailure()
+            return nil
+        }
+
+        let formattedOutput = renderer.beautify(
+            line: line,
+            pattern: captureGroupType.pattern,
+            additionalLines: additionalLines
+        )
+
+        outputType = captureGroupType.outputType
+
         // Move found parser to the top, so next time it will be checked first
-        innerParsers.insert(innerParsers.remove(at: idx), at: 0)
-        
-        return result.value
+        captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
+
+        return formattedOutput
     }
 
     public func formattedSummary() -> String? {
@@ -184,39 +192,6 @@ public class Parser {
             unexpectedCount: group.numberOfUnexpectedFailures,
             time: group.wallClockTimeInSeconds
         )
-    }
-
-    private func innerParser(captureGroup: CaptureGroup.Type) -> InnerParser {
-        return InnerParser(
-            additionalLines: additionalLines,
-            renderer: renderer,
-            regex: captureGroup.regex,
-            outputType: captureGroup.outputType
-        )
-    }
-    
-    private struct InnerParser {
-        
-        fileprivate struct Result {
-            let outputType: OutputType
-            let value: String?
-        }
-        
-        let additionalLines: () -> String?
-        let renderer: OutputRendering
-        let regex: Regex
-        let outputType: OutputType
-        
-        func parse(line: String) -> Result {
-            return Result(
-                outputType: outputType,
-                value: renderer.beautify(
-                    line: line,
-                    pattern: regex.pattern,
-                    additionalLines: additionalLines
-                )
-            )
-        }
     }
 
 }
