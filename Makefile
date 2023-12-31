@@ -103,3 +103,11 @@ uninstall:
 .PHONY: clean
 clean:
 	$(SWIFT) package clean
+
+.PHONY: format
+format:
+	tools/format
+
+.PHONY: lint
+lint:
+	tools/lint

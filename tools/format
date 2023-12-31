@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [[ "$(uname -m)" == arm64 ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+if which swiftformat > /dev/null; then
+    swiftformat .
+else
+    echo "error: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat"
+    exit 1
+fi
