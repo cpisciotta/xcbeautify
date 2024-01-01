@@ -48,14 +48,14 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
 
     let filePath: String
-    let fileName: String
+    let filename: String
     let target: String
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
         self.filePath = filePath
-        self.fileName = fileName
+        self.filename = filename
         self.target = target
     }
 }
@@ -252,14 +252,14 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     init?(groups: [String]) {
         #if os(Linux)
         assert(groups.count >= 2)
-        guard let fileName = groups[safe: 1], let target = groups.last else { return nil }
-        filename = fileName
+        guard let filename = groups[safe: 1], let target = groups.last else { return nil }
+        self.filename = filename
         self.target = target
         #else
         assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
         self.filePath = filePath
-        filename = fileName
+        self.filename = filename
         self.target = target
         #endif
     }
@@ -299,9 +299,9 @@ struct CompileXibCaptureGroup: CompileFileCaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
         self.filePath = filePath
-        filename = fileName
+        self.filename = filename
         self.target = target
     }
 }
@@ -321,9 +321,9 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let target = groups.last else { return nil }
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
         self.filePath = filePath
-        filename = fileName
+        self.filename = filename
         self.target = target
     }
 }
@@ -586,13 +586,13 @@ struct LibtoolCaptureGroup: CaptureGroup {
     /// $2 = target
     static let regex = Regex(pattern: #"^Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
 
-    let fileName: String
+    let filename: String
     let target: String
 
     init?(groups: [String]) {
         assert(groups.count >= 2)
-        guard let fileName = groups[safe: 0], let target = groups.last else { return nil }
-        self.fileName = fileName
+        guard let filename = groups[safe: 0], let target = groups.last else { return nil }
+        self.filename = filename
         self.target = target
     }
 }
@@ -988,18 +988,18 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 2)
-        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1] else { return nil }
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1] else { return nil }
 
         // TODO: Test with target included
         if groups.count == 2 {
             // Xcode 9 excludes target output
             self.filePath = filePath
-            filename = fileName
+            self.filename = filename
             target = nil
         } else {
             // Xcode 10+ includes target output
             self.filePath = filePath
-            filename = fileName
+            self.filename = filename
             target = groups.last
         }
     }
@@ -1105,8 +1105,8 @@ struct TIFFutilCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 1)
-        guard let fileName = groups[safe: 0] else { return nil }
-        filename = fileName
+        guard let filename = groups[safe: 0] else { return nil }
+        self.filename = filename
     }
 }
 
@@ -1123,8 +1123,8 @@ struct TouchCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
-        guard let fileName = groups[safe: 1], let target = groups.last else { return nil }
-        filename = fileName
+        guard let filename = groups[safe: 1], let target = groups.last else { return nil }
+        self.filename = filename
         self.target = target
     }
 }
@@ -1173,9 +1173,9 @@ struct CompileWarningCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let fileName = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
         self.filePath = filePath
-        filename = fileName
+        self.filename = filename
         self.reason = reason
     }
 }
@@ -1525,9 +1525,9 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 2)
-        guard let target = groups[safe: 0], let fileName = groups[safe: 1] else { return nil }
+        guard let target = groups[safe: 0], let filename = groups[safe: 1] else { return nil }
         self.target = target
-        filename = fileName
+        self.filename = filename
     }
 }
 

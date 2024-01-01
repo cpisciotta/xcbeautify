@@ -282,7 +282,7 @@ extension OutputRendering {
     }
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String {
-        let filename = group.fileName
+        let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
@@ -347,7 +347,7 @@ extension OutputRendering {
     }
 
     func formatLibtool(group: LibtoolCaptureGroup) -> String {
-        let filename = group.fileName
+        let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
