@@ -23,7 +23,7 @@ struct TestSummary {
 
 extension TestSummary {
     func isSuccess() -> Bool {
-        return failuresCount == 0
+        failuresCount == 0
     }
 
     var description: String {

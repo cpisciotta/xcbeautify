@@ -8,7 +8,7 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     // Colored output is disallowed since GitHub Actions annotations don't properly render it.
-    let colored: Bool = false
+    let colored = false
 
     private func outputGitHubActionsLog(
         annotationType: AnnotationType,
@@ -29,10 +29,10 @@ struct GitHubActionsRenderer: OutputRendering {
         let cursor: String = additionalLines() ?? ""
 
         let message = """
-            \(reason)
-            \(line)
-            \(cursor)
-            """
+        \(reason)
+        \(line)
+        \(cursor)
+        """
 
         return outputGitHubActionsLog(
             annotationType: .error,
@@ -51,10 +51,10 @@ struct GitHubActionsRenderer: OutputRendering {
         let cursor: String = additionalLines() ?? ""
 
         let message = """
-            \(reason)
-            \(line)
-            \(cursor)
-            """
+        \(reason)
+        \(line)
+        \(cursor)
+        """
 
         return outputGitHubActionsLog(
             annotationType: .warning,
@@ -64,14 +64,14 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatCompleteError(line: String) -> String {
-        return outputGitHubActionsLog(
+        outputGitHubActionsLog(
             annotationType: .error,
             message: line
         )
     }
 
     func formatCompleteWarning(line: String) -> String {
-        return outputGitHubActionsLog(
+        outputGitHubActionsLog(
             annotationType: .warning,
             message: line
         )
@@ -161,7 +161,7 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
-        return outputGitHubActionsLog(
+        outputGitHubActionsLog(
             annotationType: .error,
             message: line
         )
@@ -242,11 +242,11 @@ private struct FileComponents {
     }
 
     var formatted: String {
-        guard let line = line else {
+        guard let line else {
             return "file=\(path)"
         }
 
-        guard let column = column else {
+        guard let column else {
             return "file=\(path),line=\(line)"
         }
 
@@ -255,9 +255,8 @@ private struct FileComponents {
 }
 
 private extension String {
-
     func asFileComponents() -> FileComponents {
-        let _components = self.split(separator: ":").map(String.init)
+        let _components = split(separator: ":").map(String.init)
         assert((1...3).contains(_components.count))
 
         guard let path = _components[safe: 0] else {
@@ -269,5 +268,4 @@ private extension String {
 
         return FileComponents(path: path, line: components[safe: 0], column: components[safe: 1])
     }
-
 }

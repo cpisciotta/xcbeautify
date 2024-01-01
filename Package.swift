@@ -5,7 +5,7 @@ let package = Package(
     name: "xcbeautify",
     products: [
         .executable(name: "xcbeautify", targets: ["xcbeautify"]),
-        .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"])
+        .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"]),
     ],
     dependencies: [
         .package(
@@ -26,14 +26,14 @@ let package = Package(
             name: "xcbeautify",
             dependencies: [
                 "XcbeautifyLib",
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .target(
             name: "XcbeautifyLib",
             dependencies: [
                 "Colorizer",
-                "XMLCoder"
+                "XMLCoder",
             ]
         ),
         .testTarget(

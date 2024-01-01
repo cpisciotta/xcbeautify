@@ -10,10 +10,10 @@ struct Xcbeautify: ParsableCommand {
 
     @Flag(name: [.short, .long], help: "Only print tasks that have warnings or errors.")
     var quiet = false
-    
+
     @Flag(name: [.long, .customLong("qq", withSingleDash: true)], help: "Only print tasks that have errors.")
     var quieter = false
-    
+
     @Flag(name: [.long], help: "Preserves unbeautified output lines.")
     var preserveUnbeautified = false
 
@@ -36,19 +36,19 @@ struct Xcbeautify: ParsableCommand {
     var junitReportFilename = "junit.xml"
 
     func run() throws {
-        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi, { print($0) })
+        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
         let junitReporter = JunitReporter()
 
         func readLine() -> String? {
             let line = Swift.readLine()
-            if let line = line {
+            if let line {
                 if report.contains(.junit) {
                     junitReporter.add(line: line)
                 }
             }
             return line
         }
-        
+
         let parser = Parser(
             colored: !disableColoredOutput,
             renderer: renderer,
@@ -60,14 +60,16 @@ struct Xcbeautify: ParsableCommand {
             guard let formatted = parser.parse(line: line) else { continue }
             output.write(parser.outputType, formatted)
         }
-        
+
         if let formattedSummary = parser.formattedSummary() {
             output.write(.result, formattedSummary)
         }
 
         if !report.isEmpty {
-            let outputPath = URL(fileURLWithPath: reportPath,
-                                 relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+            let outputPath = URL(
+                fileURLWithPath: reportPath,
+                relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            )
 
             try FileManager.default.createDirectory(at: outputPath, withIntermediateDirectories: true)
 

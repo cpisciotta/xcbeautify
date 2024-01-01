@@ -1,19 +1,18 @@
 public class Parser {
-    
     private let colored: Bool
 
     private let renderer: OutputRendering
-    
+
     private let additionalLines: () -> String?
 
-    private(set) var summary: TestSummary? = nil
+    private(set) var summary: TestSummary?
 
     private(set) var needToRecordSummary = false
 
     public var preserveUnbeautifiedLines = false
 
-    public var outputType: OutputType = OutputType.undefined
-    
+    public var outputType = OutputType.undefined
+
     private lazy var captureGroupTypes: [CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
@@ -96,9 +95,9 @@ public class Parser {
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
     ]
-    
+
     // MARK: - Init
-    
+
     public init(
         colored: Bool = true,
         renderer: Renderer,
@@ -119,12 +118,10 @@ public class Parser {
     }
 
     public func parse(line: String) -> String? {
-        
         // Find first parser that can parse specified string
-        guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line)}) else {
-
+        guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
             // Some uncommon cases, which have additional logic and don't follow default flow
-            
+
             if ExecutedWithoutSkippedCaptureGroup.regex.match(string: line) {
                 outputType = ExecutedWithoutSkippedCaptureGroup.outputType
                 parseSummary(line: line, colored: colored, skipped: false)
@@ -146,7 +143,7 @@ public class Parser {
                 needToRecordSummary = true
                 return nil
             }
-            
+
             // Nothing found?
             outputType = OutputType.undefined
             return preserveUnbeautifiedLines ? line : nil
@@ -172,7 +169,7 @@ public class Parser {
     }
 
     public func formattedSummary() -> String? {
-        guard let summary = summary else { return nil }
+        guard let summary else { return nil }
         return renderer.format(testSummary: summary)
     }
 
@@ -193,5 +190,4 @@ public class Parser {
             time: group.wallClockTimeInSeconds
         )
     }
-
 }

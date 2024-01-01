@@ -6,11 +6,11 @@ final class TerminalRendererTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, renderer: .terminal, additionalLines: { nil } )
+        parser = Parser(colored: false, renderer: .terminal, additionalLines: { nil })
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        return parser.parse(line: string)
+        parser.parse(line: string)
     }
 
     func testAggregateTarget() {
@@ -33,11 +33,9 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "Build target The Spacer of project Pods with configuration Debug")
     }
 
-    func testCheckDependenciesErrors() {
-    }
+    func testCheckDependenciesErrors() { }
 
-    func testCheckDependencies() {
-    }
+    func testCheckDependencies() { }
 
     func testClangError() {
         let formatted = noColoredFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
@@ -71,8 +69,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
     }
 
-    func testCompileCommand() {
-    }
+    func testCompileCommand() { }
 
     func testCompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
@@ -85,7 +82,7 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testCompile() {
-#if os(macOS)
+        #if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
         // Xcode 11+'s output
@@ -93,7 +90,7 @@ final class TerminalRendererTests: XCTestCase {
         let output = "[xcbeautify] Compiling setup.swift"
         XCTAssertEqual(noColoredFormatted(input1), output)
         XCTAssertEqual(noColoredFormatted(input2), output)
-#endif
+        #endif
     }
 
     func testCompileStoryboard() {
@@ -137,8 +134,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testCursor() {
-    }
+    func testCursor() { }
 
     func testExecutedWithoutSkipped() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
@@ -151,16 +147,16 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertNil(parser.summary)
         XCTAssertFalse(parser.needToRecordSummary)
         let formatted1 = noColoredFormatted(input1)
-#if os(macOS)
+        #if os(macOS)
         // FIXME: Failing on Linux
         XCTAssertTrue(parser.needToRecordSummary)
-#endif
+        #endif
         let formatted2 = noColoredFormatted(input2)
         XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
 
-#if os(macOS)
+        #if os(macOS)
         // FIXME: Failing on Linux
         var summary = try XCTUnwrap(parser.summary)
 
@@ -187,7 +183,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(summary.unexpectedCount, 2)
         XCTAssertEqual(summary.skippedCount, 0)
         XCTAssertEqual(summary.time, 0.312)
-#endif
+        #endif
     }
 
     func testExecutedWithSkipped() {
@@ -232,8 +228,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(parser.summary?.time, 4.029)
     }
 
-    func testFailingTest() {
-    }
+    func testFailingTest() { }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
@@ -245,7 +240,7 @@ final class TerminalRendererTests: XCTestCase {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
         let output = "[x] /path/file.swift: error: no such file or directory:"
         XCTAssertEqual(noColoredFormatted(input), output)
-   }
+    }
 
     func testGenerateCoverageData() {
         let formatted = noColoredFormatted("Generating coverage data...")
@@ -283,36 +278,29 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testLibtool() {
-    }
+    func testLibtool() { }
 
-    func testLinkerDuplicateSymbolsLocation() {
-    }
+    func testLinkerDuplicateSymbolsLocation() { }
 
-    func testLinkerDuplicateSymbols() {
-    }
+    func testLinkerDuplicateSymbols() { }
 
-    func testLinkerUndefinedSymbolLocation() {
-    }
+    func testLinkerUndefinedSymbolLocation() { }
 
-    func testLinkerUndefinedSymbols() {
-    }
+    func testLinkerUndefinedSymbols() { }
 
     func testLinking() {
-#if os(macOS)
+        #if os(macOS)
         let formatted = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
         XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
 
         let formatted2 = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
-#endif
+        #endif
     }
 
-    func testModuleIncludesError() {
-    }
+    func testModuleIncludesError() { }
 
-    func testNoCertificate() {
-    }
+    func testNoCertificate() { }
 
     func testTestCaseWithSpacesPassed() {
         let formatted = noColoredFormatted("Test Case '-[MyProject.MyTestSuite some component, when the disk is full, will display an error]' passed (0.005 seconds).")
@@ -397,8 +385,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testPreprocess() {
-    }
+    func testPreprocess() { }
 
     func testProcessInfoPlist() {
         let formatted = noColoredFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")
@@ -438,7 +425,7 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testRestartingTests() {
-        let formatted = noColoredFormatted( "Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
+        let formatted = noColoredFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(formatted, "    ✖ Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
     }
 
@@ -449,42 +436,38 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testSymbolReferencedFrom() {
-        let formatted = noColoredFormatted( "  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(parser.outputType, .error)
     }
 
     func testUndefinedSymbolLocation() {
-        let formatted = noColoredFormatted( "      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        let formatted = noColoredFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(formatted, "[!]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
-#if os(macOS)
+        #if os(macOS)
         let formatted = noColoredFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
         XCTAssertEqual(formatted, #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
-#endif
+        #endif
     }
 
     func testTestCasePassed() {
-#if os(macOS)
+        #if os(macOS)
         let formatted = noColoredFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
         XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
-#endif
+        #endif
     }
 
-    func testTestCasePending() {
-    }
+    func testTestCasePending() { }
 
-    func testTestCaseStarted() {
-    }
+    func testTestCaseStarted() { }
 
-    func testTestSuiteStart() {
-    }
+    func testTestSuiteStart() { }
 
-    func testTestSuiteStarted() {
-    }
+    func testTestSuiteStarted() { }
 
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
@@ -504,8 +487,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertTrue(parser.needToRecordSummary)
     }
 
-    func testTestsRunCompletion() {
-    }
+    func testTestsRunCompletion() { }
 
     func testTiffutil() {
         let input = "TiffUtil file.tiff"
@@ -529,8 +511,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testWriteAuxiliaryFiles() {
-    }
+    func testWriteAuxiliaryFiles() { }
 
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
@@ -584,7 +565,6 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testPackageGraphResolved() {
-
         // Start
         let start = noColoredFormatted("Resolve Package Graph")
         XCTAssertEqual(start, "Resolving Package Graph")
@@ -597,7 +577,7 @@ final class TerminalRendererTests: XCTestCase {
         let package = noColoredFormatted("  StrasbourgParkAPI: https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
         XCTAssertEqual(package, "StrasbourgParkAPI - https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
     }
-    
+
     func testXcodebuildError() {
         let formatted = noColoredFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
         XCTAssertEqual(formatted, "[x] xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
@@ -607,10 +587,10 @@ final class TerminalRendererTests: XCTestCase {
         // Given
         let errorText = #"/path/to/project.xcodeproj: error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
         let expectedFormatted = #"""
-            [x] /path/to/project.xcodeproj: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')
+        [x] /path/to/project.xcodeproj: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')
 
 
-            """#
+        """#
 
         // When
         let actualFormatted = noColoredFormatted(errorText)
@@ -624,10 +604,10 @@ final class TerminalRendererTests: XCTestCase {
         // Given
         let errorText = #"/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"#
         let expectedFormatted = #"""
-            [!]  /Users/xxxxx/Example/Pods/Pods.xcodeproj: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')
+        [!]  /Users/xxxxx/Example/Pods/Pods.xcodeproj: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')
 
 
-            """#
+        """#
 
         // When
         let actualFormatted = noColoredFormatted(errorText)

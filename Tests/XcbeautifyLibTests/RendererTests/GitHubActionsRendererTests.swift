@@ -6,11 +6,11 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, renderer: .gitHubActions, additionalLines: { nil } )
+        parser = Parser(colored: false, renderer: .gitHubActions, additionalLines: { nil })
     }
 
     private func logFormatted(_ string: String) -> String? {
-        return parser.parse(line: string)
+        parser.parse(line: string)
     }
 
     func testAggregateTarget() {
@@ -37,11 +37,9 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .task)
     }
 
-    func testCheckDependenciesErrors() {
-    }
+    func testCheckDependenciesErrors() { }
 
-    func testCheckDependencies() {
-    }
+    func testCheckDependencies() { }
 
     func testClangError() {
         let formatted = logFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
@@ -81,8 +79,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .task)
     }
 
-    func testCompileCommand() {
-    }
+    func testCompileCommand() { }
 
     func testCompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
@@ -97,7 +94,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testCompile() {
-#if os(macOS)
+        #if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
         // Xcode 11+'s output
@@ -106,7 +103,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input1), output)
         XCTAssertEqual(logFormatted(input2), output)
         XCTAssertEqual(parser.outputType, .task)
-#endif
+        #endif
     }
 
     func testCompileStoryboard() {
@@ -157,8 +154,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .task)
     }
 
-    func testCursor() {
-    }
+    func testCursor() { }
 
     func testExecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
@@ -171,16 +167,16 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertNil(parser.summary)
         XCTAssertFalse(parser.needToRecordSummary)
         let formatted1 = logFormatted(input1)
-#if os(macOS)
+        #if os(macOS)
         // FIXME: Failing on Linux
         XCTAssertTrue(parser.needToRecordSummary)
-#endif
+        #endif
         let formatted2 = logFormatted(input2)
         XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
 
-#if os(macOS)
+        #if os(macOS)
         // FIXME: Failing on Linux
         var summary = try XCTUnwrap(parser.summary)
 
@@ -207,7 +203,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(summary.unexpectedCount, 2)
         XCTAssertEqual(summary.skippedCount, 0)
         XCTAssertEqual(summary.time, 0.312)
-#endif
+        #endif
     }
 
     func testExecutedWithSkipped() {
@@ -252,8 +248,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.summary?.time, 4.029)
     }
 
-    func testFailingTest() {
-    }
+    func testFailingTest() { }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
@@ -267,7 +262,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         let output = "::error file=/path/file.swift::error: no such file or directory:"
         XCTAssertEqual(logFormatted(input), output)
         XCTAssertEqual(parser.outputType, .error)
-   }
+    }
 
     func testGenerateCoverageData() {
         let formatted = logFormatted("Generating coverage data...")
@@ -312,23 +307,18 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .warning)
     }
 
-    func testLibtool() {
-    }
+    func testLibtool() { }
 
-    func testLinkerDuplicateSymbolsLocation() {
-    }
+    func testLinkerDuplicateSymbolsLocation() { }
 
-    func testLinkerDuplicateSymbols() {
-    }
+    func testLinkerDuplicateSymbols() { }
 
-    func testLinkerUndefinedSymbolLocation() {
-    }
+    func testLinkerUndefinedSymbolLocation() { }
 
-    func testLinkerUndefinedSymbols() {
-    }
+    func testLinkerUndefinedSymbols() { }
 
     func testLinking() {
-#if os(macOS)
+        #if os(macOS)
         let formatted = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
         XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
         XCTAssertEqual(parser.outputType, .task)
@@ -336,14 +326,12 @@ final class GitHubActionsRendererTests: XCTestCase {
         let formatted2 = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
         XCTAssertEqual(parser.outputType, .task)
-#endif
+        #endif
     }
 
-    func testModuleIncludesError() {
-    }
+    func testModuleIncludesError() { }
 
-    func testNoCertificate() {
-    }
+    func testNoCertificate() { }
 
     func testParallelTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
@@ -417,8 +405,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testPreprocess() {
-    }
+    func testPreprocess() { }
 
     func testProcessInfoPlist() {
         let formatted = logFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")
@@ -458,7 +445,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testRestartingTests() {
-        let formatted = logFormatted( "Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
+        let formatted = logFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(formatted, "::error ::    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(parser.outputType, .test)
     }
@@ -476,38 +463,34 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testUndefinedSymbolLocation() {
-        let formatted = logFormatted( "      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        let formatted = logFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(formatted, "::warning ::      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
-#if os(macOS)
+        #if os(macOS)
         let formatted = logFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
         XCTAssertEqual(formatted, #"    test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
         XCTAssertEqual(parser.outputType, .testCase)
-#endif
+        #endif
     }
 
     func testTestCasePassed() {
-#if os(macOS)
+        #if os(macOS)
         let formatted = logFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
         XCTAssertEqual(formatted, "    testBuildTarget (0.131 seconds)")
         XCTAssertEqual(parser.outputType, .testCase)
-#endif
+        #endif
     }
 
-    func testTestCasePending() {
-    }
+    func testTestCasePending() { }
 
-    func testTestCaseStarted() {
-    }
+    func testTestCaseStarted() { }
 
-    func testTestSuiteStart() {
-    }
+    func testTestSuiteStart() { }
 
-    func testTestSuiteStarted() {
-    }
+    func testTestSuiteStarted() { }
 
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
@@ -528,8 +511,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertTrue(parser.needToRecordSummary)
     }
 
-    func testTestsRunCompletion() {
-    }
+    func testTestsRunCompletion() { }
 
     func testTiffutil() {
         let input = "TiffUtil file.tiff"
@@ -556,8 +538,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .warning)
     }
 
-    func testWriteAuxiliaryFiles() {
-    }
+    func testWriteAuxiliaryFiles() { }
 
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
@@ -619,7 +600,6 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testPackageGraphResolved() {
-
         // Start
         let start = logFormatted("Resolve Package Graph")
         XCTAssertEqual(start, "Resolving Package Graph")
@@ -635,7 +615,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(package, "StrasbourgParkAPI - https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
         XCTAssertEqual(parser.outputType, .task)
     }
-    
+
     func testXcodebuildError() {
         let formatted = logFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
         XCTAssertEqual(formatted, "::error ::xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")

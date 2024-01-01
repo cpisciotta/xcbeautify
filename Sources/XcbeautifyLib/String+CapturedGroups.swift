@@ -5,7 +5,7 @@ extension String {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
 
-            let matches = regex.matches(in: self, range: NSRange(location:0, length: self.utf16.count))
+            let matches = regex.matches(in: self, range: NSRange(location: 0, length: utf16.count))
             guard let match = matches.first else { return [] }
 
             let lastRangeIndex = match.numberOfRanges - 1
