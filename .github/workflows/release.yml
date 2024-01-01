@@ -5,7 +5,7 @@ on:
 name: Release
 
 env:
-  SWIFT_VERSION: 5.7
+  SWIFT_VERSION: 5.9
 
 jobs:
 
