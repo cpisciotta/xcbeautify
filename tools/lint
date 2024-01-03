@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [[ "$(uname -m)" == arm64 ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+if which swiftformat > /dev/null; then
+    if [[ ${GITHUB_ACTIONS:-false} == true ]]; then
+        echo "Detected GitHub Actions, using --reporter github-actions-log"
+        swiftformat --lint --cache ignore --reporter github-actions-log .
+    else
+        swiftformat --lint .
+    fi
+else
+    echo "error: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat"
+    exit 1
+fi

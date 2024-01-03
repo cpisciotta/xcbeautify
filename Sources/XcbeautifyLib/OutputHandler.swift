@@ -14,7 +14,7 @@ public class OutputHandler {
     /// warnings or errors
     ///
     /// Ref: https://github.com/tuist/xcbeautify/pull/15
-    private var lastFormatted: String? = nil
+    private var lastFormatted: String?
 
     public init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
         self.quiet = quiet
@@ -24,7 +24,7 @@ public class OutputHandler {
     }
 
     public func write(_ type: OutputType, _ content: String?) {
-        guard let content = content else { return }
+        guard let content else { return }
 
         if !quiet, !quieter {
             writer(content)

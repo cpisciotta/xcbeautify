@@ -1,5 +1,5 @@
-import Foundation
 import Colorizer
+import Foundation
 
 struct TerminalRenderer: OutputRendering {
     let colored: Bool
@@ -7,22 +7,22 @@ struct TerminalRenderer: OutputRendering {
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
         let testCase = group.testCase
         let failingReason = group.reason
-        return colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + testCase + ", " + failingReason : Format.indent + TestStatus.fail + " "  + testCase + ", " + failingReason
+        return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + testCase + ", " + failingReason : Format.indent + TestStatus.fail + " " + testCase + ", " + failingReason
     }
 
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
         let file = group.file
         let failingReason = group.reason
-        return colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + file + ", " + failingReason : Format.indent + TestStatus.fail + " "  + file + ", " + failingReason
+        return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + file + ", " + failingReason : Format.indent + TestStatus.fail + " " + file + ", " + failingReason
     }
 
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
-        return colored ? Format.indent + TestStatus.fail.foreground.Red + " "  + line : Format.indent + TestStatus.fail + " "  + line
+        colored ? Format.indent + TestStatus.fail.foreground.Red + " " + line : Format.indent + TestStatus.fail + " " + line
     }
 
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
         let testCase = group.testCase
-        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " "  + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " "  + testCase + " [PENDING]"
+        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " " + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " " + testCase + " [PENDING]"
     }
 
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
@@ -34,7 +34,7 @@ struct TerminalRenderer: OutputRendering {
         let deviation = colored ? group.deviation.coloredDeviation() : group.deviation
         let formattedValue = colored && unitName == "seconds" ? value.coloredTime() : value
 
-        return Format.indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " "  + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
+        return Format.indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " " + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
     }
 
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
@@ -69,7 +69,7 @@ struct TerminalRenderer: OutputRendering {
     }
 
     func formatCompleteError(line: String) -> String {
-        return colored ? Symbol.error + " " + line.f.Red : Symbol.asciiError + " " + line
+        colored ? Symbol.error + " " + line.f.Red : Symbol.asciiError + " " + line
     }
 
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
@@ -105,7 +105,7 @@ struct TerminalRenderer: OutputRendering {
     }
 
     func formatCompleteWarning(line: String) -> String {
-        return colored ? Symbol.warning + " " + line.f.Yellow : Symbol.asciiWarning + " " + line
+        colored ? Symbol.warning + " " + line.f.Yellow : Symbol.asciiWarning + " " + line
     }
 
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
@@ -152,7 +152,7 @@ struct TerminalRenderer: OutputRendering {
     }
 
     func formatSummary(line: String) -> String {
-        return colored ? line.f.Green.s.Bold : line
+        colored ? line.f.Green.s.Bold : line
     }
 
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
@@ -172,11 +172,11 @@ struct TerminalRenderer: OutputRendering {
     }
 
     func formatPackageStart() -> String {
-        return colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
+        colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
     }
 
     func formatPackageEnd() -> String {
-        return colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
+        colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 
     func formatPackageItem(group: PackageGraphResolvedItemCaptureGroup) -> String {
@@ -192,7 +192,7 @@ struct TerminalRenderer: OutputRendering {
     }
 
     func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
-        return colored ? line.s.Bold.f.Red : line
+        colored ? line.s.Bold.f.Red : line
     }
 
     func format(testSummary: TestSummary) -> String {

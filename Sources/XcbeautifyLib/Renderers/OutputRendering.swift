@@ -14,8 +14,8 @@ protocol OutputRendering {
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
     func formatCompile(group: CompileFileCaptureGroup) -> String
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
-    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines:  @escaping () -> (String?)) -> String
-    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines:  @escaping () -> (String?)) -> String
+    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
+    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
     func formatCompleteError(line: String) -> String
     func formatCompleteWarning(line: String) -> String
     func formatCopy(group: CopyCaptureGroup) -> String
@@ -63,7 +63,7 @@ protocol OutputRendering {
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
     func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String?
     func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String?
-    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup)  -> String?
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String?
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String
     func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String?
@@ -265,7 +265,6 @@ extension OutputRendering {
 }
 
 extension OutputRendering {
-
     func format(line: String, command: String, pattern: String, arguments: String) -> String? {
         let template = command.style.Bold + " " + arguments
 
@@ -273,7 +272,8 @@ extension OutputRendering {
             .stringByReplacingMatches(
                 in: line,
                 range: NSRange(location: 0, length: line.count),
-                withTemplate: template)
+                withTemplate: template
+            )
         else {
             return nil
         }
@@ -282,7 +282,7 @@ extension OutputRendering {
     }
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String {
-        let filename = group.fileName
+        let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
@@ -310,7 +310,7 @@ extension OutputRendering {
     }
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatCopy(group: CopyCaptureGroup) -> String {
@@ -320,19 +320,19 @@ extension OutputRendering {
     }
 
     func formatCursor(group: CursorCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String {
-        return colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
+        colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
     }
 
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String {
@@ -347,27 +347,27 @@ extension OutputRendering {
     }
 
     func formatLibtool(group: LibtoolCaptureGroup) -> String {
-        let filename = group.fileName
+        let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 
     func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatLinking(group: LinkingCaptureGroup) -> String {
         let target = group.target
-#if os(Linux)
+        #if os(Linux)
         return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
-#else
+        #else
         let filename = group.binaryFilename
         return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
-#endif
+        #endif
     }
 
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String {
@@ -377,7 +377,7 @@ extension OutputRendering {
     }
 
     func formatPackageEnd() -> String {
-        return colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
+        colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
@@ -393,7 +393,7 @@ extension OutputRendering {
     }
 
     func formatPackageStart() -> String {
-        return colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
+        colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
     }
 
     func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String {
@@ -402,7 +402,7 @@ extension OutputRendering {
     }
 
     func formatParallelTestingPassed(line: String, group: ParallelTestingPassedCaptureGroup) -> String {
-        return colored ? line.s.Bold.f.Green : line
+        colored ? line.s.Bold.f.Green : line
     }
 
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String {
@@ -413,7 +413,7 @@ extension OutputRendering {
     }
 
     func formatParallelTestingStarted(line: String, group: ParallelTestingStartedCaptureGroup) -> String {
-        return colored ? line.s.Bold.f.Cyan : line
+        colored ? line.s.Bold.f.Cyan : line
     }
 
     func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String {
@@ -453,7 +453,7 @@ extension OutputRendering {
     }
 
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String {
@@ -465,23 +465,23 @@ extension OutputRendering {
 
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
         let testCase = group.testCase
-        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " "  + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " "  + testCase + " [PENDING]"
+        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " " + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " " + testCase + " [PENDING]"
     }
 
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
-    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup)  -> String? {
-        return nil
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String? {
+        nil
     }
 
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String {
@@ -496,7 +496,7 @@ extension OutputRendering {
     }
 
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatTouch(group: TouchCaptureGroup) -> String {
@@ -506,11 +506,10 @@ extension OutputRendering {
     }
 
     func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatWriteFile(group: WriteFileCaptureGroup) -> String? {
-        return nil
+        nil
     }
-
 }

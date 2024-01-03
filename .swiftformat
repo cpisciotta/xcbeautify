@@ -1,0 +1,25 @@
+# SwiftFormat Configuration
+
+--minversion 0.52.11
+
+# Excluded Files and Paths
+
+--exclude **/XCTestManifests.swift
+
+# Rules
+
+--disable unusedArguments
+
+# Configuration
+
+--emptybraces spaced
+--importgrouping testable-last
+--ifdef no-indent
+--indent 4
+--ranges no-space
+--redundanttype inferred
+--semicolons never
+--wraparguments before-first
+--wrapcollections before-first
+--wrapparameters before-first
+--xcodeindentation enabled

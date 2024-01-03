@@ -1,0 +1,10 @@
+name: 'Code Style'
+
+on: pull_request
+
+jobs:
+  SwiftFormat:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make lint

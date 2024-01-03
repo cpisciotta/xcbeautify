@@ -48,7 +48,7 @@ public final class JunitReporter {
         guard let group = _group as? FailingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
-    
+
     private func generateRestartingTest(line: String) -> TestCase? {
         guard let _group: CaptureGroup = line.captureGroup(with: RestartingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? RestartingTestCaptureGroup else { return nil }
@@ -73,13 +73,13 @@ public final class JunitReporter {
         guard let group = _group as? ParallelTestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
     }
-  
+
     private func generateSuiteStart(line: String) -> String? {
         guard let _group: CaptureGroup = line.captureGroup(with: TestSuiteStartCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestSuiteStartCaptureGroup else { return nil }
         return group.testSuiteName
     }
-    
+
     public func generateReport() throws -> Data {
         let parser = JunitComponentParser()
         components.forEach { parser.parse(component: $0) }
@@ -107,7 +107,7 @@ private final class JunitComponentParser {
             mainTestSuiteName = suiteName
 
         case let .failingTest(testCase),
-          let .testCasePassed(testCase):
+             let .testCasePassed(testCase):
             testCases.append(testCase)
         }
     }
@@ -141,7 +141,7 @@ private enum JunitComponent {
 private struct Testsuites: Encodable, DynamicNodeEncoding {
     var name: String?
     var testsuites: [Testsuite] = []
-    
+
     enum CodingKeys: String, CodingKey {
         case name
         case tests
@@ -154,17 +154,17 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
         switch key {
         case .name, .tests, .failures:
             return .attribute
-        
+
         case .testsuites:
             return .element
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
-        try container.encode(testsuites.reduce(into: 0, { $0 += $1.testcases.count }), forKey: .tests)
-        try container.encode(testsuites.reduce(into: 0, { $0 += $1.testcases.filter { $0.failure != nil }.count }), forKey: .failures)
+        try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.count }, forKey: .tests)
+        try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.filter { $0.failure != nil }.count }, forKey: .failures)
         try container.encode(testsuites, forKey: .testsuites)
     }
 }
@@ -185,12 +185,12 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
         switch key {
         case .name, .tests, .failures:
             return .attribute
-        
+
         case .testcases:
             return .element
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
@@ -205,13 +205,13 @@ private struct TestCase: Codable, DynamicNodeEncoding {
     let name: String
     let time: String?
     let failure: Failure?
-    
+
     static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
         case .classname, .name, .time:
             return .attribute
-            
+
         case .failure:
             return .element
         }
@@ -221,7 +221,7 @@ private struct TestCase: Codable, DynamicNodeEncoding {
 private extension TestCase {
     struct Failure: Codable, DynamicNodeEncoding {
         let message: String
-        
+
         static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
             let key = CodingKeys(stringValue: key.stringValue)!
             switch key {
