@@ -520,35 +520,35 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testPackageFetching() {
-        let input1 = "Fetching from https://github.com/tuist/xcbeautify"
-        let output1 = "Fetching https://github.com/tuist/xcbeautify"
+        let input1 = "Fetching from https://github.com/cpisciotta/xcbeautify"
+        let output1 = "Fetching https://github.com/cpisciotta/xcbeautify"
         let formatted1 = noColoredFormatted(input1)
         XCTAssertEqual(formatted1, output1)
 
-        let input2 = "Fetching from https://github.com/tuist/xcbeautify (cached)"
-        let output2 = "Fetching https://github.com/tuist/xcbeautify (cached)"
+        let input2 = "Fetching from https://github.com/cpisciotta/xcbeautify (cached)"
+        let output2 = "Fetching https://github.com/cpisciotta/xcbeautify (cached)"
         let formatted2 = noColoredFormatted(input2)
         XCTAssertEqual(formatted2, output2)
 
-        let input3 = "Fetching from https://github.com/tuist/xcbeautify.git"
-        let output3 = "Fetching https://github.com/tuist/xcbeautify.git"
+        let input3 = "Fetching from https://github.com/cpisciotta/xcbeautify.git"
+        let output3 = "Fetching https://github.com/cpisciotta/xcbeautify.git"
         let formatted3 = noColoredFormatted(input3)
         XCTAssertEqual(formatted3, output3)
     }
 
     func testPackageUpdating() {
-        let input1 = "Updating from https://github.com/tuist/xcbeautify"
-        let output1 = "Updating https://github.com/tuist/xcbeautify"
+        let input1 = "Updating from https://github.com/cpisciotta/xcbeautify"
+        let output1 = "Updating https://github.com/cpisciotta/xcbeautify"
         let formatted1 = noColoredFormatted(input1)
         XCTAssertEqual(formatted1, output1)
 
-        let input2 = "Updating from https://github.com/tuist/xcbeautify (cached)"
-        let output2 = "Updating https://github.com/tuist/xcbeautify (cached)"
+        let input2 = "Updating from https://github.com/cpisciotta/xcbeautify (cached)"
+        let output2 = "Updating https://github.com/cpisciotta/xcbeautify (cached)"
         let formatted2 = noColoredFormatted(input2)
         XCTAssertEqual(formatted2, output2)
 
-        let input3 = "Updating from https://github.com/tuist/xcbeautify.git"
-        let output3 = "Updating https://github.com/tuist/xcbeautify.git"
+        let input3 = "Updating from https://github.com/cpisciotta/xcbeautify.git"
+        let output3 = "Updating https://github.com/cpisciotta/xcbeautify.git"
         let formatted3 = noColoredFormatted(input3)
         XCTAssertEqual(formatted3, output3)
     }

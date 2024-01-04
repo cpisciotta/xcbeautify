@@ -4,7 +4,7 @@ Please, check out guidelines: https://keepachangelog.com/en/1.0.0/
 
 ## 1.0.0
 
-- **Breaking** Removed support for CocoaPods [#135](https://github.com/tuist/xcbeautify/pull/135) by [@pepicrft](https://github.com/pepicrft)
+- **Breaking** Removed support for CocoaPods [#135](https://github.com/cpisciotta/xcbeautify/pull/135) by [@pepicrft](https://github.com/pepicrft)
 
 ## 0.21.1
 
@@ -14,10 +14,10 @@ Please, check out guidelines: https://keepachangelog.com/en/1.0.0/
 
 ## 0.21.0
 
-- Added support for a GitHub Actions renderer to surface errors through GitHub's UI [#107](https://github.com/tuist/xcbeautify/pull/107) by [@cpisciotta](https://github.com/cpisciotta)
-- Updated `ArgumentParser` to 1.2.2 [#132](https://github.com/tuist/xcbeautify/pull/132)
-- Added support for `CompileSwift` and `SwiftCompile` outputs [#128](https://github.com/tuist/xcbeautify/pull/128) by [@cpisciotta](https://github.com/cpisciotta).
-- Added support for passing absolute paths via the `--report-path` flag [#129](https://github.com/tuist/xcbeautify/pull/129) by [@cpisciotta](https://github.com/cpisciotta).
+- Added support for a GitHub Actions renderer to surface errors through GitHub's UI [#107](https://github.com/cpisciotta/xcbeautify/pull/107) by [@cpisciotta](https://github.com/cpisciotta)
+- Updated `ArgumentParser` to 1.2.2 [#132](https://github.com/cpisciotta/xcbeautify/pull/132)
+- Added support for `CompileSwift` and `SwiftCompile` outputs [#128](https://github.com/cpisciotta/xcbeautify/pull/128) by [@cpisciotta](https://github.com/cpisciotta).
+- Added support for passing absolute paths via the `--report-path` flag [#129](https://github.com/cpisciotta/xcbeautify/pull/129) by [@cpisciotta](https://github.com/cpisciotta).
 
 ## 0.9.0
 - Added support for the `NO_COLOR` environment variable (#50) @pieterclaerhout

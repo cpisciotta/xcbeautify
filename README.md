@@ -3,9 +3,9 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[![Build Status](https://github.com/tuist/xcbeautify/workflows/build/badge.svg?branch=main)](https://github.com/tuist/xcbeautify/actions)
-[![Latest Release](https://img.shields.io/github/release/tuist/xcbeautify.svg)](https://github.com/tuist/xcbeautify/releases/latest)
-[![License](https://img.shields.io/github/license/tuist/xcbeautify.svg)](LICENSE.md)
+[![Build Status](https://github.com/cpisciotta/xcbeautify/workflows/build/badge.svg?branch=main)](https://github.com/cpisciotta/xcbeautify/actions)
+[![Latest Release](https://img.shields.io/github/release/cpisciotta/xcbeautify.svg)](https://github.com/cpisciotta/xcbeautify/releases/latest)
+[![License](https://img.shields.io/github/license/cpisciotta/xcbeautify.svg)](LICENSE.md)
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
@@ -47,7 +47,7 @@ brew install xcbeautify
 ### [Mint](https://github.com/yonaskolb/mint)
 
 ```bash
-mint install tuist/xcbeautify
+mint install cpisciotta/xcbeautify
 ```
 
 ### Swift Package Manager
@@ -64,7 +64,7 @@ let package = Package(
     name: "BuildTools",
     platforms: [.macOS(.v10_11)],
     dependencies: [
-      .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0"),
+      .package(url: "https://github.com/cpisciotta/xcbeautify", from: "0.13.0"),
     ],
     targets: [
       .target(name: "BuildTools", path: "")
@@ -80,7 +80,7 @@ swift run -c release --package-path ./BuildTools xcbeautify
 ### Build from source
 
 ```bash
-git clone https://github.com/tuist/xcbeautify.git
+git clone https://github.com/cpisciotta/xcbeautify.git
 cd xcbeautify
 make install
 ```
@@ -164,8 +164,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nikolaykasyanov"><img src="https://avatars.githubusercontent.com/u/136644?v=4?s=100" width="100px;" alt="Nikolay Kasyanov"/><br /><sub><b>Nikolay Kasyanov</b></sub></a><br /><a href="https://github.com/tuist/xcbeautify/commits?author=nikolaykasyanov" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://www.charlespisciotta.com"><img src="https://avatars.githubusercontent.com/u/38054839?v=4?s=100" width="100px;" alt="Charles Pisciotta"/><br /><sub><b>Charles Pisciotta</b></sub></a><br /><a href="https://github.com/tuist/xcbeautify/commits?author=cpisciotta" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nikolaykasyanov"><img src="https://avatars.githubusercontent.com/u/136644?v=4?s=100" width="100px;" alt="Nikolay Kasyanov"/><br /><sub><b>Nikolay Kasyanov</b></sub></a><br /><a href="https://github.com/cpisciotta/xcbeautify/commits?author=nikolaykasyanov" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.charlespisciotta.com"><img src="https://avatars.githubusercontent.com/u/38054839?v=4?s=100" width="100px;" alt="Charles Pisciotta"/><br /><sub><b>Charles Pisciotta</b></sub></a><br /><a href="https://github.com/cpisciotta/xcbeautify/commits?author=cpisciotta" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
