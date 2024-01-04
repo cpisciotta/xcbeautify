@@ -150,10 +150,6 @@ make release version=x.y.z
 
 Please send a PR!
 
-## License
-
-MIT
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
