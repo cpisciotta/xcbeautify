@@ -1,4 +1,4 @@
-name: xcbeautify
+name: CI
 
 on:
   push:
