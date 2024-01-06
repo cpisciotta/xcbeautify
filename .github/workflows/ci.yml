@@ -7,31 +7,28 @@ on:
   pull_request: {}
   merge_group: {}
 
-env:
-  SWIFT_VERSION: 5.7
-
 jobs:
-  macos:
-    name: Build on macOS
-    runs-on: macOS-latest
+  compile:
+    name: Compile (Swift ${{ matrix.swift_version }}) (${{ matrix.platform }})
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-latest]
+        swift_version: [5.7, 5.8, 5.9]
     steps:
       - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
         with:
-          swift-version: ${{ env.SWIFT_VERSION }}
+          swift-version: ${{ matrix.swift_version }}
       - uses: actions/checkout@v4
-      - name: Build
-        run: swift build --disable-sandbox --configuration release
-      - name: Test
-        run: set -o pipefail && swift test 2>&1 | .build/release/xcbeautify
+      - run: swift build --disable-sandbox --configuration release
 
-  ubuntu_x86_64:
-    name: Build on Ubuntu
-    runs-on: ubuntu-latest
+  test:
+    name: Test (${{ matrix.platform}})
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: [macos-latest, ubuntu-latest]
     steps:
-      - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
-        with:
-          swift-version: ${{ env.SWIFT_VERSION }}
       - uses: actions/checkout@v4
-      - run: swift build
-      - run: set -o pipefail && swift test 2>&1 | .build/debug/xcbeautify
-      - run: make package-linux-x86_64
+      - run: swift test
