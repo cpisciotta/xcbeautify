@@ -16,6 +16,7 @@ protocol ErrorCaptureGroup: CaptureGroup {
 }
 
 protocol TargetCaptureGroup: CaptureGroup {
+    static var command: String { get }
     var target: String { get }
     var project: String { get }
     var configuration: String { get }
@@ -61,6 +62,7 @@ struct AnalyzeCaptureGroup: CaptureGroup {
 }
 
 struct BuildTargetCaptureGroup: TargetCaptureGroup {
+    static let command = "Build"
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
@@ -83,6 +85,7 @@ struct BuildTargetCaptureGroup: TargetCaptureGroup {
 }
 
 struct AggregateTargetCaptureGroup: TargetCaptureGroup {
+    static let command = "Aggregate"
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
@@ -105,6 +108,7 @@ struct AggregateTargetCaptureGroup: TargetCaptureGroup {
 }
 
 struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
+    static let command = "Analyze"
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
@@ -174,6 +178,7 @@ struct CleanRemoveCaptureGroup: CaptureGroup {
 }
 
 struct CleanTargetCaptureGroup: TargetCaptureGroup {
+    static let command = "Clean Target"
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
