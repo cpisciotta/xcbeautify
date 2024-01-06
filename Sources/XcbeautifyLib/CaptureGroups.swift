@@ -1,18 +1,95 @@
+import Colorizer
 import Foundation
+
+private enum AnnotationType: String {
+    case notice
+    case warning
+    case error
+}
+
+private struct FileComponents {
+    private let path: String
+    private let line: Int?
+    private let column: Int?
+
+    init(path: String, line: Int?, column: Int?) {
+        self.path = path
+        self.line = line
+        self.column = column
+    }
+
+    var formatted: String {
+        guard let line else {
+            return "file=\(path)"
+        }
+
+        guard let column else {
+            return "file=\(path),line=\(line)"
+        }
+
+        return "file=\(path),line=\(line),col=\(column)"
+    }
+}
+
+private extension String {
+    func asFileComponents() -> FileComponents {
+        let _components = split(separator: ":").map(String.init)
+        assert((1...3).contains(_components.count))
+
+        guard let path = _components[safe: 0] else {
+            return FileComponents(path: self, line: nil, column: nil)
+        }
+
+        let components = _components.dropFirst().compactMap(Int.init)
+        assert((0...2).contains(components.count))
+
+        return FileComponents(path: path, line: components[safe: 0], column: components[safe: 1])
+    }
+}
 
 protocol CaptureGroup {
     static var outputType: OutputType { get }
     static var regex: XcbeautifyLib.Regex { get }
     init?(groups: [String])
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String?
 }
 
 extension CaptureGroup {
     static var pattern: String { regex.pattern }
     var pattern: String { Self.regex.pattern }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        nil
+    }
+}
+
+private extension CaptureGroup {
+    func outputGitHubActionsLog(
+        annotationType: AnnotationType,
+        fileComponents: FileComponents? = nil,
+        message: String
+    ) -> String {
+        let formattedFileComponents = fileComponents?.formatted ?? ""
+        return "::\(annotationType) \(formattedFileComponents)::\(message)"
+    }
 }
 
 protocol ErrorCaptureGroup: CaptureGroup {
     var wholeError: String { get }
+}
+
+extension ErrorCaptureGroup {
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Symbol.error + " " + wholeError.f.Red : Symbol.asciiError + " " + wholeError
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                message: wholeError
+            )
+        }
+    }
 }
 
 protocol TargetCaptureGroup: CaptureGroup {
@@ -22,14 +99,32 @@ protocol TargetCaptureGroup: CaptureGroup {
     var configuration: String { get }
 }
 
+extension TargetCaptureGroup {
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "\(Self.command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(Self.command) target \(target) of project \(project) with configuration \(configuration)"
+    }
+}
+
 protocol CompileFileCaptureGroup: CaptureGroup {
     var filename: String { get }
     var target: String { get }
 }
 
+extension CompileFileCaptureGroup {
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
+    }
+}
+
 protocol CopyCaptureGroup: CaptureGroup {
     var file: String { get }
     var target: String { get }
+}
+
+extension CopyCaptureGroup {
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(file)" : "[\(target)] Copying \(file)"
+    }
 }
 
 protocol ExecutedCaptureGroup: CaptureGroup {
@@ -58,6 +153,10 @@ struct AnalyzeCaptureGroup: CaptureGroup {
         self.filePath = filePath
         self.filename = filename
         self.target = target
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
     }
 }
 
@@ -141,6 +240,10 @@ struct CheckDependenciesCaptureGroup: CaptureGroup {
         assert(groups.count >= 0)
         self.init()
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "Check Dependencies".style.Bold : "Check Dependencies"
+    }
 }
 
 struct ShellCommandCaptureGroup: CaptureGroup {
@@ -174,6 +277,10 @@ struct CleanRemoveCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let directory = groups[safe: 0] else { return nil }
         self.directory = directory.lastPathComponent
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "\("Cleaning".s.Bold) \(directory)" : "Cleaning \(directory)"
     }
 }
 
@@ -214,6 +321,11 @@ struct CodesignCaptureGroup: CaptureGroup {
         guard let file = groups[safe: 0] else { return nil }
         self.file = file
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let command = "Signing"
+        return colored ? command.s.Bold + " " + file.lastPathComponent : command + " " + file.lastPathComponent
+    }
 }
 
 struct CodesignFrameworkCaptureGroup: CaptureGroup {
@@ -229,6 +341,10 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let frameworkPath = groups[safe: 0] else { return nil }
         self.frameworkPath = frameworkPath
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 }
 
@@ -493,6 +609,20 @@ struct FailingTestCaptureGroup: CaptureGroup {
         self.testCase = testCase
         self.reason = reason
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + testCase + ", " + reason : Format.indent + TestStatus.fail + " " + testCase + ", " + reason
+        case .gitHubActions:
+            let message = Format.indent + testCase + ", " + reason
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                fileComponents: file.asFileComponents(),
+                message: message
+            )
+        }
+    }
 }
 
 struct UIFailingTestCaptureGroup: CaptureGroup {
@@ -504,13 +634,26 @@ struct UIFailingTestCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^\s{4}t = \s+\d+\.\d+s\s+Assertion Failure: (.*:\d+): (.*)$"#)
 
     let file: String
-    let reason: String
+    let failingReason: String
 
     init?(groups: [String]) {
         assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let reason = groups[safe: 1] else { return nil }
+        guard let file = groups[safe: 0], let failingReason = groups[safe: 1] else { return nil }
         self.file = file
-        self.reason = reason
+        self.failingReason = failingReason
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + file + ", " + failingReason : Format.indent + TestStatus.fail + " " + file + ", " + failingReason
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                fileComponents: file.asFileComponents(),
+                message: Format.indent + failingReason
+            )
+        }
     }
 }
 
@@ -537,6 +680,18 @@ struct RestartingTestCaptureGroup: CaptureGroup {
         self.testSuite = testSuite
         self.testCase = testCase
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + wholeMessage : Format.indent + TestStatus.fail + " " + wholeMessage
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                message: Format.indent + wholeMessage
+            )
+        }
+    }
 }
 
 struct GenerateCoverageDataCaptureGroup: CaptureGroup {
@@ -552,6 +707,10 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
         assert(groups.count >= 0)
         self.init()
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "\("Generating".s.Bold) code coverage data..." : "Generating code coverage data..."
+    }
 }
 
 struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
@@ -564,6 +723,10 @@ struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let coverageReportFilePath = groups[safe: 0] else { return nil }
         self.coverageReportFilePath = coverageReportFilePath
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "\("Generated".s.Bold) code coverage report: \(coverageReportFilePath.s.Italic)" : "Generated code coverage report: \(coverageReportFilePath)"
     }
 }
 
@@ -584,6 +747,10 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
         self.dsym = dsym
         self.target = target
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Generating".s.Bold) \(dsym)" : "[\(target)] Generating \(dsym)"
+    }
 }
 
 struct LibtoolCaptureGroup: CaptureGroup {
@@ -602,6 +769,10 @@ struct LibtoolCaptureGroup: CaptureGroup {
         guard let filename = groups[safe: 0], let target = groups.last else { return nil }
         self.filename = filename
         self.target = target
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
     }
 }
 
@@ -636,6 +807,14 @@ struct LinkingCaptureGroup: CaptureGroup {
         self.target = target
         #endif
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        #if os(Linux)
+        return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold)" : "[\(target)] Linking"
+        #else
+        return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(binaryFilename)" : "[\(target)] Linking \(binaryFilename)"
+        #endif
+    }
 }
 
 struct TestCasePassedCaptureGroup: CaptureGroup {
@@ -661,6 +840,15 @@ struct TestCasePassedCaptureGroup: CaptureGroup {
         self.suite = suite
         self.testCase = testCase
         self.time = time
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
+        case .gitHubActions:
+            return Format.indent + testCase + " (\(time) seconds)"
+        }
     }
 }
 
@@ -704,6 +892,10 @@ struct TestCasePendingCaptureGroup: CaptureGroup {
         self.suite = suite
         self.testCase = testCase
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? Format.indent + TestStatus.pending.foreground.Yellow + " " + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " " + testCase + " [PENDING]"
+    }
 }
 
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
@@ -735,6 +927,18 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
         self.value = value
         self.deviation = deviation
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            let deviation = colored ? deviation.coloredDeviation() : deviation
+            let formattedValue = colored && unitName == "seconds" ? value.coloredTime() : value
+
+            return Format.indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " " + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
+        case .gitHubActions:
+            return Format.indent + testCase + " measured (\(value) \(unitName) ±\(deviation)% -- \(name))"
+        }
+    }
 }
 
 struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
@@ -760,6 +964,15 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
         self.device = device
         self.time = time
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
+        case .gitHubActions:
+            return Format.indent + testCase + " on '\(device)' (\(time) seconds)"
+        }
+    }
 }
 
 struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
@@ -781,6 +994,15 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
         self.suite = suite
         self.testCase = testCase
         self.time = time
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
+        case .gitHubActions:
+            return Format.indent + testCase + " (\(time)) seconds)"
+        }
     }
 }
 
@@ -807,6 +1029,19 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
         self.device = device
         self.time = time
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? "    \(TestStatus.fail.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
+        case .gitHubActions:
+            let message = "    \(testCase) on '\(device)' (\(time) seconds)"
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                message: message
+            )
+        }
+    }
 }
 
 struct ParallelTestingStartedCaptureGroup: CaptureGroup {
@@ -825,6 +1060,10 @@ struct ParallelTestingStartedCaptureGroup: CaptureGroup {
         guard let wholeMessage = groups[safe: 0], let device = groups[safe: 1] else { return nil }
         self.wholeMessage = wholeMessage
         self.device = device
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        "Testing started on '\(device)'"
     }
 }
 
@@ -845,6 +1084,10 @@ struct ParallelTestingPassedCaptureGroup: CaptureGroup {
         self.wholeMessage = wholeMessage
         self.device = device
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        "Testing passed on '\(device)'"
+    }
 }
 
 struct ParallelTestingFailedCaptureGroup: CaptureGroup {
@@ -863,6 +1106,19 @@ struct ParallelTestingFailedCaptureGroup: CaptureGroup {
         guard let wholeError = groups[safe: 0], let device = groups[safe: 1] else { return nil }
         self.wholeError = wholeError
         self.device = device
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let message = "Testing failed on '\(device)'"
+        switch renderer {
+        case .terminal:
+            return message
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                message: message
+            )
+        }
     }
 }
 
@@ -883,6 +1139,12 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
         self.suite = suite
         self.device = device
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let deviceDescription = " on '\(device)'"
+        let heading = "Test Suite \(suite) started\(deviceDescription)"
+        return colored ? heading.s.Bold.f.Cyan : heading
+    }
 }
 
 struct PhaseSuccessCaptureGroup: CaptureGroup {
@@ -895,6 +1157,11 @@ struct PhaseSuccessCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let phase = groups[safe: 0] else { return nil }
         self.phase = phase
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let phase = phase.capitalized
+        return colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
     }
 }
 
@@ -915,6 +1182,12 @@ struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
         self.phaseName = phaseName
         self.target = target
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        // Strip backslashed added by xcodebuild before spaces in the build phase name
+        let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
+        return colored ? "[\(target.f.Cyan)] \("Running script".s.Bold) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
+    }
 }
 
 struct ProcessPchCaptureGroup: CaptureGroup {
@@ -934,6 +1207,12 @@ struct ProcessPchCaptureGroup: CaptureGroup {
         self.file = file
         self.buildTarget = buildTarget
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let filename = file
+        let target = buildTarget
+        return colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(filename)" : "[\(target)] Processing \(filename)"
+    }
 }
 
 struct ProcessPchCommandCaptureGroup: CaptureGroup {
@@ -949,6 +1228,10 @@ struct ProcessPchCommandCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let filePath = groups.last else { return nil }
         self.filePath = filePath
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
 }
 
@@ -974,6 +1257,10 @@ struct PreprocessCaptureGroup: CaptureGroup {
         self.file = file
         self.target = target
         self.project = project
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Preprocess".s.Bold) \(file)" : "[\(target)] Preprocess \(file)"
     }
 }
 
@@ -1029,6 +1316,18 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
             target = groups.last
         }
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let plist = filename
+
+        if let target {
+            // Xcode 10+ output
+            return colored ? "[\(target.f.Cyan)] \("Processing".s.Bold) \(plist)" : "[\(target)] \("Processing") \(plist)"
+        } else {
+            // Xcode 9 output
+            return colored ? "Processing".s.Bold + " " + plist : "Processing" + " " + plist
+        }
+    }
 }
 
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
@@ -1078,6 +1377,12 @@ struct TestSuiteStartedCaptureGroup: CaptureGroup {
         self.suite = suite
         self.time = time
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let testSuite = suite
+        let heading = "Test Suite \(testSuite) started"
+        return colored ? heading.s.Bold.f.Cyan : heading
+    }
 }
 
 struct TestSuiteStartCaptureGroup: CaptureGroup {
@@ -1093,6 +1398,10 @@ struct TestSuiteStartCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let testSuiteName = groups[safe: 0] else { return nil }
         self.testSuiteName = testSuiteName
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? testSuiteName.s.Bold : testSuiteName
     }
 }
 
@@ -1153,6 +1462,10 @@ struct TouchCaptureGroup: CaptureGroup {
         self.filename = filename
         self.target = target
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
+    }
 }
 
 struct WriteFileCaptureGroup: CaptureGroup {
@@ -1204,6 +1517,46 @@ struct CompileWarningCaptureGroup: CaptureGroup {
         self.filename = filename
         self.reason = reason
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            let filePath = filePath
+            let reason = reason
+
+            // Read 2 additional lines to get the warning line and cursor position
+            let line: String = additionalLines() ?? ""
+            let cursor: String = additionalLines() ?? ""
+            return colored ?
+                """
+                \(Symbol.warning)  \(filePath): \(reason.f.Yellow)
+                \(line)
+                \(cursor.f.Green)
+                """
+                :
+                """
+                \(Symbol.asciiWarning)  \(filePath): \(reason)
+                \(line)
+                \(cursor)
+                """
+        case .gitHubActions:
+            // Read 2 additional lines to get the warning line and cursor position
+            let line: String = additionalLines() ?? ""
+            let cursor: String = additionalLines() ?? ""
+
+            let message = """
+            \(reason)
+            \(line)
+            \(cursor)
+            """
+
+            return outputGitHubActionsLog(
+                annotationType: .warning,
+                fileComponents: filePath.asFileComponents(),
+                message: message
+            )
+        }
+    }
 }
 
 struct LDWarningCaptureGroup: CaptureGroup {
@@ -1223,6 +1576,18 @@ struct LDWarningCaptureGroup: CaptureGroup {
         self.ldPrefix = ldPrefix
         self.warningMessage = warningMessage
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? "\(Symbol.warning) \(ldPrefix.f.Yellow)\(warningMessage.f.Yellow)" : "\(Symbol.asciiWarning) \(ldPrefix)\(warningMessage)"
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .warning,
+                message: "\(ldPrefix)\(warningMessage)"
+            )
+        }
+    }
 }
 
 struct GenericWarningCaptureGroup: CaptureGroup {
@@ -1238,6 +1603,18 @@ struct GenericWarningCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let wholeWarning = groups[safe: 0] else { return nil }
         self.wholeWarning = wholeWarning
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Symbol.warning + " " + wholeWarning.f.Yellow : Symbol.asciiWarning + " " + wholeWarning
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .warning,
+                message: wholeWarning
+            )
+        }
     }
 }
 
@@ -1255,6 +1632,18 @@ struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
         guard let wholeWarning = groups[safe: 0] else { return nil }
         self.wholeWarning = wholeWarning
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Symbol.warning + " " + wholeWarning.f.Yellow : Symbol.asciiWarning + " " + wholeWarning
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .warning,
+                message: wholeWarning
+            )
+        }
+    }
 }
 
 struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
@@ -1270,6 +1659,18 @@ struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let wholeMessage = groups[safe: 0] else { return nil }
         warningMessage = wholeMessage
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .warning,
+                message: warningMessage
+            )
+        }
     }
 }
 
@@ -1302,6 +1703,10 @@ struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
         assert(groups.count >= 1)
         guard let wholeError = groups.first else { return nil }
         self.wholeError = wholeError
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "Check Dependencies".style.Bold : "Check Dependencies"
     }
 }
 
@@ -1357,6 +1762,43 @@ struct CompileErrorCaptureGroup: CaptureGroup {
         self.isFatalError = isFatalError
         self.reason = reason
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            // Read 2 additional lines to get the error line and cursor position
+            let line: String = additionalLines() ?? ""
+            let cursor: String = additionalLines() ?? ""
+            return colored ?
+                """
+                \(Symbol.error) \(filePath): \(reason.f.Red)
+                \(line)
+                \(cursor.f.Cyan)
+                """
+                :
+                """
+                \(Symbol.asciiError) \(filePath): \(reason)
+                \(line)
+                \(cursor)
+                """
+        case .gitHubActions:
+            // Read 2 additional lines to get the error line and cursor position
+            let line: String = additionalLines() ?? ""
+            let cursor: String = additionalLines() ?? ""
+
+            let message = """
+            \(reason)
+            \(line)
+            \(cursor)
+            """
+
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                fileComponents: filePath.asFileComponents(),
+                message: message
+            )
+        }
+    }
 }
 
 struct CursorCaptureGroup: CaptureGroup {
@@ -1409,6 +1851,19 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
         self.reason = reason
         self.filePath = filePath
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                fileComponents: filePath.asFileComponents(),
+                message: reason
+            )
+        }
+    }
 }
 
 struct LDErrorCaptureGroup: ErrorCaptureGroup {
@@ -1457,6 +1912,16 @@ struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
         guard let reason = groups[safe: 0] else { return nil }
         self.reason = reason
     }
+
+    // TODO: Print file path
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
+        case .gitHubActions:
+            return outputGitHubActionsLog(annotationType: .error, message: reason)
+        }
+    }
 }
 
 struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
@@ -1488,6 +1953,15 @@ struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let reason = groups[safe: 0] else { return nil }
         self.reason = reason
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
+        case .gitHubActions:
+            return outputGitHubActionsLog(annotationType: .error, message: reason)
+        }
     }
 }
 
@@ -1523,6 +1997,18 @@ struct SymbolReferencedFromCaptureGroup: CaptureGroup {
         guard let wholeError = groups[safe: 0], let reference = groups[safe: 1] else { return nil }
         self.wholeError = wholeError
         self.reference = reference
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Symbol.error + " " + wholeError.f.Red : Symbol.asciiError + " " + wholeError
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .error,
+                message: wholeError
+            )
+        }
     }
 }
 
@@ -1561,6 +2047,18 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
         self.target = target
         self.filename = filename
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        switch renderer {
+        case .terminal:
+            return colored ? Symbol.warning + " " + wholeWarning.f.Yellow : Symbol.asciiWarning + " " + wholeWarning
+        case .gitHubActions:
+            return outputGitHubActionsLog(
+                annotationType: .warning,
+                message: wholeWarning
+            )
+        }
+    }
 }
 
 struct PackageFetchingCaptureGroup: CaptureGroup {
@@ -1574,6 +2072,10 @@ struct PackageFetchingCaptureGroup: CaptureGroup {
         guard let source = groups[safe: 0] else { return nil }
         self.source = source
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        "Fetching " + source
+    }
 }
 
 struct PackageUpdatingCaptureGroup: CaptureGroup {
@@ -1586,6 +2088,10 @@ struct PackageUpdatingCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let source = groups[safe: 0] else { return nil }
         self.source = source
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        "Updating " + source
     }
 }
 
@@ -1602,6 +2108,10 @@ struct PackageCheckingOutCaptureGroup: CaptureGroup {
         self.version = version
         self.package = package
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "Checking out " + package.s.Bold + " @ " + version.f.Green : "Checking out \(package) @ \(version)"
+    }
 }
 
 struct PackageGraphResolvingStartCaptureGroup: CaptureGroup {
@@ -1614,6 +2124,10 @@ struct PackageGraphResolvingStartCaptureGroup: CaptureGroup {
         assert(groups.count >= 0)
         self.init()
     }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
+    }
 }
 
 struct PackageGraphResolvingEndedCaptureGroup: CaptureGroup {
@@ -1625,6 +2139,10 @@ struct PackageGraphResolvingEndedCaptureGroup: CaptureGroup {
     init?(groups: [String]) {
         assert(groups.count >= 0)
         self.init()
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
     }
 }
 
@@ -1647,6 +2165,13 @@ struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
         self.packageName = packageName
         self.packageURL = packageURL
         self.packageVersion = packageVersion
+    }
+
+    func formatted(for renderer: Renderer, colored: Bool, additionalLines: () -> String?) -> String? {
+        let name = packageName
+        let url = packageURL
+        let version = packageVersion
+        return colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
     }
 }
 
