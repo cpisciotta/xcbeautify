@@ -1,7 +1,7 @@
 package class Parser {
     private let colored: Bool
 
-    private let renderer: OutputRendering
+    private let renderer: Renderer
 
     private let additionalLines: () -> String?
 
@@ -105,14 +105,7 @@ package class Parser {
         additionalLines: @escaping () -> (String?)
     ) {
         self.colored = colored
-
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer()
-        }
-
+        self.renderer = renderer
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }
@@ -154,9 +147,16 @@ package class Parser {
             return nil
         }
 
-        let formattedOutput = renderer.beautify(
-            line: line,
-            pattern: captureGroupType.pattern,
+        guard let captureGroup: CaptureGroup = line.captureGroup(with: captureGroupType.pattern) else {
+            assertionFailure("Expected a known CaptureGroup from the given pattern!")
+            return nil
+        }
+
+        assert(captureGroupType.pattern == captureGroup.pattern)
+
+        let formattedOutput = captureGroup.formatted(
+            for: renderer,
+            colored: colored,
             additionalLines: additionalLines
         )
 
@@ -170,7 +170,8 @@ package class Parser {
 
     package func formattedSummary() -> String? {
         guard let summary else { return nil }
-        return renderer.format(testSummary: summary)
+        return nil
+//        return renderer.format(testSummary: summary)
     }
 
     // MARK: Private
