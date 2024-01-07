@@ -70,10 +70,10 @@ struct GitHubActionsRenderer: OutputRendering {
         )
     }
 
-    func formatCompleteWarning(line: String) -> String {
+    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String {
         outputGitHubActionsLog(
             annotationType: .warning,
-            message: line
+            message: group.wholeWarning
         )
     }
 

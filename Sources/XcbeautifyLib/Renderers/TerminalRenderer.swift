@@ -104,8 +104,8 @@ struct TerminalRenderer: OutputRendering {
         return colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
     }
 
-    func formatCompleteWarning(line: String) -> String {
-        colored ? Symbol.warning + " " + line.f.Yellow : Symbol.asciiWarning + " " + line
+    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String {
+        colored ? Symbol.warning + " " + group.wholeWarning.f.Yellow : Symbol.asciiWarning + " " + group.wholeWarning
     }
 
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
