@@ -7,6 +7,10 @@ on:
   pull_request: {}
   merge_group: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   compile:
     name: Compile (Swift ${{ matrix.swift_version }}) (${{ matrix.platform }})
