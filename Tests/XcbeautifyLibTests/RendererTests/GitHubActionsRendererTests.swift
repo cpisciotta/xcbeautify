@@ -39,7 +39,11 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testCheckDependenciesErrors() { }
 
-    func testCheckDependencies() { }
+    func testCheckDependencies() {
+        let command = "Check Dependencies"
+        let formatted = logFormatted(command)
+        XCTAssertEqual(formatted, command)
+    }
 
     func testClangError() {
         let formatted = logFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
