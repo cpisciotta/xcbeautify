@@ -43,7 +43,7 @@ protocol OutputRendering {
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String
-    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String
+    func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String
     func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String
     func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String
@@ -192,7 +192,7 @@ extension OutputRendering {
         case let group as ParallelTestCasePassedCaptureGroup:
             return formatParallelTestCasePassed(group: group)
         case let group as ParallelTestingFailedCaptureGroup:
-            return formatParallelTestingFailed(line: line, group: group)
+            return formatParallelTestingFailed(group: group)
         case let group as ParallelTestingPassedCaptureGroup:
             return formatParallelTestingPassed(group: group)
         case let group as ParallelTestingStartedCaptureGroup:
