@@ -9,6 +9,7 @@ protocol OutputRendering {
 
     func format(line: String, command: String, pattern: String, arguments: String) -> String?
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
+    func formatCheckDependencies() -> String
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
     func formatCodeSign(group: CodesignCaptureGroup) -> String
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
@@ -98,7 +99,7 @@ extension OutputRendering {
         case let group as BuildTargetCaptureGroup:
             return formatTargetCommand(command: "Build", group: group)
         case is CheckDependenciesCaptureGroup:
-            return format(line: line, command: "Check Dependencies", pattern: CheckDependenciesCaptureGroup.pattern, arguments: "")
+            return formatCheckDependencies()
         case let group as CheckDependenciesErrorsCaptureGroup:
             return formatError(group: group)
         case let group as ClangErrorCaptureGroup:
@@ -285,6 +286,10 @@ extension OutputRendering {
         let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Analyzing".s.Bold) \(filename)" : "[\(target)] Analyzing \(filename)"
+    }
+
+    func formatCheckDependencies() -> String {
+        colored ? "Check Dependencies".style.Bold : "Check Dependencies"
     }
 
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String {
