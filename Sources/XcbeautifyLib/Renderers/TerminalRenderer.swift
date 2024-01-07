@@ -16,8 +16,8 @@ struct TerminalRenderer: OutputRendering {
         return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + file + ", " + failingReason : Format.indent + TestStatus.fail + " " + file + ", " + failingReason
     }
 
-    func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
-        colored ? Format.indent + TestStatus.fail.foreground.Red + " " + line : Format.indent + TestStatus.fail + " " + line
+    func formatRestartingTest(group: RestartingTestCaptureGroup) -> String {
+        colored ? Format.indent + TestStatus.fail.foreground.Red + " " + group.wholeMessage : Format.indent + TestStatus.fail + " " + group.wholeMessage
     }
 
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {

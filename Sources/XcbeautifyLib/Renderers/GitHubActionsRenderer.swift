@@ -167,8 +167,8 @@ struct GitHubActionsRenderer: OutputRendering {
         )
     }
 
-    func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String {
-        let message = Format.indent + line
+    func formatRestartingTest(group: RestartingTestCaptureGroup) -> String {
+        let message = Format.indent + group.wholeMessage
         return outputGitHubActionsLog(
             annotationType: .error,
             message: message
