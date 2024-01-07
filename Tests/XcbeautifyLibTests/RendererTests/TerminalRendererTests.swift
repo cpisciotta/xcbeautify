@@ -389,7 +389,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testPreprocess() { }
+    func testPreprocess() {
+        let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
+        let output = "[SomeTarget] Preprocess Something.m"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
 
     func testProcessInfoPlist() {
         let formatted = noColoredFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")

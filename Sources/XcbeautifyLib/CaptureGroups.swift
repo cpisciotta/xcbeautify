@@ -951,15 +951,24 @@ struct PreprocessCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
-    /// $1 = file
-    static let regex = Regex(pattern: #"^Preprocess\s(?:(?:\ |[^ ])*)\s((?:\ |[^ ])*)$"#)
+    /// $1 = file path
+    /// $2 = file
+    /// $3 = target
+    /// $4 = project
+    static let regex = Regex(pattern: #"^Preprocess\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\(in target '(.*)' from project '(.*)'\)"#)
 
+    let filePath: String
     let file: String
+    let target: String
+    let project: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let file = groups[safe: 0] else { return nil }
+        assert(groups.count >= 4)
+        guard let filePath = groups[safe: 0], let file = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
+        self.filePath = filePath
         self.file = file
+        self.target = target
+        self.project = project
     }
 }
 

@@ -50,6 +50,7 @@ protocol OutputRendering {
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String
     func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String
     func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String
+    func formatPreprocess(group: PreprocessCaptureGroup) -> String
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
@@ -208,8 +209,8 @@ extension OutputRendering {
             return formatPhaseSuccess(group: group)
         case let group as PodsErrorCaptureGroup:
             return formatError(group: group)
-        case is PreprocessCaptureGroup:
-            return format(line: line, command: "Preprocessing", pattern: pattern, arguments: "$1")
+        case let group as PreprocessCaptureGroup:
+            return formatPreprocess(group: group)
         case let group as ProcessInfoPlistCaptureGroup:
             return formatProcessInfoPlist(group: group)
         case let group as ProcessPchCaptureGroup:
@@ -432,6 +433,12 @@ extension OutputRendering {
     func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String {
         let phase = group.phase.capitalized
         return colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
+    }
+
+    func formatPreprocess(group: PreprocessCaptureGroup) -> String {
+        let target = group.target
+        let file = group.file
+        return colored ? "[\(target.f.Cyan)] \("Preprocess".s.Bold) \(file)" : "[\(target)] Preprocess \(file)"
     }
 
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String {
