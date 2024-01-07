@@ -1519,16 +1519,19 @@ struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
 struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
     /// Regular expression captured groups:
-    /// $1 = target
-    /// $2 = filename
-    static let regex = Regex(pattern: #".+ in (.+)\((.+)\.o\)$"#)
+    /// $1 = whole warning
+    /// $2 = target
+    /// $3 = filename
+    static let regex = Regex(pattern: #"(.+ in (.+)\((.+)\.o\))$"#)
 
+    let wholeWarning: String
     let target: String
     let filename: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let target = groups[safe: 0], let filename = groups[safe: 1] else { return nil }
+        assert(groups.count >= 3)
+        guard let wholeWarning = groups[safe: 0], let target = groups[safe: 1], let filename = groups[safe: 2] else { return nil }
+        self.wholeWarning = wholeWarning
         self.target = target
         self.filename = filename
     }

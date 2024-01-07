@@ -16,7 +16,6 @@ protocol OutputRendering {
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
-    func formatCompleteWarning(line: String) -> String
     func formatCopy(group: CopyCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
@@ -69,6 +68,7 @@ protocol OutputRendering {
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String?
     func formatTouch(group: TouchCaptureGroup) -> String
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String
+    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String
     func formatWarning(group: GenericWarningCaptureGroup) -> String
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
     func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String?
@@ -247,8 +247,8 @@ extension OutputRendering {
             return formatTouch(group: group)
         case let group as UIFailingTestCaptureGroup:
             return formatUIFailingTest(group: group)
-        case is UndefinedSymbolLocationCaptureGroup:
-            return formatCompleteWarning(line: line)
+        case let group as UndefinedSymbolLocationCaptureGroup:
+            return formatUndefinedSymbolLocation(group: group)
         case let group as WillNotBeCodeSignedCaptureGroup:
             return formatWillNotBeCodesignWarning(group: group)
         case let group as WriteAuxiliaryFilesCaptureGroup:
