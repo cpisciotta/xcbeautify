@@ -111,3 +111,7 @@ format:
 .PHONY: lint
 lint:
 	tools/lint
+
+.PHONY: coverage
+export_coverage:
+	tools/export_coverage

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [[ "$(uname)" == "Darwin" ]]; then
+    # macOS
+    xcrun llvm-cov export -format="lcov" .build/debug/xcbeautifyPackageTests.xctest/Contents/MacOS/xcbeautifyPackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
+else
+    # Linux
+    llvm-cov export -format="lcov" .build/debug/xcbeautifyPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
+fi

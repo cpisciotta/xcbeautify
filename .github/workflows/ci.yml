@@ -35,4 +35,17 @@ jobs:
         platform: [macos-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
-      - run: swift test
+      - name: Install Swift and Tools
+        if: matrix.platform == 'ubuntu-latest'
+        uses: swift-actions/setup-swift@cdbe0f7f4c77929b6580e71983e8606e55ffe7e4
+        with:
+          swift-version: 5.9.2
+      - run: swift test --enable-code-coverage
+      - name: Prepare Code Coverage
+        run: ./tools/export_coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: info.lcov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
