@@ -52,7 +52,7 @@ protocol OutputRendering {
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
-    func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String
+    func formatRestartingTest(group: RestartingTestCaptureGroup) -> String
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
     func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String
@@ -218,7 +218,7 @@ extension OutputRendering {
         case let group as ProvisioningProfileRequiredCaptureGroup:
             return formatError(group: group)
         case let group as RestartingTestCaptureGroup:
-            return formatRestartingTest(line: line, group: group)
+            return formatRestartingTest(group: group)
         case let group as ShellCommandCaptureGroup:
             return formatShellCommand(group: group)
         case let group as SymbolReferencedFromCaptureGroup:

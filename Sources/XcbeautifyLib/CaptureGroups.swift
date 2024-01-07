@@ -513,18 +513,21 @@ struct RestartingTestCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
-    /// $1 = test suite + test case
-    /// $2 = test suite
-    /// $3 = test case
-    static let regex = Regex(pattern: #"^Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));"#)
+    /// $1 = whole message
+    /// $2 = test suite + test case
+    /// $3 = test suite
+    /// $4 = test case
+    static let regex = Regex(pattern: #"^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)"#)
 
+    let wholeMessage: String
     let testSuiteAndTestCase: String
     let testSuite: String
     let testCase: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let testSuiteAndTestCase = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2] else { return nil }
+        assert(groups.count >= 4)
+        guard let wholeMessage = groups[safe: 0], let testSuiteAndTestCase = groups[safe: 1], let testSuite = groups[safe: 2], let testCase = groups[safe: 3] else { return nil }
+        self.wholeMessage = wholeMessage
         self.testSuiteAndTestCase = testSuiteAndTestCase
         self.testSuite = testSuite
         self.testCase = testCase
