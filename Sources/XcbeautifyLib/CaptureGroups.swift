@@ -805,14 +805,17 @@ struct ParallelTestingStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
-    /// $1 = device
-    static let regex = Regex(pattern: #"^Testing\s+started\s+on\s+'(.*)'"#)
+    /// $1 = whole message
+    /// $2 = device
+    static let regex = Regex(pattern: #"^(Testing\s+started\s+on\s+'(.*)'.*)$"#)
 
+    let wholeMessage: String
     let device: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let device = groups[safe: 0] else { return nil }
+        assert(groups.count >= 2)
+        guard let wholeMessage = groups[safe: 0], let device = groups[safe: 1] else { return nil }
+        self.wholeMessage = wholeMessage
         self.device = device
     }
 }
