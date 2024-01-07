@@ -191,8 +191,8 @@ struct TerminalRenderer: OutputRendering {
         return colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
     }
 
-    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
-        colored ? line.s.Bold.f.Red : line
+    func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
+        colored ? group.wholeError.s.Bold.f.Red : group.wholeError
     }
 
     func format(testSummary: TestSummary) -> String {

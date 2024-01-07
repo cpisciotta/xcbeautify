@@ -843,14 +843,17 @@ struct ParallelTestingFailedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .nonContextualError
 
     /// Regular expression captured groups:
-    /// $1 = device
-    static let regex = Regex(pattern: #"^Testing\s+failed\s+on\s+'(.*)'"#)
+    /// $1 = whole error
+    /// $2 = device
+    static let regex = Regex(pattern: #"^(Testing\s+failed\s+on\s+'(.*)'.*)$"#)
 
+    let wholeError: String
     let device: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let device = groups[safe: 0] else { return nil }
+        assert(groups.count >= 2)
+        guard let wholeError = groups[safe: 0], let device = groups[safe: 1] else { return nil }
+        self.wholeError = wholeError
         self.device = device
     }
 }

@@ -160,10 +160,10 @@ struct GitHubActionsRenderer: OutputRendering {
         return Format.indent + testCase + " on '\(device)' (\(time) seconds)"
     }
 
-    func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String {
+    func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         outputGitHubActionsLog(
             annotationType: .error,
-            message: line
+            message: group.wholeError
         )
     }
 
