@@ -409,7 +409,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testPreprocess() { }
+    func testPreprocess() {
+        let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
+        let output = "[SomeTarget] Preprocess Something.m"
+        XCTAssertEqual(logFormatted(input), output)
+    }
 
     func testProcessInfoPlist() {
         let formatted = logFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")
