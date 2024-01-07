@@ -7,7 +7,6 @@ protocol OutputRendering {
 
     func format(testSummary: TestSummary) -> String
 
-    func format(line: String, command: String, pattern: String, arguments: String) -> String?
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCheckDependencies() -> String
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
@@ -267,22 +266,6 @@ extension OutputRendering {
 }
 
 extension OutputRendering {
-    func format(line: String, command: String, pattern: String, arguments: String) -> String? {
-        let template = command.style.Bold + " " + arguments
-
-        guard let formatted = try? NSRegularExpression(pattern: pattern)
-            .stringByReplacingMatches(
-                in: line,
-                range: NSRange(location: 0, length: line.count),
-                withTemplate: template
-            )
-        else {
-            return nil
-        }
-
-        return formatted
-    }
-
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
