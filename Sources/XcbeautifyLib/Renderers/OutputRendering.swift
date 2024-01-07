@@ -44,7 +44,7 @@ protocol OutputRendering {
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String
     func formatParallelTestingFailed(line: String, group: ParallelTestingFailedCaptureGroup) -> String
-    func formatParallelTestingPassed(line: String, group: ParallelTestingPassedCaptureGroup) -> String
+    func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String
     func formatParallelTestingStarted(line: String, group: ParallelTestingStartedCaptureGroup) -> String
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String
     func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String
@@ -194,7 +194,7 @@ extension OutputRendering {
         case let group as ParallelTestingFailedCaptureGroup:
             return formatParallelTestingFailed(line: line, group: group)
         case let group as ParallelTestingPassedCaptureGroup:
-            return formatParallelTestingPassed(line: line, group: group)
+            return formatParallelTestingPassed(group: group)
         case let group as ParallelTestingStartedCaptureGroup:
             return formatParallelTestingStarted(line: line, group: group)
         case let group as ParallelTestSuiteStartedCaptureGroup:
@@ -401,8 +401,8 @@ extension OutputRendering {
         return "Updating " + source
     }
 
-    func formatParallelTestingPassed(line: String, group: ParallelTestingPassedCaptureGroup) -> String {
-        colored ? line.s.Bold.f.Green : line
+    func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String {
+        colored ? group.wholeMessage.s.Bold.f.Green : group.wholeMessage
     }
 
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String {
