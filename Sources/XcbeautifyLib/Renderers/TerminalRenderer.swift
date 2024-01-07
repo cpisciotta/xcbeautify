@@ -68,8 +68,8 @@ struct TerminalRenderer: OutputRendering {
         return colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
     }
 
-    func formatCompleteError(line: String) -> String {
-        colored ? Symbol.error + " " + line.f.Red : Symbol.asciiError + " " + line
+    func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String {
+        colored ? Symbol.error + " " + group.wholeError.f.Red : Symbol.asciiError + " " + group.wholeError
     }
 
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {

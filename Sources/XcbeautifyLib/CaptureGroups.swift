@@ -1485,14 +1485,17 @@ struct SymbolReferencedFromCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
-    /// $1 = reference
-    static let regex = Regex(pattern: #"\s+\"(.*)\", referenced from:$"#)
+    /// $1 = wholeError
+    /// $2 = reference
+    static let regex = Regex(pattern: #"(\s+\"(.*)\", referenced from:)$"#)
 
+    let wholeError: String
     let reference: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let reference = groups[safe: 0] else { return nil }
+        assert(groups.count >= 2)
+        guard let wholeError = groups[safe: 0], let reference = groups[safe: 1] else { return nil }
+        self.wholeError = wholeError
         self.reference = reference
     }
 }

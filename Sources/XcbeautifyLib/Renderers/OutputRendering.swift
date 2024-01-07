@@ -16,7 +16,6 @@ protocol OutputRendering {
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
-    func formatCompleteError(line: String) -> String
     func formatCompleteWarning(line: String) -> String
     func formatCopy(group: CopyCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
@@ -56,6 +55,7 @@ protocol OutputRendering {
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
     func formatRestartingTest(line: String, group: RestartingTestCaptureGroup) -> String
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
+    func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
     func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String
@@ -221,8 +221,8 @@ extension OutputRendering {
             return formatRestartingTest(line: line, group: group)
         case let group as ShellCommandCaptureGroup:
             return formatShellCommand(group: group)
-        case is SymbolReferencedFromCaptureGroup:
-            return formatCompleteError(line: line)
+        case let group as SymbolReferencedFromCaptureGroup:
+            return formatSymbolReferencedFrom(group: group)
         case let group as TestCaseMeasuredCaptureGroup:
             return formatTestCaseMeasured(group: group)
         case let group as TestCasePassedCaptureGroup:

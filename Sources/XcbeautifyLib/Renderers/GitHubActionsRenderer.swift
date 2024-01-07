@@ -63,10 +63,10 @@ struct GitHubActionsRenderer: OutputRendering {
         )
     }
 
-    func formatCompleteError(line: String) -> String {
+    func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String {
         outputGitHubActionsLog(
             annotationType: .error,
-            message: line
+            message: group.wholeError
         )
     }
 
