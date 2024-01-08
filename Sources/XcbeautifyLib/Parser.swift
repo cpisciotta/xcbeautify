@@ -170,8 +170,7 @@ package class Parser {
 
     package func formattedSummary() -> String? {
         guard let summary else { return nil }
-        return nil
-//        return renderer.format(testSummary: summary)
+        return summary.formatted(renderer: renderer, colored: colored)
     }
 
     // MARK: Private

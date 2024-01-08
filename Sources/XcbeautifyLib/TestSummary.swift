@@ -1,3 +1,5 @@
+import Colorizer
+
 struct TestSummary {
     let testsCount: Int
     let skippedCount: Int
@@ -18,6 +20,23 @@ struct TestSummary {
             unexpectedCount: left.unexpectedCount + right.unexpectedCount,
             time: left.time + right.time
         )
+    }
+
+    func formatted(renderer: Renderer, colored: Bool) -> String {
+        switch renderer {
+        case .terminal:
+            if isSuccess() {
+                return colored ? "Tests Passed: \(description)".s.Bold.f.Green : "Tests Passed: \(description)"
+            } else {
+                return colored ? "Tests Failed: \(description)".s.Bold.f.Red : "Tests Failed: \(description)"
+            }
+        case .gitHubActions:
+            if isSuccess() {
+                return "::notice::Tests Passed: \(description)"
+            } else {
+                return "::error::Tests Failed: \(description)"
+            }
+        }
     }
 }
 
