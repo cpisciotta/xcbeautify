@@ -38,7 +38,10 @@ let package = Package(
         ),
         .testTarget(
             name: "XcbeautifyLibTests",
-            dependencies: ["XcbeautifyLib"]
+            dependencies: ["XcbeautifyLib"],
+            resources: [
+                .copy("ParsingTests/clean_build_xcode_15_1.txt"),
+            ]
         ),
     ]
 )
