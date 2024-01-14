@@ -1,13 +1,7 @@
 import Foundation
 
 package class Parser {
-    private let colored: Bool
-
-    private let renderer: OutputRendering
-
-    private let additionalLines: () -> String?
-
-    private let preserveUnbeautifiedLines: Bool
+    private let formatter: XcbeautifyLib.Formatter
 
     package private(set) var outputType = OutputType.undefined
 
@@ -110,17 +104,12 @@ package class Parser {
         preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
     ) {
-        self.colored = colored
-
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer()
-        }
-
-        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
-        self.additionalLines = additionalLines
+        self.formatter = Formatter(
+            colored: colored,
+            renderer: renderer,
+            preserveUnbeautifiedLines: preserveUnbeautifiedLines,
+            additionalLines: additionalLines
+        )
     }
 
     package func parse(line: String) -> String? {
@@ -135,7 +124,7 @@ package class Parser {
 
             // Nothing found?
             outputType = OutputType.undefined
-            return preserveUnbeautifiedLines ? line : nil
+            return formatter.preserveUnbeautifiedLines ? line : nil
         }
 
         guard let captureGroupType = captureGroupTypes[safe: idx] else {
@@ -149,17 +138,12 @@ package class Parser {
             return nil
         }
 
-        let formattedOutput = renderer.beautify(
-            group: captureGroup,
-            additionalLines: additionalLines
-        )
-
         outputType = captureGroupType.outputType
 
         // Move found parser to the top, so next time it will be checked first
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
-        return formattedOutput
+        return formatter.format(captureGroup: captureGroup)
     }
 }
 
