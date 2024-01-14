@@ -3,14 +3,17 @@ import XCTest
 
 final class TerminalRendererTests: XCTestCase {
     var parser: Parser!
+    var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, renderer: .terminal, additionalLines: { nil })
+        parser = Parser()
+        formatter = Formatter(colored: false, renderer: .terminal, additionalLines: { nil })
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        parser.parse(line: string)
+        guard let captureGroup = parser.parse(line: string) else { return nil }
+        return formatter.format(captureGroup: captureGroup)
     }
 
     func testAggregateTarget() {
