@@ -4,7 +4,7 @@ package final class Formatter {
     private let colored: Bool
     private let renderer: any OutputRendering
 
-    package init(
+    init(
         colored: Bool = true,
         renderer: Renderer,
         additionalLines: @escaping () -> (String?)
@@ -19,5 +19,9 @@ package final class Formatter {
         case .teamcity:
             self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
         }
+    }
+
+    func format(captureGroup: any CaptureGroup) -> String? {
+        renderer.beautify(group: captureGroup)
     }
 }
