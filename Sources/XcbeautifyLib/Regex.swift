@@ -1,6 +1,6 @@
 import Foundation
 
-final class Regex {
+package final class Regex {
     let pattern: String
 
     private lazy var regex: NSRegularExpression? = {

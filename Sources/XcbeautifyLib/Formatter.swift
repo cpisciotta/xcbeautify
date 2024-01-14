@@ -1,16 +1,14 @@
 import Foundation
 
-class Formatter {
+package class Formatter {
 
     private let colored: Bool
     private let renderer: OutputRendering
     private let additionalLines: () -> String?
-    private(set) var preserveUnbeautifiedLines = false
 
-    init(
+    package init(
         colored: Bool = true,
         renderer: Renderer,
-        preserveUnbeautifiedLines: Bool = false,
         additionalLines: @escaping () -> (String?)
     ) {
         self.colored = colored
@@ -24,11 +22,10 @@ class Formatter {
             self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
         }
 
-        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
         self.additionalLines = additionalLines
     }
 
-    func format(captureGroup: CaptureGroup) -> String? {
+    package func format(captureGroup: CaptureGroup) -> String? {
         renderer.beautify(group: captureGroup)
     }
 }
