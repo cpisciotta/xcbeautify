@@ -1,7 +1,6 @@
 import Foundation
 
 package class Parser {
-    package private(set) var outputType = OutputType.undefined
 
     private lazy var captureGroupTypes: [CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
@@ -102,16 +101,11 @@ package class Parser {
 
     package func parse(line: String) -> CaptureGroup? {
         if line.isEmpty {
-            outputType = .undefined
             return nil
         }
 
         // Find first parser that can parse specified string
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
-            // Some uncommon cases, which have additional logic and don't follow default flow
-
-            // Nothing found?
-            outputType = OutputType.undefined
             return nil
         }
 
@@ -125,8 +119,6 @@ package class Parser {
             assertionFailure()
             return nil
         }
-
-        outputType = captureGroupType.outputType
 
         // Move found parser to the top, so next time it will be checked first
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
