@@ -4,7 +4,7 @@ package final class Formatter {
     private let colored: Bool
     private let renderer: any OutputRendering
 
-    init(
+    package init(
         colored: Bool = true,
         renderer: Renderer,
         additionalLines: @escaping () -> (String?)
@@ -21,7 +21,7 @@ package final class Formatter {
         }
     }
 
-    func format(captureGroup: any CaptureGroup) -> String? {
+    package func format(captureGroup: any CaptureGroup) -> String? {
         renderer.beautify(group: captureGroup)
     }
 }

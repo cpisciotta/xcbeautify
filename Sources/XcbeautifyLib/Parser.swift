@@ -1,8 +1,6 @@
 import Foundation
 
 package class Parser {
-    private let formatter: XcbeautifyLib.Formatter
-
     package private(set) var outputType = OutputType.undefined
 
     private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
@@ -100,21 +98,9 @@ package class Parser {
 
     // MARK: - Init
 
-    package init(
-        colored: Bool = true,
-        renderer: Renderer,
-        preserveUnbeautifiedLines: Bool = false,
-        additionalLines: @escaping () -> (String?)
-    ) {
-        self.formatter = Formatter(
-            colored: colored,
-            renderer: renderer,
-            preserveUnbeautifiedLines: preserveUnbeautifiedLines,
-            additionalLines: additionalLines
-        )
-    }
+    package init() { }
 
-    package func parse(line: String) -> String? {
+    package func parse(line: String) -> (any CaptureGroup)? {
         if line.isEmpty {
             outputType = .undefined
             return nil
@@ -126,7 +112,7 @@ package class Parser {
 
             // Nothing found?
             outputType = OutputType.undefined
-            return formatter.preserveUnbeautifiedLines ? line : nil
+            return nil
         }
 
         guard let captureGroupType = captureGroupTypes[safe: idx] else {
@@ -145,6 +131,6 @@ package class Parser {
         // Move found parser to the top, so next time it will be checked first
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
-        return formatter.format(captureGroup: captureGroup)
+        return captureGroup
     }
 }

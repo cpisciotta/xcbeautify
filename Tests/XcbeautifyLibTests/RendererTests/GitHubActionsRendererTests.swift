@@ -3,14 +3,17 @@ import XCTest
 
 final class GitHubActionsRendererTests: XCTestCase {
     var parser: Parser!
+    var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, renderer: .gitHubActions, additionalLines: { nil })
+        parser = Parser()
+        formatter = Formatter(colored: false, renderer: .gitHubActions, additionalLines: { nil })
     }
 
     private func logFormatted(_ string: String) -> String? {
-        parser.parse(line: string)
+        guard let captureGroup = parser.parse(line: string) else { return nil }
+        return formatter.format(captureGroup: captureGroup)
     }
 
     func testAggregateTarget() {
