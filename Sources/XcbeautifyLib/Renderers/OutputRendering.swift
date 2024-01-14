@@ -6,8 +6,6 @@ protocol OutputRendering {
 
     func beautify(line: String, pattern: String) -> String?
 
-    func format(testSummary: TestSummary) -> String
-
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCheckDependencies() -> String
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
@@ -740,13 +738,5 @@ extension OutputRendering {
 
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         colored ? group.wholeError.s.Bold.f.Red : group.wholeError
-    }
-
-    func format(testSummary: TestSummary) -> String {
-        if testSummary.isSuccess() {
-            colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
-        } else {
-            colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
-        }
     }
 }

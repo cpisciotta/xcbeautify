@@ -185,45 +185,18 @@ final class GitHubActionsRendererTests: XCTestCase {
         let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
 
         // First test plan
-        XCTAssertNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted1 = logFormatted(input1)
-        #if os(macOS)
-        // FIXME: Failing on Linux
-        XCTAssertTrue(parser.needToRecordSummary)
-        #endif
         let formatted2 = logFormatted(input2)
-        XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
 
         #if os(macOS)
         // FIXME: Failing on Linux
-        var summary = try XCTUnwrap(parser.summary)
-
-        XCTAssertEqual(summary.testsCount, 3)
-        XCTAssertEqual(summary.failuresCount, 2)
-        XCTAssertEqual(summary.unexpectedCount, 1)
-        XCTAssertEqual(summary.skippedCount, 0)
-        XCTAssertEqual(summary.time, 0.112)
-
-        // Second test plan
-        XCTAssertNotNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted3 = logFormatted(input3)
-        XCTAssertTrue(parser.needToRecordSummary)
         let formatted4 = logFormatted(input4)
-        XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted3)
         XCTAssertNil(formatted4)
 
-        summary = try XCTUnwrap(parser.summary)
-
-        XCTAssertEqual(summary.testsCount, 4)
-        XCTAssertEqual(summary.failuresCount, 3)
-        XCTAssertEqual(summary.unexpectedCount, 2)
-        XCTAssertEqual(summary.skippedCount, 0)
-        XCTAssertEqual(summary.time, 0.312)
         #endif
     }
 
@@ -236,38 +209,16 @@ final class GitHubActionsRendererTests: XCTestCase {
         let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
 
         // First test plan
-        XCTAssertNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted1 = logFormatted(input1)
-        XCTAssertTrue(parser.needToRecordSummary)
         let formatted2 = logFormatted(input2)
-        XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted1)
         XCTAssertNil(formatted2)
-        XCTAssertNotNil(parser.summary)
-
-        XCTAssertEqual(parser.summary?.testsCount, 56)
-        XCTAssertEqual(parser.summary?.failuresCount, 2)
-        XCTAssertEqual(parser.summary?.unexpectedCount, 1)
-        XCTAssertEqual(parser.summary?.skippedCount, 3)
-        XCTAssertEqual(parser.summary?.time, 1.029)
 
         // Second test plan
-        XCTAssertNotNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted3 = logFormatted(input3)
-        XCTAssertTrue(parser.needToRecordSummary)
         let formatted4 = logFormatted(input4)
-        XCTAssertFalse(parser.needToRecordSummary)
         XCTAssertNil(formatted3)
         XCTAssertNil(formatted4)
-        XCTAssertNotNil(parser.summary)
-
-        XCTAssertEqual(parser.summary?.testsCount, 57)
-        XCTAssertEqual(parser.summary?.failuresCount, 3)
-        XCTAssertEqual(parser.summary?.unexpectedCount, 2)
-        XCTAssertEqual(parser.summary?.skippedCount, 4)
-        XCTAssertEqual(parser.summary?.time, 4.029)
     }
     #endif
 
@@ -534,23 +485,16 @@ final class GitHubActionsRendererTests: XCTestCase {
     #if os(macOS)
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
-
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted = logFormatted(input)
         XCTAssertNil(formatted)
-        XCTAssertTrue(parser.needToRecordSummary)
-        XCTAssertEqual(parser.outputType, .undefined)
     }
     #endif
 
     #if os(macOS)
     func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
-
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted = logFormatted(input)
         XCTAssertNil(formatted)
-        XCTAssertTrue(parser.needToRecordSummary)
     }
     #endif
 
