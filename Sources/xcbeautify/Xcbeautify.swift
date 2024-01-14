@@ -83,10 +83,6 @@ struct Xcbeautify: ParsableCommand {
             output.write(parser.outputType, formatted)
         }
 
-        if let formattedSummary = parser.formattedSummary() {
-            output.write(.result, formattedSummary)
-        }
-
         if !report.isEmpty {
             let outputPath = URL(
                 fileURLWithPath: reportPath,
