@@ -1,3 +1,5 @@
+import Foundation
+
 package class Parser {
     private let colored: Bool
 
@@ -141,9 +143,14 @@ package class Parser {
             return nil
         }
 
+        let groups: [String] = line.captureGroup(with: captureGroupType.pattern)
+        guard let captureGroup = captureGroupType.init(groups: groups) else {
+            assertionFailure()
+            return nil
+        }
+
         let formattedOutput = renderer.beautify(
-            line: line,
-            pattern: captureGroupType.pattern,
+            group: captureGroup,
             additionalLines: additionalLines
         )
 
@@ -153,5 +160,27 @@ package class Parser {
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
         return formattedOutput
+    }
+}
+
+private extension String {
+    func captureGroup(with pattern: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+
+            let matches = regex.matches(in: self, range: NSRange(location: 0, length: utf16.count))
+            guard let match = matches.first else { return [] }
+
+            let lastRangeIndex = match.numberOfRanges - 1
+            guard lastRangeIndex >= 1 else { return [] }
+
+            return (1...lastRangeIndex).compactMap { index in
+                let capturedGroupIndex = match.range(at: index)
+                return substring(with: capturedGroupIndex)
+            }
+        } catch {
+            assertionFailure(error.localizedDescription)
+            return []
+        }
     }
 }

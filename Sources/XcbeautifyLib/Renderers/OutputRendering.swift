@@ -3,7 +3,7 @@ import Foundation
 protocol OutputRendering {
     var colored: Bool { get }
 
-    func beautify(line: String, pattern: String, additionalLines: @escaping () -> (String?)) -> String?
+    func beautify(group: CaptureGroup, additionalLines: @escaping () -> (String?)) -> String?
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCheckDependencies() -> String
@@ -79,17 +79,9 @@ protocol OutputRendering {
 
 extension OutputRendering {
     func beautify(
-        line: String,
-        pattern: String,
+        group: CaptureGroup,
         additionalLines: @escaping () -> (String?)
     ) -> String? {
-        guard let group: CaptureGroup = line.captureGroup(with: pattern) else {
-            assertionFailure("Expected a known CaptureGroup from the given pattern!")
-            return nil
-        }
-
-        assert(pattern == group.pattern)
-
         switch group {
         case let group as AggregateTargetCaptureGroup:
             return formatTargetCommand(command: "Aggregate", group: group)
