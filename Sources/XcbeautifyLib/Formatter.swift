@@ -1,13 +1,13 @@
 import Foundation
 
-package class Formatter {
+class Formatter {
 
     private let colored: Bool
     private let renderer: OutputRendering
     private let additionalLines: () -> String?
-    package var preserveUnbeautifiedLines = false
+    private(set) var preserveUnbeautifiedLines = false
 
-    package init(
+    init(
         colored: Bool = true,
         renderer: Renderer,
         preserveUnbeautifiedLines: Bool = false,
@@ -28,4 +28,7 @@ package class Formatter {
         self.additionalLines = additionalLines
     }
 
+    func format(captureGroup: CaptureGroup) -> String? {
+        renderer.beautify(group: captureGroup)
+    }
 }
