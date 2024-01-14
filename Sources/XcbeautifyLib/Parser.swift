@@ -1,3 +1,5 @@
+import Foundation
+
 package class Parser {
     private let colored: Bool
 
@@ -145,10 +147,13 @@ package class Parser {
             return nil
         }
 
-        let formattedOutput = renderer.beautify(
-            line: line,
-            pattern: captureGroupType.pattern
-        )
+        let groups: [String] = captureGroupType.regex.captureGroups(for: line)
+        guard let captureGroup = captureGroupType.init(groups: groups) else {
+            assertionFailure()
+            return nil
+        }
+
+        let formattedOutput = renderer.beautify(group: captureGroup)
 
         outputType = captureGroupType.outputType
 

@@ -4,7 +4,7 @@ protocol OutputRendering {
     var colored: Bool { get }
     var additionalLines: () -> String? { get }
 
-    func beautify(line: String, pattern: String) -> String?
+    func beautify(group: any CaptureGroup) -> String?
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCheckDependencies() -> String
@@ -81,17 +81,7 @@ protocol OutputRendering {
 }
 
 extension OutputRendering {
-    func beautify(
-        line: String,
-        pattern: String
-    ) -> String? {
-        guard let group: any CaptureGroup = line.captureGroup(with: pattern) else {
-            assertionFailure("Expected a known CaptureGroup from the given pattern!")
-            return nil
-        }
-
-        assert(pattern == group.pattern)
-
+    func beautify(group: any CaptureGroup) -> String? {
         switch group {
         case let group as AggregateTargetCaptureGroup:
             return formatTargetCommand(command: "Aggregate", group: group)
