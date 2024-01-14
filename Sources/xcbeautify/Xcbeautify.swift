@@ -76,7 +76,7 @@ struct Xcbeautify: ParsableCommand {
                 continue
             }
             guard let formatted = formatter.format(captureGroup: captureGroup) else { continue }
-            output.write(parser.outputType, formatted)
+            output.write(captureGroup.outputType, formatted)
         }
 
         if !report.isEmpty {
