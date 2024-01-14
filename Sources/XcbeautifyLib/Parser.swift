@@ -5,10 +5,6 @@ package class Parser {
 
     private let additionalLines: () -> String?
 
-    private(set) var summary: TestSummary?
-
-    private(set) var needToRecordSummary = false
-
     private let preserveUnbeautifiedLines: Bool
 
     package private(set) var outputType = OutputType.undefined
@@ -100,6 +96,10 @@ package class Parser {
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
+        ExecutedWithoutSkippedCaptureGroup.self,
+        ExecutedWithSkippedCaptureGroup.self,
+        TestSuiteAllTestsPassedCaptureGroup.self,
+        TestSuiteAllTestsFailedCaptureGroup.self,
     ]
 
     // MARK: - Init
@@ -135,28 +135,6 @@ package class Parser {
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
             // Some uncommon cases, which have additional logic and don't follow default flow
 
-            if ExecutedWithoutSkippedCaptureGroup.regex.match(string: line) {
-                outputType = ExecutedWithoutSkippedCaptureGroup.outputType
-                parseSummary(line: line, colored: colored, skipped: false)
-                return nil
-            }
-
-            if ExecutedWithSkippedCaptureGroup.regex.match(string: line) {
-                outputType = ExecutedWithSkippedCaptureGroup.outputType
-                parseSummary(line: line, colored: colored, skipped: true)
-                return nil
-            }
-
-            if TestSuiteAllTestsPassedCaptureGroup.regex.match(string: line) {
-                needToRecordSummary = true
-                return nil
-            }
-
-            if TestSuiteAllTestsFailedCaptureGroup.regex.match(string: line) {
-                needToRecordSummary = true
-                return nil
-            }
-
             // Nothing found?
             outputType = OutputType.undefined
             return preserveUnbeautifiedLines ? line : nil
@@ -178,28 +156,5 @@ package class Parser {
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
         return formattedOutput
-    }
-
-    package func formattedSummary() -> String? {
-        guard let summary else { return nil }
-        return renderer.format(testSummary: summary)
-    }
-
-    // MARK: Private
-
-    private func parseSummary(line: String, colored: Bool, skipped: Bool) {
-        guard needToRecordSummary else { return }
-        defer { needToRecordSummary = false }
-
-        guard let _group: CaptureGroup = line.captureGroup(with: skipped ? ExecutedWithSkippedCaptureGroup.pattern : ExecutedWithoutSkippedCaptureGroup.pattern) else { return }
-        guard let group = _group as? ExecutedCaptureGroup else { return }
-
-        summary += TestSummary(
-            testsCount: group.numberOfTests,
-            skippedCount: group.numberOfSkipped,
-            failuresCount: group.numberOfFailures,
-            unexpectedCount: group.numberOfUnexpectedFailures,
-            time: group.wallClockTimeInSeconds
-        )
     }
 }
