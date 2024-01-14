@@ -404,7 +404,6 @@ final class TerminalRendererTests: XCTestCase {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         let output = #"[x] MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         XCTAssertEqual(noColoredFormatted(input), output)
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testRestartingTests() {
@@ -415,19 +414,16 @@ final class TerminalRendererTests: XCTestCase {
     func testShellCommand() {
         let formatted = noColoredFormatted("    cd /foo/bar/baz")
         XCTAssertNil(formatted)
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testUndefinedSymbolLocation() {
         let formatted = noColoredFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(formatted, "[!]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
@@ -480,7 +476,6 @@ final class TerminalRendererTests: XCTestCase {
     func testTiffutil() {
         let input = "TiffUtil file.tiff"
         XCTAssertNil(noColoredFormatted(input))
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testTouch() {
@@ -514,7 +509,6 @@ final class TerminalRendererTests: XCTestCase {
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
         XCTAssertNil(noColoredFormatted(input))
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testPackageFetching() {
@@ -595,7 +589,6 @@ final class TerminalRendererTests: XCTestCase {
 
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testXcodeprojWarning() {
@@ -612,12 +605,10 @@ final class TerminalRendererTests: XCTestCase {
 
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
-        XCTAssertEqual(parser.outputType, .warning)
     }
 }

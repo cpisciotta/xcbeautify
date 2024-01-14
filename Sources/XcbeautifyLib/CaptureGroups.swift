@@ -6,9 +6,11 @@ package protocol CaptureGroup {
     init?(groups: [String])
 }
 
-extension CaptureGroup {
+package extension CaptureGroup {
     var outputType: OutputType { Self.outputType }
+}
 
+extension CaptureGroup {
     static var pattern: String { regex.pattern }
     var pattern: String { Self.regex.pattern }
 }
