@@ -25,7 +25,7 @@ jobs:
         with:
           swift-version: ${{ matrix.swift_version }}
       - uses: actions/checkout@v4
-      - run: swift build --disable-sandbox --configuration release
+      - run: swift build --disable-sandbox --configuration release -Xswiftc -warnings-as-errors
 
   test:
     name: Test (${{ matrix.platform}})
