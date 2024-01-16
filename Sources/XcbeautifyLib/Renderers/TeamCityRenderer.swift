@@ -9,9 +9,11 @@ struct TeamCityRenderer: OutputRendering {
     
     let colored: Bool
     
-    private func outputTeamCityProblem(text: String) -> String {
-        print("##teamcity[buildProblem description='\(text.teamCityEscaped())']")
-        return text
+    private func outputTeamCityProblem(text: String, filePath: String) -> String {
+        """
+        ##teamcity[buildProblem description='\(filePath)']
+        \(text)
+        """
     }
     
     func outputTeamCityError(text: String, details: String) -> String {
@@ -23,8 +25,10 @@ struct TeamCityRenderer: OutputRendering {
     }
     
     private func formatTeamCityServiceMessage(text: String, details: String, level: ProblemLevel) -> String {
-        print("##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='\(level.rawValue)']")
-        return text
+        """
+        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='\(level.rawValue)']
+        \(text)
+        """
     }
 
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
@@ -117,7 +121,7 @@ struct TeamCityRenderer: OutputRendering {
             \(cursor)
             """
         
-        return self.outputTeamCityProblem(text: outputString)
+        return self.outputTeamCityProblem(text: outputString, filePath: filePath)
     }
 
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
@@ -164,7 +168,7 @@ struct TeamCityRenderer: OutputRendering {
             \(cursor)
             """
         
-        return self.outputTeamCityWarning(text: "Complie warning", details: outputString)
+        return self.outputTeamCityWarning(text: "Compile warning", details: outputString)
     }
 
     func formatLdWarning(group: LDWarningCaptureGroup) -> String {
