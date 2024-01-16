@@ -111,6 +111,8 @@ public class Parser {
             self.renderer = TerminalRenderer(colored: colored)
         case .gitHubActions:
             self.renderer = GitHubActionsRenderer()
+        case .teamcity:
+            self.renderer = TeamCityRenderer(colored: colored)
         }
 
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
