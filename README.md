@@ -34,13 +34,6 @@ Similar to `xcpretty`, but faster.
 
 ## Installation
 
-If you use macOS 10.14.3 or earlier, install Swift 5 Runtime Support for
-Command Line Tools first:
-
-```bash
-brew install thii/swift-runtime/swift-runtime --cask
-```
-
 ### Homebrew
 
 ```bash
