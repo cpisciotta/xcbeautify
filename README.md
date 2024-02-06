@@ -53,7 +53,7 @@ In that directory, create a `Package.swift` file with the following contents.
 In addition, add an empty file named `Empty.swift` to the same location.
 
 ```swift
-// swift-tools-version: 5.6
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
