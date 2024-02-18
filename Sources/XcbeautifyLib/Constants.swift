@@ -38,4 +38,6 @@ public enum Renderer: String {
 
     /// Formats output suitable for GitHub Actions annotations. Maps to `GitHubRenderer`.
     case gitHubActions = "github-actions"
+    
+    case teamcity
 }

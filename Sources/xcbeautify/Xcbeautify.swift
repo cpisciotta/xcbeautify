@@ -23,8 +23,8 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
-    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions ).")
-    var renderer: Renderer = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" ? .gitHubActions : .terminal
+    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions | teamcity ).")
+    var renderer: Renderer = .terminal
 
     @Option(help: "Generate the specified reports")
     var report: [Report] = []
@@ -36,6 +36,18 @@ struct Xcbeautify: ParsableCommand {
     var junitReportFilename = "junit.xml"
 
     func run() throws {
+        let renderer: Renderer
+        
+        if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
+            renderer = .gitHubActions
+        }
+        else if let _ = ProcessInfo.processInfo.environment["TEAMCITY_VERSION"] {
+            renderer = .teamcity
+        }
+        else {
+            renderer = self.renderer
+        }
+        
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
         let junitReporter = JunitReporter()
 
