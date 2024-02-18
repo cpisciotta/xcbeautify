@@ -1,6 +1,6 @@
 import Foundation
 
-public class OutputHandler {
+package class OutputHandler {
     let quiet: Bool
     let quieter: Bool
     let isCI: Bool
@@ -16,14 +16,14 @@ public class OutputHandler {
     /// Ref: https://github.com/cpisciotta/xcbeautify/pull/15
     private var lastFormatted: String?
 
-    public init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
+    package init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
         self.quiet = quiet
         self.quieter = quieter
         self.isCI = isCI
         self.writer = writer
     }
 
-    public func write(_ type: OutputType, _ content: String?) {
+    package func write(_ type: OutputType, _ content: String?) {
         guard let content else { return }
 
         if !quiet, !quieter {

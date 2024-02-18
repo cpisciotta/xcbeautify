@@ -1,4 +1,4 @@
-public class Parser {
+package class Parser {
     private let colored: Bool
 
     private let renderer: OutputRendering
@@ -9,9 +9,9 @@ public class Parser {
 
     private(set) var needToRecordSummary = false
 
-    public var preserveUnbeautifiedLines = false
+    private let preserveUnbeautifiedLines: Bool
 
-    public var outputType = OutputType.undefined
+    package private(set) var outputType = OutputType.undefined
 
     private lazy var captureGroupTypes: [CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
@@ -98,7 +98,7 @@ public class Parser {
 
     // MARK: - Init
 
-    public init(
+    package init(
         colored: Bool = true,
         renderer: Renderer,
         preserveUnbeautifiedLines: Bool = false,
@@ -117,7 +117,7 @@ public class Parser {
         self.additionalLines = additionalLines
     }
 
-    public func parse(line: String) -> String? {
+    package func parse(line: String) -> String? {
         // Find first parser that can parse specified string
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
             // Some uncommon cases, which have additional logic and don't follow default flow
@@ -168,7 +168,7 @@ public class Parser {
         return formattedOutput
     }
 
-    public func formattedSummary() -> String? {
+    package func formattedSummary() -> String? {
         guard let summary else { return nil }
         return renderer.format(testSummary: summary)
     }
