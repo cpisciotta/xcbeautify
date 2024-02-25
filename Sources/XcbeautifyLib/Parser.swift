@@ -118,6 +118,11 @@ package class Parser {
     }
 
     package func parse(line: String) -> String? {
+        if line.isEmpty {
+            outputType = .undefined
+            return nil
+        }
+
         // Find first parser that can parse specified string
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
             // Some uncommon cases, which have additional logic and don't follow default flow
