@@ -3,7 +3,11 @@ import Foundation
 class Regex {
     let pattern: String
 
-    private lazy var regex: NSRegularExpression? = try? NSRegularExpression(pattern: "^" + pattern, options: [.caseInsensitive])
+    private lazy var regex: NSRegularExpression? = {
+        let regex = try? NSRegularExpression(pattern: "^" + pattern, options: [.caseInsensitive])
+        assert(regex != nil)
+        return regex
+    }()
 
     init(pattern: String) {
         self.pattern = pattern
