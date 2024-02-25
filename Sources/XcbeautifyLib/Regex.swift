@@ -17,4 +17,17 @@ class Regex {
         let fullRange = NSRange(string.startIndex..., in: string)
         return regex?.rangeOfFirstMatch(in: string, range: fullRange).location != NSNotFound
     }
+
+    func captureGroups(for line: String) -> [String] {
+        let matches = regex?.matches(in: line, range: NSRange(location: 0, length: line.utf16.count))
+        guard let match = matches?.first else { return [] }
+
+        let lastRangeIndex = match.numberOfRanges - 1
+        guard lastRangeIndex >= 1 else { return [] }
+
+        return (1...lastRangeIndex).compactMap { index in
+            let capturedGroupIndex = match.range(at: index)
+            return line.substring(with: capturedGroupIndex)
+        }
+    }
 }

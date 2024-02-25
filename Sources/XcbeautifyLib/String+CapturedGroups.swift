@@ -1,28 +1,6 @@
 import Foundation
 
 extension String {
-    private func captureGroup(with pattern: String) -> [String] {
-        do {
-            let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
-
-            let matches = regex.matches(in: self, range: NSRange(location: 0, length: utf16.count))
-            guard let match = matches.first else { return [] }
-
-            let lastRangeIndex = match.numberOfRanges - 1
-            guard lastRangeIndex >= 1 else { return [] }
-
-            return (1...lastRangeIndex).compactMap { index in
-                let capturedGroupIndex = match.range(at: index)
-                return substring(with: capturedGroupIndex)
-            }
-        } catch {
-            assertionFailure(error.localizedDescription)
-            return []
-        }
-    }
-}
-
-extension String {
     private static let captureGroups: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
@@ -111,8 +89,6 @@ extension String {
     ]
 
     func captureGroup(with pattern: String) -> CaptureGroup? {
-        let results: [String] = captureGroup(with: pattern)
-
         let captureGroupType: CaptureGroup.Type? = Self.captureGroups.first { captureGroup in
             captureGroup.pattern == pattern
         }
@@ -122,7 +98,9 @@ extension String {
             return nil
         }
 
-        let captureGroup = captureGroupType.init(groups: results)
+        let groups: [String] = captureGroupType.regex.captureGroups(for: self)
+
+        let captureGroup = captureGroupType.init(groups: groups)
         assert(captureGroup != nil)
         return captureGroup
     }
