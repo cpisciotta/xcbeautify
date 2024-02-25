@@ -36,6 +36,15 @@ struct Xcbeautify: ParsableCommand {
     var junitReportFilename = "junit.xml"
 
     func run() throws {
+        #if DEBUG && os(macOS)
+        let start = CFAbsoluteTimeGetCurrent()
+
+        defer {
+            let diff = CFAbsoluteTimeGetCurrent() - start
+            print("Took \(diff) seconds")
+        }
+        #endif
+
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
         let junitReporter = JunitReporter()
 
