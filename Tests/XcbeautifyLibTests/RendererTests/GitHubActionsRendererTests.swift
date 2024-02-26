@@ -110,6 +110,12 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
+    func testSwiftCompile() {
+        let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
+        let output = "[Target] Compiling File.swift"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+
     func testCompileStoryboard() {
         let formatted = logFormatted("CompileStoryboard /Users/admin/MyApp/MyApp/Main.storyboard (in target: MyApp)")
         XCTAssertEqual(formatted, "[MyApp] Compiling Main.storyboard")
