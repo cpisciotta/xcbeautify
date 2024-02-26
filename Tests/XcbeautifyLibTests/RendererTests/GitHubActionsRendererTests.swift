@@ -110,9 +110,15 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
-    func testSwiftCompile() {
+    func testSwiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+
+    func testSwiftCompile_x86_64() {
+        let input = "SwiftCompile normal x86_64 /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/DerivedSources/resource_bundle_accessor.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"
+        let output = "[BackyardBirdsData] Compiling resource_bundle_accessor.swift"
         XCTAssertEqual(logFormatted(input), output)
     }
 
