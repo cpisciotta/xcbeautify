@@ -24,6 +24,8 @@ package class Parser {
         CodesignFrameworkCaptureGroup.self,
         CodesignCaptureGroup.self,
         CompileCaptureGroup.self,
+        SwiftCompileCaptureGroup.self,
+        SwiftCompilingCaptureGroup.self,
         CompileCommandCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,
