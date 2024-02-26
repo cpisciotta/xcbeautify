@@ -13,6 +13,7 @@ extension String {
         CodesignCaptureGroup.self,
         CodesignFrameworkCaptureGroup.self,
         CompileCaptureGroup.self,
+        SwiftCompileCaptureGroup.self,
         CompileCommandCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,

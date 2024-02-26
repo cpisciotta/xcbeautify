@@ -114,6 +114,8 @@ extension OutputRendering {
             return formatCodeSignFramework(group: group)
         case let group as CompileCaptureGroup:
             return formatCompile(group: group)
+        case let group as SwiftCompileCaptureGroup:
+            return formatCompile(group: group)
         case let group as CompileCommandCaptureGroup:
             return formatCompileCommand(group: group)
         case let group as CompileErrorCaptureGroup:
