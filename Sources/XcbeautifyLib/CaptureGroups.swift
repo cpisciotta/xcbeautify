@@ -287,6 +287,14 @@ struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
     }
 }
 
+struct SwiftCompilingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ Compiling\\"#)
+
+    init?(groups: [String]) { }
+}
+
 struct CompileCommandCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 

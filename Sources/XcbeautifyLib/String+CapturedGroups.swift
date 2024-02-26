@@ -14,6 +14,7 @@ extension String {
         CodesignFrameworkCaptureGroup.self,
         CompileCaptureGroup.self,
         SwiftCompileCaptureGroup.self,
+        SwiftCompilingCaptureGroup.self,
         CompileCommandCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,

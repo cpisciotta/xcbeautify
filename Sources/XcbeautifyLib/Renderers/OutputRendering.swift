@@ -13,6 +13,7 @@ protocol OutputRendering {
     func formatCodeSign(group: CodesignCaptureGroup) -> String
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
     func formatCompile(group: CompileFileCaptureGroup) -> String
+    func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
@@ -116,6 +117,8 @@ extension OutputRendering {
             return formatCompile(group: group)
         case let group as SwiftCompileCaptureGroup:
             return formatCompile(group: group)
+        case let group as SwiftCompilingCaptureGroup:
+            return formatSwiftCompiling(group: group)
         case let group as CompileCommandCaptureGroup:
             return formatCompileCommand(group: group)
         case let group as CompileErrorCaptureGroup:
@@ -301,6 +304,10 @@ extension OutputRendering {
     }
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String? {
         nil
     }
 
