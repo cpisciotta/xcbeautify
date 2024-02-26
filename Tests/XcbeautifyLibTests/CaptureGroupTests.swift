@@ -1,6 +1,6 @@
 //
 //  CaptureGroupTests.swift
-//  
+//
 //
 //  Created by Charles Pisciotta on 2/25/24.
 //
@@ -9,7 +9,6 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class CaptureGroupTests: XCTestCase {
-
     func testSwiftCompiling() {
         let inputs = [
             #"SwiftCompile normal x86_64 Compiling\ BackyardBirdsDataContainer.swift,\ ColorData.swift,\ DataGeneration.swift,\ DataGenerationOptions.swift /Backyard-Birds/BackyardBirdsData/General/BackyardBirdsDataContainer.swift /Backyard-Birds/BackyardBirdsData/General/ColorData.swift /Backyard-Birds/BackyardBirdsData/General/DataGeneration.swift /Backyard-Birds/BackyardBirdsData/General/DataGenerationOptions.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#,
@@ -22,5 +21,4 @@ final class CaptureGroupTests: XCTestCase {
             XCTAssertTrue(SwiftCompilingCaptureGroup.regex.match(string: input))
         }
     }
-
 }
