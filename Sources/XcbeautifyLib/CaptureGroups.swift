@@ -265,6 +265,36 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     }
 }
 
+struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = filename (e.g. KWNull.m)
+    /// $3 = target
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ ((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift))) \((in target '(.*)' from project '.*')\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
+    }
+}
+
+struct SwiftCompilingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ Compiling\\"#)
+
+    init?(groups: [String]) { }
+}
+
 struct CompileCommandCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
