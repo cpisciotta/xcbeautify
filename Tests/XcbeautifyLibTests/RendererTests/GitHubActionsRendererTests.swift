@@ -573,6 +573,10 @@ final class GitHubActionsRendererTests: XCTestCase {
         let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
         let output =  "[Target] WriteAuxiliaryFile file.extension"
         XCTAssertEqual(logFormatted(input), output)
+
+        let input2 = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
+        let output2 = "[LayeredArtworkLibrary_LayeredArtworkLibrary] WriteAuxiliaryFile empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist"
+        XCTAssertEqual(logFormatted(input2), output2)
     }
 
     func testWriteFile() {
