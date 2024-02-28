@@ -546,7 +546,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testWriteAuxiliaryFiles() { }
+    func testWriteAuxiliaryFiles() {
+        let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
+        let output =  "[Target] WriteAuxiliaryFile file.extension"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
 
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"

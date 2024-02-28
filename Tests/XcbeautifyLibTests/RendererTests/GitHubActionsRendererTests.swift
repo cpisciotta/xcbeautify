@@ -569,7 +569,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .warning)
     }
 
-    func testWriteAuxiliaryFiles() { }
+    func testWriteAuxiliaryFiles() { 
+        let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
+        let output =  "[Target] WriteAuxiliaryFile file.extension"
+        XCTAssertEqual(logFormatted(input), output)
+    }
 
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
