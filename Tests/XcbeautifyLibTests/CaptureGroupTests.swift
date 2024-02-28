@@ -26,4 +26,9 @@ final class CaptureGroupTests: XCTestCase {
         let input = #"/* com.apple.actool.compilation-results */"#
         XCTAssertTrue(CompilationResultCaptureGroup.regex.match(string: input))
     }
+
+    func testMatchSwiftDriverJobDiscoveryEmittingModule() {
+        let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
+        XCTAssertTrue(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.match(string: input))
+    }
 }
