@@ -23,6 +23,7 @@ package class Parser {
         CleanTargetCaptureGroup.self,
         CodesignFrameworkCaptureGroup.self,
         CodesignCaptureGroup.self,
+        CompilationResultCaptureGroup.self,
         CompileCaptureGroup.self,
         SwiftCompileCaptureGroup.self,
         SwiftCompilingCaptureGroup.self,
