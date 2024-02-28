@@ -97,6 +97,7 @@ package class Parser {
         PackageGraphResolvingEndedCaptureGroup.self,
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
+        SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
     ]
 
     // MARK: - Init
