@@ -1196,7 +1196,7 @@ struct WriteFileCaptureGroup: CaptureGroup {
     }
 }
 
-struct WriteAuxiliaryFilesCaptureGroup: CaptureGroup {
+struct WriteAuxiliaryFileCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     static let regex = Regex(pattern: #"^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$"#)
