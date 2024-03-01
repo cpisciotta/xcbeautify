@@ -227,6 +227,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
+    #if os(macOS)
     func testExecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let input2 = "Executed 56 tests, with 3 test skipped and 2 failures (1 unexpected) in 1.029 (1.029) seconds"
@@ -268,6 +269,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.summary?.skippedCount, 4)
         XCTAssertEqual(parser.summary?.time, 4.029)
     }
+    #endif
 
     func testFailingTest() { }
 
@@ -517,6 +519,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testTestSuiteStarted() { }
 
+    #if os(macOS)
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
 
@@ -526,7 +529,9 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertTrue(parser.needToRecordSummary)
         XCTAssertEqual(parser.outputType, .undefined)
     }
+    #endif
 
+    #if os(macOS)
     func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
 
@@ -535,6 +540,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertNil(formatted)
         XCTAssertTrue(parser.needToRecordSummary)
     }
+    #endif
 
     func testTestsRunCompletion() { }
 
