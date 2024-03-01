@@ -548,7 +548,7 @@ final class TerminalRendererTests: XCTestCase {
 
     func testWriteAuxiliaryFiles() {
         let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
-        let output =  "[Target] WriteAuxiliaryFile file.extension"
+        let output = "[Target] WriteAuxiliaryFile file.extension"
         XCTAssertEqual(noColoredFormatted(input), output)
 
         let input2 = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
