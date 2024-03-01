@@ -9,7 +9,7 @@
 [![Latest Release](https://img.shields.io/github/release/cpisciotta/xcbeautify.svg)](https://github.com/cpisciotta/xcbeautify/releases/latest)
 [![License](https://img.shields.io/github/license/cpisciotta/xcbeautify.svg)](LICENSE.md)
 
-![Example Screenshot](assets/example.png)
+![Example Screenshot](.readme-images/example.png)
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
@@ -106,11 +106,11 @@ swift test [flags] 2>&1 | xcbeautify
 
 ### GitHub Actions
 
-| ![GitHub Actions Summary](assets/gh-summary.png) |
+| ![GitHub Actions Summary](.readme-images/gh-summary.png) |
 |:--:|
 | *GitHub Actions Summary* |
 
-| ![GitHub Actions Comment](assets/gh-comment.png) |
+| ![GitHub Actions Comment](.readme-images/gh-comment.png) |
 |:--:|
 | *GitHub Actions Comment* |
 
