@@ -36,7 +36,11 @@ final class ParsingTests: XCTestCase {
         // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+        #if os(macOS)
         XCTAssertEqual(uncapturedOutput, 2006)
+        #else
+        XCTAssertEqual(uncapturedOutput, 2022)
+        #endif
     }
 
     func testLargeXcodebuildLog() throws {
@@ -73,6 +77,10 @@ final class ParsingTests: XCTestCase {
         // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+        #if os(macOS)
         XCTAssertEqual(uncapturedOutput, 69575)
+        #else
+        XCTAssertEqual(uncapturedOutput, 70143)
+        #endif
     }
 }
