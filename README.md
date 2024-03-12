@@ -9,11 +9,10 @@
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
-Similar to `xcpretty`, but faster.
+A faster alternative to `xcpretty` written in Swift.
 
 ## Features
 
-- [x] 2x faster than `xcpretty`.
 - [x] Human-friendly and colored output.
 - [x] Supports the new build system's output.
 - [x] Supports Xcode's parallel testing output.
