@@ -21,4 +21,9 @@ final class CaptureGroupTests: XCTestCase {
             XCTAssertTrue(SwiftCompilingCaptureGroup.regex.match(string: input))
         }
     }
+
+    func testMatchCompilationResults() {
+        let input = #"/* com.apple.actool.compilation-results */"#
+        XCTAssertTrue(CompilationResultCaptureGroup.regex.match(string: input))
+    }
 }

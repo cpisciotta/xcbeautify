@@ -1695,3 +1695,11 @@ struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
         self.wholeError = wholeError
     }
 }
+
+struct CompilationResultCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^\/\* com.apple.actool.compilation-results \*\/$"#)
+
+    init?(groups: [String]) { }
+}
