@@ -569,14 +569,16 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(parser.outputType, .warning)
     }
 
-    func testWriteAuxiliaryFiles() {
+    func testWriteAuxiliaryFileGeneric() {
         let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
         let output = "[Target] Write Auxiliary File file.extension"
         XCTAssertEqual(logFormatted(input), output)
+    }
 
-        let input2 = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
-        let output2 = "[LayeredArtworkLibrary_LayeredArtworkLibrary] Write Auxiliary File empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist"
-        XCTAssertEqual(logFormatted(input2), output2)
+    func testWriteAuxiliaryFileBackyardBirds() {
+        let input = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
+        let output = "[LayeredArtworkLibrary_LayeredArtworkLibrary] Write Auxiliary File empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
     func testWriteFile() {
