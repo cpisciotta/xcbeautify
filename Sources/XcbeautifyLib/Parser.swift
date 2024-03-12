@@ -58,7 +58,7 @@ public class Parser {
         TIFFutilCaptureGroup.self,
         TouchCaptureGroup.self,
         WriteFileCaptureGroup.self,
-        WriteAuxiliaryFilesCaptureGroup.self,
+        WriteAuxiliaryFileCaptureGroup.self,
         ParallelTestCasePassedCaptureGroup.self,
         ParallelTestCaseAppKitPassedCaptureGroup.self,
         ParallelTestingStartedCaptureGroup.self,

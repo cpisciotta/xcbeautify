@@ -73,7 +73,7 @@ protocol OutputRendering {
     func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String
     func formatWarning(group: GenericWarningCaptureGroup) -> String
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
-    func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String?
+    func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
 }
 
@@ -257,8 +257,8 @@ extension OutputRendering {
             return formatUndefinedSymbolLocation(group: group)
         case let group as WillNotBeCodeSignedCaptureGroup:
             return formatWillNotBeCodesignWarning(group: group)
-        case let group as WriteAuxiliaryFilesCaptureGroup:
-            return formatWriteAuxiliaryFiles(group: group)
+        case let group as WriteAuxiliaryFileCaptureGroup:
+            return formatWriteAuxiliaryFile(group: group)
         case let group as WriteFileCaptureGroup:
             return formatWriteFile(group: group)
         case let group as XcodebuildErrorCaptureGroup:
@@ -509,8 +509,10 @@ extension OutputRendering {
         return colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
-    func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String? {
-        nil
+    func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String? {
+        let filename = group.filename
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Write Auxiliary File".s.Bold) \(filename)" : "[\(target)] Write Auxiliary File \(filename)"
     }
 
     func formatWriteFile(group: WriteFileCaptureGroup) -> String? {

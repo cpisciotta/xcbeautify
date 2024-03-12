@@ -1196,16 +1196,21 @@ struct WriteFileCaptureGroup: CaptureGroup {
     }
 }
 
-struct WriteAuxiliaryFilesCaptureGroup: CaptureGroup {
+struct WriteAuxiliaryFileCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = Regex(pattern: #"^Write auxiliary files"#)
+    static let regex = Regex(pattern: #"^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$"#)
 
-    private init() { }
+    let filePath: String
+    let filename: String
+    let target: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
     }
 }
 
