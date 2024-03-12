@@ -12,6 +12,7 @@ extension String {
         CleanTargetCaptureGroup.self,
         CodesignCaptureGroup.self,
         CodesignFrameworkCaptureGroup.self,
+        CompilationResultCaptureGroup.self,
         CompileCaptureGroup.self,
         SwiftCompileCaptureGroup.self,
         SwiftCompilingCaptureGroup.self,
