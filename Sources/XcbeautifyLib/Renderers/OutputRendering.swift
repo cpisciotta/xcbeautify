@@ -12,6 +12,7 @@ protocol OutputRendering {
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
     func formatCodeSign(group: CodesignCaptureGroup) -> String
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
+    func formatCompilationResult(group: CompilationResultCaptureGroup) -> String?
     func formatCompile(group: CompileFileCaptureGroup) -> String
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
@@ -113,6 +114,8 @@ extension OutputRendering {
             return formatCodeSign(group: group)
         case let group as CodesignFrameworkCaptureGroup:
             return formatCodeSignFramework(group: group)
+        case let group as CompilationResultCaptureGroup:
+            return formatCompilationResult(group: group)
         case let group as CompileCaptureGroup:
             return formatCompile(group: group)
         case let group as SwiftCompileCaptureGroup:
@@ -304,6 +307,10 @@ extension OutputRendering {
     }
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatCompilationResult(group: CompilationResultCaptureGroup) -> String? {
         nil
     }
 
