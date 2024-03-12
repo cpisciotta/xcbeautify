@@ -24,10 +24,6 @@ Similar to `xcpretty`, but faster.
   bring anywhere. This also means less Ruby-dependant in your development
   environment and CI.
 
-## Fun fact
-
-`xcbeautify` uses itself to format its CI build logs.
-
 ## Installation
 
 ### Homebrew
