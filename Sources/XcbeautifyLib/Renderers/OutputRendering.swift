@@ -512,7 +512,7 @@ extension OutputRendering {
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String? {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.f.Cyan)] \("WriteAuxiliaryFile".s.Bold) \(filename)" : "[\(target)] WriteAuxiliaryFile \(filename)"
+        return colored ? "[\(target.f.Cyan)] \("Write Auxiliary File".s.Bold) \(filename)" : "[\(target)] Write Auxiliary File \(filename)"
     }
 
     func formatWriteFile(group: WriteFileCaptureGroup) -> String? {
