@@ -76,6 +76,7 @@ protocol OutputRendering {
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
+    func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -266,6 +267,8 @@ extension OutputRendering {
             return formatWriteFile(group: group)
         case let group as XcodebuildErrorCaptureGroup:
             return formatError(group: group)
+        case let group as SwiftDriverJobDiscoveryEmittingModuleCaptureGroup:
+            return formatSwiftDriverJobDiscoveryEmittingModule(group: group)
         default:
             assertionFailure()
             return nil
@@ -523,6 +526,10 @@ extension OutputRendering {
     }
 
     func formatWriteFile(group: WriteFileCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String? {
         nil
     }
 }

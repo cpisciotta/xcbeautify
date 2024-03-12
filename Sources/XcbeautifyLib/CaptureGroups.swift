@@ -1703,3 +1703,11 @@ struct CompilationResultCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) { }
 }
+
+struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
+
+    init?(groups: [String]) { }
+}
