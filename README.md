@@ -1,7 +1,6 @@
 # xcbeautify
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcpisciotta%2Fxcbeautify%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/cpisciotta/xcbeautify)
-
 [![CI](https://github.com/cpisciotta/xcbeautify/actions/workflows/ci.yml/badge.svg)](https://github.com/cpisciotta/xcbeautify/actions/workflows/ci.yml)
 [![Latest Release](https://img.shields.io/github/release/cpisciotta/xcbeautify.svg)](https://github.com/cpisciotta/xcbeautify/releases/latest)
 [![License](https://img.shields.io/github/license/cpisciotta/xcbeautify.svg)](LICENSE.md)
