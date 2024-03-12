@@ -1707,13 +1707,7 @@ struct CompilationResultCaptureGroup: CaptureGroup {
 struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = Regex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '(.*)' from project '.*'\)"#)
+    static let regex = Regex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
 
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
-    }
+    init?(groups: [String]) { }
 }
