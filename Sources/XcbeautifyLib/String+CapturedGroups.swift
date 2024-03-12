@@ -58,7 +58,7 @@ extension String {
         TIFFutilCaptureGroup.self,
         TouchCaptureGroup.self,
         WriteFileCaptureGroup.self,
-        WriteAuxiliaryFilesCaptureGroup.self,
+        WriteAuxiliaryFileCaptureGroup.self,
         CompileWarningCaptureGroup.self,
         LDWarningCaptureGroup.self,
         GenericWarningCaptureGroup.self,
