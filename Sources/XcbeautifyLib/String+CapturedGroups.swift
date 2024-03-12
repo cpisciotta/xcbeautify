@@ -89,6 +89,7 @@ extension String {
         PackageGraphResolvingEndedCaptureGroup.self,
         PackageGraphResolvedItemCaptureGroup.self,
         XcodebuildErrorCaptureGroup.self,
+        SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
     ]
 
     func captureGroup(with pattern: String) -> CaptureGroup? {
