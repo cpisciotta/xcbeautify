@@ -115,3 +115,7 @@ lint:
 .PHONY: coverage
 export_coverage:
 	tools/export_coverage
+
+.PHONY: measure
+measure:
+	tools/measure

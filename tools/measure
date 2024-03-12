@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -euo pipefail
+
+swift build
+LARGE_LOG_PATH=`find Tests -name large_xcodebuild_log.txt`
+time cat $LARGE_LOG_PATH | ./.build/debug/xcbeautify
