@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: .build/apple/Products/Release/xcbeautify.zip
+          asset_path: release/xcbeautify.zip
           asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-universal-apple-macosx.zip
           asset_content_type: application/zip
       - name: Darwin x86_64
