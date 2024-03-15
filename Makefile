@@ -47,10 +47,22 @@ package-darwin-arm64:
 
 .PHONY: package-darwin-universal
 package-darwin-universal:
-	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --arch x86_64 --arch arm64)
-	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
-	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
-	$(CD) "$(BUILD_DIRECTORY)" && $(ZIP) "$(PRODUCT_NAME).zip" "$(PRODUCT_NAME)"
+	$(eval X86_64_TARGET_TRIPLE := x86_64-apple-macosx)
+	$(eval X86_64_SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(X86_64_TARGET_TRIPLE))
+	$(eval X86_64_BUILD_DIRECTORY := $(shell swift build --show-bin-path $(X86_64_SWIFT_BUILD_FLAGS)))
+	$(SWIFT) build $(X86_64_SWIFT_BUILD_FLAGS)
+
+	$(eval ARM64_TARGET_TRIPLE := arm64-apple-macosx)
+	$(eval ARM64_SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(ARM64_TARGET_TRIPLE))
+	$(eval ARM64_BUILD_DIRECTORY := $(shell swift build --show-bin-path $(ARM64_SWIFT_BUILD_FLAGS)))
+	$(SWIFT) build $(ARM64_SWIFT_BUILD_FLAGS)
+
+	$(eval RELEASE_DIR := release)
+	mkdir $(RELEASE_DIR)
+
+	lipo -create -output "$(RELEASE_DIR)/$(PRODUCT_NAME)" "$(X86_64_BUILD_DIRECTORY)/$(PRODUCT_NAME)" "$(ARM64_BUILD_DIRECTORY)/$(PRODUCT_NAME)"
+
+	$(ZIP) "$(RELEASE_DIR)/$(PRODUCT_NAME).zip" "$(RELEASE_DIR)/$(PRODUCT_NAME)"
 
 .PHONY: package-linux-x86_64
 package-linux-x86_64:
