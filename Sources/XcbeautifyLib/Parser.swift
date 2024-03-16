@@ -1,13 +1,6 @@
+import Foundation
+
 package class Parser {
-    private let colored: Bool
-
-    private let renderer: OutputRendering
-
-    private let additionalLines: () -> String?
-
-    private let preserveUnbeautifiedLines: Bool
-
-    package private(set) var outputType = OutputType.undefined
 
     private lazy var captureGroupTypes: [CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
@@ -102,38 +95,16 @@ package class Parser {
 
     // MARK: - Init
 
-    package init(
-        colored: Bool = true,
-        renderer: Renderer,
-        preserveUnbeautifiedLines: Bool = false,
-        additionalLines: @escaping () -> (String?)
-    ) {
-        self.colored = colored
+    package init() { }
 
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer()
-        }
-
-        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
-        self.additionalLines = additionalLines
-    }
-
-    package func parse(line: String) -> String? {
+    package func parse(line: String) -> CaptureGroup? {
         if line.isEmpty {
-            outputType = .undefined
             return nil
         }
 
         // Find first parser that can parse specified string
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
-            // Some uncommon cases, which have additional logic and don't follow default flow
-
-            // Nothing found?
-            outputType = OutputType.undefined
-            return preserveUnbeautifiedLines ? line : nil
+            return nil
         }
 
         guard let captureGroupType = captureGroupTypes[safe: idx] else {
@@ -141,17 +112,37 @@ package class Parser {
             return nil
         }
 
-        let formattedOutput = renderer.beautify(
-            line: line,
-            pattern: captureGroupType.pattern,
-            additionalLines: additionalLines
-        )
-
-        outputType = captureGroupType.outputType
+        let groups: [String] = line.captureGroup(with: captureGroupType.pattern)
+        guard let captureGroup = captureGroupType.init(groups: groups) else {
+            assertionFailure()
+            return nil
+        }
 
         // Move found parser to the top, so next time it will be checked first
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
-        return formattedOutput
+        return captureGroup
+    }
+}
+
+private extension String {
+    func captureGroup(with pattern: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+
+            let matches = regex.matches(in: self, range: NSRange(location: 0, length: utf16.count))
+            guard let match = matches.first else { return [] }
+
+            let lastRangeIndex = match.numberOfRanges - 1
+            guard lastRangeIndex >= 1 else { return [] }
+
+            return (1...lastRangeIndex).compactMap { index in
+                let capturedGroupIndex = match.range(at: index)
+                return substring(with: capturedGroupIndex)
+            }
+        } catch {
+            assertionFailure(error.localizedDescription)
+            return []
+        }
     }
 }
