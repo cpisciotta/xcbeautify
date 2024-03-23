@@ -151,10 +151,6 @@ struct TerminalRenderer: OutputRendering {
         return colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
     }
 
-    func formatSummary(line: String) -> String {
-        colored ? line.f.Green.s.Bold : line
-    }
-
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
         let source = group.source
         return "Fetching " + source
@@ -193,13 +189,5 @@ struct TerminalRenderer: OutputRendering {
 
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         colored ? group.wholeError.s.Bold.f.Red : group.wholeError
-    }
-
-    func format(testSummary: TestSummary) -> String {
-        if testSummary.isSuccess() {
-            colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
-        } else {
-            colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
-        }
     }
 }
