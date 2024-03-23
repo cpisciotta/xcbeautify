@@ -8,6 +8,7 @@ enum TestStatus {
     static let pending = "⧖"
     static let completion = "▸"
     static let measure = "◷"
+    static let skipped = "⊘"
 }
 
 enum Symbol {

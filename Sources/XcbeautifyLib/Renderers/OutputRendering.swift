@@ -45,6 +45,7 @@ protocol OutputRendering {
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String
+    func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String
     func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String
     func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String
@@ -61,6 +62,7 @@ protocol OutputRendering {
     func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String
+    func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
     func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String?
@@ -201,6 +203,8 @@ extension OutputRendering {
             return formatParallelTestCaseFailed(group: group)
         case let group as ParallelTestCasePassedCaptureGroup:
             return formatParallelTestCasePassed(group: group)
+        case let group as ParallelTestCaseSkippedCaptureGroup:
+            return formatParallelTestCaseSkipped(group: group)
         case let group as ParallelTestingFailedCaptureGroup:
             return formatParallelTestingFailed(group: group)
         case let group as ParallelTestingPassedCaptureGroup:
@@ -237,6 +241,8 @@ extension OutputRendering {
             return formatTestCaseMeasured(group: group)
         case let group as TestCasePassedCaptureGroup:
             return formatTestCasePassed(group: group)
+        case let group as TestCaseSkippedCaptureGroup:
+            return formatTestCaseSkipped(group: group)
         case let group as TestCasePendingCaptureGroup:
             return formatTestCasePending(group: group)
         case let group as TestCaseStartedCaptureGroup:

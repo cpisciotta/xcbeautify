@@ -663,6 +663,32 @@ struct LinkingCaptureGroup: CaptureGroup {
     }
 }
 
+struct TestCaseSkippedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression captured groups:
+    /// $1 = suite
+    /// $2 = test case
+    /// $3 = time
+    #if os(Linux)
+    static let regex = Regex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\sskipped\s\((\d*\.\d{1,3})\sseconds\)"#)
+    #else
+    static let regex = Regex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\sskipped\s\((\d*\.\d{3})\sseconds\)."#)
+    #endif
+
+    let suite: String
+    let testCase: String
+    let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.time = time
+    }
+}
+
 struct TestCasePassedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
@@ -759,6 +785,31 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
         self.unitName = unitName
         self.value = value
         self.deviation = deviation
+    }
+}
+
+struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression captured groups:
+    /// $1 = suite
+    /// $2 = test case
+    /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
+    /// $4 = time
+    static let regex = Regex(pattern: #"^Test\s+case\s+'(.*)\.(.*)\(\)'\s+skipped\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+
+    let suite: String
+    let testCase: String
+    let device: String
+    let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.device = device
+        self.time = time
     }
 }
 

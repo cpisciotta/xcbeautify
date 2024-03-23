@@ -366,6 +366,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
+    
+    func testParallelTestCaseSkipped() {
+        let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' skipped on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "::notice ::    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+    }
 
     func testConcurrentDestinationTestSuiteStarted() {
         let formatted = logFormatted("Test suite 'XcbeautifyLibTests (iOS).xctest' started on 'iPhone X'")
@@ -507,6 +512,14 @@ final class GitHubActionsRendererTests: XCTestCase {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
         XCTAssertEqual(formatted, "    testBuildTarget (0.131 seconds)")
+        XCTAssertEqual(parser.outputType, .testCase)
+        #endif
+    }
+    
+    func testTestCaseSkipped() {
+        #if os(macOS)
+        let formatted = logFormatted("Test Case '-[SomeTests testName]' skipped (0.004 seconds).")
+        XCTAssertEqual(formatted, "::notice ::    testName (0.004 seconds)")
         XCTAssertEqual(parser.outputType, .testCase)
         #endif
     }

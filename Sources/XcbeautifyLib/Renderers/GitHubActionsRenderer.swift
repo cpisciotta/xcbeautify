@@ -160,6 +160,17 @@ struct GitHubActionsRenderer: OutputRendering {
         return Format.indent + testCase + " on '\(device)' (\(time) seconds)"
     }
 
+    func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
+        let testCase = group.testCase
+        let device = group.device
+        let time = group.time
+        let message = Format.indent + testCase + " on '\(device)' (\(time) seconds)"
+        return outputGitHubActionsLog(
+            annotationType: .notice,
+            message: message
+        )
+    }
+
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         outputGitHubActionsLog(
             annotationType: .error,
@@ -189,6 +200,16 @@ struct GitHubActionsRenderer: OutputRendering {
         let testCase = group.testCase
         let time = group.time
         return Format.indent + testCase + " (\(time) seconds)"
+    }
+    
+    func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {
+        let testCase = group.testCase
+        let time = group.time
+        let message = Format.indent + testCase + " (\(time) seconds)"
+        return outputGitHubActionsLog(
+            annotationType: .notice,
+            message: message
+        )
     }
 
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
