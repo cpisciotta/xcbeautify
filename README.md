@@ -1,46 +1,29 @@
 # xcbeautify
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcpisciotta%2Fxcbeautify%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/cpisciotta/xcbeautify)
-
 [![CI](https://github.com/cpisciotta/xcbeautify/actions/workflows/ci.yml/badge.svg)](https://github.com/cpisciotta/xcbeautify/actions/workflows/ci.yml)
 [![Latest Release](https://img.shields.io/github/release/cpisciotta/xcbeautify.svg)](https://github.com/cpisciotta/xcbeautify/releases/latest)
 [![License](https://img.shields.io/github/license/cpisciotta/xcbeautify.svg)](LICENSE.md)
 
-![Example Screenshot](assets/example.png)
+![Example Screenshot](.readme-images/example.png)
 
 **`xcbeautify` is a little beautifier tool for `xcodebuild`.**
 
-Similar to `xcpretty`, but faster.
+A faster alternative to `xcpretty` written in Swift.
 
 ## Features
 
-- [x] 2x faster than `xcpretty`.
 - [x] Human-friendly and colored output.
 - [x] Supports the new build system's output.
 - [x] Supports Xcode's parallel testing output.
 - [x] Supports formatting Swift Package Manager output.
-- [x] Supports formatting Bazel output.
 - [x] Supports generating JUnit reports.
 - [x] Supports macOS & Linux.
 - [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
   bring anywhere. This also means less Ruby-dependant in your development
   environment and CI.
 
-## Fun fact
-
-`xcbeautify` uses itself to format its CI build logs.
-
 ## Installation
-
-If you use macOS 10.14.3 or earlier, install Swift 5 Runtime Support for
-Command Line Tools first:
-
-```bash
-brew install thii/swift-runtime/swift-runtime --cask
-```
 
 ### Homebrew
 
@@ -61,14 +44,14 @@ In that directory, create a `Package.swift` file with the following contents.
 In addition, add an empty file named `Empty.swift` to the same location.
 
 ```swift
-// swift-tools-version: 5.6
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
     name: "BuildTools",
     platforms: [.macOS(.v10_11)],
     dependencies: [
-      .package(url: "https://github.com/cpisciotta/xcbeautify", from: "0.13.0"),
+      .package(url: "https://github.com/cpisciotta/xcbeautify", from: "1.7.0"),
     ],
     targets: [
       .target(name: "BuildTools", path: "")
@@ -112,23 +95,13 @@ NSUnbufferedIO=YES xcodebuild [flags] 2>&1 | xcbeautify
 swift test [flags] 2>&1 | xcbeautify
 ```
 
-Parse Bazel's building and testing output:
-
-```sh
-set -o pipefail && bazel build //path/to/package:target 2>&1 | xcbeautify
-```
-
-```sh
-set -o pipefail && bazel test //path/to/package:target 2>&1 | xcbeautify
-```
-
 ### GitHub Actions
 
-| ![GitHub Actions Summary](assets/gh-summary.png) |
+| ![GitHub Actions Summary](.readme-images/gh-summary.png) |
 |:--:|
 | *GitHub Actions Summary* |
 
-| ![GitHub Actions Comment](assets/gh-comment.png) |
+| ![GitHub Actions Comment](.readme-images/gh-comment.png) |
 |:--:|
 | *GitHub Actions Comment* |
 
@@ -146,12 +119,6 @@ Generate Xcode project:
 make xcode
 ```
 
-Build with Bazel:
-
-```sh
-bazel build //Sources/xcbeautify
-```
-
 Release a new version, e.g. `x.y.z`:
 
 ```bash
@@ -161,26 +128,3 @@ make release version=x.y.z
 ## Contributing
 
 Please send a PR!
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nikolaykasyanov"><img src="https://avatars.githubusercontent.com/u/136644?v=4?s=100" width="100px;" alt="Nikolay Kasyanov"/><br /><sub><b>Nikolay Kasyanov</b></sub></a><br /><a href="https://github.com/cpisciotta/xcbeautify/commits?author=nikolaykasyanov" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://www.charlespisciotta.com"><img src="https://avatars.githubusercontent.com/u/38054839?v=4?s=100" width="100px;" alt="Charles Pisciotta"/><br /><sub><b>Charles Pisciotta</b></sub></a><br /><a href="https://github.com/cpisciotta/xcbeautify/commits?author=cpisciotta" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

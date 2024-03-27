@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 import PackageDescription
 
 let package = Package(
@@ -41,6 +41,7 @@ let package = Package(
             dependencies: ["XcbeautifyLib"],
             resources: [
                 .copy("ParsingTests/clean_build_xcode_15_1.txt"),
+                .copy("ParsingTests/large_xcodebuild_log.txt"),
             ]
         ),
     ]

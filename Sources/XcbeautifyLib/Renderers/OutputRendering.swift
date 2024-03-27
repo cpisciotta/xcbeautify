@@ -12,7 +12,9 @@ protocol OutputRendering {
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String
     func formatCodeSign(group: CodesignCaptureGroup) -> String
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
+    func formatCompilationResult(group: CompilationResultCaptureGroup) -> String?
     func formatCompile(group: CompileFileCaptureGroup) -> String
+    func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
@@ -72,8 +74,9 @@ protocol OutputRendering {
     func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String
     func formatWarning(group: GenericWarningCaptureGroup) -> String
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
-    func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String?
+    func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
+    func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -112,8 +115,14 @@ extension OutputRendering {
             return formatCodeSign(group: group)
         case let group as CodesignFrameworkCaptureGroup:
             return formatCodeSignFramework(group: group)
+        case let group as CompilationResultCaptureGroup:
+            return formatCompilationResult(group: group)
         case let group as CompileCaptureGroup:
             return formatCompile(group: group)
+        case let group as SwiftCompileCaptureGroup:
+            return formatCompile(group: group)
+        case let group as SwiftCompilingCaptureGroup:
+            return formatSwiftCompiling(group: group)
         case let group as CompileCommandCaptureGroup:
             return formatCompileCommand(group: group)
         case let group as CompileErrorCaptureGroup:
@@ -252,12 +261,14 @@ extension OutputRendering {
             return formatUndefinedSymbolLocation(group: group)
         case let group as WillNotBeCodeSignedCaptureGroup:
             return formatWillNotBeCodesignWarning(group: group)
-        case let group as WriteAuxiliaryFilesCaptureGroup:
-            return formatWriteAuxiliaryFiles(group: group)
+        case let group as WriteAuxiliaryFileCaptureGroup:
+            return formatWriteAuxiliaryFile(group: group)
         case let group as WriteFileCaptureGroup:
             return formatWriteFile(group: group)
         case let group as XcodebuildErrorCaptureGroup:
             return formatError(group: group)
+        case let group as SwiftDriverJobDiscoveryEmittingModuleCaptureGroup:
+            return formatSwiftDriverJobDiscoveryEmittingModule(group: group)
         default:
             assertionFailure()
             return nil
@@ -299,6 +310,14 @@ extension OutputRendering {
     }
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatCompilationResult(group: CompilationResultCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String? {
         nil
     }
 
@@ -500,11 +519,17 @@ extension OutputRendering {
         return colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
     }
 
-    func formatWriteAuxiliaryFiles(group: WriteAuxiliaryFilesCaptureGroup) -> String? {
-        nil
+    func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String? {
+        let filename = group.filename
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Write Auxiliary File".s.Bold) \(filename)" : "[\(target)] Write Auxiliary File \(filename)"
     }
 
     func formatWriteFile(group: WriteFileCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String? {
         nil
     }
 }

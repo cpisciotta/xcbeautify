@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-latest]
-        swift_version: [5.7, 5.8, 5.9]
+        swift_version: [5.9]
     steps:
       - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
         with:
@@ -32,19 +32,20 @@ jobs:
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        platform: [macos-latest, ubuntu-latest]
+        platform: [macos-13, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
+      - name: Load Swift Version
+        run: echo "SWIFT_VERSION=$(<.swift-version)" >> $GITHUB_ENV
       - name: Install Swift and Tools
-        if: matrix.platform == 'ubuntu-latest'
         uses: swift-actions/setup-swift@cdbe0f7f4c77929b6580e71983e8606e55ffe7e4
         with:
-          swift-version: 5.9.2
+          swift-version: ${{ env.SWIFT_VERSION }}
       - run: swift test --enable-code-coverage
       - name: Prepare Code Coverage
         run: ./tools/export_coverage
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: info.lcov
         env:
