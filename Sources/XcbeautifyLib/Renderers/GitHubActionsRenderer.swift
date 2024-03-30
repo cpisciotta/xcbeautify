@@ -9,6 +9,11 @@ struct GitHubActionsRenderer: OutputRendering {
 
     // Colored output is disallowed since GitHub Actions annotations don't properly render it.
     let colored = false
+    let additionalLines: () -> String?
+
+    init(additionalLines: @escaping () -> String?) {
+        self.additionalLines = additionalLines
+    }
 
     private func outputGitHubActionsLog(
         annotationType: AnnotationType,
@@ -19,7 +24,7 @@ struct GitHubActionsRenderer: OutputRendering {
         return "::\(annotationType) \(formattedFileComponents)::\(message)"
     }
 
-    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+    func formatCompileError(group: CompileErrorCaptureGroup) -> String {
         let filePath = group.filePath
         let fileComponents = filePath.asFileComponents()
         let reason = group.reason
@@ -41,7 +46,7 @@ struct GitHubActionsRenderer: OutputRendering {
         )
     }
 
-    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+    func formatCompileWarning(group: CompileWarningCaptureGroup) -> String {
         let filePath = group.filePath
         let fileComponents = filePath.asFileComponents()
         let reason = group.reason
