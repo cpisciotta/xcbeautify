@@ -43,7 +43,10 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testClangError() {
         let formatted = noColoredFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
-        XCTAssertEqual(formatted, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] clang: error: linker command failed with exit code 1 (use -v to see invocation)\' status=\'FAILURE\']\nBuild error")
+        XCTAssertEqual(
+            formatted,
+            "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] clang: error: linker command failed with exit code 1 (use -v to see invocation)\' status=\'ERROR\']\nBuild error"
+        )
     }
 
     func testCleanRemove() {
@@ -121,7 +124,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testCompileWarning() {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
-        let output = "##teamcity[message text=\'Compile warning\' errorDetails=\'|[!|]  /path/file.swift:64:69: |\'flatMap|\' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value|n|n\' status=\'WARNING\']\nCompile warning"
+        let output = "##teamcity[message text=\'Compile warning|n|[!|]  /path/file.swift:64:69: |\'flatMap|\' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value|n|n\' status=\'WARNING\']\nCompile warning"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
@@ -255,13 +258,13 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
-        let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] fatal error: malformed or corrupted AST file: |\'could not find file |\'/path/file.h|\' referenced by AST file|\' note: after modifying system headers, please delete the module cache at |\'/path/DerivedData/ModuleCache/M5WJ0FYE7N06|\'\' status=\'FAILURE\']\nBuild error"
+        let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] fatal error: malformed or corrupted AST file: |\'could not find file |\'/path/file.h|\' referenced by AST file|\' note: after modifying system headers, please delete the module cache at |\'/path/DerivedData/ModuleCache/M5WJ0FYE7N06|\'\' status=\'ERROR\']\nBuild error"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "##teamcity[message text=\'File missing error\' errorDetails=\'|[x|] /path/file.swift: error: no such file or directory:\' status=\'FAILURE\']\nFile missing error"
+        let output = "##teamcity[message text=\'File missing error\' errorDetails=\'|[x|] /path/file.swift: error: no such file or directory:\' status=\'ERROR\']\nFile missing error"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
@@ -283,21 +286,21 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testGenericWarning() {
         let input = "warning: some warning here 123"
-        let output = "##teamcity[message text=\'Xcodebuild warning\' errorDetails=\'|[!|] some warning here 123\' status=\'WARNING\']\nXcodebuild warning"
+        let output = "##teamcity[message text=\'Xcodebuild warning|n|[!|] some warning here 123\' status=\'WARNING\']\nXcodebuild warning"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testLdError() {
         let inputLdLibraryError = "ld: library not found for -lPods-Yammer"
-        XCTAssertEqual(noColoredFormatted(inputLdLibraryError), "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] ld: library not found for -lPods-Yammer\' status=\'FAILURE\']\nBuild error")
+        XCTAssertEqual(noColoredFormatted(inputLdLibraryError), "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] ld: library not found for -lPods-Yammer\' status=\'ERROR\']\nBuild error")
 
         let inputLdSymbolsError = "ld: symbol(s) not found for architecture x86_64"
-        XCTAssertEqual(noColoredFormatted(inputLdSymbolsError), "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] ld: symbol(s) not found for architecture x86_64\' status=\'FAILURE\']\nBuild error")
+        XCTAssertEqual(noColoredFormatted(inputLdSymbolsError), "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] ld: symbol(s) not found for architecture x86_64\' status=\'ERROR\']\nBuild error")
     }
 
     func testLdWarning() {
         let input = "ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"
-        let output = "##teamcity[message text=\'Linker warning\' errorDetails=\'|[!|] ld: embedded dylibs/frameworks only run on iOS 8 or later\' status=\'WARNING\']\nLinker warning"
+        let output = "##teamcity[message text=\'Linker warning|n|[!|] ld: embedded dylibs/frameworks only run on iOS 8 or later\' status=\'WARNING\']\nLinker warning"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
@@ -408,7 +411,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testPodsError() {
         let input = "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
-        let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: The sandbox is not in sync with the Podfile.lock. Run |\'pod install|\' or update your CocoaPods installation.\' status=\'FAILURE\']\nBuild error"
+        let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: The sandbox is not in sync with the Podfile.lock. Run |\'pod install|\' or update your CocoaPods installation.\' status=\'ERROR\']\nBuild error"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
@@ -450,7 +453,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testProvisioningProfileRequired() {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
-        let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] MyProject requires a provisioning profile. Select a provisioning profile for the \"Debug\" build configuration in the project editor.\' status=\'FAILURE\']\nBuild error"
+        let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] MyProject requires a provisioning profile. Select a provisioning profile for the \"Debug\" build configuration in the project editor.\' status=\'ERROR\']\nBuild error"
         XCTAssertEqual(noColoredFormatted(input), output)
         XCTAssertEqual(parser.outputType, .error)
     }
@@ -474,7 +477,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testUndefinedSymbolLocation() {
         let formatted = noColoredFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(formatted, "##teamcity[message text=\'Undefined symbol location\' errorDetails=\'|[!|]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)\' status=\'WARNING\']\nUndefined symbol location")
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Undefined symbol location|n|[!|]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)\' status=\'WARNING\']\nUndefined symbol location")
         XCTAssertEqual(parser.outputType, .warning)
     }
 
@@ -542,7 +545,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
-        let output = "##teamcity[message text=\'Codesign error\' errorDetails=\'|[!|] FrameworkName will not be code signed because its settings don|\'t specify a development team.\' status=\'WARNING\']\nCodesign error"
+        let output = "##teamcity[message text=\'Codesign error|n|[!|] FrameworkName will not be code signed because its settings don|\'t specify a development team.\' status=\'WARNING\']\nCodesign error"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
@@ -625,7 +628,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testXcodebuildError() {
         let formatted = noColoredFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
-        XCTAssertEqual(formatted, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"\' status=\'FAILURE\']\nBuild error")
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"\' status=\'ERROR\']\nBuild error")
     }
 
     func testXcodeprojError() {
@@ -644,7 +647,7 @@ final class TeamCityRendererTests: XCTestCase {
     func testXcodeprojWarning() {
         // Given
         let errorText = #"/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"#
-        let expectedFormatted = "##teamcity[message text=\'Compile warning\' errorDetails=\'|[!|]  /Users/xxxxx/Example/Pods/Pods.xcodeproj: The iOS deployment target |\'IPHONEOS_DEPLOYMENT_TARGET|\' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target |\'XXPay|\' from project |\'Pods|\')|n|n\' status=\'WARNING\']\nCompile warning"
+        let expectedFormatted = "##teamcity[message text=\'Compile warning|n|[!|]  /Users/xxxxx/Example/Pods/Pods.xcodeproj: The iOS deployment target |\'IPHONEOS_DEPLOYMENT_TARGET|\' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target |\'XXPay|\' from project |\'Pods|\')|n|n\' status=\'WARNING\']\nCompile warning"
 
         // When
         let actualFormatted = noColoredFormatted(errorText)
@@ -656,7 +659,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
-        XCTAssertEqual(formatted, "##teamcity[message text=\'Duplicated localized string key\' errorDetails=\'|[!|] Key \"duplicate\" used with multiple values. Value \"First\" kept. Value \"Second\" ignored.\' status=\'WARNING\']\nDuplicated localized string key")
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Duplicated localized string key|n|[!|] Key \"duplicate\" used with multiple values. Value \"First\" kept. Value \"Second\" ignored.\' status=\'WARNING\']\nDuplicated localized string key")
         XCTAssertEqual(parser.outputType, .warning)
     }
 
@@ -668,6 +671,6 @@ error: Multiple commands produce '/Users/admin/teamcity/work/8906de356cda3a27/bu
 """
         let actual = noColoredFormatted(error)
 
-        XCTAssertEqual(actual, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: Multiple commands produce |\'/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy|\'\' status=\'FAILURE\']\nBuild error")
+        XCTAssertEqual(actual, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: Multiple commands produce |\'/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy|\'\' status=\'ERROR\']\nBuild error")
     }
 }

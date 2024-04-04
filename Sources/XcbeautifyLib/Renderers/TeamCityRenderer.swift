@@ -2,10 +2,6 @@ import Colorizer
 import Foundation
 
 struct TeamCityRenderer: OutputRendering {
-    private enum ProblemLevel: String {
-        case FAILURE
-        case WARNING
-    }
 
     let colored: Bool
 
@@ -17,16 +13,15 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func outputTeamCityError(text: String, details: String) -> String {
-        formatTeamCityServiceMessage(text: text, details: details, level: .FAILURE)
+        """
+        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='ERROR']
+        \(text)
+        """
     }
 
     func outputTeamCityWarning(text: String, details: String) -> String {
-        formatTeamCityServiceMessage(text: text, details: details, level: .WARNING)
-    }
-
-    private func formatTeamCityServiceMessage(text: String, details: String, level: ProblemLevel) -> String {
         """
-        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='\(level.rawValue)']
+        ##teamcity[message text='\([text, details.teamCityEscaped()].joined(separator: "|n"))' status='WARNING']
         \(text)
         """
     }
