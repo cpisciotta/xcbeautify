@@ -348,7 +348,7 @@ final class TerminalRendererTests: XCTestCase {
         let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "    ✔ testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
-    
+
     func testParallelTestCaseSkipped() {
         let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' skipped on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "    ⊘ testBuildTarget on 'xctest (49438)' (0.131 seconds)")
@@ -496,7 +496,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
         #endif
     }
-    
+
     func testTestCaseSkipped() {
         #if os(macOS)
         let formatted = noColoredFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' skipped (0.131 seconds).")

@@ -73,7 +73,7 @@ package final class JunitReporter {
         guard let group = _group as? TestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
-    
+
     private func generateSkippedTest(line: String) -> TestCase? {
         guard let _group: CaptureGroup = line.captureGroup(with: TestCaseSkippedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestCaseSkippedCaptureGroup else { return nil }
@@ -85,7 +85,7 @@ package final class JunitReporter {
         guard let group = _group as? ParallelTestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
-    
+
     private func generateSkippedParallelTest(line: String) -> TestCase? {
         guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCaseSkippedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCaseSkippedCaptureGroup else { return nil }
@@ -226,7 +226,7 @@ private struct TestCase: Codable, DynamicNodeEncoding {
     let time: String?
     let failure: Failure?
     let skipped: Skipped?
-    
+
     init(classname: String, name: String, time: String?, failure: Failure? = nil, skipped: Skipped? = nil) {
         self.classname = classname
         self.name = name
@@ -259,7 +259,7 @@ private extension TestCase {
             }
         }
     }
-    
+
     struct Skipped: Codable, DynamicNodeEncoding {
         let message: String?
 
@@ -271,5 +271,4 @@ private extension TestCase {
             }
         }
     }
-
 }

@@ -42,7 +42,7 @@ struct TerminalRenderer: OutputRendering {
         let time = group.time
         return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
     }
-    
+
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {
         let testCase = group.testCase
         let time = group.time
@@ -55,7 +55,7 @@ struct TerminalRenderer: OutputRendering {
         let time = group.time
         return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
     }
-    
+
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
         let testCase = group.testCase
         let device = group.device

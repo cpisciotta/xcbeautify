@@ -201,7 +201,7 @@ struct GitHubActionsRenderer: OutputRendering {
         let time = group.time
         return Format.indent + testCase + " (\(time) seconds)"
     }
-    
+
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {
         let testCase = group.testCase
         let time = group.time
