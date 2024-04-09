@@ -2,7 +2,6 @@ import Colorizer
 import Foundation
 
 struct TeamCityRenderer: OutputRendering {
-
     let colored: Bool
 
     private func outputTeamCityProblem(text: String, filePath: String) -> String {
@@ -136,7 +135,7 @@ struct TeamCityRenderer: OutputRendering {
         )
     }
 
-    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String 
+    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String {
         outputTeamCityWarning(
             text: "Undefined symbol location",
             details: colored ? Symbol.warning + " " + group.wholeWarning.f.Yellow : Symbol.asciiWarning + " " + group.wholeWarning

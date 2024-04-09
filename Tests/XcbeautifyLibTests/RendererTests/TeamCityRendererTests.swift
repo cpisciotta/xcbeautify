@@ -665,10 +665,10 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testCommandProduceError() {
         let error = """
-error: Multiple commands produce '/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy'
-    note: Target 'some-app' (project 'Some App') has copy command from '/Users/admin/teamcity/work/8906de356cda3a27/Resources/Privacy/PrivacyInfo.xcprivacy' to '/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy'
-    note: That command depends on command in Target 'some-app' (project 'Some App'): script phase “[CP] Copy Pods Resources”
-"""
+        error: Multiple commands produce '/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy'
+            note: Target 'some-app' (project 'Some App') has copy command from '/Users/admin/teamcity/work/8906de356cda3a27/Resources/Privacy/PrivacyInfo.xcprivacy' to '/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy'
+            note: That command depends on command in Target 'some-app' (project 'Some App'): script phase “[CP] Copy Pods Resources”
+        """
         let actual = noColoredFormatted(error)
 
         XCTAssertEqual(actual, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: Multiple commands produce |\'/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy|\'\' status=\'ERROR\']\nBuild error")
