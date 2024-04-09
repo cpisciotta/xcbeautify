@@ -2,31 +2,26 @@ import Colorizer
 import Foundation
 
 struct TeamCityRenderer: OutputRendering {
-    private enum ProblemLevel: String {
-        case FAILURE
-        case WARNING
-    }
-    
+
     let colored: Bool
-    
+
     private func outputTeamCityProblem(text: String, filePath: String) -> String {
         """
         ##teamcity[buildProblem description='\(filePath)']
         \(text)
         """
     }
-    
+
     func outputTeamCityError(text: String, details: String) -> String {
-        return self.formatTeamCityServiceMessage(text: text, details: details, level: .FAILURE)
-    }
-    
-    func outputTeamCityWarning(text: String, details: String) -> String {
-        return self.formatTeamCityServiceMessage(text: text, details: details, level: .WARNING)
-    }
-    
-    private func formatTeamCityServiceMessage(text: String, details: String, level: ProblemLevel) -> String {
         """
-        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='\(level.rawValue)']
+        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='ERROR']
+        \(text)
+        """
+    }
+
+    func outputTeamCityWarning(text: String, details: String) -> String {
+        """
+        ##teamcity[message text='\([text, details.teamCityEscaped()].joined(separator: "|n"))' status='WARNING']
         \(text)
         """
     }
@@ -93,8 +88,8 @@ struct TeamCityRenderer: OutputRendering {
     func formatError(group: ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         let outputString = colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
-        
-        return self.outputTeamCityError(text: "Build error", details: outputString)
+
+        return outputTeamCityError(text: "Build error", details: outputString)
     }
 
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String {
@@ -120,14 +115,14 @@ struct TeamCityRenderer: OutputRendering {
             \(line)
             \(cursor)
             """
-        
-        return self.outputTeamCityProblem(text: outputString, filePath: filePath)
+
+        return outputTeamCityProblem(text: outputString, filePath: filePath)
     }
 
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String {
         let reason = group.reason
         let filePath = group.filePath
-        return self.outputTeamCityError(
+        return outputTeamCityError(
             text: "File missing error",
             details: colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
         )
@@ -135,14 +130,14 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatWarning(group: GenericWarningCaptureGroup) -> String {
         let warningMessage = group.wholeWarning
-        return self.outputTeamCityWarning(
+        return outputTeamCityWarning(
             text: "Xcodebuild warning",
             details: colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
         )
     }
 
-    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String {
-        return self.outputTeamCityWarning(
+    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String 
+        outputTeamCityWarning(
             text: "Undefined symbol location",
             details: colored ? Symbol.warning + " " + group.wholeWarning.f.Yellow : Symbol.asciiWarning + " " + group.wholeWarning
         )
@@ -167,14 +162,14 @@ struct TeamCityRenderer: OutputRendering {
             \(line)
             \(cursor)
             """
-        
-        return self.outputTeamCityWarning(text: "Compile warning", details: outputString)
+
+        return outputTeamCityWarning(text: "Compile warning", details: outputString)
     }
 
     func formatLdWarning(group: LDWarningCaptureGroup) -> String {
         let prefix = group.ldPrefix
         let message = group.warningMessage
-        return self.outputTeamCityWarning(
+        return outputTeamCityWarning(
             text: "Linker warning",
             details: colored ? "\(Symbol.warning) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning) \(prefix)\(message)"
         )
@@ -182,7 +177,7 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String {
         let reason = group.reason
-        return self.outputTeamCityWarning(
+        return outputTeamCityWarning(
             text: "Linker error. Undefined symbols error",
             details: colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
         )
@@ -191,7 +186,7 @@ struct TeamCityRenderer: OutputRendering {
     // TODO: Print file path
     func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String {
         let reason = group.reason
-        return self.outputTeamCityError(
+        return outputTeamCityError(
             text: "Linker error. Duplicated symbols",
             details: colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
         )
@@ -199,7 +194,7 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String {
         let warningMessage = group.wholeWarning
-        return self.outputTeamCityWarning(
+        return outputTeamCityWarning(
             text: "Codesign error",
             details: colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
         )
@@ -242,7 +237,7 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String {
         let message = group.warningMessage
-        return self.outputTeamCityWarning(
+        return outputTeamCityWarning(
             text: "Duplicated localized string key",
             details: colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
         )
@@ -254,9 +249,22 @@ struct TeamCityRenderer: OutputRendering {
 
     func format(testSummary: TestSummary) -> String {
         if testSummary.isSuccess() {
-            return colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
+            colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
         } else {
-            return colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
+            colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
         }
+    }
+}
+
+private extension String {
+    func teamCityEscaped() -> String {
+        // According to the documentation: https://www.jetbrains.com/help/teamcity/service-messages.html#Escaped+Values
+        replacingOccurrences(of: "|", with: "||")
+            .replacingOccurrences(of: "'", with: "|'")
+            .replacingOccurrences(of: "\n", with: "|n")
+            .replacingOccurrences(of: "\r", with: "|r")
+            .replacingOccurrences(of: "\\u{", with: "|u{") // Assuming the unicode format in Swift is \\u{NNNN}
+            .replacingOccurrences(of: "[", with: "|[")
+            .replacingOccurrences(of: "]", with: "|]")
     }
 }
