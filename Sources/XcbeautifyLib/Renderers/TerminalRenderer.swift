@@ -197,9 +197,9 @@ struct TerminalRenderer: OutputRendering {
 
     func format(testSummary: TestSummary) -> String {
         if testSummary.isSuccess() {
-            return colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
+            colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
         } else {
-            return colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
+            colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
         }
     }
 }

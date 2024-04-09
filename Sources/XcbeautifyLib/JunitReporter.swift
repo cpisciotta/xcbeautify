@@ -6,16 +6,16 @@
 import Foundation
 import XMLCoder
 
-public final class JunitReporter {
+package final class JunitReporter {
     private var components: [JunitComponent] = []
     // Parallel output does not guarantee order - so it is _very_ hard
     // to match to the parent suite. We can still capture test success/failure
     // and output a generic result file.
     private var parallelComponents: [JunitComponent] = []
 
-    public init() { }
+    package init() { }
 
-    public func add(line: String) {
+    package func add(line: String) {
         // Remove any preceding or excessive spaces
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -80,7 +80,7 @@ public final class JunitReporter {
         return group.testSuiteName
     }
 
-    public func generateReport() throws -> Data {
+    package func generateReport() throws -> Data {
         let parser = JunitComponentParser()
         components.forEach { parser.parse(component: $0) }
         // Prefix a fake test suite start for the parallel tests.

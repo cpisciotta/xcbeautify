@@ -97,6 +97,23 @@ final class TerminalRendererTests: XCTestCase {
         #endif
     }
 
+    func testSwiftCompile_arm64() {
+        let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
+        let output = "[Target] Compiling File.swift"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testSwiftCompile_x86_64() {
+        let input = "SwiftCompile normal x86_64 /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/DerivedSources/resource_bundle_accessor.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"
+        let output = "[BackyardBirdsData] Compiling resource_bundle_accessor.swift"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testSwiftCompiling() {
+        let input = #"SwiftCompile normal x86_64 Compiling\ BackyardBirdsDataContainer.swift,\ ColorData.swift,\ DataGeneration.swift,\ DataGenerationOptions.swift /Backyard-Birds/BackyardBirdsData/General/BackyardBirdsDataContainer.swift /Backyard-Birds/BackyardBirdsData/General/ColorData.swift /Backyard-Birds/BackyardBirdsData/General/DataGeneration.swift /Backyard-Birds/BackyardBirdsData/General/DataGenerationOptions.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
+
     func testCompileStoryboard() {
         let formatted = noColoredFormatted("CompileStoryboard /Users/admin/MyApp/MyApp/Main.storyboard (in target: MyApp)")
         XCTAssertEqual(formatted, "[MyApp] Compiling Main.storyboard")
@@ -190,6 +207,7 @@ final class TerminalRendererTests: XCTestCase {
         #endif
     }
 
+    #if os(macOS)
     func testExecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let input2 = "Executed 56 tests, with 3 test skipped and 2 failures (1 unexpected) in 1.029 (1.029) seconds"
@@ -231,6 +249,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(parser.summary?.skippedCount, 4)
         XCTAssertEqual(parser.summary?.time, 4.029)
     }
+    #endif
 
     func testFailingTest() { }
 
@@ -306,15 +325,19 @@ final class TerminalRendererTests: XCTestCase {
 
     func testNoCertificate() { }
 
+    #if os(macOS)
     func testTestCaseWithSpacesPassed() {
         let formatted = noColoredFormatted("Test Case '-[MyProject.MyTestSuite some component, when the disk is full, will display an error]' passed (0.005 seconds).")
         XCTAssertEqual(formatted, "    ✔ some component, when the disk is full, will display an error (0.005 seconds)")
     }
+    #endif
 
+    #if os(macOS)
     func testTestCaseWithSpacesFailed() {
         let formatted = noColoredFormatted("/Users/jsmith/MyProject/Example.swift:12: error: -[MyProject.MyTestSuite one, when added to two, produces three] : expected to equal <3>, got <4>")
         XCTAssertEqual(formatted, "    ✖ one, when added to two, produces three, expected to equal <3>, got <4>")
     }
+    #endif
 
     func testParallelTestCaseFailed() {
         let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
@@ -477,6 +500,7 @@ final class TerminalRendererTests: XCTestCase {
 
     func testTestSuiteStarted() { }
 
+    #if os(macOS)
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
 
@@ -485,7 +509,9 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertNil(formatted)
         XCTAssertTrue(parser.needToRecordSummary)
     }
+    #endif
 
+    #if os(macOS)
     func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
 
@@ -494,6 +520,7 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertNil(formatted)
         XCTAssertTrue(parser.needToRecordSummary)
     }
+    #endif
 
     func testTestsRunCompletion() { }
 
@@ -519,7 +546,17 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
-    func testWriteAuxiliaryFiles() { }
+    func testWriteAuxiliaryFileGeneric() {
+        let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
+        let output = "[Target] Write Auxiliary File file.extension"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testWriteAuxiliaryFileBackyardBirds() {
+        let input = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
+        let output = "[LayeredArtworkLibrary_LayeredArtworkLibrary] Write Auxiliary File empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
 
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"

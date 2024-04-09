@@ -265,6 +265,36 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     }
 }
 
+struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = filename (e.g. KWNull.m)
+    /// $3 = target
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ ((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift))) \((in target '(.*)' from project '.*')\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
+    }
+}
+
+struct SwiftCompilingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ Compiling\\"#)
+
+    init?(groups: [String]) { }
+}
+
 struct CompileCommandCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1166,16 +1196,21 @@ struct WriteFileCaptureGroup: CaptureGroup {
     }
 }
 
-struct WriteAuxiliaryFilesCaptureGroup: CaptureGroup {
+struct WriteAuxiliaryFileCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = Regex(pattern: #"^Write auxiliary files"#)
+    static let regex = Regex(pattern: #"^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$"#)
 
-    private init() { }
+    let filePath: String
+    let filename: String
+    let target: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
     }
 }
 
@@ -1336,7 +1371,7 @@ struct CompileErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
-    /// $1 = file path (could be a relative path if you build with Bazel)
+    /// $1 = file path
     /// $2 = is fatal error
     /// $3 = reason
     static let regex = Regex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(.*)$"#)
@@ -1659,4 +1694,20 @@ struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
         guard let wholeError = groups[safe: 0] else { return nil }
         self.wholeError = wholeError
     }
+}
+
+struct CompilationResultCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^\/\* com.apple.actool.compilation-results \*\/$"#)
+
+    init?(groups: [String]) { }
+}
+
+struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
+
+    init?(groups: [String]) { }
 }
