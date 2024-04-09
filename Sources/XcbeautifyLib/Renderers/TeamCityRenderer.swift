@@ -136,7 +136,7 @@ struct TeamCityRenderer: OutputRendering {
         )
     }
 
-    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String {
+    func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String 
         outputTeamCityWarning(
             text: "Undefined symbol location",
             details: colored ? Symbol.warning + " " + group.wholeWarning.f.Yellow : Symbol.asciiWarning + " " + group.wholeWarning
