@@ -42,20 +42,6 @@ struct Xcbeautify: ParsableCommand {
     var junitReportFilename = "junit.xml"
 
     func run() throws {
-
-        let renderer: Renderer
-        
-        if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
-            renderer = .gitHubActions
-        }
-        else if let _ = ProcessInfo.processInfo.environment["TEAMCITY_VERSION"] {
-            renderer = .teamcity
-        }
-        else {
-            renderer = self.renderer
-        }
-        
-
         #if DEBUG && os(macOS)
         let start = CFAbsoluteTimeGetCurrent()
 
