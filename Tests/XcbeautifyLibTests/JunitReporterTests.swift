@@ -176,7 +176,7 @@ class JunitReporterTests: XCTestCase {
     Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteAuxiliaryFiles]' started.
     Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteAuxiliaryFiles]' passed (0.000 seconds).
     Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' passed (0.000 seconds).
+    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' skipped (0.000 seconds).
     Restarting after unexpected exit, crash, or test timeout in SwiftTests.testExample(); summary will include totals from previous launches.
     Restarting after unexpected exit, crash, or test timeout in -[ObjCTests testExample]; summary will include totals from previous launches.
     Test Suite 'XcbeautifyLibTests' failed at 2021-11-05 01:08:23.443.
@@ -276,7 +276,9 @@ class JunitReporterTests: XCTestCase {
             <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testUndefinedSymbolLocation" time="0.001" />
             <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testWillNotBeCodeSigned" time="0.000" />
             <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testWriteAuxiliaryFiles" time="0.000" />
-            <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testWriteFile" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.XcbeautifyLibTests" name="testWriteFile" time="0.000">
+                <skipped />
+            </testcase>
         </testsuite>
         <testsuite name="SwiftTests" tests="1" failures="1">
             <testcase classname="SwiftTests" name="testExample">
@@ -378,7 +380,9 @@ class JunitReporterTests: XCTestCase {
             <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testUndefinedSymbolLocation]" time="0.001" />
             <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWillNotBeCodeSigned]" time="0.000" />
             <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteAuxiliaryFiles]" time="0.000" />
-            <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteFile]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="XcbeautifyLibTests testWriteFile]" time="0.000">
+                <skipped />
+            </testcase>
         </testsuite>
         <testsuite name="SwiftTests" tests="1" failures="1">
             <testcase classname="SwiftTests" name="testExample">
@@ -431,7 +435,7 @@ class JunitReporterTests: XCTestCase {
       Test case 'UserCoordinatorTests.test_refreshUser_success_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
       Test case 'UserCoordinatorTests.test_refreshUser_success_userIsStoredInUserDefaults()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.006 seconds)
       Test case 'UserCoordinatorTests.test_refreshUser_success_userPropertyIsUpdated()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.032 seconds)
-      Test case 'UserCoordinatorTests.test_resetPassword_requestSucceeds_completionCalledWithSuccess()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
+      Test case 'UserCoordinatorTests.test_resetPassword_requestSucceeds_completionCalledWithSuccess()' skipped on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
     """
 
     private let expectedParallelXml = """
@@ -471,7 +475,9 @@ class JunitReporterTests: XCTestCase {
             <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_completionIsCalled" time="0.005" />
             <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userIsStoredInUserDefaults" time="0.006" />
             <testcase classname="UserCoordinatorTests" name="test_refreshUser_success_userPropertyIsUpdated" time="0.032" />
-            <testcase classname="UserCoordinatorTests" name="test_resetPassword_requestSucceeds_completionCalledWithSuccess" time="0.005" />
+            <testcase classname="UserCoordinatorTests" name="test_resetPassword_requestSucceeds_completionCalledWithSuccess" time="0.005">
+                <skipped />
+            </testcase>
         </testsuite>
     </testsuites>
     """

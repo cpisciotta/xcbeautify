@@ -28,6 +28,9 @@ package final class JunitReporter {
         } else if TestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingTest(line: line) else { return }
             components.append(.testCasePassed(testCase))
+        } else if TestCaseSkippedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateSkippedTest(line: line) else { return }
+            components.append(.skippedTest(testCase))
         } else if TestSuiteStartCaptureGroup.regex.match(string: line) {
             guard let testStart = generateSuiteStart(line: line) else { return }
             components.append(.testSuiteStart(testStart))
@@ -36,6 +39,9 @@ package final class JunitReporter {
             parallelComponents.append(.failingTest(testCase))
         } else if ParallelTestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingParallelTest(line: line) else { return }
+            parallelComponents.append(.testCasePassed(testCase))
+        } else if ParallelTestCaseSkippedCaptureGroup.regex.match(string: line) {
+            guard let testCase = generateSkippedParallelTest(line: line) else { return }
             parallelComponents.append(.testCasePassed(testCase))
         } else {
             // Not needed for generating a junit report
@@ -65,13 +71,25 @@ package final class JunitReporter {
     private func generatePassingTest(line: String) -> TestCase? {
         guard let _group: CaptureGroup = line.captureGroup(with: TestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestCasePassedCaptureGroup else { return nil }
-        return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
+        return TestCase(classname: group.suite, name: group.testCase, time: group.time)
+    }
+
+    private func generateSkippedTest(line: String) -> TestCase? {
+        guard let _group: CaptureGroup = line.captureGroup(with: TestCaseSkippedCaptureGroup.pattern) else { return nil }
+        guard let group = _group as? TestCaseSkippedCaptureGroup else { return nil }
+        return TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
     private func generatePassingParallelTest(line: String) -> TestCase? {
         guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCasePassedCaptureGroup else { return nil }
-        return TestCase(classname: group.suite, name: group.testCase, time: group.time, failure: nil)
+        return TestCase(classname: group.suite, name: group.testCase, time: group.time)
+    }
+
+    private func generateSkippedParallelTest(line: String) -> TestCase? {
+        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCaseSkippedCaptureGroup.pattern) else { return nil }
+        guard let group = _group as? ParallelTestCaseSkippedCaptureGroup else { return nil }
+        return TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
     private func generateSuiteStart(line: String) -> String? {
@@ -107,7 +125,8 @@ private final class JunitComponentParser {
             mainTestSuiteName = suiteName
 
         case let .failingTest(testCase),
-             let .testCasePassed(testCase):
+             let .testCasePassed(testCase),
+             let .skippedTest(testCase):
             testCases.append(testCase)
         }
     }
@@ -136,6 +155,7 @@ private enum JunitComponent {
     case testSuiteStart(String)
     case failingTest(TestCase)
     case testCasePassed(TestCase)
+    case skippedTest(TestCase)
 }
 
 private struct Testsuites: Encodable, DynamicNodeEncoding {
@@ -205,6 +225,15 @@ private struct TestCase: Codable, DynamicNodeEncoding {
     let name: String
     let time: String?
     let failure: Failure?
+    let skipped: Skipped?
+
+    init(classname: String, name: String, time: String?, failure: Failure? = nil, skipped: Skipped? = nil) {
+        self.classname = classname
+        self.name = name
+        self.time = time
+        self.failure = failure
+        self.skipped = skipped
+    }
 
     static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
@@ -212,7 +241,7 @@ private struct TestCase: Codable, DynamicNodeEncoding {
         case .classname, .name, .time:
             return .attribute
 
-        case .failure:
+        case .failure, .skipped:
             return .element
         }
     }
@@ -221,6 +250,18 @@ private struct TestCase: Codable, DynamicNodeEncoding {
 private extension TestCase {
     struct Failure: Codable, DynamicNodeEncoding {
         let message: String
+
+        static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+            let key = CodingKeys(stringValue: key.stringValue)!
+            switch key {
+            case .message:
+                return .attribute
+            }
+        }
+    }
+
+    struct Skipped: Codable, DynamicNodeEncoding {
+        let message: String?
 
         static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
             let key = CodingKeys(stringValue: key.stringValue)!
