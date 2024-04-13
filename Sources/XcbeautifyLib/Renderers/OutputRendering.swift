@@ -2,8 +2,9 @@ import Foundation
 
 protocol OutputRendering {
     var colored: Bool { get }
+    var additionalLines: () -> String? { get }
 
-    func beautify(line: String, pattern: String, additionalLines: @escaping () -> (String?)) -> String?
+    func beautify(line: String, pattern: String) -> String?
 
     func format(testSummary: TestSummary) -> String
 
@@ -16,8 +17,8 @@ protocol OutputRendering {
     func formatCompile(group: CompileFileCaptureGroup) -> String
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
-    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
-    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String
+    func formatCompileError(group: CompileErrorCaptureGroup) -> String
+    func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
     func formatCopy(group: CopyCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
@@ -84,8 +85,7 @@ protocol OutputRendering {
 extension OutputRendering {
     func beautify(
         line: String,
-        pattern: String,
-        additionalLines: @escaping () -> (String?)
+        pattern: String
     ) -> String? {
         guard let group: CaptureGroup = line.captureGroup(with: pattern) else {
             assertionFailure("Expected a known CaptureGroup from the given pattern!")
@@ -128,11 +128,11 @@ extension OutputRendering {
         case let group as CompileCommandCaptureGroup:
             return formatCompileCommand(group: group)
         case let group as CompileErrorCaptureGroup:
-            return formatCompileError(group: group, additionalLines: additionalLines)
+            return formatCompileError(group: group)
         case let group as CompileStoryboardCaptureGroup:
             return formatCompile(group: group)
         case let group as CompileWarningCaptureGroup:
-            return formatCompileWarning(group: group, additionalLines: additionalLines)
+            return formatCompileWarning(group: group)
         case let group as CompileXibCaptureGroup:
             return formatCompile(group: group)
         case let group as CopyHeaderCaptureGroup:
