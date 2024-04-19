@@ -114,9 +114,9 @@ package class Parser {
 
         switch renderer {
         case .terminal:
-            self.renderer = TerminalRenderer(colored: colored)
+            self.renderer = TerminalRenderer(colored: colored, additionalLines: additionalLines)
         case .gitHubActions:
-            self.renderer = GitHubActionsRenderer()
+            self.renderer = GitHubActionsRenderer(additionalLines: additionalLines)
         case .teamcity:
             self.renderer = TeamCityRenderer(colored: colored)
         }
@@ -169,8 +169,7 @@ package class Parser {
 
         let formattedOutput = renderer.beautify(
             line: line,
-            pattern: captureGroupType.pattern,
-            additionalLines: additionalLines
+            pattern: captureGroupType.pattern
         )
 
         outputType = captureGroupType.outputType

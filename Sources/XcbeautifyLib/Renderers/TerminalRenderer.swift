@@ -3,6 +3,12 @@ import Foundation
 
 struct TerminalRenderer: OutputRendering {
     let colored: Bool
+    let additionalLines: () -> String?
+
+    init(colored: Bool, additionalLines: @escaping () -> String?) {
+        self.colored = colored
+        self.additionalLines = additionalLines
+    }
 
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
         let testCase = group.testCase
@@ -85,7 +91,7 @@ struct TerminalRenderer: OutputRendering {
         colored ? Symbol.error + " " + group.wholeError.f.Red : Symbol.asciiError + " " + group.wholeError
     }
 
-    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+    func formatCompileError(group: CompileErrorCaptureGroup) -> String {
         let filePath = group.filePath
         let reason = group.reason
 
@@ -121,7 +127,7 @@ struct TerminalRenderer: OutputRendering {
         colored ? Symbol.warning + " " + group.wholeWarning.f.Yellow : Symbol.asciiWarning + " " + group.wholeWarning
     }
 
-    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+    func formatCompileWarning(group: CompileWarningCaptureGroup) -> String {
         let filePath = group.filePath
         let reason = group.reason
 
