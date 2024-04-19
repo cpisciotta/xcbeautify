@@ -3,6 +3,14 @@ import Foundation
 
 struct TeamCityRenderer: OutputRendering {
     let colored: Bool
+    let additionalLines: () -> String?
+    let terminalRenderer: TerminalRenderer
+
+    init(colored: Bool, additionalLines: @escaping () -> String?) {
+        self.colored = colored
+        self.additionalLines = additionalLines
+        self.terminalRenderer = TerminalRenderer(colored: colored, additionalLines: additionalLines)
+    }
 
     private func outputTeamCityProblem(text: String, filePath: String) -> String {
         """
@@ -26,62 +34,39 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
-        let testCase = group.testCase
-        let failingReason = group.reason
-        return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + testCase + ", " + failingReason : Format.indent + TestStatus.fail + " " + testCase + ", " + failingReason
+        return self.terminalRenderer.formatFailingTest(group: group)
     }
 
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
-        let file = group.file
-        let failingReason = group.reason
-        return colored ? Format.indent + TestStatus.fail.foreground.Red + " " + file + ", " + failingReason : Format.indent + TestStatus.fail + " " + file + ", " + failingReason
+        return self.terminalRenderer.formatUIFailingTest(group: group)
     }
 
     func formatRestartingTest(group: RestartingTestCaptureGroup) -> String {
-        colored ? Format.indent + TestStatus.fail.foreground.Red + " " + group.wholeMessage : Format.indent + TestStatus.fail + " " + group.wholeMessage
+        return self.terminalRenderer.formatRestartingTest(group: group)
     }
 
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
-        let testCase = group.testCase
-        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " " + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " " + testCase + " [PENDING]"
+        return self.terminalRenderer.formatTestCasePending(group: group)
     }
 
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
-        let testCase = group.testCase
-        let name = group.name
-        let unitName = group.unitName
-        let value = group.value
-
-        let deviation = colored ? group.deviation.coloredDeviation() : group.deviation
-        let formattedValue = colored && unitName == "seconds" ? value.coloredTime() : value
-
-        return Format.indent + (colored ? TestStatus.measure.foreground.Yellow : TestStatus.measure) + " " + testCase + " measured (\(formattedValue) \(unitName) ±\(deviation)% -- \(name))"
+        return self.terminalRenderer.formatTestCaseMeasured(group: group)
     }
 
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time) seconds)"
+        return self.terminalRenderer.formatTestCasePassed(group: group)
     }
 
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let device = group.device
-        let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
+        return self.terminalRenderer.formatParallelTestCasePassed(group: group)
     }
 
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
+        return self.terminalRenderer.formatParallelTestCaseAppKitPassed(group: group)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let device = group.device
-        let time = group.time
-        return colored ? "    \(TestStatus.fail.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
+        return self.terminalRenderer.formatParallelTestCaseFailed(group: group)
     }
 
     func formatError(group: ErrorCaptureGroup) -> String {
@@ -92,10 +77,10 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String {
-        colored ? Symbol.error + " " + group.wholeError.f.Red : Symbol.asciiError + " " + group.wholeError
+        return self.terminalRenderer.formatSymbolReferencedFrom(group: group)
     }
 
-    func formatCompileError(group: CompileErrorCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+    func formatCompileError(group: CompileErrorCaptureGroup) -> String {
         let filePath = group.filePath
         let reason = group.reason
 
@@ -142,7 +127,7 @@ struct TeamCityRenderer: OutputRendering {
         )
     }
 
-    func formatCompileWarning(group: CompileWarningCaptureGroup, additionalLines: @escaping () -> (String?)) -> String {
+    func formatCompileWarning(group: CompileWarningCaptureGroup) -> String {
         let filePath = group.filePath
         let reason = group.reason
 
@@ -200,38 +185,31 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatSummary(line: String) -> String {
-        colored ? line.f.Green.s.Bold : line
+        return self.terminalRenderer.formatSummary(line: line)
     }
 
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
-        let source = group.source
-        return "Fetching " + source
+        return self.terminalRenderer.formatPackageFetching(group: group)
     }
 
     func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String {
-        let source = group.source
-        return "Updating " + source
+        return self.terminalRenderer.formatPackageUpdating(group: group)
     }
 
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String {
-        let version = group.version
-        let package = group.package
-        return colored ? "Checking out " + package.s.Bold + " @ " + version.f.Green : "Checking out \(package) @ \(version)"
+        return self.terminalRenderer.formatPackageCheckingOut(group: group)
     }
 
     func formatPackageStart() -> String {
-        colored ? "Resolving Package Graph".s.Bold.f.Cyan : "Resolving Package Graph"
+        return self.terminalRenderer.formatPackageStart()
     }
 
     func formatPackageEnd() -> String {
-        colored ? "Resolved source packages".s.Bold.f.Green : "Resolved source packages"
+        return self.terminalRenderer.formatPackageEnd()
     }
 
     func formatPackageItem(group: PackageGraphResolvedItemCaptureGroup) -> String {
-        let name = group.packageName
-        let url = group.packageURL
-        let version = group.packageVersion
-        return colored ? name.s.Bold.f.Cyan + " - " + url.s.Bold + " @ " + version.f.Green : "\(name) - \(url) @ \(version)"
+        return self.terminalRenderer.formatPackageItem(group: group)
     }
 
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String {
@@ -243,15 +221,19 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
-        colored ? group.wholeError.s.Bold.f.Red : group.wholeError
+        self.terminalRenderer.formatParallelTestingFailed(group: group)
     }
 
     func format(testSummary: TestSummary) -> String {
-        if testSummary.isSuccess() {
-            colored ? "Tests Passed: \(testSummary.description)".s.Bold.f.Green : "Tests Passed: \(testSummary.description)"
-        } else {
-            colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
-        }
+        self.terminalRenderer.format(testSummary: testSummary)
+    }
+    
+    func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
+        self.terminalRenderer.formatParallelTestCaseSkipped(group: group)
+    }
+    
+    func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {
+        self.terminalRenderer.formatTestCaseSkipped(group: group)
     }
 }
 

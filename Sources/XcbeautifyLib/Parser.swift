@@ -118,7 +118,7 @@ package class Parser {
         case .gitHubActions:
             self.renderer = GitHubActionsRenderer(additionalLines: additionalLines)
         case .teamcity:
-            self.renderer = TeamCityRenderer(colored: colored)
+            self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
         }
 
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
