@@ -19,54 +19,18 @@ struct TeamCityRenderer: OutputRendering {
         """
     }
 
-    func outputTeamCityError(text: String, details: String) -> String {
+    private func outputTeamCityError(text: String, details: String) -> String {
         """
         ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='ERROR']
         \(text)
         """
     }
 
-    func outputTeamCityWarning(text: String, details: String) -> String {
+    private func outputTeamCityWarning(text: String, details: String) -> String {
         """
         ##teamcity[message text='\([text, details.teamCityEscaped()].joined(separator: "|n"))' status='WARNING']
         \(text)
         """
-    }
-
-    func formatFailingTest(group: FailingTestCaptureGroup) -> String {
-        return self.terminalRenderer.formatFailingTest(group: group)
-    }
-
-    func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String {
-        return self.terminalRenderer.formatUIFailingTest(group: group)
-    }
-
-    func formatRestartingTest(group: RestartingTestCaptureGroup) -> String {
-        return self.terminalRenderer.formatRestartingTest(group: group)
-    }
-
-    func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
-        return self.terminalRenderer.formatTestCasePending(group: group)
-    }
-
-    func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
-        return self.terminalRenderer.formatTestCaseMeasured(group: group)
-    }
-
-    func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
-        return self.terminalRenderer.formatTestCasePassed(group: group)
-    }
-
-    func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
-        return self.terminalRenderer.formatParallelTestCasePassed(group: group)
-    }
-
-    func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
-        return self.terminalRenderer.formatParallelTestCaseAppKitPassed(group: group)
-    }
-
-    func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
-        return self.terminalRenderer.formatParallelTestCaseFailed(group: group)
     }
 
     func formatError(group: ErrorCaptureGroup) -> String {
@@ -74,10 +38,6 @@ struct TeamCityRenderer: OutputRendering {
         let outputString = colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
 
         return outputTeamCityError(text: "Build error", details: outputString)
-    }
-
-    func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String {
-        return self.terminalRenderer.formatSymbolReferencedFrom(group: group)
     }
 
     func formatCompileError(group: CompileErrorCaptureGroup) -> String {
@@ -184,33 +144,6 @@ struct TeamCityRenderer: OutputRendering {
         )
     }
 
-    func formatSummary(line: String) -> String {
-        return self.terminalRenderer.formatSummary(line: line)
-    }
-
-    func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
-        return self.terminalRenderer.formatPackageFetching(group: group)
-    }
-
-    func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String {
-        return self.terminalRenderer.formatPackageUpdating(group: group)
-    }
-
-    func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String {
-        return self.terminalRenderer.formatPackageCheckingOut(group: group)
-    }
-
-    func formatPackageStart() -> String {
-        return self.terminalRenderer.formatPackageStart()
-    }
-
-    func formatPackageEnd() -> String {
-        return self.terminalRenderer.formatPackageEnd()
-    }
-
-    func formatPackageItem(group: PackageGraphResolvedItemCaptureGroup) -> String {
-        return self.terminalRenderer.formatPackageItem(group: group)
-    }
 
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String {
         let message = group.warningMessage
@@ -218,22 +151,6 @@ struct TeamCityRenderer: OutputRendering {
             text: "Duplicated localized string key",
             details: colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
         )
-    }
-
-    func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
-        self.terminalRenderer.formatParallelTestingFailed(group: group)
-    }
-
-    func format(testSummary: TestSummary) -> String {
-        self.terminalRenderer.format(testSummary: testSummary)
-    }
-    
-    func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
-        self.terminalRenderer.formatParallelTestCaseSkipped(group: group)
-    }
-    
-    func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {
-        self.terminalRenderer.formatTestCaseSkipped(group: group)
     }
 }
 
