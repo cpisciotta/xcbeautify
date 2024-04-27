@@ -2,6 +2,8 @@ import Foundation
 
 public struct XCBeautifier {
     private let parser: Parser
+    private let formatter: Formatter
+    private let preserveUnbeautifiedLines: Bool
 
     public init(
         colored: Bool,
@@ -9,15 +11,26 @@ public struct XCBeautifier {
         preserveUnbeautifiedLines: Bool,
         additionalLines: @escaping () -> String?
     ) {
-        parser = Parser(
+        parser = Parser()
+
+        formatter = Formatter(
             colored: colored,
             renderer: renderer,
-            preserveUnbeautifiedLines: preserveUnbeautifiedLines,
             additionalLines: additionalLines
         )
+
+        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
     }
 
     public func format(line: String) -> String? {
-        parser.parse(line: line)
+        guard let captureGroup = parser.parse(line: line) else {
+            if preserveUnbeautifiedLines {
+                return line
+            } else {
+                return nil
+            }
+        }
+
+        return formatter.format(captureGroup: captureGroup)
     }
 }
