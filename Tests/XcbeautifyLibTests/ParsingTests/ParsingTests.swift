@@ -28,7 +28,7 @@ final class ParsingTests: XCTestCase {
         #if os(macOS)
         XCTAssertEqual(uncapturedOutput, 437)
         #else
-        XCTAssertEqual(uncapturedOutput, 1950)
+        XCTAssertEqual(uncapturedOutput, 453)
         #endif
     }
 
@@ -58,7 +58,7 @@ final class ParsingTests: XCTestCase {
         #if os(macOS)
         XCTAssertEqual(uncapturedOutput, 14922)
         #else
-        XCTAssertEqual(uncapturedOutput, 67611)
+        XCTAssertEqual(uncapturedOutput, 15490)
         #endif
     }
 }
