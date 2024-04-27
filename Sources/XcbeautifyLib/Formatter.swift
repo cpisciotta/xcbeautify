@@ -1,7 +1,6 @@
 import Foundation
 
 package class Formatter {
-
     private let colored: Bool
     private let renderer: OutputRendering
     private let additionalLines: () -> String?
