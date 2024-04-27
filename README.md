@@ -111,6 +111,14 @@ swift test [flags] 2>&1 | xcbeautify
 set -o pipefail && xcodebuild [flags] | xcbeautify --renderer github-actions
 ```
 
+### TeamCity
+
+`xcbeautify` features an integrated TeamCity renderer that harnesses [service messages](https://www.jetbrains.com/help/teamcity/service-messages.html) to highlight warnings, errors, and results directly within the TeamCity user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer teamcity` flag during execution:
+
+```
+set -o pipefail && xcodebuild [flags] | xcbeautify --renderer teamcity
+```
+
 ## Development
 
 Generate Xcode project:
