@@ -149,7 +149,6 @@ struct TeamCityRenderer: OutputRendering {
             details: colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
         )
     }
-
 }
 
 private extension String {
