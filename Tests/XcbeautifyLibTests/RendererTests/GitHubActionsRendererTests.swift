@@ -179,46 +179,39 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testExecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+        let formatted1 = logFormatted(input1)
+        XCTAssertEqual(input1, formatted1)
+
         let input2 = "Executed 3 tests, with 2 failures (1 unexpected) in 0.112 (0.112) seconds"
+        let formatted2 = logFormatted(input2)
+        XCTAssertEqual(input2, formatted2)
 
         let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
-        let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
-
-        // First test plan
-        let formatted1 = logFormatted(input1)
-        let formatted2 = logFormatted(input2)
-        XCTAssertNil(formatted1)
-        XCTAssertNil(formatted2)
-
-        #if os(macOS)
-        // FIXME: Failing on Linux
         let formatted3 = logFormatted(input3)
-        let formatted4 = logFormatted(input4)
-        XCTAssertNil(formatted3)
-        XCTAssertNil(formatted4)
+        XCTAssertEqual(input3, formatted3)
 
-        #endif
+        let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
+        let formatted4 = logFormatted(input4)
+        XCTAssertEqual(input4, formatted4)
     }
 
     #if os(macOS)
     func testExecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+        let formatted1 = logFormatted(input1)
+        XCTAssertEqual(input1, formatted1)
+
         let input2 = "Executed 56 tests, with 3 test skipped and 2 failures (1 unexpected) in 1.029 (1.029) seconds"
+        let formatted2 = logFormatted(input2)
+        XCTAssertEqual(input2, formatted2)
 
         let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
-        let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
-
-        // First test plan
-        let formatted1 = logFormatted(input1)
-        let formatted2 = logFormatted(input2)
-        XCTAssertNil(formatted1)
-        XCTAssertNil(formatted2)
-
-        // Second test plan
         let formatted3 = logFormatted(input3)
+        XCTAssertEqual(input3, formatted3)
+
+        let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
         let formatted4 = logFormatted(input4)
-        XCTAssertNil(formatted3)
-        XCTAssertNil(formatted4)
+        XCTAssertEqual(input4, formatted4)
     }
     #endif
 
@@ -486,7 +479,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
-        XCTAssertNil(formatted)
+        XCTAssertEqual(input, formatted)
     }
     #endif
 
@@ -494,7 +487,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
-        XCTAssertNil(formatted)
+        XCTAssertEqual(input, formatted)
     }
     #endif
 
