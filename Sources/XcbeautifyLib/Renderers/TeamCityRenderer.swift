@@ -17,14 +17,14 @@ struct TeamCityRenderer: OutputRendering {
         """
     }
 
-    func outputTeamCityError(text: String, details: String) -> String {
+    private func outputTeamCityError(text: String, details: String) -> String {
         """
         ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='ERROR']
         \(text)
         """
     }
 
-    func outputTeamCityWarning(text: String, details: String) -> String {
+    private func outputTeamCityWarning(text: String, details: String) -> String {
         """
         ##teamcity[message text='\([text, details.teamCityEscaped()].joined(separator: "|n"))' status='WARNING']
         \(text)
