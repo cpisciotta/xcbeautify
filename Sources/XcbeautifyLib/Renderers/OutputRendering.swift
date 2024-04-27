@@ -22,8 +22,8 @@ protocol OutputRendering {
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
     func formatError(group: ErrorCaptureGroup) -> String
-    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String?
-    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String?
+    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
+    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String
@@ -64,9 +64,9 @@ protocol OutputRendering {
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
-    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String?
-    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String?
-    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String?
+    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String
+    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String
     func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String?
@@ -335,12 +335,12 @@ extension OutputRendering {
         nil
     }
 
-    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String? {
-        nil
+    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String {
+        group.wholeResult
     }
 
-    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String? {
-        nil
+    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String {
+        group.wholeResult
     }
 
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String {
@@ -490,16 +490,16 @@ extension OutputRendering {
         nil
     }
 
-    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String? {
-        nil
+    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String {
+        group.wholeResult
     }
 
-    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String? {
-        nil
+    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String {
+        group.wholeResult
     }
 
-    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String? {
-        nil
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String {
+        group.wholeResult
     }
 
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String {
