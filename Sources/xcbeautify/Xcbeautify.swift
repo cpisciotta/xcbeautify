@@ -23,8 +23,20 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
-    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions ).")
-    var renderer: Renderer = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" ? .gitHubActions : .terminal
+    // swiftformat:disable redundantReturn
+
+    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions | teamcity ).")
+    var renderer: Renderer = {
+        if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
+            return .gitHubActions
+        } else if ProcessInfo.processInfo.environment["TEAMCITY_VERSION"] != nil {
+            return .teamcity
+        } else {
+            return .terminal
+        }
+    }()
+
+    // swiftformat:enable redundantReturn
 
     @Option(help: "Generate the specified reports")
     var report: [Report] = []
