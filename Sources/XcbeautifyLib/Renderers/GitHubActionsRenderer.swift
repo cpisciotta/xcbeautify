@@ -7,11 +7,11 @@ struct GitHubActionsRenderer: OutputRendering {
         case error
     }
 
-    // Colored output is disallowed since GitHub Actions annotations don't properly render it.
-    let colored = false
+    let colored: Bool
     let additionalLines: () -> String?
 
-    init(additionalLines: @escaping () -> String?) {
+    init(colored: Bool, additionalLines: @escaping () -> String?) {
+        self.colored = colored
         self.additionalLines = additionalLines
     }
 
@@ -141,12 +141,6 @@ struct GitHubActionsRenderer: OutputRendering {
         return outputGitHubActionsLog(annotationType: .error, message: reason)
     }
 
-    func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let time = group.time
-        return Format.indent + testCase + " (\(time)) seconds)"
-    }
-
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
         let testCase = group.testCase
         let device = group.device
@@ -156,13 +150,6 @@ struct GitHubActionsRenderer: OutputRendering {
             annotationType: .error,
             message: message
         )
-    }
-
-    func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let device = group.device
-        let time = group.time
-        return Format.indent + testCase + " on '\(device)' (\(time) seconds)"
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
@@ -189,22 +176,6 @@ struct GitHubActionsRenderer: OutputRendering {
             annotationType: .error,
             message: message
         )
-    }
-
-    func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String {
-        let testCase = group.testCase
-        let name = group.name
-        let unitName = group.unitName
-        let deviation = group.deviation
-        let value = group.value
-
-        return Format.indent + testCase + " measured (\(value) \(unitName) ±\(deviation)% -- \(name))"
-    }
-
-    func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String {
-        let testCase = group.testCase
-        let time = group.time
-        return Format.indent + testCase + " (\(time) seconds)"
     }
 
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {

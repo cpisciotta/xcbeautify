@@ -116,7 +116,7 @@ package class Parser {
         case .terminal:
             self.renderer = TerminalRenderer(colored: colored, additionalLines: additionalLines)
         case .gitHubActions:
-            self.renderer = GitHubActionsRenderer(additionalLines: additionalLines)
+            self.renderer = GitHubActionsRenderer(colored: colored, additionalLines: additionalLines)
         case .teamcity:
             self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
         }
