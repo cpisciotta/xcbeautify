@@ -519,7 +519,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testTestCaseSkipped() {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[SomeTests testName]' skipped (0.004 seconds).")
-        XCTAssertEqual(formatted, "::notice ::    testName (0.004 seconds)")
+        XCTAssertEqual(formatted, "::notice ::Skipped SomeTests.testName")
         #endif
     }
 

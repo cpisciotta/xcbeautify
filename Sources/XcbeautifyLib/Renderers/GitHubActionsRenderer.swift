@@ -179,9 +179,9 @@ struct GitHubActionsRenderer: OutputRendering {
     }
 
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String {
+        let testSuite = group.suite
         let testCase = group.testCase
-        let time = group.time
-        let message = Format.indent + testCase + " (\(time) seconds)"
+        let message = "Skipped \(testSuite).\(testCase)"
         return outputGitHubActionsLog(
             annotationType: .notice,
             message: message
