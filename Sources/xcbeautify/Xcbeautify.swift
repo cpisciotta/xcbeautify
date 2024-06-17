@@ -61,7 +61,15 @@ struct Xcbeautify: ParsableCommand {
         #endif
         
         if !disableVersionLogging {
-            print("Version: \(version)")
+            print(
+                """
+                  
+                ----- xcbeautify -----
+                Version: \(version)
+                ----------------------
+                  
+                """
+            )
         }
 
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
