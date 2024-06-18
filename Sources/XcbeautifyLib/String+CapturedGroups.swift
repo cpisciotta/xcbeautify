@@ -92,6 +92,7 @@ extension String {
         PackageGraphResolvedItemCaptureGroup.self,
         XcodebuildErrorCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
+        TestingStartedCaptureGroup.self,
     ]
 
     func captureGroup(with pattern: String) -> CaptureGroup? {
