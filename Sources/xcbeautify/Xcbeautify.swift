@@ -18,7 +18,7 @@ struct Xcbeautify: ParsableCommand {
     var preserveUnbeautified = false
 
     @Flag(name: .long, help: "Print test result too under quiet/quieter flag.")
-    var isCi = false
+    var isCI = false
 
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
@@ -72,7 +72,7 @@ struct Xcbeautify: ParsableCommand {
             )
         }
 
-        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
+        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCI) { print($0) }
         let junitReporter = JunitReporter()
 
         func readLine() -> String? {
