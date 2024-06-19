@@ -23,6 +23,9 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
+    @Flag(name: .long, help: "Disables the version logging when xcbeautify starts.")
+    var disableVersionLogging = false
+
     // swiftformat:disable redundantReturn
 
     @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions | teamcity ).")
@@ -56,6 +59,18 @@ struct Xcbeautify: ParsableCommand {
             print("Took \(diff) seconds")
         }
         #endif
+
+        if !disableVersionLogging {
+            print(
+                """
+
+                ----- xcbeautify -----
+                Version: \(version)
+                ----------------------
+
+                """
+            )
+        }
 
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
         let junitReporter = JunitReporter()
