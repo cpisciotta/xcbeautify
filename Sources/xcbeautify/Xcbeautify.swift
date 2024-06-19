@@ -23,8 +23,8 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
 
-    @Flag(name: .long, help: "Disables the version logging when xcbeautify starts.")
-    var disableVersionLogging = false
+    @Flag(name: .long, help: "Suppress the xcbeautify information table when xcbeautify starts. It includes the active xcbeautify version.")
+    var disableLogging = false
 
     // swiftformat:disable redundantReturn
 
@@ -60,7 +60,7 @@ struct Xcbeautify: ParsableCommand {
         }
         #endif
 
-        if !disableVersionLogging {
+        if !disableLogging {
             print(
                 """
 
