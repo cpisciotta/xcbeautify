@@ -1765,13 +1765,13 @@ struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
 
 struct TestingStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
-    
+
     /// Regular expression captured groups:
     /// $1 = whole message
     static let regex = Regex(pattern: "^(Testing started.*)$")
-    
+
     let wholeMessage: String
-    
+
     init?(groups: [String]) {
         assert(groups.count >= 1)
         guard let wholeMessage = groups[safe: 0] else { return nil }
