@@ -1,3 +1,5 @@
+import Foundation
+
 package class Parser {
     private let colored: Bool
 
@@ -157,6 +159,12 @@ package class Parser {
                 return nil
             }
 
+            #if DEBUG
+            if ProcessInfo.processInfo.environment["XCB_RECORD_UNCAPTURED"] == "true" {
+                recordUncapturedOutput(line: line)
+            }
+            #endif
+
             // Nothing found?
             outputType = OutputType.undefined
             return preserveUnbeautifiedLines ? line : nil
@@ -179,6 +187,23 @@ package class Parser {
 
         return formattedOutput
     }
+
+    #if DEBUG
+    private func recordUncapturedOutput(line: String) {
+        assert(ProcessInfo.processInfo.environment["XCB_RECORD_UNCAPTURED"] == "true")
+
+        let filePath = FileManager.default.currentDirectoryPath.appending("/uncaptured.txt")
+
+        if !FileManager.default.fileExists(atPath: filePath) {
+            FileManager.default.createFile(atPath: filePath, contents: nil)
+        }
+
+        let handle = FileHandle(forWritingAtPath: filePath)!
+        handle.seekToEndOfFile()
+        handle.write(line.appending("\n").data(using: .utf8)!)
+        handle.closeFile()
+    }
+    #endif
 
     package func formattedSummary() -> String? {
         guard let summary else { return nil }
