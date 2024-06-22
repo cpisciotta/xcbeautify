@@ -52,6 +52,7 @@ for target in package.targets {
     settings.append(
         contentsOf: [
             .enableUpcomingFeature("BareSlashRegexLiterals"),
+            .enableUpcomingFeature("ConciseMagicFile"),
         ]
     )
     target.swiftSettings = settings
