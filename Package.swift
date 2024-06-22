@@ -57,6 +57,7 @@ for target in package.targets {
             .enableUpcomingFeature("DisableOutwardActorInference"),
             .enableUpcomingFeature("DynamicActorIsolation"),
             .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("ForwardTrailingClosures"),
         ]
     )
     target.swiftSettings = settings
