@@ -19,32 +19,35 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-latest]
-        swift_version: [5.9]
+        swift_version: ['5.9', '5.10'] # TODO: Add Swift 6 when it's available
     steps:
-      - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
+      - uses: swift-actions/setup-swift@e2dda67ab3c356dc7c0ec92392c2b51518549358
         with:
           swift-version: ${{ matrix.swift_version }}
       - uses: actions/checkout@v4
       - run: swift build --disable-sandbox --configuration release -Xswiftc -warnings-as-errors
 
   test:
-    name: Test (${{ matrix.platform}})
+    name: Test (Swift ${{ matrix.swift_version }}) (${{ matrix.platform }})
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        platform: [macos-13, ubuntu-latest]
+        platform: [macos-latest, ubuntu-latest]
+        swift_version: ['5.9', '5.10'] # TODO: Add Swift 60 when it's available
     steps:
       - uses: actions/checkout@v4
       - name: Load Swift Version
         run: echo "SWIFT_VERSION=$(<.swift-version)" >> $GITHUB_ENV
       - name: Install Swift and Tools
-        uses: swift-actions/setup-swift@cdbe0f7f4c77929b6580e71983e8606e55ffe7e4
+        uses: swift-actions/setup-swift@e2dda67ab3c356dc7c0ec92392c2b51518549358
         with:
-          swift-version: ${{ env.SWIFT_VERSION }}
+          swift-version: ${{ matrix.swift_version }}
       - run: swift test --enable-code-coverage
       - name: Prepare Code Coverage
+        if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
         run: ./tools/export_coverage
       - name: Upload coverage reports to Codecov
+        if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
         uses: codecov/codecov-action@v4
         with:
           files: info.lcov
