@@ -60,6 +60,9 @@ for target in package.targets {
             .enableUpcomingFeature("ForwardTrailingClosures"),
             .enableUpcomingFeature("FullTypedThrows"),
             .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+            // TODO: Enable GlobalConcurrency
+            // Currently, it's disabled since `XMLCoder` surfaces warnings.
+            // .enableUpcomingFeature("GlobalConcurrency"),
         ]
     )
     target.swiftSettings = settings
