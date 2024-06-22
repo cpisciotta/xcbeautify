@@ -65,6 +65,7 @@ for target in package.targets {
             .enableUpcomingFeature("ImportObjcForwardDeclarations"),
             .enableUpcomingFeature("InferSendableFromCaptures"),
             .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("IsolatedDefaultValues"),
         ]
     )
     target.swiftSettings = settings
