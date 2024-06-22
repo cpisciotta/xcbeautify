@@ -55,6 +55,7 @@ for target in package.targets {
             .enableUpcomingFeature("ConciseMagicFile"),
             .enableUpcomingFeature("DeprecateApplicationMain"),
             .enableUpcomingFeature("DisableOutwardActorInference"),
+            .enableUpcomingFeature("DynamicActorIsolation"),
         ]
     )
     target.swiftSettings = settings
