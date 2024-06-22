@@ -60,6 +60,7 @@ for target in package.targets {
             .enableUpcomingFeature("ForwardTrailingClosures"),
             .enableUpcomingFeature("FullTypedThrows"),
             .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+            .enableUpcomingFeature("GlobalConcurrency"),
         ]
     )
     target.swiftSettings = settings
