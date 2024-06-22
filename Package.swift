@@ -51,6 +51,7 @@ for target in package.targets {
     var settings = target.swiftSettings ?? []
     settings.append(
         contentsOf: [
+            .enableExperimentalFeature("StrictConcurrency=complete"),
             .enableUpcomingFeature("BareSlashRegexLiterals"),
             .enableUpcomingFeature("ConciseMagicFile"),
             .enableUpcomingFeature("DeprecateApplicationMain"),
