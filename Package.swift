@@ -61,6 +61,7 @@ for target in package.targets {
             .enableUpcomingFeature("FullTypedThrows"),
             .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
             .enableUpcomingFeature("GlobalConcurrency"),
+            .enableUpcomingFeature("ImplicitOpenExistentials"),
         ]
     )
     target.swiftSettings = settings
