@@ -31,7 +31,7 @@ struct TeamCityRenderer: OutputRendering {
         """
     }
 
-    func formatError(group: ErrorCaptureGroup) -> String {
+    func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         let outputString = colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
 

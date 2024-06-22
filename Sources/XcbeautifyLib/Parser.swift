@@ -1,7 +1,7 @@
 package class Parser {
     private let colored: Bool
 
-    private let renderer: OutputRendering
+    private let renderer: any OutputRendering
 
     private let additionalLines: () -> String?
 
@@ -13,7 +13,7 @@ package class Parser {
 
     package private(set) var outputType = OutputType.undefined
 
-    private lazy var captureGroupTypes: [CaptureGroup.Type] = [
+    private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
         AggregateTargetCaptureGroup.self,
@@ -191,8 +191,8 @@ package class Parser {
         guard needToRecordSummary else { return }
         defer { needToRecordSummary = false }
 
-        guard let _group: CaptureGroup = line.captureGroup(with: skipped ? ExecutedWithSkippedCaptureGroup.pattern : ExecutedWithoutSkippedCaptureGroup.pattern) else { return }
-        guard let group = _group as? ExecutedCaptureGroup else { return }
+        guard let _group: any CaptureGroup = line.captureGroup(with: skipped ? ExecutedWithSkippedCaptureGroup.pattern : ExecutedWithoutSkippedCaptureGroup.pattern) else { return }
+        guard let group = _group as? (any ExecutedCaptureGroup) else { return }
 
         summary += TestSummary(
             testsCount: group.numberOfTests,
