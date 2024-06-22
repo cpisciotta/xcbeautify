@@ -58,6 +58,7 @@ for target in package.targets {
             .enableUpcomingFeature("DynamicActorIsolation"),
             .enableUpcomingFeature("ExistentialAny"),
             .enableUpcomingFeature("ForwardTrailingClosures"),
+            .enableUpcomingFeature("FullTypedThrows"),
         ]
     )
     target.swiftSettings = settings
