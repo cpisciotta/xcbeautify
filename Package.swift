@@ -64,6 +64,7 @@ for target in package.targets {
             // Currently, it's disabled since `XMLCoder` surfaces warnings.
             // .enableUpcomingFeature("GlobalConcurrency"),
             .enableUpcomingFeature("ImplicitOpenExistentials"),
+            .enableUpcomingFeature("ImportObjcForwardDeclarations"),
         ]
     )
     target.swiftSettings = settings
