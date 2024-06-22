@@ -1,7 +1,7 @@
 package class Parser {
     private let colored: Bool
 
-    private let renderer: OutputRendering
+    private let renderer: any OutputRendering
 
     private let additionalLines: () -> String?
 
@@ -9,7 +9,7 @@ package class Parser {
 
     package private(set) var outputType = OutputType.undefined
 
-    private lazy var captureGroupTypes: [CaptureGroup.Type] = [
+    private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
         AggregateTargetCaptureGroup.self,
