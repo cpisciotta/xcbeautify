@@ -63,6 +63,7 @@ for target in package.targets {
             .enableUpcomingFeature("GlobalConcurrency"),
             .enableUpcomingFeature("ImplicitOpenExistentials"),
             .enableUpcomingFeature("ImportObjcForwardDeclarations"),
+            .enableUpcomingFeature("InferSendableFromCaptures"),
         ]
     )
     target.swiftSettings = settings
