@@ -63,6 +63,7 @@ for target in package.targets {
             // TODO: Enable GlobalConcurrency
             // Currently, it's disabled since `XMLCoder` surfaces warnings.
             // .enableUpcomingFeature("GlobalConcurrency"),
+            .enableUpcomingFeature("ImplicitOpenExistentials"),
         ]
     )
     target.swiftSettings = settings
