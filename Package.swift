@@ -46,3 +46,29 @@ let package = Package(
         ),
     ]
 )
+
+for target in package.targets {
+    var settings = target.swiftSettings ?? []
+    settings.append(
+        contentsOf: [
+            .enableExperimentalFeature("StrictConcurrency=complete"),
+            .enableUpcomingFeature("BareSlashRegexLiterals"),
+            .enableUpcomingFeature("ConciseMagicFile"),
+            .enableUpcomingFeature("DeprecateApplicationMain"),
+            .enableUpcomingFeature("DisableOutwardActorInference"),
+            .enableUpcomingFeature("DynamicActorIsolation"),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("ForwardTrailingClosures"),
+            .enableUpcomingFeature("FullTypedThrows"),
+            .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+            .enableUpcomingFeature("GlobalConcurrency"),
+            .enableUpcomingFeature("ImplicitOpenExistentials"),
+            .enableUpcomingFeature("ImportObjcForwardDeclarations"),
+            .enableUpcomingFeature("InferSendableFromCaptures"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("IsolatedDefaultValues"),
+            .enableUpcomingFeature("RegionBasedIsolation"),
+        ]
+    )
+    target.swiftSettings = settings
+}

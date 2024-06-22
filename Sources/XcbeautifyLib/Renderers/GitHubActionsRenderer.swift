@@ -90,7 +90,7 @@ struct GitHubActionsRenderer: OutputRendering {
         )
     }
 
-    func formatError(group: ErrorCaptureGroup) -> String {
+    func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         return outputGitHubActionsLog(
             annotationType: .error,
