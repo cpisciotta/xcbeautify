@@ -580,30 +580,65 @@ extension OutputRendering {
     }
 
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: device, time: time)
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return colored ? Format.indent + TestStatus.skipped.foreground.Yellow + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.skipped + " " + testCase + " on '\(device)' (\(time) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.skipped, suite: suite, testCase: testCase, device: device, time: time)
     }
 
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: nil, time: time)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return colored ? "    \(TestStatus.fail.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.fail, suite: suite, testCase: testCase, device: device, time: time)
+    }
+
+    private func formatParallelTestCase(
+        result: String,
+        suite: String,
+        testCase: String,
+        device: String?,
+        time: String
+    ) -> String {
+        let deviceString = device.map { " on '\($0)'" } ?? ""
+
+        let styledResult: String
+        switch result {
+        case TestStatus.pass:
+            styledResult = result.f.Green
+        case TestStatus.fail:
+            styledResult = result.f.Red
+        case TestStatus.skipped:
+            styledResult = result.f.Yellow
+        default:
+            assertionFailure("Unexpected result: \(result)")
+            styledResult = result
+        }
+
+        return colored
+            ? Format.indent + styledResult + " [" + suite.f.Cyan + "] " + testCase + deviceString + " (\(time.coloredTime()) seconds)"
+            : Format.indent + result + " [" + suite + "] " + testCase + deviceString + " (\(time) seconds)"
     }
 
     func formatError(group: ErrorCaptureGroup) -> String {
