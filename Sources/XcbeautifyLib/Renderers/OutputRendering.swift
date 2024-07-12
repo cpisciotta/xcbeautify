@@ -622,7 +622,7 @@ extension OutputRendering {
         time: String
     ) -> String {
         let deviceString = device.map { " on '\($0)'" } ?? ""
-        
+
         let styledResult: String
         switch result {
         case TestStatus.pass:
@@ -635,7 +635,7 @@ extension OutputRendering {
             assertionFailure("Unexpected result: \(result)")
             styledResult = result
         }
-        
+
         return colored
             ? Format.indent + styledResult + " [" + suite.f.Cyan + "] " + testCase + deviceString + " (\(time.coloredTime()) seconds)"
             : Format.indent + result + " [" + suite + "] " + testCase + deviceString + " (\(time) seconds)"
