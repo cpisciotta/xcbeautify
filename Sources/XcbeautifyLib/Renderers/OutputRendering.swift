@@ -585,7 +585,7 @@ extension OutputRendering {
         let device = group.device
         let time = group.time
 
-        return formatParallelTestCase(result: TestStatus.pass, resultColor: \.Green, suite: suite, testCase: testCase, device: device, time: time)
+        return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: device, time: time)
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
@@ -594,7 +594,7 @@ extension OutputRendering {
         let device = group.device
         let time = group.time
 
-        return formatParallelTestCase(result: TestStatus.skipped, resultColor: \.Yellow, suite: suite, testCase: testCase, device: device, time: time)
+        return formatParallelTestCase(result: TestStatus.skipped, suite: suite, testCase: testCase, device: device, time: time)
     }
 
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
@@ -602,7 +602,7 @@ extension OutputRendering {
         let testCase = group.testCase
         let time = group.time
 
-        return formatParallelTestCase(result: TestStatus.pass, resultColor: \.Green, suite: suite, testCase: testCase, device: nil, time: time)
+        return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: nil, time: time)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
@@ -611,13 +611,33 @@ extension OutputRendering {
         let device = group.device
         let time = group.time
 
-        return formatParallelTestCase(result: TestStatus.fail, resultColor: \.Red, suite: suite, testCase: testCase, device: device, time: time)
+        return formatParallelTestCase(result: TestStatus.fail, suite: suite, testCase: testCase, device: device, time: time)
     }
 
-    private func formatParallelTestCase(result: String, resultColor: KeyPath<String.StringForegroundColorizer, String>, suite: String, testCase: String, device: String?, time: String) -> String {
+    private func formatParallelTestCase(
+        result: String,
+        suite: String,
+        testCase: String,
+        device: String?,
+        time: String
+    ) -> String {
         let deviceString = device.map { " on '\($0)'" } ?? ""
+        
+        let styledResult: String
+        switch result {
+        case TestStatus.pass:
+            styledResult = result.f.Green
+        case TestStatus.fail:
+            styledResult = result.f.Red
+        case TestStatus.skipped:
+            styledResult = result.f.Yellow
+        default:
+            assertionFailure("Unexpected result: \(result)")
+            styledResult = result
+        }
+        
         return colored
-            ? Format.indent + result.f[keyPath: resultColor] + " [" + suite.f.Cyan + "] " + testCase + deviceString + " (\(time.coloredTime()) seconds)"
+            ? Format.indent + styledResult + " [" + suite.f.Cyan + "] " + testCase + deviceString + " (\(time.coloredTime()) seconds)"
             : Format.indent + result + " [" + suite + "] " + testCase + deviceString + " (\(time) seconds)"
     }
 
