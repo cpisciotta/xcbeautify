@@ -1,6 +1,6 @@
 # SwiftFormat Configuration
 
---minversion 0.53.7
+--minversion 0.54.1
 
 # Excluded Files and Paths
 
