@@ -27,6 +27,12 @@ package final class JunitReporter {
             components.append(.failingTest(testCase))
         } else if TestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingTest(line: line) else { return }
+            // remove previous failing test if retry succeeded
+            if let previousTestCase = components.last?.testCase, 
+                testCase.classname == previousTestCase.classname,
+                testCase.name == previousTestCase.name {
+                components.removeLast()
+            }
             components.append(.testCasePassed(testCase))
         } else if TestCaseSkippedCaptureGroup.regex.match(string: line) {
             guard let testCase = generateSkippedTest(line: line) else { return }
@@ -156,6 +162,16 @@ private enum JunitComponent {
     case failingTest(TestCase)
     case testCasePassed(TestCase)
     case skippedTest(TestCase)
+}
+
+private extension JunitComponent {
+    var testCase: TestCase? {
+        switch self {
+        case .testSuiteStart: nil
+        case .failingTest(let testCase), .testCasePassed(let testCase), .skippedTest(let testCase):
+            testCase
+        }
+    }
 }
 
 private struct Testsuites: Encodable, DynamicNodeEncoding {

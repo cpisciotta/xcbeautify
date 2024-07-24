@@ -409,6 +409,51 @@ class JunitReporterTests: XCTestCase {
         #endif
         XCTAssertEqual(xml, expectedXml)
     }
+    
+    private let retryOnFailureTests = """
+        Test Suite 'All tests' started at 2021-11-05 01:08:23.237
+        Test Suite 'xcbeautifyPackageTests.xctest' started at 2021-11-05 01:08:23.238
+        Test Suite 'OutputHandlerTests' started at 2021-11-05 01:08:23.238
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' started (Iteration 1 of 3).
+        /Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/OutputHandlerTests.swift:13: error: -[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' failed (0.208 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' started (Iteration 2 of 3).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' passed (0.054 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started (Iteration 1 of 3).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithError]' started (Iteration 1 of 3).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithError]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithWarningOrError]' started (Iteration 1 of 3).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithWarningOrError]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuiet]' started (Iteration 1 of 3).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuiet]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuieter]' started (Iteration 1 of 3).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuieter]' passed (0.000 seconds).
+        Test Suite 'OutputHandlerTests' passed at 2021-11-05 01:08:23.294.
+             Executed 6 tests, with 0 failures (0 unexpected) in 0.055 (0.056) seconds
+    """
+    
+    private let expectedRetryOnFailureXml = """
+    <testsuites name="All tests" tests="6" failures="0">
+        <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testEarlyReturnIfEmptyString" time="0.054" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintOnlyTasksWithError" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintOnlyTasksWithWarningOrError" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintTestResultTooIfIsCIAndQuiet" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintTestResultTooIfIsCIAndQuieter" time="0.000" />
+        </testsuite>
+    </testsuites>
+    """
+    
+    func testJunitReportWithRetries() throws {
+        let reporter = JunitReporter()
+        retryOnFailureTests.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
+        let data = try reporter.generateReport()
+        let xml = String(data: data, encoding: .utf8)!
+        let expectedXml = expectedRetryOnFailureXml
+        XCTAssertEqual(xml, expectedXml)
+    }
 
     private let parallelTests = """
       Test suite 'MobileWebURLRouteTest' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
