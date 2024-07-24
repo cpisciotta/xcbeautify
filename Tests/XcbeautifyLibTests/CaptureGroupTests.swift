@@ -27,6 +27,11 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertTrue(CompilationResultCaptureGroup.regex.match(string: input))
     }
 
+    func testMatchCopyFilesMatchingSourceAndDestinationFilenames() {
+        let input = #"Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"#
+        XCTAssertTrue(CopyFilesCaptureGroup.regex.match(string: input))
+    }
+
     func testMatchSwiftDriverJobDiscoveryEmittingModule() {
         let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
         XCTAssertTrue(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.match(string: input))
