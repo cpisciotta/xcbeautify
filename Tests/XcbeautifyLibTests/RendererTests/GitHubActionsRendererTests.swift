@@ -164,6 +164,18 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
+    func testCopyMatchingSourceAndDestinationFiles() {
+        let input = "Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"
+        let output = "[Target] Copy file.swift -> file.swift"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+
+    func testCopyDifferentSourceAndDestinationFiles() {
+        let input = "Copy /path/to/some/firstFile.swift /path/to/some/other/secondFile.swift (in target 'Target' from project 'Project')"
+        let output = "[Target] Copy firstFile.swift -> secondFile.swift"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+
     func testCursor() { }
 
     func testExecuted() throws {
