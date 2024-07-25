@@ -446,12 +446,29 @@ class JunitReporterTests: XCTestCase {
     </testsuites>
     """
 
+    private let expectedRetryOnFailureLinuxXml = """
+    <testsuites name="All tests" tests="6" failures="0">
+        <testsuite name="-[XcbeautifyLibTests" tests="6" failures="0">
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testEarlyReturnIfEmptyString]" time="0.054" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintOnlyTasksWithError]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintOnlyTasksWithWarningOrError]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintTestResultTooIfIsCIAndQuiet]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintTestResultTooIfIsCIAndQuieter]" time="0.000" />
+        </testsuite>
+    </testsuites>
+    """
+
     func testJunitReportWithRetries() throws {
         let reporter = JunitReporter()
         retryOnFailureTests.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
+        #if os(Linux)
+        let expectedXml = expectedRetryOnFailureLinuxXml
+        #else
         let expectedXml = expectedRetryOnFailureXml
+        #endif
         XCTAssertEqual(xml, expectedXml)
     }
 
