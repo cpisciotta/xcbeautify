@@ -28,9 +28,10 @@ package final class JunitReporter {
         } else if TestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingTest(line: line) else { return }
             // remove previous failing test if retry succeeded
-            if let previousTestCase = components.last?.testCase, 
-                testCase.classname == previousTestCase.classname,
-                testCase.name == previousTestCase.name {
+            if let previousTestCase = components.last?.testCase,
+               testCase.classname == previousTestCase.classname,
+               testCase.name == previousTestCase.name
+            {
                 components.removeLast()
             }
             components.append(.testCasePassed(testCase))
@@ -168,7 +169,7 @@ private extension JunitComponent {
     var testCase: TestCase? {
         switch self {
         case .testSuiteStart: nil
-        case .failingTest(let testCase), .testCasePassed(let testCase), .skippedTest(let testCase):
+        case let .failingTest(testCase), let .testCasePassed(testCase), let .skippedTest(testCase):
             testCase
         }
     }

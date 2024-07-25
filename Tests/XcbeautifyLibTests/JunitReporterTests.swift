@@ -409,7 +409,7 @@ class JunitReporterTests: XCTestCase {
         #endif
         XCTAssertEqual(xml, expectedXml)
     }
-    
+
     private let retryOnFailureTests = """
         Test Suite 'All tests' started at 2021-11-05 01:08:23.237
         Test Suite 'xcbeautifyPackageTests.xctest' started at 2021-11-05 01:08:23.238
@@ -432,7 +432,7 @@ class JunitReporterTests: XCTestCase {
         Test Suite 'OutputHandlerTests' passed at 2021-11-05 01:08:23.294.
              Executed 6 tests, with 0 failures (0 unexpected) in 0.055 (0.056) seconds
     """
-    
+
     private let expectedRetryOnFailureXml = """
     <testsuites name="All tests" tests="6" failures="0">
         <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
@@ -445,7 +445,7 @@ class JunitReporterTests: XCTestCase {
         </testsuite>
     </testsuites>
     """
-    
+
     func testJunitReportWithRetries() throws {
         let reporter = JunitReporter()
         retryOnFailureTests.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
