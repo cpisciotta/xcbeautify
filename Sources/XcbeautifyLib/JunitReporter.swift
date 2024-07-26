@@ -27,13 +27,7 @@ package final class JunitReporter {
             components.append(.failingTest(testCase))
         } else if TestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingTest(line: line) else { return }
-            // remove previous failing test if retry succeeded
-            if let previousTestCase = components.last?.testCase,
-               testCase.classname == previousTestCase.classname,
-               testCase.name == previousTestCase.name
-            {
-                components.removeLast()
-            }
+            components.removePreviousFailingTestsAfterPassed(testCase)
             components.append(.testCasePassed(testCase))
         } else if TestCaseSkippedCaptureGroup.regex.match(string: line) {
             guard let testCase = generateSkippedTest(line: line) else { return }
@@ -172,6 +166,21 @@ private extension JunitComponent {
         case let .failingTest(testCase), let .testCasePassed(testCase), let .skippedTest(testCase):
             testCase
         }
+    }
+}
+
+private extension [JunitComponent] {
+    mutating func removePreviousFailingTestsAfterPassed(_ testCase: TestCase) {
+        // base case, empty array or last is not the last passed test case
+        guard let previousTestCase = last?.testCase,
+              testCase.classname == previousTestCase.classname,
+              testCase.name == previousTestCase.name
+        else {
+            return
+        }
+        removeLast()
+        // keep removing
+        removePreviousFailingTestsAfterPassed(testCase)
     }
 }
 

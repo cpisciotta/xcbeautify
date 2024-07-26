@@ -418,6 +418,9 @@ class JunitReporterTests: XCTestCase {
         /Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/OutputHandlerTests.swift:13: error: -[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")
         Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' failed (0.208 seconds).
         Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' started (Iteration 2 of 3).
+        /Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/OutputHandlerTests.swift:13: error: -[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' failed (0.208 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' started (Iteration 3 of 3).
         Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' passed (0.054 seconds).
         Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started (Iteration 1 of 3).
         Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
