@@ -453,7 +453,7 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     let wallClockTimeInSeconds: Double
 
     init?(groups: [String]) {
-        assert(groups.count >= 5)
+        assert(groups.count == 5)
         guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
         guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
         self.wholeResult = wholeResult
@@ -483,7 +483,7 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     let wallClockTimeInSeconds: Double
 
     init?(groups: [String]) {
-        assert(groups.count >= 6)
+        assert(groups.count == 6)
         guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfSkipped = groups[safe: 2], let _numberOfFailures = groups[safe: 3], let _numberOfUnexpectedFailures = groups[safe: 4], let _wallClockTimeInSeconds = groups[safe: 5] else { return nil }
         guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
         self.wholeResult = wholeResult
@@ -1185,7 +1185,7 @@ struct TestSuiteAllTestsPassedCaptureGroup: CaptureGroup {
     let wholeResult: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 0)
+        assert(groups.count == 1)
         guard let wholeResult = groups[safe: 0] else { return nil }
         self.wholeResult = wholeResult
     }
@@ -1198,7 +1198,7 @@ struct TestSuiteAllTestsFailedCaptureGroup: CaptureGroup {
     let wholeResult: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 1)
+        assert(groups.count == 1)
         guard let wholeResult = groups[safe: 0] else { return nil }
         self.wholeResult = wholeResult
     }
