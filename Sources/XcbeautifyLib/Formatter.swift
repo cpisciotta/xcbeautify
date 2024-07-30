@@ -1,6 +1,6 @@
 import Foundation
 
-package final class Formatter {
+package struct Formatter {
     private let colored: Bool
     private let renderer: any OutputRendering
 
