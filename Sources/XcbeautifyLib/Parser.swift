@@ -1,6 +1,6 @@
 import Foundation
 
-package class Parser {
+package final class Parser {
     private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
