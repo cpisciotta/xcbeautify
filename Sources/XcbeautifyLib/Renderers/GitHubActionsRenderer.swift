@@ -215,16 +215,6 @@ struct GitHubActionsRenderer: OutputRendering {
             message: warningMessage
         )
     }
-
-    func format(testSummary: TestSummary) -> String {
-        if testSummary.isSuccess() {
-            let message = "Tests Passed: \(testSummary.description)"
-            return outputGitHubActionsLog(annotationType: .notice, message: message)
-        } else {
-            let message = "Tests Failed: \(testSummary.description)"
-            return outputGitHubActionsLog(annotationType: .error, message: message)
-        }
-    }
 }
 
 private struct FileComponents {
