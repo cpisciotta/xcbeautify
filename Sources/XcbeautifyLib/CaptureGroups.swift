@@ -1,9 +1,13 @@
 import Foundation
 
-protocol CaptureGroup {
+package protocol CaptureGroup {
     static var outputType: OutputType { get }
     static var regex: XcbeautifyLib.Regex { get }
     init?(groups: [String])
+}
+
+package extension CaptureGroup {
+    var outputType: OutputType { Self.outputType }
 }
 
 extension CaptureGroup {

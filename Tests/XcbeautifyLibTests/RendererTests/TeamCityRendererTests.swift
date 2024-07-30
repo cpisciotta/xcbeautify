@@ -2,15 +2,24 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class TeamCityRendererTests: XCTestCase {
-    var parser: Parser!
+    private var parser: Parser!
+    private var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, renderer: .teamcity, additionalLines: { nil })
+        parser = Parser()
+        formatter = Formatter(colored: false, renderer: .teamcity, additionalLines: { nil })
+    }
+
+    override func tearDownWithError() throws {
+        parser = nil
+        formatter = nil
+        try super.tearDownWithError()
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        parser.parse(line: string)
+        guard let captureGroup = parser.parse(line: string) else { return nil }
+        return formatter.format(captureGroup: captureGroup)
     }
 
     func testAggregateTarget() {
@@ -399,7 +408,6 @@ final class TeamCityRendererTests: XCTestCase {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         let output = "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] MyProject requires a provisioning profile. Select a provisioning profile for the \"Debug\" build configuration in the project editor.\' status=\'ERROR\']\nBuild error"
         XCTAssertEqual(noColoredFormatted(input), output)
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testRestartingTests() {
@@ -410,19 +418,16 @@ final class TeamCityRendererTests: XCTestCase {
     func testShellCommand() {
         let formatted = noColoredFormatted("    cd /foo/bar/baz")
         XCTAssertNil(formatted)
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testUndefinedSymbolLocation() {
         let formatted = noColoredFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(formatted, "##teamcity[message text=\'Undefined symbol location|n|[!|]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)\' status=\'WARNING\']\nUndefined symbol location")
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
@@ -468,7 +473,6 @@ final class TeamCityRendererTests: XCTestCase {
     func testTiffutil() {
         let input = "TiffUtil file.tiff"
         XCTAssertNil(noColoredFormatted(input))
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testTouch() {
@@ -502,7 +506,6 @@ final class TeamCityRendererTests: XCTestCase {
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
         XCTAssertNil(noColoredFormatted(input))
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testPackageFetching() {
@@ -579,7 +582,6 @@ final class TeamCityRendererTests: XCTestCase {
 
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testXcodeprojWarning() {
@@ -592,13 +594,11 @@ final class TeamCityRendererTests: XCTestCase {
 
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, "##teamcity[message text=\'Duplicated localized string key|n|[!|] Key \"duplicate\" used with multiple values. Value \"First\" kept. Value \"Second\" ignored.\' status=\'WARNING\']\nDuplicated localized string key")
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testCommandProduceError() {

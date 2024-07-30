@@ -1,14 +1,6 @@
-package class Parser {
-    private let colored: Bool
+import Foundation
 
-    private let renderer: any OutputRendering
-
-    private let additionalLines: () -> String?
-
-    private let preserveUnbeautifiedLines: Bool
-
-    package private(set) var outputType = OutputType.undefined
-
+package final class Parser {
     private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
@@ -104,40 +96,16 @@ package class Parser {
 
     // MARK: - Init
 
-    package init(
-        colored: Bool = true,
-        renderer: Renderer,
-        preserveUnbeautifiedLines: Bool = false,
-        additionalLines: @escaping () -> (String?)
-    ) {
-        self.colored = colored
+    package init() { }
 
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored, additionalLines: additionalLines)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer(colored: colored, additionalLines: additionalLines)
-        case .teamcity:
-            self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
-        }
-
-        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
-        self.additionalLines = additionalLines
-    }
-
-    package func parse(line: String) -> String? {
+    package func parse(line: String) -> (any CaptureGroup)? {
         if line.isEmpty {
-            outputType = .undefined
             return nil
         }
 
         // Find first parser that can parse specified string
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
-            // Some uncommon cases, which have additional logic and don't follow default flow
-
-            // Nothing found?
-            outputType = OutputType.undefined
-            return preserveUnbeautifiedLines ? line : nil
+            return nil
         }
 
         guard let captureGroupType = captureGroupTypes[safe: idx] else {
@@ -145,16 +113,15 @@ package class Parser {
             return nil
         }
 
-        let formattedOutput = renderer.beautify(
-            line: line,
-            pattern: captureGroupType.pattern
-        )
-
-        outputType = captureGroupType.outputType
+        let groups: [String] = captureGroupType.regex.captureGroups(for: line)
+        guard let captureGroup = captureGroupType.init(groups: groups) else {
+            assertionFailure()
+            return nil
+        }
 
         // Move found parser to the top, so next time it will be checked first
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
-        return formattedOutput
+        return captureGroup
     }
 }
