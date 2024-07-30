@@ -436,7 +436,7 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 }
 
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
-    static let outputType: OutputType = .task
+    static let outputType: OutputType = .result
 
     /// Regular expression captured groups:
     /// $1 = number of tests
@@ -465,7 +465,7 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
 }
 
 struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
-    static let outputType: OutputType = .task
+    static let outputType: OutputType = .result
 
     /// Regular expression captured groups:
     /// $1 = number of tests
