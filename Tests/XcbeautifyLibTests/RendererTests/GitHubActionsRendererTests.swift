@@ -2,13 +2,19 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class GitHubActionsRendererTests: XCTestCase {
-    var parser: Parser!
-    var formatter: XcbeautifyLib.Formatter!
+    private var parser: Parser!
+    private var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         parser = Parser()
         formatter = Formatter(colored: false, renderer: .gitHubActions, additionalLines: { nil })
+    }
+
+    override func tearDownWithError() throws {
+        parser = nil
+        formatter = nil
+        try super.tearDownWithError()
     }
 
     private func logFormatted(_ string: String) -> String? {

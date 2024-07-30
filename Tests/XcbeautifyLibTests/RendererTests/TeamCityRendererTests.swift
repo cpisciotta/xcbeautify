@@ -2,13 +2,19 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class TeamCityRendererTests: XCTestCase {
-    var parser: Parser!
-    var formatter: XcbeautifyLib.Formatter!
+    private var parser: Parser!
+    private var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         parser = Parser()
         formatter = Formatter(colored: false, renderer: .teamcity, additionalLines: { nil })
+    }
+
+    override func tearDownWithError() throws {
+        parser = nil
+        formatter = nil
+        try super.tearDownWithError()
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
