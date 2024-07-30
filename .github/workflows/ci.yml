@@ -19,9 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-latest]
-        swift_version: ['5.9', '5.10'] # TODO: Add Swift 6 when it's available
+        swift_version: ["5.9", "5.10"] # TODO: Add Swift 6 when it's available
     steps:
-      - uses: swift-actions/setup-swift@e2dda67ab3c356dc7c0ec92392c2b51518549358
+      - uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
         with:
           swift-version: ${{ matrix.swift_version }}
       - uses: actions/checkout@v4
@@ -33,13 +33,13 @@ jobs:
     strategy:
       matrix:
         platform: [macos-latest, ubuntu-latest]
-        swift_version: ['5.9', '5.10'] # TODO: Add Swift 60 when it's available
+        swift_version: ["5.9", "5.10"] # TODO: Add Swift 6 when it's available
     steps:
       - uses: actions/checkout@v4
       - name: Load Swift Version
         run: echo "SWIFT_VERSION=$(<.swift-version)" >> $GITHUB_ENV
       - name: Install Swift and Tools
-        uses: swift-actions/setup-swift@e2dda67ab3c356dc7c0ec92392c2b51518549358
+        uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
         with:
           swift-version: ${{ matrix.swift_version }}
       - run: swift test --enable-code-coverage
