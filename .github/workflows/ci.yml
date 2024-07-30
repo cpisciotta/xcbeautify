@@ -53,3 +53,23 @@ jobs:
           files: info.lcov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  large_build_log:
+    name: Large Build Log
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift build
+      - run: |
+          LARGE_LOG_PATH=`find Tests -name large_xcodebuild_log.txt`
+          cat $LARGE_LOG_PATH | ./.build/debug/xcbeautify
+        env:
+          XCB_RECORD_UNCAPTURED: true
+      - name: Check for large build log
+        run: |
+          FILE_LENGTH=$(wc -l < ./uncaptured.txt)
+
+          if [ $FILE_LENGTH -gt 14922 ]; then
+            echo "File length is $FILE_LENGTH"
+            exit 1
+          fi
