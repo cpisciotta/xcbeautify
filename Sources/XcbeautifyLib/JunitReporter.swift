@@ -21,13 +21,16 @@ package final class JunitReporter {
 
         if FailingTestCaptureGroup.regex.match(string: line) {
             guard let testCase = generateFailingTest(line: line) else { return }
+            // reduce failing retrys, if any
+            components.removePreviousFailingTestsAfter(testCase)
             components.append(.failingTest(testCase))
         } else if RestartingTestCaptureGroup.regex.match(string: line) {
             guard let testCase = generateRestartingTest(line: line) else { return }
             components.append(.failingTest(testCase))
         } else if TestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingTest(line: line) else { return }
-            components.removePreviousFailingTestsAfterPassed(testCase)
+            // filter out failing retrys, if any
+            components.removePreviousFailingTestsAfter(testCase)
             components.append(.testCasePassed(testCase))
         } else if TestCaseSkippedCaptureGroup.regex.match(string: line) {
             guard let testCase = generateSkippedTest(line: line) else { return }
@@ -170,7 +173,7 @@ private extension JunitComponent {
 }
 
 private extension [JunitComponent] {
-    mutating func removePreviousFailingTestsAfterPassed(_ testCase: TestCase) {
+    mutating func removePreviousFailingTestsAfter(_ testCase: TestCase) {
         // base case, empty array or last is not the last passed test case
         guard let previousTestCase = last?.testCase,
               testCase.classname == previousTestCase.classname,
@@ -180,7 +183,7 @@ private extension [JunitComponent] {
         }
         removeLast()
         // keep removing
-        removePreviousFailingTestsAfterPassed(testCase)
+        removePreviousFailingTestsAfter(testCase)
     }
 }
 
