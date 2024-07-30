@@ -5,7 +5,7 @@ package struct Formatter {
     private let renderer: any OutputRendering
 
     package init(
-        colored: Bool = true,
+        colored: Bool,
         renderer: Renderer,
         additionalLines: @escaping () -> (String?)
     ) {
