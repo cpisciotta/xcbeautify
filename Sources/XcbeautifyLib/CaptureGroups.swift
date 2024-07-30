@@ -436,15 +436,16 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 }
 
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
-    static let outputType: OutputType = .task
+    static let outputType: OutputType = .result
 
     /// Regular expression captured groups:
     /// $1 = number of tests
     /// $2 = number of failures
     /// $3 = number of unexpected failures
     /// $4 = wall clock time in seconds (e.g. 0.295)
-    static let regex = Regex(pattern: #"^\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#)
+    static let regex = Regex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
 
+    let wholeResult: String
     let numberOfTests: Int
     let numberOfSkipped = 0
     let numberOfFailures: Int
@@ -452,9 +453,10 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     let wallClockTimeInSeconds: Double
 
     init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let _numberOfTests = groups[safe: 0], let _numberOfFailures = groups[safe: 1], let _numberOfUnexpectedFailures = groups[safe: 2], let _wallClockTimeInSeconds = groups[safe: 3] else { return nil }
+        assert(groups.count == 5)
+        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
         guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
+        self.wholeResult = wholeResult
         self.numberOfTests = numberOfTests
         self.numberOfFailures = numberOfFailures
         self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
@@ -463,7 +465,7 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
 }
 
 struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
-    static let outputType: OutputType = .task
+    static let outputType: OutputType = .result
 
     /// Regular expression captured groups:
     /// $1 = number of tests
@@ -471,8 +473,9 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     /// $3 = number of failures
     /// $4 = number of unexpected failures
     /// $5 = wall clock time in seconds (e.g. 0.295)
-    static let regex = Regex(pattern: #"^\s*Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds"#)
+    static let regex = Regex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
 
+    let wholeResult: String
     let numberOfTests: Int
     let numberOfSkipped: Int
     let numberOfFailures: Int
@@ -480,9 +483,10 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     let wallClockTimeInSeconds: Double
 
     init?(groups: [String]) {
-        assert(groups.count >= 5)
-        guard let _numberOfTests = groups[safe: 0], let _numberOfSkipped = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
+        assert(groups.count == 6)
+        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfSkipped = groups[safe: 2], let _numberOfFailures = groups[safe: 3], let _numberOfUnexpectedFailures = groups[safe: 4], let _wallClockTimeInSeconds = groups[safe: 5] else { return nil }
         guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
+        self.wholeResult = wholeResult
         self.numberOfTests = numberOfTests
         self.numberOfSkipped = numberOfSkipped
         self.numberOfFailures = numberOfFailures
@@ -1115,18 +1119,20 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
     /// $2 = result
     /// $3 = time
     #if os(Linux)
-    static let regex = Regex(pattern: #"^\s*Test Suite '(.*)' (finished|passed|failed) at (.*)"#)
+    static let regex = Regex(pattern: #"^\s*(Test Suite '(.*)' (finished|passed|failed) at (.*).*)"#)
     #else
-    static let regex = Regex(pattern: #"^\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*)"#)
+    static let regex = Regex(pattern: #"^\s*(Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*).*)"#)
     #endif
 
+    let wholeResult: String
     let suite: String
     let result: String
     let time: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let suite = groups[safe: 0], let result = groups[safe: 1], let time = groups[safe: 2] else { return nil }
+        assert(groups.count >= 4)
+        guard let wholeResult = groups[safe: 0], let suite = groups[safe: 1], let result = groups[safe: 2], let time = groups[safe: 3] else { return nil }
+        self.wholeResult = wholeResult
         self.suite = suite
         self.result = result
         self.time = time
@@ -1174,25 +1180,27 @@ struct TestSuiteStartCaptureGroup: CaptureGroup {
 
 struct TestSuiteAllTestsPassedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
-    static let regex = Regex(pattern: #"^\s*Test Suite 'All tests' passed at"#)
+    static let regex = Regex(pattern: #"^\s*(Test Suite 'All tests' passed at.*)"#)
 
-    private init() { }
+    let wholeResult: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
+        assert(groups.count == 1)
+        guard let wholeResult = groups[safe: 0] else { return nil }
+        self.wholeResult = wholeResult
     }
 }
 
 struct TestSuiteAllTestsFailedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
-    static let regex = Regex(pattern: #"^\s*Test Suite 'All tests' failed at"#)
+    static let regex = Regex(pattern: #"^\s*(Test Suite 'All tests' failed at.*)"#)
 
-    private init() { }
+    let wholeResult: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
+        assert(groups.count == 1)
+        guard let wholeResult = groups[safe: 0] else { return nil }
+        self.wholeResult = wholeResult
     }
 }
 
