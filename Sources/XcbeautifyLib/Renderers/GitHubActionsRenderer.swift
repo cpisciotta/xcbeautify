@@ -90,7 +90,7 @@ struct GitHubActionsRenderer: OutputRendering {
         )
     }
 
-    func formatError(group: ErrorCaptureGroup) -> String {
+    func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         return outputGitHubActionsLog(
             annotationType: .error,
@@ -214,16 +214,6 @@ struct GitHubActionsRenderer: OutputRendering {
             annotationType: .warning,
             message: warningMessage
         )
-    }
-
-    func format(testSummary: TestSummary) -> String {
-        if testSummary.isSuccess() {
-            let message = "Tests Passed: \(testSummary.description)"
-            return outputGitHubActionsLog(annotationType: .notice, message: message)
-        } else {
-            let message = "Tests Failed: \(testSummary.description)"
-            return outputGitHubActionsLog(annotationType: .error, message: message)
-        }
     }
 }
 

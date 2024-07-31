@@ -54,50 +54,50 @@ package final class JunitReporter {
     }
 
     private func generateFailingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: FailingTestCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: FailingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? FailingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
 
     private func generateRestartingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: RestartingTestCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: RestartingTestCaptureGroup.pattern) else { return nil }
         guard let group = _group as? RestartingTestCaptureGroup else { return nil }
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: line))
     }
 
     private func generateParallelFailingTest(line: String) -> TestCase? {
         // Parallel tests do not provide meaningful failure messages
-        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCaseFailedCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: ParallelTestCaseFailedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCaseFailedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
     }
 
     private func generatePassingTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: TestCasePassedCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: TestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
 
     private func generateSkippedTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: TestCaseSkippedCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: TestCaseSkippedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestCaseSkippedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
     private func generatePassingParallelTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCasePassedCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: ParallelTestCasePassedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCasePassedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
 
     private func generateSkippedParallelTest(line: String) -> TestCase? {
-        guard let _group: CaptureGroup = line.captureGroup(with: ParallelTestCaseSkippedCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: ParallelTestCaseSkippedCaptureGroup.pattern) else { return nil }
         guard let group = _group as? ParallelTestCaseSkippedCaptureGroup else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
     private func generateSuiteStart(line: String) -> String? {
-        guard let _group: CaptureGroup = line.captureGroup(with: TestSuiteStartCaptureGroup.pattern) else { return nil }
+        guard let _group: any CaptureGroup = line.captureGroup(with: TestSuiteStartCaptureGroup.pattern) else { return nil }
         guard let group = _group as? TestSuiteStartCaptureGroup else { return nil }
         return group.testSuiteName
     }
@@ -198,7 +198,7 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
         case testsuites = "testsuite"
     }
 
-    static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+    static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
         case .name, .tests, .failures:
@@ -209,7 +209,7 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.count }, forKey: .tests)
@@ -229,7 +229,7 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
         case testcases = "testcase"
     }
 
-    static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+    static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
         case .name, .tests, .failures:
@@ -240,7 +240,7 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(testcases.count, forKey: .tests)
@@ -264,7 +264,7 @@ private struct TestCase: Codable, DynamicNodeEncoding {
         self.skipped = skipped
     }
 
-    static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+    static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
         case .classname, .name, .time:
@@ -280,7 +280,7 @@ private extension TestCase {
     struct Failure: Codable, DynamicNodeEncoding {
         let message: String
 
-        static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+        static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
             let key = CodingKeys(stringValue: key.stringValue)!
             switch key {
             case .message:
@@ -292,7 +292,7 @@ private extension TestCase {
     struct Skipped: Codable, DynamicNodeEncoding {
         let message: String?
 
-        static func nodeEncoding(for key: CodingKey) -> XMLEncoder.NodeEncoding {
+        static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
             let key = CodingKeys(stringValue: key.stringValue)!
             switch key {
             case .message:

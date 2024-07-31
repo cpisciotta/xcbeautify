@@ -94,8 +94,8 @@ extension String {
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
     ]
 
-    func captureGroup(with pattern: String) -> CaptureGroup? {
-        let captureGroupType: CaptureGroup.Type? = Self.captureGroups.first { captureGroup in
+    func captureGroup(with pattern: String) -> (any CaptureGroup)? {
+        let captureGroupType: (any CaptureGroup.Type)? = Self.captureGroups.first { captureGroup in
             captureGroup.pattern == pattern
         }
 

@@ -6,3 +6,4 @@
 *.swp
 *.zip
 bazel-*
+/.vscode
