@@ -16,6 +16,7 @@
 --importgrouping testable-last
 --ifdef no-indent
 --indent 4
+--onelineforeach convert
 --ranges no-space
 --redundanttype inferred
 --semicolons never
