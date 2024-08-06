@@ -1,7 +1,12 @@
 import Foundation
 
+/// A renderer is responsible for formatting raw xcodebuild output.
+/// `OutputRendering` defines many default implementations for output that is similarly formatted across renderers.
 protocol OutputRendering {
+    /// Indicates if the renderer should color its formatted output.
     var colored: Bool { get }
+
+    /// A closure that provides the subsequent console output when needed (i.e. multi-line output).
     var additionalLines: () -> String? { get }
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String

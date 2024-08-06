@@ -1,5 +1,6 @@
 import Foundation
 
+/// Maps raw `xcodebuild` output to a `CaptureGroup`.
 package final class Parser {
     private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
@@ -98,6 +99,9 @@ package final class Parser {
 
     package init() { }
 
+    /// Maps raw `xcodebuild` output to a `CaptureGroup`.
+    /// - Parameter line: The raw `xcodebuild` output.
+    /// - Returns: The `CaptureGroup` if `line` is recognized. Otherwise, `nil`.
     package func parse(line: String) -> (any CaptureGroup)? {
         if line.isEmpty {
             return nil
