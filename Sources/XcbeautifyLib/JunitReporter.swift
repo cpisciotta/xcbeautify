@@ -104,10 +104,14 @@ package final class JunitReporter {
 
     package func generateReport() throws -> Data {
         let parser = JunitComponentParser()
-        components.forEach { parser.parse(component: $0) }
+        for item in components {
+            parser.parse(component: item)
+        }
         // Prefix a fake test suite start for the parallel tests.
         parallelComponents.insert(.testSuiteStart("PARALLEL_TESTS"), at: 0)
-        parallelComponents.forEach { parser.parse(component: $0) }
+        for parallelComponent in parallelComponents {
+            parser.parse(component: parallelComponent)
+        }
         let encoder = XMLEncoder()
         encoder.keyEncodingStrategy = .lowercased
         encoder.outputFormatting = [.prettyPrinted]
