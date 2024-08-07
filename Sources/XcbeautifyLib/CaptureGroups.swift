@@ -377,9 +377,9 @@ struct CopyFilesCaptureGroup: CaptureGroup {
         assert(groups.count == 3)
         guard let firstFilePath = groups[safe: 0], let secondFilePath = groups[safe: 1], let target = groups[safe: 2] else { return nil }
         self.firstFilePath = firstFilePath
-        firstFilename = URL(fileURLWithPath: firstFilePath).lastPathComponent
+        firstFilename = firstFilePath.lastPathComponent
         self.secondFilePath = secondFilePath
-        secondFilename = URL(fileURLWithPath: secondFilePath).lastPathComponent
+        secondFilename = secondFilePath.lastPathComponent
         self.target = target
     }
 }
