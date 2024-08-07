@@ -33,13 +33,13 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchCopyFilesDifferentSourceAndDestinationFilenames() throws {
-        let input = #"Copy /path/to/some/first-file.swift /path/to/some/other/second-file.swift (in target 'Target' from project 'Project')"#
+        let input = #"Copy /Backyard-Birds/Build/Products/Debug/Backyard_Birds.swiftmodule/x86_64-apple-macos.abi.json /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds.abi.json (in target 'Backyard Birds' from project 'Backyard Birds')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CopyFilesCaptureGroup)
-        XCTAssertEqual(captureGroup.firstFilePath, "/path/to/some/first-file.swift")
-        XCTAssertEqual(captureGroup.firstFilename, "first-file.swift")
-        XCTAssertEqual(captureGroup.secondFilePath, "/path/to/some/other/second-file.swift")
-        XCTAssertEqual(captureGroup.secondFilename, "second-file.swift")
-        XCTAssertEqual(captureGroup.target, "Target")
+        XCTAssertEqual(captureGroup.firstFilePath, "/Backyard-Birds/Build/Products/Debug/Backyard_Birds.swiftmodule/x86_64-apple-macos.abi.json")
+        XCTAssertEqual(captureGroup.firstFilename, "x86_64-apple-macos.abi.json")
+        XCTAssertEqual(captureGroup.secondFilePath, #"/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds.abi.json"#)
+        XCTAssertEqual(captureGroup.secondFilename, "Backyard_Birds.abi.json")
+        XCTAssertEqual(captureGroup.target, "Backyard Birds")
     }
 
 }
