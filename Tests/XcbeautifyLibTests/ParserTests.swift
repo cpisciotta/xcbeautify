@@ -1,6 +1,6 @@
 //
 //  ParserTests.swift
-//  
+//
 //
 //  Created by Charles Pisciotta on 8/6/24.
 //
@@ -9,16 +9,15 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class ParserTests: XCTestCase {
-
     private var parser: Parser!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        self.parser = Parser()
+        parser = Parser()
     }
 
     override func tearDownWithError() throws {
-        self.parser = nil
+        parser = nil
         try super.tearDownWithError()
     }
 
@@ -41,5 +40,4 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.secondFilename, "Backyard_Birds.abi.json")
         XCTAssertEqual(captureGroup.target, "Backyard Birds")
     }
-
 }
