@@ -365,7 +365,7 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
 struct CopyFilesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = Regex(pattern: #"^Copy (\/.*) (\/.*) \(in target '(.*)' from project '.*'\)$"#)
+    static let regex = Regex(pattern: #"^Copy (\S+) (\S+) \(in target '(.*)' from project '.*'\)$"#)
 
     let firstFilePath: String
     let firstFilename: String
