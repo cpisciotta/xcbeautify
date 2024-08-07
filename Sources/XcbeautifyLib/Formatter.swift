@@ -64,6 +64,8 @@ package struct Formatter {
             return renderer.formatCompileWarning(group: group)
         case let group as CompileXibCaptureGroup:
             return renderer.formatCompile(group: group)
+        case let group as CopyFilesCaptureGroup:
+            return renderer.formatCopyFiles(group: group)
         case let group as CopyHeaderCaptureGroup:
             return renderer.formatCopy(group: group)
         case let group as CopyPlistCaptureGroup:

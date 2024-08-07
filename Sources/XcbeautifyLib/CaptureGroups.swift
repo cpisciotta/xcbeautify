@@ -362,6 +362,29 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
     }
 }
 
+struct CopyFilesCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    // ((?:\S|(?<=\\) )+) --> Match any non-whitespace character OR any escaped space (space in filename)
+    static let regex = Regex(pattern: #"^Copy ((?:\S|(?<=\\) )+) ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '.*'\)$"#)
+
+    let firstFilePath: String
+    let firstFilename: String
+    let secondFilePath: String
+    let secondFilename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let firstFilePath = groups[safe: 0], let secondFilePath = groups[safe: 1], let target = groups[safe: 2] else { return nil }
+        self.firstFilePath = firstFilePath
+        firstFilename = firstFilePath.lastPathComponent
+        self.secondFilePath = secondFilePath
+        secondFilename = secondFilePath.lastPathComponent
+        self.target = target
+    }
+}
+
 struct CopyHeaderCaptureGroup: CopyCaptureGroup {
     static let outputType: OutputType = .task
 

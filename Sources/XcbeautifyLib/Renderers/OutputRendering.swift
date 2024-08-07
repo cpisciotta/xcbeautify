@@ -21,6 +21,7 @@ protocol OutputRendering {
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
     func formatCopy(group: any CopyCaptureGroup) -> String
+    func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
@@ -132,6 +133,13 @@ extension OutputRendering {
         let filename = group.file
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
+    }
+
+    func formatCopyFiles(group: CopyFilesCaptureGroup) -> String {
+        let target = group.target
+        let firstFilename = group.firstFilename
+        let secondFilename = group.secondFilename
+        return colored ? "[\(target.f.Cyan)] \("Copy".s.Bold) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
     }
 
     func formatCursor(group: CursorCaptureGroup) -> String? {
