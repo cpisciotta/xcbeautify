@@ -131,3 +131,7 @@ export_coverage:
 .PHONY: measure
 measure:
 	tools/measure
+	
+.PHONY: xcode
+xcode:
+	open Package.swift
