@@ -60,4 +60,12 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "BackyardBirdsDataTarget")
         XCTAssertEqual(captureGroup.project, "BackyardBirdsDataProject")
     }
+
+    func testMatchSwiftCompile() throws {
+        let input = #"SwiftCompile normal arm64 /Backyard-Birds/BackyardBirdsData/Food\ &\ Drink/BirdFood+DataGeneration.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftCompileCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, #"/Backyard-Birds/BackyardBirdsData/Food\ &\ Drink/BirdFood+DataGeneration.swift"#)
+        XCTAssertEqual(captureGroup.filename, #"BirdFood+DataGeneration.swift"#)
+        XCTAssertEqual(captureGroup.target, "BackyardBirdsData")
+    }
 }

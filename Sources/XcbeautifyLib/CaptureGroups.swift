@@ -274,20 +274,22 @@ struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file path
-    /// $2 = filename (e.g. KWNull.m)
-    /// $3 = target
-    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ ((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift))) \((in target '(.*)' from project '.*')\)$"#)
+    /// $2 = target
+    /// $3 = project
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
     let target: String
+    let project: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
         self.filePath = filePath
-        self.filename = filename
+        filename = filePath.lastPathComponent
         self.target = target
+        self.project = project
     }
 }
 
