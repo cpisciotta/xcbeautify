@@ -1797,3 +1797,36 @@ struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) { }
 }
+
+struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    // Examples:
+    //  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardBirdsPassOfferCard.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
+    //  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardSkyView.swift, BackyardSupplyGauge.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
+    //  - SwiftDriverJobDiscovery normal x86_64 Compiling resource_bundle_accessor.swift, Account+DataGeneration.swift, Backyard.swift (in target 'SomeTarget' from project 'SomeProject')
+    //
+    // Regular expression captured groups:
+    // $1 = state
+    // $2 = architecture
+    // $3 = filenames
+    // $4 = target
+    // $5 = project
+    static let regex = Regex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
+
+    let state: String // Currently, the only expected/known value is `normal`
+    let architecture: String
+    let filenames: [String]
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 5)
+        guard let state = groups[safe: 0], let architecture = groups[safe: 1], let filenamesGroup = groups[safe: 2], let target = groups[safe: 3], let project = groups[safe: 4] else { return nil }
+        self.state = state
+        self.architecture = architecture
+        filenames = filenamesGroup.components(separatedBy: ", ")
+        self.target = target
+        self.project = project
+    }
+}

@@ -206,6 +206,8 @@ package struct Formatter {
             return renderer.formatError(group: group)
         case let group as SwiftDriverJobDiscoveryEmittingModuleCaptureGroup:
             return renderer.formatSwiftDriverJobDiscoveryEmittingModule(group: group)
+        case let group as SwiftDriverJobDiscoveryCompilingCaptureGroup:
+            return renderer.formatSwiftDriverJobDiscoveryCompiling(group: group)
         default:
             assertionFailure()
             return nil
