@@ -26,9 +26,9 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 289)
+        XCTAssertEqual(uncapturedOutput, 277)
         #else
-        XCTAssertEqual(uncapturedOutput, 305)
+        XCTAssertEqual(uncapturedOutput, 293)
         #endif
     }
 
@@ -56,9 +56,9 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 9639)
+        XCTAssertEqual(uncapturedOutput, 9223)
         #else
-        XCTAssertEqual(uncapturedOutput, 10207)
+        XCTAssertEqual(uncapturedOutput, 9791)
         #endif
     }
 }
