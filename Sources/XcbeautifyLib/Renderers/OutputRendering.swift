@@ -28,6 +28,7 @@ protocol OutputRendering {
     func formatError(group: any ErrorCaptureGroup) -> String
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
+    func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String?
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String
@@ -153,6 +154,10 @@ extension OutputRendering {
 
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String {
         group.wholeResult
+    }
+
+    func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String? {
+        nil
     }
 
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String {

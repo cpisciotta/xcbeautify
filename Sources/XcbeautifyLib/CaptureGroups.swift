@@ -524,6 +524,22 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     }
 }
 
+struct ExplicitDependencyCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^[ \t]*➜ Explicit dependency on target '([^']+)' in project '([^']+)'$"#)
+
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
+        self.target = target
+        self.project = project
+    }
+}
+
 struct FailingTestCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
