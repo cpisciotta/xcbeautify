@@ -68,4 +68,11 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.filename, #"BirdFood+DataGeneration.swift"#)
         XCTAssertEqual(captureGroup.target, "BackyardBirdsData")
     }
+
+    func testMatchExplicitDependency() throws {
+        let input = #"        ➜ Explicit dependency on target 'BackyardBirdsData_BackyardBirdsData' in project 'Backyard Birds Data'"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ExplicitDependencyCaptureGroup)
+        XCTAssertEqual(captureGroup.target, "BackyardBirdsData_BackyardBirdsData")
+        XCTAssertEqual(captureGroup.project, "Backyard Birds Data")
+    }
 }
