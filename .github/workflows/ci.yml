@@ -26,7 +26,7 @@ jobs:
           - swift_version: "5.10"
             xcode_version: "15.4"
           - swift_version: "6.0"
-            xcode_version: "16_beta_4"
+            xcode_version: "16_beta_5"
         exclude:
           # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
           - platform: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
           - swift_version: "5.10"
             xcode_version: "15.4"
           - swift_version: "6.0"
-            xcode_version: "16_beta_4"
+            xcode_version: "16_beta_5"
         exclude:
           # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
           - platform: ubuntu-latest
