@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request: {}
-  merge_group: {}
+  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -13,38 +12,77 @@ concurrency:
 
 jobs:
   compile:
-    name: Compile (Swift ${{ matrix.swift_version }}) (${{ matrix.platform }})
+    name: Compile (Swift ${{ matrix.version.swift_version }}) (${{ matrix.platform }})
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest]
-        swift_version: [5.9]
+        platform:
+          - macos-latest
+          - ubuntu-latest
+        version:
+          - swift_version: "5.9"
+            xcode_version: "15.2"
+          - swift_version: "5.10"
+            xcode_version: "15.4"
+          - swift_version: "6.0"
+            xcode_version: "16_beta_5"
+        exclude:
+          # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
+          - platform: ubuntu-latest
+            version:
+              swift_version: "6.0"
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.version.xcode_version }}.app/Contents/Developer
     steps:
-      - uses: swift-actions/setup-swift@61a116f4030ac34fb5731aab0eff5a0aed94ba29
-        with:
-          swift-version: ${{ matrix.swift_version }}
       - uses: actions/checkout@v4
+      - name: Install Swift and Tools
+        if: ${{ matrix.platform == 'ubuntu-latest' }}
+        uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
+        with:
+          swift-version: ${{ matrix.version.swift_version }}
+      - run: swift --version
       - run: swift build --disable-sandbox --configuration release -Xswiftc -warnings-as-errors
 
   test:
-    name: Test (${{ matrix.platform}})
+    name: Test (Swift ${{ matrix.version.swift_version }}) (${{ matrix.platform }})
     runs-on: ${{ matrix.platform }}
     strategy:
+      fail-fast: false
       matrix:
-        platform: [macos-13, ubuntu-latest]
+        platform:
+          - macos-latest
+          - ubuntu-latest
+        version:
+          - swift_version: "5.9"
+            xcode_version: "15.2"
+          - swift_version: "5.10"
+            xcode_version: "15.4"
+          - swift_version: "6.0"
+            xcode_version: "16_beta_5"
+        exclude:
+          # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
+          - platform: ubuntu-latest
+            version:
+              swift_version: "6.0"
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.version.xcode_version }}.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
       - name: Load Swift Version
         run: echo "SWIFT_VERSION=$(<.swift-version)" >> $GITHUB_ENV
       - name: Install Swift and Tools
-        uses: swift-actions/setup-swift@cdbe0f7f4c77929b6580e71983e8606e55ffe7e4
+        if: ${{ matrix.platform == 'ubuntu-latest' }}
+        uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
         with:
-          swift-version: ${{ env.SWIFT_VERSION }}
+          swift-version: ${{ matrix.version.swift_version }}
+      - run: swift --version
       - run: swift test --enable-code-coverage
       - name: Prepare Code Coverage
+        if: ${{ matrix.version.swift_version == env.SWIFT_VERSION}}
         run: ./tools/export_coverage
       - name: Upload coverage reports to Codecov
+        if: ${{ matrix.version.swift_version == env.SWIFT_VERSION}}
         uses: codecov/codecov-action@v4
         with:
           files: info.lcov

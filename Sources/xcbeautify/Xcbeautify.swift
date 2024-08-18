@@ -18,10 +18,13 @@ struct Xcbeautify: ParsableCommand {
     var preserveUnbeautified = false
 
     @Flag(name: .long, help: "Print test result too under quiet/quieter flag.")
-    var isCi = false
+    var isCI = false
 
     @Flag(name: .long, help: "Disable the colored output")
     var disableColoredOutput = (ProcessInfo.processInfo.environment["NO_COLOR"] != nil)
+
+    @Flag(name: .long, help: "Suppress the xcbeautify information table when xcbeautify starts. It includes the active xcbeautify version.")
+    var disableLogging = false
 
     // swiftformat:disable redundantReturn
 
@@ -57,7 +60,19 @@ struct Xcbeautify: ParsableCommand {
         }
         #endif
 
-        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCi) { print($0) }
+        if !disableLogging {
+            print(
+                """
+
+                ----- xcbeautify -----
+                Version: \(version)
+                ----------------------
+
+                """
+            )
+        }
+
+        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCI) { print($0) }
         let junitReporter = JunitReporter()
 
         func readLine() -> String? {
@@ -70,21 +85,25 @@ struct Xcbeautify: ParsableCommand {
             return line
         }
 
-        let parser = Parser(
+        let parser = Parser()
+
+        let formatter = XcbeautifyLib.Formatter(
             colored: !disableColoredOutput,
             renderer: renderer,
-            preserveUnbeautifiedLines: preserveUnbeautified,
             additionalLines: { readLine() }
         )
 
         while let line = readLine() {
             guard !line.isEmpty else { continue }
-            guard let formatted = parser.parse(line: line) else { continue }
-            output.write(parser.outputType, formatted)
-        }
+            guard let captureGroup = parser.parse(line: line) else {
+                if preserveUnbeautified {
+                    output.write(.undefined, line)
+                }
 
-        if let formattedSummary = parser.formattedSummary() {
-            output.write(.result, formattedSummary)
+                continue
+            }
+            guard let formatted = formatter.format(captureGroup: captureGroup) else { continue }
+            output.write(captureGroup.outputType, formatted)
         }
 
         if !report.isEmpty {

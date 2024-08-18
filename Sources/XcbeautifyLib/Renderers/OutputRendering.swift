@@ -1,12 +1,13 @@
 import Foundation
 
+/// A renderer is responsible for formatting raw xcodebuild output.
+/// `OutputRendering` defines many default implementations for output that is similarly formatted across renderers.
 protocol OutputRendering {
+    /// Indicates if the renderer should color its formatted output.
     var colored: Bool { get }
+
+    /// A closure that provides the subsequent console output when needed (i.e. multi-line output).
     var additionalLines: () -> String? { get }
-
-    func beautify(line: String, pattern: String) -> String?
-
-    func format(testSummary: TestSummary) -> String
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
     func formatCheckDependencies() -> String
@@ -14,18 +15,20 @@ protocol OutputRendering {
     func formatCodeSign(group: CodesignCaptureGroup) -> String
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String?
-    func formatCompile(group: CompileFileCaptureGroup) -> String
+    func formatCompile(group: any CompileFileCaptureGroup) -> String
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
-    func formatCopy(group: CopyCaptureGroup) -> String
+    func formatCopy(group: any CopyCaptureGroup) -> String
+    func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
-    func formatError(group: ErrorCaptureGroup) -> String
-    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String?
-    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String?
+    func formatError(group: any ErrorCaptureGroup) -> String
+    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
+    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
+    func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String?
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String
@@ -60,15 +63,15 @@ protocol OutputRendering {
     func formatRestartingTest(group: RestartingTestCaptureGroup) -> String
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
-    func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String
+    func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String
     func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
-    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String?
-    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String?
-    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String?
+    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String
+    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String
     func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String?
@@ -80,6 +83,7 @@ protocol OutputRendering {
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
+<<<<<<< HEAD
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
 }
 
@@ -283,6 +287,9 @@ extension OutputRendering {
             return nil
         }
     }
+=======
+    func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+>>>>>>> main
 }
 
 extension OutputRendering {
@@ -312,7 +319,7 @@ extension OutputRendering {
         return colored ? "\("Signing".s.Bold) \(frameworkPath)" : "Signing \(frameworkPath)"
     }
 
-    func formatCompile(group: CompileFileCaptureGroup) -> String {
+    func formatCompile(group: any CompileFileCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
@@ -330,21 +337,32 @@ extension OutputRendering {
         nil
     }
 
-    func formatCopy(group: CopyCaptureGroup) -> String {
+    func formatCopy(group: any CopyCaptureGroup) -> String {
         let filename = group.file
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
+    }
+
+    func formatCopyFiles(group: CopyFilesCaptureGroup) -> String {
+        let target = group.target
+        let firstFilename = group.firstFilename
+        let secondFilename = group.secondFilename
+        return colored ? "[\(target.f.Cyan)] \("Copy".s.Bold) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
     }
 
     func formatCursor(group: CursorCaptureGroup) -> String? {
         nil
     }
 
-    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String? {
-        nil
+    func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String {
+        group.wholeResult
     }
 
-    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String? {
+    func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String {
+        group.wholeResult
+    }
+
+    func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String? {
         nil
     }
 
@@ -479,7 +497,7 @@ extension OutputRendering {
         nil
     }
 
-    func formatTargetCommand(command: String, group: TargetCaptureGroup) -> String {
+    func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String {
         let target = group.target
         let project = group.project
         let configuration = group.configuration
@@ -495,16 +513,16 @@ extension OutputRendering {
         nil
     }
 
-    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String? {
-        nil
+    func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String {
+        group.wholeResult
     }
 
-    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String? {
-        nil
+    func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String {
+        group.wholeResult
     }
 
-    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String? {
-        nil
+    func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String {
+        group.wholeResult
     }
 
     func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String {
@@ -539,6 +557,10 @@ extension OutputRendering {
     }
 
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String? {
         nil
     }
 
@@ -583,33 +605,68 @@ extension OutputRendering {
     }
 
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " on '\(device)' (\(time) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: device, time: time)
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return colored ? Format.indent + TestStatus.skipped.foreground.Yellow + " " + testCase + " on '\(device)' (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.skipped + " " + testCase + " on '\(device)' (\(time) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.skipped, suite: suite, testCase: testCase, device: device, time: time)
     }
 
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let time = group.time
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testCase + " (\(time.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testCase + " (\(time)) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: nil, time: time)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
+        let suite = group.suite
         let testCase = group.testCase
         let device = group.device
         let time = group.time
-        return colored ? "    \(TestStatus.fail.f.Red) \(testCase) on '\(device)' (\(time.coloredTime()) seconds)" : "    \(TestStatus.fail) \(testCase) on '\(device)' (\(time) seconds)"
+
+        return formatParallelTestCase(result: TestStatus.fail, suite: suite, testCase: testCase, device: device, time: time)
     }
 
-    func formatError(group: ErrorCaptureGroup) -> String {
+    private func formatParallelTestCase(
+        result: String,
+        suite: String,
+        testCase: String,
+        device: String?,
+        time: String
+    ) -> String {
+        let deviceString = device.map { " on '\($0)'" } ?? ""
+
+        let styledResult: String
+        switch result {
+        case TestStatus.pass:
+            styledResult = result.f.Green
+        case TestStatus.fail:
+            styledResult = result.f.Red
+        case TestStatus.skipped:
+            styledResult = result.f.Yellow
+        default:
+            assertionFailure("Unexpected result: \(result)")
+            styledResult = result
+        }
+
+        return colored
+            ? Format.indent + styledResult + " [" + suite.f.Cyan + "] " + testCase + deviceString + " (\(time.coloredTime()) seconds)"
+            : Format.indent + result + " [" + suite + "] " + testCase + deviceString + " (\(time) seconds)"
+    }
+
+    func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         return colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
     }
@@ -709,6 +766,7 @@ extension OutputRendering {
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         colored ? group.wholeError.s.Bold.f.Red : group.wholeError
     }
+<<<<<<< HEAD
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
         colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
@@ -721,4 +779,6 @@ extension OutputRendering {
             colored ? "Tests Failed: \(testSummary.description)".s.Bold.f.Red : "Tests Failed: \(testSummary.description)"
         }
     }
+=======
+>>>>>>> main
 }

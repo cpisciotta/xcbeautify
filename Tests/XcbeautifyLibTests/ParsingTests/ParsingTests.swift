@@ -8,18 +8,7 @@ final class ParsingTests: XCTestCase {
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
 
-        let parser = Parser(
-            colored: false,
-            renderer: .terminal,
-            preserveUnbeautifiedLines: false,
-            additionalLines: {
-                guard !buildLog.isEmpty else {
-                    XCTFail("The build log should never be empty when fetching additional lines.")
-                    return nil
-                }
-                return buildLog.removeFirst()
-            }
-        )
+        let parser = Parser()
 
         var uncapturedOutput = 0
 
@@ -37,9 +26,9 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 1934)
+        XCTAssertEqual(uncapturedOutput, 255)
         #else
-        XCTAssertEqual(uncapturedOutput, 1950)
+        XCTAssertEqual(uncapturedOutput, 271)
         #endif
     }
 
@@ -49,18 +38,7 @@ final class ParsingTests: XCTestCase {
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
 
-        let parser = Parser(
-            colored: false,
-            renderer: .terminal,
-            preserveUnbeautifiedLines: false,
-            additionalLines: {
-                guard !buildLog.isEmpty else {
-                    XCTFail("The build log should never be empty when fetching additional lines.")
-                    return nil
-                }
-                return buildLog.removeFirst()
-            }
-        )
+        let parser = Parser()
 
         var uncapturedOutput = 0
 
@@ -78,9 +56,9 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 67043)
+        XCTAssertEqual(uncapturedOutput, 8519)
         #else
-        XCTAssertEqual(uncapturedOutput, 67611)
+        XCTAssertEqual(uncapturedOutput, 9087)
         #endif
     }
 }

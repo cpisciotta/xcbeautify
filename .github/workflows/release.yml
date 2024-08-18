@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: swift-actions/setup-swift@v1
+      - uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
       - name: Build & Package
@@ -74,7 +74,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: swift-actions/setup-swift@v1
+      - uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
       - name: Package Linux x86_64
