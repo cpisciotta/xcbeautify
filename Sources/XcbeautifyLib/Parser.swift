@@ -91,12 +91,12 @@ package final class Parser {
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
-        TestingStartedCaptureGroup.self,
         SwiftDriverJobDiscoveryCompilingCaptureGroup.self,
         ExecutedWithoutSkippedCaptureGroup.self,
         ExecutedWithSkippedCaptureGroup.self,
         TestSuiteAllTestsPassedCaptureGroup.self,
         TestSuiteAllTestsFailedCaptureGroup.self,
+        TestingStartedCaptureGroup.self,
     ]
 
     // MARK: - Init
