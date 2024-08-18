@@ -623,4 +623,9 @@ final class TeamCityRendererTests: XCTestCase {
 
         XCTAssertEqual(actual, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: Multiple commands produce |\'/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy|\'\' status=\'ERROR\']\nBuild error")
     }
+    
+    func testTestingStarted() {
+        let formatted = noColoredFormatted(#"Testing started"#)
+        XCTAssertEqual(formatted, #"Testing started"#)
+    }
 }

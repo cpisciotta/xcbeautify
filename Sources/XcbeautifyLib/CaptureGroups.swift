@@ -1816,6 +1816,8 @@ struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
     init?(groups: [String]) { }
 }
 
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
 struct TestingStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
