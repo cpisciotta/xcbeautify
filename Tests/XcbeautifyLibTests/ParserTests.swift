@@ -75,13 +75,13 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "BackyardBirdsData_BackyardBirdsData")
         XCTAssertEqual(captureGroup.project, "Backyard Birds Data")
     }
-    
+
     func testMatchTestingStarted() throws {
         let input = "Testing started"
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? TestingStartedCaptureGroup)
         XCTAssertEqual(captureGroup.wholeMessage, "Testing started")
     }
-    
+
     func testNotMatchTestingStarted() throws {
         let input = #"2024-08-18 18:17:52.619 xcodebuild[9799:394817] [MT] IDETestOperationsObserverDebug: 21.975 elapsed -- Testing started completed."#
         XCTAssertNil(parser.parse(line: input))

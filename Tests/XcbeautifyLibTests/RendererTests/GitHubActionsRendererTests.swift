@@ -602,7 +602,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         let formatted = logFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"::warning ::Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
-    
+
     func testTestingStarted() {
         let formatted = logFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
