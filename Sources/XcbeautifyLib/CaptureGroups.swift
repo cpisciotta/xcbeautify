@@ -1830,6 +1830,7 @@ struct TestingStartedCaptureGroup: CaptureGroup {
         guard let wholeMessage = groups[safe: 0] else { return nil }
         self.wholeMessage = wholeMessage
     }
+}
 
 struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
@@ -1861,4 +1862,5 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
         filenames = filenamesGroup.components(separatedBy: ", ")
         self.target = target
         self.project = project
+    }
 }
