@@ -629,4 +629,9 @@ final class TerminalRendererTests: XCTestCase {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
+
+    func testTestingStarted() {
+        let formatted = noColoredFormatted(#"Testing started"#)
+        XCTAssertEqual(formatted, #"Testing started"#)
+    }
 }

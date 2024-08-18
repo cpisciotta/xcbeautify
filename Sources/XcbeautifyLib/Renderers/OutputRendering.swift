@@ -83,6 +83,7 @@ protocol OutputRendering {
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
+    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
 }
 
@@ -559,5 +560,9 @@ extension OutputRendering {
 
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         colored ? group.wholeError.s.Bold.f.Red : group.wholeError
+    }
+
+    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
+        colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
     }
 }

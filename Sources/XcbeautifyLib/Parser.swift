@@ -96,6 +96,7 @@ package final class Parser {
         ExecutedWithSkippedCaptureGroup.self,
         TestSuiteAllTestsPassedCaptureGroup.self,
         TestSuiteAllTestsFailedCaptureGroup.self,
+        TestingStartedCaptureGroup.self,
     ]
 
     // MARK: - Init

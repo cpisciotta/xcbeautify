@@ -1816,6 +1816,24 @@ struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
     init?(groups: [String]) { }
 }
 
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
+struct TestingStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
+    /// Regular expression captured groups:
+    /// $1 = whole message
+    static let regex = Regex(pattern: "^(Testing started.*)$")
+
+    let wholeMessage: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeMessage = groups[safe: 0] else { return nil }
+        self.wholeMessage = wholeMessage
+    }
+}
+
 struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
