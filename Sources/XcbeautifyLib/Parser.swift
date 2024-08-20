@@ -1,19 +1,8 @@
-package class Parser {
-    private let colored: Bool
+import Foundation
 
-    private let renderer: OutputRendering
-
-    private let additionalLines: () -> String?
-
-    private(set) var summary: TestSummary?
-
-    private(set) var needToRecordSummary = false
-
-    private let preserveUnbeautifiedLines: Bool
-
-    package private(set) var outputType = OutputType.undefined
-
-    private lazy var captureGroupTypes: [CaptureGroup.Type] = [
+/// Maps raw `xcodebuild` output to a `CaptureGroup`.
+package final class Parser {
+    private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
         BuildTargetCaptureGroup.self,
         AggregateTargetCaptureGroup.self,
@@ -30,10 +19,12 @@ package class Parser {
         CompileCommandCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,
+        CopyFilesCaptureGroup.self,
         CopyHeaderCaptureGroup.self,
         CopyPlistCaptureGroup.self,
         CopyStringsCaptureGroup.self,
         CpresourceCaptureGroup.self,
+        ExplicitDependencyCaptureGroup.self,
         FailingTestCaptureGroup.self,
         UIFailingTestCaptureGroup.self,
         RestartingTestCaptureGroup.self,
@@ -100,66 +91,29 @@ package class Parser {
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
+        SwiftDriverJobDiscoveryCompilingCaptureGroup.self,
+        ExecutedWithoutSkippedCaptureGroup.self,
+        ExecutedWithSkippedCaptureGroup.self,
+        TestSuiteAllTestsPassedCaptureGroup.self,
+        TestSuiteAllTestsFailedCaptureGroup.self,
+        TestingStartedCaptureGroup.self,
     ]
 
     // MARK: - Init
 
-    package init(
-        colored: Bool = true,
-        renderer: Renderer,
-        preserveUnbeautifiedLines: Bool = false,
-        additionalLines: @escaping () -> (String?)
-    ) {
-        self.colored = colored
+    package init() { }
 
-        switch renderer {
-        case .terminal:
-            self.renderer = TerminalRenderer(colored: colored, additionalLines: additionalLines)
-        case .gitHubActions:
-            self.renderer = GitHubActionsRenderer(colored: colored, additionalLines: additionalLines)
-        case .teamcity:
-            self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
-        }
-
-        self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
-        self.additionalLines = additionalLines
-    }
-
-    package func parse(line: String) -> String? {
+    /// Maps raw `xcodebuild` output to a `CaptureGroup`.
+    /// - Parameter line: The raw `xcodebuild` output.
+    /// - Returns: The `CaptureGroup` if `line` is recognized. Otherwise, `nil`.
+    package func parse(line: String) -> (any CaptureGroup)? {
         if line.isEmpty {
-            outputType = .undefined
             return nil
         }
 
         // Find first parser that can parse specified string
         guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
-            // Some uncommon cases, which have additional logic and don't follow default flow
-
-            if ExecutedWithoutSkippedCaptureGroup.regex.match(string: line) {
-                outputType = ExecutedWithoutSkippedCaptureGroup.outputType
-                parseSummary(line: line, colored: colored, skipped: false)
-                return nil
-            }
-
-            if ExecutedWithSkippedCaptureGroup.regex.match(string: line) {
-                outputType = ExecutedWithSkippedCaptureGroup.outputType
-                parseSummary(line: line, colored: colored, skipped: true)
-                return nil
-            }
-
-            if TestSuiteAllTestsPassedCaptureGroup.regex.match(string: line) {
-                needToRecordSummary = true
-                return nil
-            }
-
-            if TestSuiteAllTestsFailedCaptureGroup.regex.match(string: line) {
-                needToRecordSummary = true
-                return nil
-            }
-
-            // Nothing found?
-            outputType = OutputType.undefined
-            return preserveUnbeautifiedLines ? line : nil
+            return nil
         }
 
         guard let captureGroupType = captureGroupTypes[safe: idx] else {
@@ -167,39 +121,15 @@ package class Parser {
             return nil
         }
 
-        let formattedOutput = renderer.beautify(
-            line: line,
-            pattern: captureGroupType.pattern
-        )
-
-        outputType = captureGroupType.outputType
+        let groups: [String] = captureGroupType.regex.captureGroups(for: line)
+        guard let captureGroup = captureGroupType.init(groups: groups) else {
+            assertionFailure()
+            return nil
+        }
 
         // Move found parser to the top, so next time it will be checked first
         captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
 
-        return formattedOutput
-    }
-
-    package func formattedSummary() -> String? {
-        guard let summary else { return nil }
-        return renderer.format(testSummary: summary)
-    }
-
-    // MARK: Private
-
-    private func parseSummary(line: String, colored: Bool, skipped: Bool) {
-        guard needToRecordSummary else { return }
-        defer { needToRecordSummary = false }
-
-        guard let _group: CaptureGroup = line.captureGroup(with: skipped ? ExecutedWithSkippedCaptureGroup.pattern : ExecutedWithoutSkippedCaptureGroup.pattern) else { return }
-        guard let group = _group as? ExecutedCaptureGroup else { return }
-
-        summary += TestSummary(
-            testsCount: group.numberOfTests,
-            skippedCount: group.numberOfSkipped,
-            failuresCount: group.numberOfFailures,
-            unexpectedCount: group.numberOfUnexpectedFailures,
-            time: group.wallClockTimeInSeconds
-        )
+        return captureGroup
     }
 }

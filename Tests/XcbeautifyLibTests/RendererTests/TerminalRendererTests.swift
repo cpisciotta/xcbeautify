@@ -2,15 +2,24 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class TerminalRendererTests: XCTestCase {
-    var parser: Parser!
+    private var parser: Parser!
+    private var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        parser = Parser(colored: false, renderer: .terminal, additionalLines: { nil })
+        parser = Parser()
+        formatter = Formatter(colored: false, renderer: .terminal, additionalLines: { nil })
+    }
+
+    override func tearDownWithError() throws {
+        parser = nil
+        formatter = nil
+        try super.tearDownWithError()
     }
 
     private func noColoredFormatted(_ string: String) -> String? {
-        parser.parse(line: string)
+        guard let captureGroup = parser.parse(line: string) else { return nil }
+        return formatter.format(captureGroup: captureGroup)
     }
 
     func testAggregateTarget() {
@@ -155,99 +164,55 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testCopyMatchingSourceAndDestinationFiles() {
+        let input = "Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"
+        let output = "[Target] Copy file.swift -> file.swift"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testCopyDifferentSourceAndDestinationFiles() {
+        let input = #"Copy /Backyard-Birds/Build/Products/Debug/Backyard_Birds.swiftmodule/x86_64-apple-macos.abi.json /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds.abi.json (in target 'Backyard Birds' from project 'Backyard Birds')"#
+        let output = "[Backyard Birds] Copy x86_64-apple-macos.abi.json -> Backyard_Birds.abi.json"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
     func testCursor() { }
 
     func testExecutedWithoutSkipped() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+        let formatted1 = noColoredFormatted(input1)
+        XCTAssertEqual(input1, formatted1)
+
         let input2 = "Executed 3 tests, with 2 failures (1 unexpected) in 0.112 (0.112) seconds"
+        let formatted2 = noColoredFormatted(input2)
+        XCTAssertEqual(input2, formatted2)
 
         let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
-        let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
-
-        // First test plan
-        XCTAssertNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
-        let formatted1 = noColoredFormatted(input1)
-        #if os(macOS)
-        // FIXME: Failing on Linux
-        XCTAssertTrue(parser.needToRecordSummary)
-        #endif
-        let formatted2 = noColoredFormatted(input2)
-        XCTAssertFalse(parser.needToRecordSummary)
-        XCTAssertNil(formatted1)
-        XCTAssertNil(formatted2)
-
-        #if os(macOS)
-        // FIXME: Failing on Linux
-        var summary = try XCTUnwrap(parser.summary)
-
-        XCTAssertEqual(summary.testsCount, 3)
-        XCTAssertEqual(summary.failuresCount, 2)
-        XCTAssertEqual(summary.unexpectedCount, 1)
-        XCTAssertEqual(summary.skippedCount, 0)
-        XCTAssertEqual(summary.time, 0.112)
-
-        // Second test plan
-        XCTAssertNotNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted3 = noColoredFormatted(input3)
-        XCTAssertTrue(parser.needToRecordSummary)
+        XCTAssertEqual(input3, formatted3)
+
+        let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
         let formatted4 = noColoredFormatted(input4)
-        XCTAssertFalse(parser.needToRecordSummary)
-        XCTAssertNil(formatted3)
-        XCTAssertNil(formatted4)
-
-        summary = try XCTUnwrap(parser.summary)
-
-        XCTAssertEqual(summary.testsCount, 4)
-        XCTAssertEqual(summary.failuresCount, 3)
-        XCTAssertEqual(summary.unexpectedCount, 2)
-        XCTAssertEqual(summary.skippedCount, 0)
-        XCTAssertEqual(summary.time, 0.312)
-        #endif
+        XCTAssertEqual(input4, formatted4)
     }
 
     #if os(macOS)
     func testExecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
+        let formatted1 = noColoredFormatted(input1)
+        XCTAssertEqual(input1, formatted1)
+
         let input2 = "Executed 56 tests, with 3 test skipped and 2 failures (1 unexpected) in 1.029 (1.029) seconds"
+        let formatted2 = noColoredFormatted(input2)
+        XCTAssertEqual(input2, formatted2)
 
         let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
-        let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
-
-        // First test plan
-        XCTAssertNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
-        let formatted1 = noColoredFormatted(input1)
-        XCTAssertTrue(parser.needToRecordSummary)
-        let formatted2 = noColoredFormatted(input2)
-        XCTAssertFalse(parser.needToRecordSummary)
-        XCTAssertNil(formatted1)
-        XCTAssertNil(formatted2)
-        XCTAssertNotNil(parser.summary)
-
-        XCTAssertEqual(parser.summary?.testsCount, 56)
-        XCTAssertEqual(parser.summary?.failuresCount, 2)
-        XCTAssertEqual(parser.summary?.unexpectedCount, 1)
-        XCTAssertEqual(parser.summary?.skippedCount, 3)
-        XCTAssertEqual(parser.summary?.time, 1.029)
-
-        // Second test plan
-        XCTAssertNotNil(parser.summary)
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted3 = noColoredFormatted(input3)
-        XCTAssertTrue(parser.needToRecordSummary)
-        let formatted4 = noColoredFormatted(input4)
-        XCTAssertFalse(parser.needToRecordSummary)
-        XCTAssertNil(formatted3)
-        XCTAssertNil(formatted4)
-        XCTAssertNotNil(parser.summary)
+        XCTAssertEqual(input3, formatted3)
 
-        XCTAssertEqual(parser.summary?.testsCount, 57)
-        XCTAssertEqual(parser.summary?.failuresCount, 3)
-        XCTAssertEqual(parser.summary?.unexpectedCount, 2)
-        XCTAssertEqual(parser.summary?.skippedCount, 4)
-        XCTAssertEqual(parser.summary?.time, 4.029)
+        let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
+        let formatted4 = noColoredFormatted(input4)
+        XCTAssertEqual(input4, formatted4)
     }
     #endif
 
@@ -457,7 +422,6 @@ final class TerminalRendererTests: XCTestCase {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         let output = #"[x] MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         XCTAssertEqual(noColoredFormatted(input), output)
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testRestartingTests() {
@@ -468,19 +432,16 @@ final class TerminalRendererTests: XCTestCase {
     func testShellCommand() {
         let formatted = noColoredFormatted("    cd /foo/bar/baz")
         XCTAssertNil(formatted)
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testUndefinedSymbolLocation() {
         let formatted = noColoredFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(formatted, "[!]       MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testTestCaseMeasured() {
@@ -515,22 +476,16 @@ final class TerminalRendererTests: XCTestCase {
     #if os(macOS)
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
-
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted = noColoredFormatted(input)
-        XCTAssertNil(formatted)
-        XCTAssertTrue(parser.needToRecordSummary)
+        XCTAssertEqual(input, formatted)
     }
     #endif
 
     #if os(macOS)
     func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
-
-        XCTAssertFalse(parser.needToRecordSummary)
         let formatted = noColoredFormatted(input)
-        XCTAssertNil(formatted)
-        XCTAssertTrue(parser.needToRecordSummary)
+        XCTAssertEqual(input, formatted)
     }
     #endif
 
@@ -539,7 +494,6 @@ final class TerminalRendererTests: XCTestCase {
     func testTiffutil() {
         let input = "TiffUtil file.tiff"
         XCTAssertNil(noColoredFormatted(input))
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testTouch() {
@@ -573,7 +527,6 @@ final class TerminalRendererTests: XCTestCase {
     func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
         XCTAssertNil(noColoredFormatted(input))
-        XCTAssertEqual(parser.outputType, .task)
     }
 
     func testPackageFetching() {
@@ -654,7 +607,6 @@ final class TerminalRendererTests: XCTestCase {
 
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
-        XCTAssertEqual(parser.outputType, .error)
     }
 
     func testXcodeprojWarning() {
@@ -671,12 +623,15 @@ final class TerminalRendererTests: XCTestCase {
 
         // Then
         XCTAssertEqual(actualFormatted, expectedFormatted)
-        XCTAssertEqual(parser.outputType, .warning)
     }
 
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
-        XCTAssertEqual(parser.outputType, .warning)
+    }
+
+    func testTestingStarted() {
+        let formatted = noColoredFormatted(#"Testing started"#)
+        XCTAssertEqual(formatted, #"Testing started"#)
     }
 }
