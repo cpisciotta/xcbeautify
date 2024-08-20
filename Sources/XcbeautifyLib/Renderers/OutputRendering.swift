@@ -85,6 +85,7 @@ protocol OutputRendering {
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+    func formatNote(group: NoteCaptureGroup) -> String
 }
 
 extension OutputRendering {
@@ -564,5 +565,9 @@ extension OutputRendering {
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
         colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
+    }
+
+    func formatNote(group: NoteCaptureGroup) -> String {
+        colored ? group.note.s.Bold.f.Cyan + " " + group.information : group.note + " " + group.information
     }
 }

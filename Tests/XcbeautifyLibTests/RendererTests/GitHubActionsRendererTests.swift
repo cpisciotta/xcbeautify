@@ -607,4 +607,9 @@ final class GitHubActionsRendererTests: XCTestCase {
         let formatted = logFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
     }
+
+    func testNote() {
+        let formatted = logFormatted("note: Building targets in dependency order")
+        XCTAssertEqual(formatted, "note: Building targets in dependency order")
+    }
 }

@@ -86,4 +86,40 @@ final class ParserTests: XCTestCase {
         let input = #"2024-08-18 18:17:52.619 xcodebuild[9799:394817] [MT] IDETestOperationsObserverDebug: 21.975 elapsed -- Testing started completed."#
         XCTAssertNil(parser.parse(line: input))
     }
+
+    func testMatchNote() throws {
+        let inputs = [
+            (note: "note:", information: "Building targets in dependency order"),
+            (note: "Note:", information: "Building targets in dependency order"),
+            (note: "note:", information: "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
+            (note: "Note:", information: "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
+            (note: "note:", information: #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
+            (note: "Note:", information: #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
+            (note: "note:", information: "Target dependency graph (12 targets)"),
+            (note: "Note:", information: "Target dependency graph (12 targets)"),
+        ]
+
+        for (note, information) in inputs {
+            let input = "\(note) \(information)"
+            let captureGroup = try XCTUnwrap(parser.parse(line: input) as? NoteCaptureGroup)
+            XCTAssertEqual(captureGroup.note, note)
+            XCTAssertEqual(captureGroup.information, information)
+        }
+    }
+
+    func testNotMatchNote() throws {
+        let inputs = [
+            "in the note middle",
+            "in the note: middle",
+            "note Building targets in dependency order",
+            "Note Metadata extraction skipped.",
+            "Target dependency graph (12 targets) note",
+            "Target dependency graph (12 targets) note:",
+            "Target dependency graph (12 targets): note:",
+        ]
+
+        for input in inputs {
+            XCTAssertNil(parser.parse(line: input))
+        }
+    }
 }

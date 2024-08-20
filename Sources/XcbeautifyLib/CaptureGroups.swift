@@ -1866,3 +1866,24 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
         self.project = project
     }
 }
+
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
+struct NoteCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = note
+    /// $2 = information
+    static let regex = Regex(pattern: "^(note:) (.*)")
+
+    let note: String
+    let information: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let note = groups[safe: 0], let information = groups[safe: 1] else { return nil }
+        self.note = note
+        self.information = information
+    }
+}

@@ -634,4 +634,9 @@ final class TerminalRendererTests: XCTestCase {
         let formatted = noColoredFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
     }
+
+    func testNote() {
+        let formatted = noColoredFormatted("note: Building targets in dependency order")
+        XCTAssertEqual(formatted, "note: Building targets in dependency order")
+    }
 }
