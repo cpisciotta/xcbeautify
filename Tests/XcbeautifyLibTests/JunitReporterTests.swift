@@ -546,6 +546,65 @@ class JunitReporterTests: XCTestCase {
         XCTAssertEqual(xml, expectedXml)
     }
 
+    private let runTestsRepeatedly = """
+        Test Suite 'All tests' started at 2021-11-05 01:08:23.237
+        Test Suite 'xcbeautifyPackageTests.xctest' started at 2021-11-05 01:08:23.238
+        Test Suite 'OutputHandlerTests' started at 2021-11-05 01:08:23.238
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
+        Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
+        Test Suite 'OutputHandlerTests' passed at 2021-11-05 01:08:23.294.
+             Executed 6 tests, with 0 failures (0 unexpected) in 0.055 (0.056) seconds
+    """
+
+    private let expectedTestsRunRepeatedlyXml = """
+    <testsuites name="All tests" tests="6" failures="0">
+        <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+            <testcase classname="XcbeautifyLibTests.OutputHandlerTests" name="testPrintAllOutputTypeByDefault" time="0.000" />
+        </testsuite>
+    </testsuites>
+    """
+
+    private let expectedTestsRunRepeatedlyLinuxXml = """
+    <testsuites name="All tests" tests="6" failures="0">
+        <testsuite name="-[XcbeautifyLibTests" tests="6" failures="0">
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+            <testcase classname="-[XcbeautifyLibTests" name="OutputHandlerTests testPrintAllOutputTypeByDefault]" time="0.000" />
+        </testsuite>
+    </testsuites>
+    """
+
+    func testJunitReportWithRepetitions() throws {
+        let reporter = JunitReporter()
+        runTestsRepeatedly.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
+        let data = try reporter.generateReport()
+        let xml = String(data: data, encoding: .utf8)!
+        #if os(Linux)
+        let expectedXml = expectedTestsRunRepeatedlyLinuxXml
+        #else
+        let expectedXml = expectedTestsRunRepeatedlyXml
+        #endif
+        XCTAssertEqual(xml, expectedXml)
+    }
+
     private let parallelTests = """
       Test suite 'MobileWebURLRouteTest' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
       Test suite 'BuildFlagTests' started on 'Clone 1 of iPhone 13 mini - xctest (32507)'

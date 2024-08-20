@@ -174,8 +174,9 @@ private extension JunitComponent {
 
 private extension [JunitComponent] {
     mutating func removePreviousFailingTestsAfter(_ testCase: TestCase) {
-        // base case, empty array or last is not the last passed test case
+        // base case, empty array or last is not the given TestCase
         guard let previousTestCase = last?.testCase,
+              previousTestCase.failure != nil,
               testCase.classname == previousTestCase.classname,
               testCase.name == previousTestCase.name
         else {
