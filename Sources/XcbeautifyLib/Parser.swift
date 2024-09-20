@@ -1,5 +1,6 @@
 import Foundation
 
+/// Maps raw `xcodebuild` output to a `CaptureGroup`.
 package final class Parser {
     private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
         AnalyzeCaptureGroup.self,
@@ -18,10 +19,12 @@ package final class Parser {
         CompileCommandCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,
+        CopyFilesCaptureGroup.self,
         CopyHeaderCaptureGroup.self,
         CopyPlistCaptureGroup.self,
         CopyStringsCaptureGroup.self,
         CpresourceCaptureGroup.self,
+        ExplicitDependencyCaptureGroup.self,
         FailingTestCaptureGroup.self,
         UIFailingTestCaptureGroup.self,
         RestartingTestCaptureGroup.self,
@@ -88,16 +91,21 @@ package final class Parser {
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
+        SwiftDriverJobDiscoveryCompilingCaptureGroup.self,
         ExecutedWithoutSkippedCaptureGroup.self,
         ExecutedWithSkippedCaptureGroup.self,
         TestSuiteAllTestsPassedCaptureGroup.self,
         TestSuiteAllTestsFailedCaptureGroup.self,
+        TestingStartedCaptureGroup.self,
     ]
 
     // MARK: - Init
 
     package init() { }
 
+    /// Maps raw `xcodebuild` output to a `CaptureGroup`.
+    /// - Parameter line: The raw `xcodebuild` output.
+    /// - Returns: The `CaptureGroup` if `line` is recognized. Otherwise, `nil`.
     package func parse(line: String) -> (any CaptureGroup)? {
         if line.isEmpty {
             return nil

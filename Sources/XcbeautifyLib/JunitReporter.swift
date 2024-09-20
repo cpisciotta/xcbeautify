@@ -3,7 +3,11 @@
 // * https://github.com/bazelbuild/bazel/blob/45092bb122b840e3410845522df9fe89c59db465/src/java_tools/junitrunner/java/com/google/testing/junit/runner/model/AntXmlResultWriter.java#L29
 // * http://windyroad.com.au/dl/Open%20Source/JUnit.xsd
 
+#if compiler(>=6.0)
+package import Foundation
+#else
 import Foundation
+#endif
 import XMLCoder
 
 package final class JunitReporter {
@@ -104,10 +108,14 @@ package final class JunitReporter {
 
     package func generateReport() throws -> Data {
         let parser = JunitComponentParser()
-        components.forEach { parser.parse(component: $0) }
+        for item in components {
+            parser.parse(component: item)
+        }
         // Prefix a fake test suite start for the parallel tests.
         parallelComponents.insert(.testSuiteStart("PARALLEL_TESTS"), at: 0)
-        parallelComponents.forEach { parser.parse(component: $0) }
+        for parallelComponent in parallelComponents {
+            parser.parse(component: parallelComponent)
+        }
         let encoder = XMLEncoder()
         encoder.keyEncodingStrategy = .lowercased
         encoder.outputFormatting = [.prettyPrinted]

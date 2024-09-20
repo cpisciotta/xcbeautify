@@ -164,6 +164,18 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testCopyMatchingSourceAndDestinationFiles() {
+        let input = "Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"
+        let output = "[Target] Copy file.swift -> file.swift"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testCopyDifferentSourceAndDestinationFiles() {
+        let input = #"Copy /Backyard-Birds/Build/Products/Debug/Backyard_Birds.swiftmodule/x86_64-apple-macos.abi.json /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds.abi.json (in target 'Backyard Birds' from project 'Backyard Birds')"#
+        let output = "[Backyard Birds] Copy x86_64-apple-macos.abi.json -> Backyard_Birds.abi.json"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
     func testCursor() { }
 
     func testExecutedWithoutSkipped() throws {
@@ -616,5 +628,10 @@ final class TerminalRendererTests: XCTestCase {
     func testDuplicateLocalizedStringKey() {
         let formatted = noColoredFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
+    }
+
+    func testTestingStarted() {
+        let formatted = noColoredFormatted(#"Testing started"#)
+        XCTAssertEqual(formatted, #"Testing started"#)
     }
 }

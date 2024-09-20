@@ -1,5 +1,6 @@
 import Foundation
 
+/// Filters formatted output by `OutputType` only if `quiet` or `quieter` are specified.
 package class OutputHandler {
     let quiet: Bool
     let quieter: Bool

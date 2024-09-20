@@ -274,20 +274,22 @@ struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file path
-    /// $2 = filename (e.g. KWNull.m)
-    /// $3 = target
-    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ ((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift))) \((in target '(.*)' from project '.*')\)$"#)
+    /// $2 = target
+    /// $3 = project
+    static let regex = Regex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
     let target: String
+    let project: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
         self.filePath = filePath
-        self.filename = filename
+        filename = filePath.lastPathComponent
         self.target = target
+        self.project = project
     }
 }
 
@@ -358,6 +360,29 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
         guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
         self.filePath = filePath
         self.filename = filename
+        self.target = target
+    }
+}
+
+struct CopyFilesCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    // ((?:\S|(?<=\\) )+) --> Match any non-whitespace character OR any escaped space (space in filename)
+    static let regex = Regex(pattern: #"^Copy ((?:\S|(?<=\\) )+) ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '.*'\)$"#)
+
+    let firstFilePath: String
+    let firstFilename: String
+    let secondFilePath: String
+    let secondFilename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let firstFilePath = groups[safe: 0], let secondFilePath = groups[safe: 1], let target = groups[safe: 2] else { return nil }
+        self.firstFilePath = firstFilePath
+        firstFilename = firstFilePath.lastPathComponent
+        self.secondFilePath = secondFilePath
+        secondFilename = secondFilePath.lastPathComponent
         self.target = target
     }
 }
@@ -496,6 +521,22 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
         self.numberOfFailures = numberOfFailures
         self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
         self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    }
+}
+
+struct ExplicitDependencyCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^[ \t]*➜ Explicit dependency on target '([^']+)' in project '([^']+)'$"#)
+
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
+        self.target = target
+        self.project = project
     }
 }
 
@@ -1773,4 +1814,55 @@ struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
 
     init?(groups: [String]) { }
+}
+
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
+struct TestingStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
+    /// Regular expression captured groups:
+    /// $1 = whole message
+    static let regex = Regex(pattern: "^(Testing started.*)$")
+
+    let wholeMessage: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeMessage = groups[safe: 0] else { return nil }
+        self.wholeMessage = wholeMessage
+    }
+}
+
+struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    // Examples:
+    //  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardBirdsPassOfferCard.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
+    //  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardSkyView.swift, BackyardSupplyGauge.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
+    //  - SwiftDriverJobDiscovery normal x86_64 Compiling resource_bundle_accessor.swift, Account+DataGeneration.swift, Backyard.swift (in target 'SomeTarget' from project 'SomeProject')
+    //
+    // Regular expression captured groups:
+    // $1 = state
+    // $2 = architecture
+    // $3 = filenames
+    // $4 = target
+    // $5 = project
+    static let regex = Regex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
+
+    let state: String // Currently, the only expected/known value is `normal`
+    let architecture: String
+    let filenames: [String]
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 5)
+        guard let state = groups[safe: 0], let architecture = groups[safe: 1], let filenamesGroup = groups[safe: 2], let target = groups[safe: 3], let project = groups[safe: 4] else { return nil }
+        self.state = state
+        self.architecture = architecture
+        filenames = filenamesGroup.components(separatedBy: ", ")
+        self.target = target
+        self.project = project
+    }
 }

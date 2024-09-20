@@ -1,5 +1,6 @@
 import Foundation
 
+/// Formats `CaptureGroup` instances appropriate for the specified `renderer` context.
 package struct Formatter {
     private let colored: Bool
     private let renderer: any OutputRendering
@@ -63,6 +64,8 @@ package struct Formatter {
             return renderer.formatCompileWarning(group: group)
         case let group as CompileXibCaptureGroup:
             return renderer.formatCompile(group: group)
+        case let group as CopyFilesCaptureGroup:
+            return renderer.formatCopyFiles(group: group)
         case let group as CopyHeaderCaptureGroup:
             return renderer.formatCopy(group: group)
         case let group as CopyPlistCaptureGroup:
@@ -79,6 +82,8 @@ package struct Formatter {
             return renderer.formatExecutedWithoutSkipped(group: group)
         case let group as ExecutedWithSkippedCaptureGroup:
             return renderer.formatExecutedWithSkipped(group: group)
+        case let group as ExplicitDependencyCaptureGroup:
+            return renderer.formatExplicitDependencyCaptureGroup(group: group)
         case let group as FailingTestCaptureGroup:
             return renderer.formatFailingTest(group: group)
         case let group as FatalErrorCaptureGroup:
@@ -203,6 +208,10 @@ package struct Formatter {
             return renderer.formatError(group: group)
         case let group as SwiftDriverJobDiscoveryEmittingModuleCaptureGroup:
             return renderer.formatSwiftDriverJobDiscoveryEmittingModule(group: group)
+        case let group as SwiftDriverJobDiscoveryCompilingCaptureGroup:
+            return renderer.formatSwiftDriverJobDiscoveryCompiling(group: group)
+        case let group as TestingStartedCaptureGroup:
+            return renderer.formatTestingStarted(group: group)
         default:
             assertionFailure()
             return nil

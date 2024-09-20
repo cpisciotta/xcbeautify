@@ -399,7 +399,9 @@ class JunitReporterTests: XCTestCase {
 
     func testJunitReport() throws {
         let reporter = JunitReporter()
-        testLog.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
+        for component in testLog.components(separatedBy: .newlines) {
+            reporter.add(line: component)
+        }
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
         #if os(Linux)
@@ -679,7 +681,9 @@ class JunitReporterTests: XCTestCase {
 
     func testParallelJunitReport() throws {
         let reporter = JunitReporter()
-        parallelTests.components(separatedBy: .newlines).forEach { reporter.add(line: $0) }
+        for component in parallelTests.components(separatedBy: .newlines) {
+            reporter.add(line: component)
+        }
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
         let expectedXml = expectedParallelXml

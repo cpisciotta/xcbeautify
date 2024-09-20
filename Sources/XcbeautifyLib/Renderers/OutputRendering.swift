@@ -1,7 +1,12 @@
 import Foundation
 
+/// A renderer is responsible for formatting raw xcodebuild output.
+/// `OutputRendering` defines many default implementations for output that is similarly formatted across renderers.
 protocol OutputRendering {
+    /// Indicates if the renderer should color its formatted output.
     var colored: Bool { get }
+
+    /// A closure that provides the subsequent console output when needed (i.e. multi-line output).
     var additionalLines: () -> String? { get }
 
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String
@@ -16,12 +21,14 @@ protocol OutputRendering {
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
     func formatCopy(group: any CopyCaptureGroup) -> String
+    func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
     func formatError(group: any ErrorCaptureGroup) -> String
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
+    func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String?
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String
@@ -76,6 +83,8 @@ protocol OutputRendering {
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
+    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
+    func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -129,6 +138,13 @@ extension OutputRendering {
         return colored ? "[\(target.f.Cyan)] \("Copying".s.Bold) \(filename)" : "[\(target)] Copying \(filename)"
     }
 
+    func formatCopyFiles(group: CopyFilesCaptureGroup) -> String {
+        let target = group.target
+        let firstFilename = group.firstFilename
+        let secondFilename = group.secondFilename
+        return colored ? "[\(target.f.Cyan)] \("Copy".s.Bold) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
+    }
+
     func formatCursor(group: CursorCaptureGroup) -> String? {
         nil
     }
@@ -139,6 +155,10 @@ extension OutputRendering {
 
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String {
         group.wholeResult
+    }
+
+    func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String? {
+        nil
     }
 
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String {
@@ -332,6 +352,10 @@ extension OutputRendering {
     }
 
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String? {
         nil
     }
 
@@ -536,5 +560,9 @@ extension OutputRendering {
 
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         colored ? group.wholeError.s.Bold.f.Red : group.wholeError
+    }
+
+    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
+        colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
     }
 }
