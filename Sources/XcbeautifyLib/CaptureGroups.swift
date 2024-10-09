@@ -1866,3 +1866,312 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
         self.project = project
     }
 }
+
+struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+
+    /// Regular expression to capture the start of a test run.
+    /// $1 = whole message
+    static let regex = Regex(pattern: #"^(􀟈\s*Test run started\.)$"#)
+
+    let wholeMessage: String
+
+    init?(groups: [String]) {
+        // Parse the whole message indicating the start of a test run
+        guard let wholeMessage = groups[safe: 0] else { return nil }
+        self.wholeMessage = wholeMessage
+    }
+}
+
+struct SwiftTestingRunCompletionCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+
+    /// Regular expression to capture the number of tests and total time.
+    /// $1 = number of tests
+    /// $2 = total time in seconds
+    static let regex = Regex(pattern: #"^􁁛\s*Test run with (\d+) tests passed after ([\d.]+) seconds\.$"#)
+
+    let numberOfTests: Int
+    let totalTime: Double
+
+    init?(groups: [String]) {
+        // Parse the number of tests and total time from the captured groups
+        guard let numberOfTests = groups[safe: 0].flatMap(Int.init),
+              let totalTime = groups[safe: 1].flatMap(Double.init) else { return nil }
+        self.numberOfTests = numberOfTests
+        self.totalTime = totalTime
+    }
+}
+
+struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+
+    /// Regular expression to capture the number of tests, total time, and the number of issues.
+    /// $1 = number of tests
+    /// $2 = total time in seconds
+    /// $3 = number of issues
+    static let regex = Regex(pattern: #"^􀢄\s*Test run with (\d+) tests failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+
+    let numberOfTests: Int
+    let totalTime: Double
+    let numberOfIssues: Int
+
+    init?(groups: [String]) {
+        // Parse the number of tests, total time, and number of issues from the captured groups
+        guard let numberOfTests = groups[safe: 0].flatMap(Int.init),
+              let totalTime = groups[safe: 1].flatMap(Double.init),
+              let numberOfIssues = groups[safe: 2].flatMap(Int.init) else { return nil }
+        self.numberOfTests = numberOfTests
+        self.totalTime = totalTime
+        self.numberOfIssues = numberOfIssues
+    }
+}
+
+struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
+    /// Regular expression to capture the start of a test suite.
+    /// $1 = suite name
+    static let regex = Regex(pattern: #"^􀟈\s*Suite (.*) started\.$"#)
+
+    let suiteName: String
+
+    init?(groups: [String]) {
+        // Parse the name of the test suite
+        guard let suiteName = groups[safe: 0] else { return nil }
+        self.suiteName = suiteName
+    }
+}
+
+struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture the start of a test case.
+    /// $1 = test name
+    static let regex = Regex(pattern: #"^\s*􀟈\s*Test (.*) started\.$"#)
+
+    let testName: String
+
+    init?(groups: [String]) {
+        // Parse the name of the test case that started
+        guard let testName = groups[safe: 0] else { return nil }
+        self.testName = testName
+    }
+}
+
+struct SwiftTestingSuitePassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+
+    /// Regular expression to capture the successful completion of a test suite.
+    /// $1 = suite name
+    /// $2 = total time taken in seconds
+    static let regex = Regex(pattern: #"^􁁛\s*Suite (.*) passed after ([\d.]+) seconds\.$"#)
+
+    let suiteName: String
+    let timeTaken: Double
+
+    init?(groups: [String]) {
+        guard let suiteName = groups[safe: 0],
+              let timeTaken = groups[safe: 1].flatMap(Double.init) else { return nil }
+        self.suiteName = suiteName
+        self.timeTaken = timeTaken
+    }
+}
+
+struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+
+    /// Regular expression to capture the failure of a test suite.
+    /// $1 = suite name
+    /// $2 = total time taken in seconds
+    /// $3 = number of issues
+    static let regex = Regex(pattern: #"^􀢄\s*Suite "(.*)" failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+
+    let suiteName: String
+    let timeTaken: Double
+    let numberOfIssues: Int
+
+    init?(groups: [String]) {
+        guard let suiteName = groups[safe: 0],
+              let timeTaken = groups[safe: 1].flatMap(Double.init),
+              let numberOfIssues = groups[safe: 2].flatMap(Int.init) else { return nil }
+        self.suiteName = suiteName
+        self.timeTaken = timeTaken
+        self.numberOfIssues = numberOfIssues
+    }
+}
+
+struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture the failure of a test case.
+    /// $1 = test name
+    /// $2 = time taken in seconds
+    /// $3 = number of issues
+    static let regex = Regex(pattern: #"^􀢄\s*Test "(.*)" failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+
+    let testName: String
+    let timeTaken: Double
+    let numberOfIssues: Int
+
+    init?(groups: [String]) {
+        guard let testName = groups[safe: 0],
+              let timeTaken = groups[safe: 1].flatMap(Double.init),
+              let numberOfIssues = groups[safe: 2].flatMap(Int.init) else { return nil }
+        self.testName = testName
+        self.timeTaken = timeTaken
+        self.numberOfIssues = numberOfIssues
+    }
+}
+
+struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture the successful completion of a test case.
+    /// $1 = test name
+    /// $2 = time taken in seconds
+    static let regex = Regex(pattern: #"^􁁛\s*Test (.*) passed after ([\d.]+) seconds\.$"#)
+
+    let testName: String
+    let timeTaken: Double
+
+    init?(groups: [String]) {
+        guard let testName = groups[safe: 0],
+              let timeTaken = groups[safe: 1].flatMap(Double.init) else { return nil }
+        self.testName = testName
+        self.timeTaken = timeTaken
+    }
+}
+
+struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture a skipped test case.
+    /// $1 = test name
+    static let regex = Regex(pattern: #"^􀙟\s*Test "(.*)" skipped\.$"#)
+
+    let testName: String
+
+    init?(groups: [String]) {
+        // Parse the test name of the skipped test case
+        guard let testName = groups[safe: 0] else { return nil }
+        self.testName = testName
+    }
+}
+
+struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture a skipped test case with a reason.
+    /// $1 = test name
+    /// $2 = optional reason
+    static let regex = Regex(pattern: #"^􀙟\s*Test "(.*)" skipped(?:\s*:\s*"(.*)")?$"#)
+
+    let testName: String
+    let reason: String?
+
+    init?(groups: [String]) {
+        guard let testName = groups[safe: 0] else { return nil }
+        self.testName = testName
+        self.reason = groups[safe: 1]
+    }
+}
+
+struct SwiftTestingIssueCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture the main part of the issue message.
+    /// $1 = test description
+    /// $2 = number of arguments (optional)
+    static let regex = Regex(pattern: #"^􀢄\s*Test "(.*?)" recorded an issue(?: with (\d+) arguments?)?"#)
+
+    let testDescription: String
+    let numberOfArguments: Int?
+
+    init?(groups: [String]) {
+        guard groups.count >= 1,
+              let testDescription = groups[safe: 0] else { return nil }
+
+        self.testDescription = testDescription
+        self.numberOfArguments = groups[safe: 1].flatMap { Int($0) }
+    }
+}
+
+
+struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+    
+    /// Regular expression to capture argument passing in tests.
+    /// $1 = number of arguments
+    /// $2 = arguments details
+    static let regex = Regex(pattern: #"^􀟈\s*Passing (\d+) argument[s]? (.*)$"#)
+    
+    let numberOfArguments: Int
+    let argumentsDetails: String
+    
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let _numberOfArguments = groups[safe: 0],
+              let numberOfArguments = Int(_numberOfArguments),
+              let argumentsDetails = groups[safe: 1] else { return nil }
+        self.numberOfArguments = numberOfArguments
+        self.argumentsDetails = argumentsDetails
+    }
+}
+
+struct SwiftTestingPassingArgumentMultipleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture argument passing, diagnostics, and additional details.
+    /// $1 = number of arguments
+    /// $2 = input
+    /// $3 = expected value (optional)
+    /// $4 = additional info (optional)
+    /// $5 = final message
+    static let regex = Regex(pattern: #"^􀟈\s*Passing (\d+) argument[s]? input → "(.*)"(?:, expected(?:Message|TypeName)? → (.*?))?(?:, otherCode → (.*?))? to "(.*)"$"#)
+
+    let numberOfArguments: Int
+    let input: String
+    let expectedValue: String?
+    let additionalInfo: String?
+    let finalMessage: String
+
+    init?(groups: [String]) {
+        guard let numberOfArguments = groups[safe: 0].flatMap(Int.init),
+              let input = groups[safe: 1],
+              let finalMessage = groups[safe: 4] else { return nil }
+
+        self.numberOfArguments = numberOfArguments
+        self.input = input
+        self.expectedValue = groups[safe: 2].flatMap { $0 != "nil" ? $0 : nil }
+        self.additionalInfo = groups[safe: 3].flatMap { $0 != "nil" ? $0 : nil }
+        self.finalMessage = finalMessage
+    }
+}
+
+struct SwiftTestingAttributeCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture availability or tag expressions in tests.
+    /// $1 = input type (tagExpr or input)
+    /// $2 = input value
+    /// $3 = expected outputs (optional)
+    /// $4 = final message
+    static let regex = Regex(pattern: #"^􀟈\s*Passing (\d+) argument[s]? (tagExpr|input) → "(.*)"(?:, expectedOutputs → \[(.*)\])? to "(.*)"$"#)
+
+    let inputType: String
+    let inputValue: String
+    let expectedOutputs: String?
+    let finalMessage: String
+
+    init?(groups: [String]) {
+        guard let inputType = groups[safe: 1],
+              let inputValue = groups[safe: 2],
+              let finalMessage = groups[safe: 4] else { return nil }
+
+        self.inputType = inputType
+        self.inputValue = inputValue
+        self.expectedOutputs = groups[safe: 3].flatMap { $0 != "nil" ? $0 : nil }
+        self.finalMessage = finalMessage
+    }
+}
