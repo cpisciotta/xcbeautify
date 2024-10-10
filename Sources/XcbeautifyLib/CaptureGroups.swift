@@ -15,11 +15,6 @@ extension CaptureGroup {
     var pattern: String { Self.regex.pattern }
 }
 
-protocol TestCaseCaptureGroup: CaptureGroup {
-    var testCase: String { get }
-    var time: String { get }
-}
-
 protocol ErrorCaptureGroup: CaptureGroup {
     var wholeError: String { get }
 }
