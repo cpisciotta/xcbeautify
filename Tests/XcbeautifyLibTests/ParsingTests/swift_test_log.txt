@@ -1,0 +1,1765 @@
+Test Suite 'All tests' started at 2024-10-09 16:48:58.587.
+Test Suite 'swift-testingPackageTests.xctest' started at 2024-10-09 16:48:58.588.
+Test Suite 'IssueTests' started at 2024-10-09 16:48:58.588.
+Test Case '-[TestingTests.IssueTests testCastAsAnyProtocol]' started.
+Test Case '-[TestingTests.IssueTests testCastAsAnyProtocol]' passed (0.004 seconds).
+Test Case '-[TestingTests.IssueTests testCEnumDescription]' started.
+Test Case '-[TestingTests.IssueTests testCEnumDescription]' passed (0.002 seconds).
+Test Case '-[TestingTests.IssueTests testCollectionDifferenceSkippedForRanges]' started.
+Test Case '-[TestingTests.IssueTests testCollectionDifferenceSkippedForRanges]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testCollectionDifferenceSkippedForStrings]' started.
+Test Case '-[TestingTests.IssueTests testCollectionDifferenceSkippedForStrings]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testCollectionDifference]' started.
+Test Case '-[TestingTests.IssueTests testCollectionDifference]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testCustomTestStringConvertible]' started.
+Test Case '-[TestingTests.IssueTests testCustomTestStringConvertible]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testDescriptionProperties]' started.
+Test Case '-[TestingTests.IssueTests testDescriptionProperties]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testEnumDescription]' started.
+Test Case '-[TestingTests.IssueTests testEnumDescription]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testEnumWithCustomDescription]' started.
+Test Case '-[TestingTests.IssueTests testEnumWithCustomDescription]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_mismatchedErrorDescription_nonVoid]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_mismatchedErrorDescription_nonVoid]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_mismatchedErrorDescription]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_mismatchedErrorDescription]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_Mismatching]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_Mismatching]' passed (0.003 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_ThrowingFromErrorMatcher]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect_ThrowingFromErrorMatcher]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_mismatchedErrorDescription_nonVoid]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_mismatchedErrorDescription_nonVoid]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_mismatchedErrorDescription]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_mismatchedErrorDescription]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_Mismatching]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_Mismatching]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_ThrowingFromErrorMatcher]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync_ThrowingFromErrorMatcher]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpectAsync]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithExpect]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithRequire_ThrowingFromErrorMatcher]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithRequire_ThrowingFromErrorMatcher]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithRequireAsync_ThrowingFromErrorMatcher]' started.
+Test Case '-[TestingTests.IssueTests testErrorCheckingWithRequireAsync_ThrowingFromErrorMatcher]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorPropertyNilForOtherIssueKinds]' started.
+Test Case '-[TestingTests.IssueTests testErrorPropertyNilForOtherIssueKinds]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorPropertyValidForThrownErrors]' started.
+Test Case '-[TestingTests.IssueTests testErrorPropertyValidForThrownErrors]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testErrorThrownFromExpect]' started.
+Test Case '-[TestingTests.IssueTests testErrorThrownFromExpect]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testExpectationValueLazyStringification]' started.
+Test Case '-[TestingTests.IssueTests testExpectationValueLazyStringification]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testExpect]' started.
+Test Case '-[TestingTests.IssueTests testExpect]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testExpressionLiterals]' started.
+Test Case '-[TestingTests.IssueTests testExpressionLiterals]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testExpressionRuntimeValueCapture]' started.
+Test Case '-[TestingTests.IssueTests testExpressionRuntimeValueCapture]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testExpressionRuntimeValueChildren]' started.
+Test Case '-[TestingTests.IssueTests testExpressionRuntimeValueChildren]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testFailBecauseOfError]' started.
+Test Case '-[TestingTests.IssueTests testFailBecauseOfError]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testFail]' started.
+Test Case '-[TestingTests.IssueTests testFail]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testFailWithoutCurrentTest]' started.
+Test Case '-[TestingTests.IssueTests testFailWithoutCurrentTest]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testGetSourceLocationProperty]' started.
+Test Case '-[TestingTests.IssueTests testGetSourceLocationProperty]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testIsAndAsComparisons]' started.
+Test Case '-[TestingTests.IssueTests testIsAndAsComparisons]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testLazyExpectDoesNotEvaluateRightHandValue]' started.
+Test Case '-[TestingTests.IssueTests testLazyExpectDoesNotEvaluateRightHandValue]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testLazyExpectEvaluatesRightHandValueWhenNeeded]' started.
+Test Case '-[TestingTests.IssueTests testLazyExpectEvaluatesRightHandValueWhenNeeded]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testMemberFunctionCall]' started.
+Test Case '-[TestingTests.IssueTests testMemberFunctionCall]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testMemberFunctionCallWithFunctionArgument]' started.
+Test Case '-[TestingTests.IssueTests testMemberFunctionCallWithFunctionArgument]' passed (0.001 seconds).
+Test Case '-[TestingTests.IssueTests testMemberFunctionCallWithInoutArgument]' started.
+Test Case '-[TestingTests.IssueTests testMemberFunctionCallWithInoutArgument]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testMemberFunctionCallWithLabel]' started.
+Test Case '-[TestingTests.IssueTests testMemberFunctionCallWithLabel]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testNegatedExpressionsExpandToCaptureNegatedExpression]' started.
+Test Case '-[TestingTests.IssueTests testNegatedExpressionsExpandToCaptureNegatedExpression]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testNegatedExpressionsHaveCorrectCapturedExpressions]' started.
+Test Case '-[TestingTests.IssueTests testNegatedExpressionsHaveCorrectCapturedExpressions]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testNegatedExpressions]' started.
+Test Case '-[TestingTests.IssueTests testNegatedExpressions]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testNilOptionalCallResult]' started.
+Test Case '-[TestingTests.IssueTests testNilOptionalCallResult]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testNilOptionalOperand]' started.
+Test Case '-[TestingTests.IssueTests testNilOptionalOperand]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testOptionalOperand]' started.
+Test Case '-[TestingTests.IssueTests testOptionalOperand]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testOptionalUnwrappingMemberFunctionCall]' started.
+Test Case '-[TestingTests.IssueTests testOptionalUnwrappingMemberFunctionCall]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testOptionalUnwrappingWithCoalescing_Failure]' started.
+Test Case '-[TestingTests.IssueTests testOptionalUnwrappingWithCoalescing_Failure]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testOptionalUnwrappingWithCoalescing]' started.
+Test Case '-[TestingTests.IssueTests testOptionalUnwrappingWithCoalescing]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testOptionalUnwrapping]' started.
+Test Case '-[TestingTests.IssueTests testOptionalUnwrapping]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testRequireOptionalMemberAccessEvaluatesToNil]' started.
+Test Case '-[TestingTests.IssueTests testRequireOptionalMemberAccessEvaluatesToNil]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testRequire]' started.
+Test Case '-[TestingTests.IssueTests testRequire]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testSetSourceLocationProperty]' started.
+Test Case '-[TestingTests.IssueTests testSetSourceLocationProperty]' passed (0.000 seconds).
+Test Case '-[TestingTests.IssueTests testThrowingMemberFunctionCall]' started.
+Test Case '-[TestingTests.IssueTests testThrowingMemberFunctionCall]' passed (0.000 seconds).
+Test Suite 'IssueTests' passed at 2024-10-09 16:48:58.621.
+     Executed 54 tests, with 0 failures (0 unexpected) in 0.032 (0.033) seconds
+Test Suite 'KnownIssueTests' started at 2024-10-09 16:48:58.621.
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueThatDoesNotAlwaysOccur]' started.
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueThatDoesNotAlwaysOccur]' passed (0.001 seconds).
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueWithExpectCallAndCondition]' started.
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueWithExpectCallAndCondition]' passed (0.001 seconds).
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueWithExpectCall]' started.
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueWithExpectCall]' passed (0.001 seconds).
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueWithFalsePrecondition]' started.
+Test Case '-[TestingTests.KnownIssueTests testAsyncKnownIssueWithFalsePrecondition]' passed (0.000 seconds).
+Test Case '-[TestingTests.KnownIssueTests testIssueIsKnownPropertyIsSetCorrectly]' started.
+Test Case '-[TestingTests.KnownIssueTests testIssueIsKnownPropertyIsSetCorrectly]' passed (0.001 seconds).
+Test Case '-[TestingTests.KnownIssueTests testIssueIsKnownPropertyIsSetCorrectlyWithCustomIssueMatcher]' started.
+Test Case '-[TestingTests.KnownIssueTests testIssueIsKnownPropertyIsSetCorrectlyWithCustomIssueMatcher]' passed (0.001 seconds).
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueOnDetachedTask]' started.
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueOnDetachedTask]' passed (0.000 seconds).
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueThatDoesNotAlwaysOccur]' started.
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueThatDoesNotAlwaysOccur]' passed (0.001 seconds).
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithComment]' started.
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithComment]' passed (0.000 seconds).
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithExpectCallAndCondition]' started.
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithExpectCallAndCondition]' passed (0.000 seconds).
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithExpectCall]' started.
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithExpectCall]' passed (0.000 seconds).
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithFalsePrecondition]' started.
+Test Case '-[TestingTests.KnownIssueTests testKnownIssueWithFalsePrecondition]' passed (0.000 seconds).
+Test Case '-[TestingTests.KnownIssueTests testUnexpectedErrorRecordsTwoIssues]' started.
+Test Case '-[TestingTests.KnownIssueTests testUnexpectedErrorRecordsTwoIssues]' passed (0.001 seconds).
+Test Suite 'KnownIssueTests' passed at 2024-10-09 16:48:58.627.
+     Executed 13 tests, with 0 failures (0 unexpected) in 0.006 (0.006) seconds
+Test Suite 'ObjCClassTests' started at 2024-10-09 16:48:58.628.
+Test Case '-[TestingTests.ObjCClassTests testAsynchronousThrowing]' started.
+Test Case '-[TestingTests.ObjCClassTests testAsynchronousThrowing]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testAsynchronous]' started.
+Test Case '-[TestingTests.ObjCClassTests testAsynchronous]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testExplicitName]' started.
+Test Case '-[TestingTests.ObjCClassTests testExplicitName]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testExplicitNameAsyncThrows]' started.
+Test Case '-[TestingTests.ObjCClassTests testExplicitNameAsyncThrows]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testExplicitNameThrowsFunError:]' started.
+Test Case '-[TestingTests.ObjCClassTests testExplicitNameThrowsFunError:]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testExplicitNameWithBackticks]' started.
+Test Case '-[TestingTests.ObjCClassTests testExplicitNameWithBackticks]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testExplicitName]' started.
+Test Case '-[TestingTests.ObjCClassTests testExplicitName]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testImplicitName]' started.
+Test Case '-[TestingTests.ObjCClassTests testImplicitName]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testImplicitNameWithBackticks]' started.
+Test Case '-[TestingTests.ObjCClassTests testImplicitNameWithBackticks]' passed (0.000 seconds).
+Test Case '-[TestingTests.ObjCClassTests testThrowing]' started.
+Test Case '-[TestingTests.ObjCClassTests testThrowing]' passed (0.000 seconds).
+Test Suite 'ObjCClassTests' passed at 2024-10-09 16:48:58.629.
+     Executed 10 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'RunnerTests' started at 2024-10-09 16:48:58.629.
+Test Case '-[TestingTests.RunnerTests testAvailableWithDefinedAvailability]' started.
+Test Case '-[TestingTests.RunnerTests testAvailableWithDefinedAvailability]' passed (0.068 seconds).
+Test Case '-[TestingTests.RunnerTests testAvailableWithSwiftVersion]' started.
+Test Case '-[TestingTests.RunnerTests testAvailableWithSwiftVersion]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testConditionTraitIsConstant]' started.
+Test Case '-[TestingTests.RunnerTests testConditionTraitIsConstant]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testConditionTraitsAreEvaluatedOutermostToInnermost]' started.
+Test Case '-[TestingTests.RunnerTests testConditionTraitsAreEvaluatedOutermostToInnermost]' passed (0.010 seconds).
+Test Case '-[TestingTests.RunnerTests testDefaultInit]' started.
+Test Case '-[TestingTests.RunnerTests testDefaultInit]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testDeprecated]' started.
+Test Case '-[TestingTests.RunnerTests testDeprecated]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testErrorThrownFromTest]' started.
+Test Case '-[TestingTests.RunnerTests testErrorThrownFromTest]' passed (0.001 seconds).
+Test Case '-[TestingTests.RunnerTests testErrorThrownWhileEvaluatingArguments]' started.
+Test Case '-[TestingTests.RunnerTests testErrorThrownWhileEvaluatingArguments]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testExpectationCheckedEventHandlingWhenDisabled]' started.
+Test Case '-[TestingTests.RunnerTests testExpectationCheckedEventHandlingWhenDisabled]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testExpectationCheckedEventHandlingWhenEnabled]' started.
+Test Case '-[TestingTests.RunnerTests testExpectationCheckedEventHandlingWhenEnabled]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testFreeFunction]' started.
+Test Case '-[TestingTests.RunnerTests testFreeFunction]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testGeneratedPlan]' started.
+Test Case '-[TestingTests.RunnerTests testGeneratedPlan]' passed (0.038 seconds).
+Test Case '-[TestingTests.RunnerTests testHardCodedPlan]' started.
+Test Case '-[TestingTests.RunnerTests testHardCodedPlan]' passed (0.013 seconds).
+Test Case '-[TestingTests.RunnerTests testInitialTaskLocalState]' started.
+Test Case '-[TestingTests.RunnerTests testInitialTaskLocalState]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testNoasyncTestsAreCallable]' started.
+Test Case '-[TestingTests.RunnerTests testNoasyncTestsAreCallable]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testObsoletedTestFunctions]' started.
+Test Case '-[TestingTests.RunnerTests testObsoletedTestFunctions]' passed (0.038 seconds).
+Test Case '-[TestingTests.RunnerTests testParameterizedTestWithNoCasesIsSkipped]' started.
+Test Case '-[TestingTests.RunnerTests testParameterizedTestWithNoCasesIsSkipped]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testPlanExcludesHiddenTests]' started.
+Test Case '-[TestingTests.RunnerTests testPlanExcludesHiddenTests]' passed (0.078 seconds).
+Test Case '-[TestingTests.RunnerTests testPoundIfFalseElseIfTestFunctionRuns]' started.
+Test Case '-[TestingTests.RunnerTests testPoundIfFalseElseIfTestFunctionRuns]' passed (0.042 seconds).
+Test Case '-[TestingTests.RunnerTests testPoundIfFalseElseTestFunctionRuns]' started.
+Test Case '-[TestingTests.RunnerTests testPoundIfFalseElseTestFunctionRuns]' passed (0.044 seconds).
+Test Case '-[TestingTests.RunnerTests testPoundIfFalseTestFunctionDoesNotRun]' started.
+Test Case '-[TestingTests.RunnerTests testPoundIfFalseTestFunctionDoesNotRun]' passed (0.047 seconds).
+Test Case '-[TestingTests.RunnerTests testPoundIfTrueTestFunctionRuns]' started.
+Test Case '-[TestingTests.RunnerTests testPoundIfTrueTestFunctionRuns]' passed (0.045 seconds).
+Test Case '-[TestingTests.RunnerTests testSerializedSortOrder]' started.
+Test Case '-[TestingTests.RunnerTests testSerializedSortOrder]' passed (0.044 seconds).
+Test Case '-[TestingTests.RunnerTests testSynchronousTestFunctionRunsInDefaultIsolationContext]' started.
+Test Case '-[TestingTests.RunnerTests testSynchronousTestFunctionRunsInDefaultIsolationContext]' passed (0.087 seconds).
+Test Case '-[TestingTests.RunnerTests testSynchronousTestFunctionRunsOnMainActorWhenEnforced]' started.
+Test Case '-[TestingTests.RunnerTests testSynchronousTestFunctionRunsOnMainActorWhenEnforced]' passed (0.087 seconds).
+Test Case '-[TestingTests.RunnerTests testTestActionIsRecordIssueDueToErrorThrownByConditionTrait]' started.
+Test Case '-[TestingTests.RunnerTests testTestActionIsRecordIssueDueToErrorThrownByConditionTrait]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testTestIsNotSkippedWithPassingConditionTraits]' started.
+Test Case '-[TestingTests.RunnerTests testTestIsNotSkippedWithPassingConditionTraits]' passed (0.001 seconds).
+Test Case '-[TestingTests.RunnerTests testTestIsSkippedWhenDisabledWithComment]' started.
+Test Case '-[TestingTests.RunnerTests testTestIsSkippedWhenDisabledWithComment]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testTestIsSkippedWhenDisabled]' started.
+Test Case '-[TestingTests.RunnerTests testTestIsSkippedWhenDisabled]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testTestIsSkippedWithBlockingEnabledIfTrait]' started.
+Test Case '-[TestingTests.RunnerTests testTestIsSkippedWithBlockingEnabledIfTrait]' passed (0.001 seconds).
+Test Case '-[TestingTests.RunnerTests testTestsProperty]' started.
+Test Case '-[TestingTests.RunnerTests testTestsProperty]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testUnavailableTestMessageIsCaptured]' started.
+Test Case '-[TestingTests.RunnerTests testUnavailableTestMessageIsCaptured]' passed (0.038 seconds).
+Test Case '-[TestingTests.RunnerTests testUnavailableTestsAreSkipped]' started.
+Test Case '-[TestingTests.RunnerTests testUnavailableTestsAreSkipped]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testYieldingError]' started.
+Test Case '-[TestingTests.RunnerTests testYieldingError]' passed (0.000 seconds).
+Test Case '-[TestingTests.RunnerTests testYieldsIssueWhenErrorThrownFromParallelizedTest]' started.
+Test Case '-[TestingTests.RunnerTests testYieldsIssueWhenErrorThrownFromParallelizedTest]' passed (0.043 seconds).
+Test Case '-[TestingTests.RunnerTests testYieldsIssueWhenErrorThrownFromTestCase]' started.
+Test Case '-[TestingTests.RunnerTests testYieldsIssueWhenErrorThrownFromTestCase]' passed (0.044 seconds).
+Test Suite 'RunnerTests' passed at 2024-10-09 16:48:59.660.
+     Executed 36 tests, with 0 failures (0 unexpected) in 1.030 (1.031) seconds
+Test Suite 'swift-testingPackageTests.xctest' passed at 2024-10-09 16:48:59.660.
+     Executed 113 tests, with 0 failures (0 unexpected) in 1.069 (1.072) seconds
+Test Suite 'All tests' passed at 2024-10-09 16:48:59.660.
+     Executed 113 tests, with 0 failures (0 unexpected) in 1.069 (1.073) seconds
+􀟈  Test run started.
+􀄵  Testing Library Version: fb1eead57d24085e641b09d0e92fab703257bfa8
+􀟈  Suite "Backtrace Tests" started.
+􀟈  Suite "Type Name Conflict Tests" started.
+􀟈  Suite "Test.Case.Argument.ID Tests" started.
+􀟈  Suite "Test.Snapshot tests" started.
+􀟈  Suite "TestDeclarationMacro Tests" started.
+􀟈  Suite "Unique Identifier Tests" started.
+􀟈  Suite "CError Tests" started.
+􀟈  Suite "TagMacro Tests" started.
+􀟈  Suite "Non-Copyable Tests" started.
+􀟈  Suite "Comment Tests" started.
+􀟈  Suite "ConditionMacro Tests" started.
+􀟈  Suite "SourceLocation Tests" started.
+􀟈  Suite "Test.Case.Argument Tests" started.
+􀟈  Suite "Bug Tests" started.
+􀟈  Suite "SkipInfo Tests" started.
+􀟈  Suite "Parallelization Trait Tests" started.
+􀟈  Suite NonXCTestCaseClassTests started.
+􀟈  Suite "Graph<K, V> Tests" started.
+􀟈  Suite "Cartesian Product Tests" started.
+􀟈  Suite "Issue Codable Conformance Tests" started.
+􀟈  Suite "Clock API Tests" started.
+􀟈  Suite "Test.Case Selection Tests" started.
+􀟈  Suite FoundationTests started.
+􀟈  Suite "zip Tests" started.
+􀟈  Suite "Event Tests" started.
+􀟈  Suite "Swift Package Manager Integration Tests" started.
+􀟈  Suite "Miscellaneous tests" started.
+􀟈  Suite "TimeLimitTrait Tests" started.
+􀟈  Suite IndependentlyRunnableTests started.
+􀟈  Suite "Expression.Value Tests" started.
+􀟈  Suite "Objective-C/XCTest Interop Tests" started.
+􀟈  Suite "Confirmation Tests" started.
+􀟈  Suite "Runner.Plan Tests" started.
+􀟈  Suite "Hidden Trait Tests" started.
+􀟈  Suite "TypeInfo Tests" started.
+􀟈  Suite "Runner.Plan-dumping Tests" started.
+􀟈  Suite "Runner.Plan.Snapshot tests" started.
+􀟈  Suite "CustomExecutionTrait Tests" started.
+􀟈  Suite "Runner.RuntimeState Tests" started.
+􀟈  Suite "Test.ID.Selection Tests" started.
+􀟈  Suite "Environment Tests" started.
+􀟈  Suite "CustomTestStringConvertible Tests" started.
+􀟈  Suite "Exit test tests" started.
+􀟈  Suite "Locked Tests" started.
+􀟈  Suite "FileHandle Tests" started.
+􀟈  Test "withKnownIssue {} with main actor isolation" started.
+􀟈  Suite EventRecorderTests started.
+􀟈  Suite "ABI entry point tests" started.
+􀟈  Suite "Configuration.RepetitionPolicy Tests" started.
+􀟈  Test variadicCStringArguments() started.
+􀟈  Suite "Tag/Tag List Tests" started.
+􀟈  Suite A started.
+􀟈  Test "One Identifiable parameter" started.
+􀟈  Test "Nil display name" started.
+􀟈  Test "Typed thrown error captures backtrace" started.
+􀟈  Test parameterizedTestWithTrailingComment(value:) started.
+􀟈  Test "Test function does not conflict with local type names" started.
+􀟈  Test "Backtrace.current() is populated" started.
+􀟈  Test "Invalid tag expressions are detected" started.
+􀟈  Test "An unthrown error has no backtrace" started.
+􀟈  Test "Test function does not conflict with local type names" started.
+􀟈  Test "Codable" started.
+􀟈  Test "Invalid bug URLs are detected" started.
+􀟈  Test "Error diagnostics which include fix-its emitted on API misuse" started.
+􀟈  Test "tags property" started.
+􀟈  Test "comments property" started.
+􀟈  Test "Error diagnostics emitted on API misuse" started.
+􀟈  Test "associatedBugs property" started.
+􀟈  Test "isSuite property" started.
+􀟈  Test "isParameterized property" started.
+􀟈  Test "Encoding/decoding" started.
+􀟈  Test "One Codable parameter" started.
+􀟈  Test "Different kinds of functions are handled correctly" started.
+􀟈  Test "Warning diagnostics emitted on API misuse" started.
+􀟈  Test "Thrown error captures backtrace" started.
+􀟈  Test "Valid bug identifiers are allowed" started.
+􀟈  Test "Self. in @Test attribute is removed" started.
+􀟈  Test "One RawRepresentable parameter" started.
+􀟈  Test "Availability attributes are captured" started.
+􀟈  Test "Thrown NSError has a different backtrace than we generated" started.
+􀟈  Test "One CustomTestArgumentEncodable parameter" started.
+􀟈  Test "timeLimit property" started.
+􀟈  Test "CError.description property" started.
+􀟈  Test "Display name is preserved" started.
+􀟈  Test "Error diagnostics emitted on API misuse" started.
+􀟈  Test "Valid tag expressions are allowed" started.
+􀟈  Test mutateMe() started.
+􀟈  Test "@Tag macro" started.
+􀟈  Test "Thunk identifiers do not contain backticks" started.
+􀟈  Test "Effects influence generated identifiers" started.
+􀟈  Test "Symbolication" started.
+􀟈  Test "Argument types influence generated identifiers" started.
+􀟈  Test "Thunk identifiers do not contain arbitrary Unicode" started.
+􀟈  Test consumeMe() started.
+􀟈  Test "Thrown NSError captures backtrace" started.
+􀟈  Test "as! warns when used with #require()" started.
+􀟈  Test staticMe() started.
+􀟈  Test "as! warning is suppressed for explicit Bool and Optional casts" started.
+􀟈  Test mangledTypeName() started.
+􀟈  Test borrowMe() started.
+􀟈  Test "#require(as Bool?) suppresses its diagnostic" started.
+􀟈  Test "#require() macro" started.
+􀟈  Test "Body does not influence generated identifiers" started.
+􀟈  Test "#require(Bool?) produces a diagnostic" started.
+􀟈  Test "#expect(false) and #require(false) warn they always fail" started.
+􀟈  Test "#expect() macro" started.
+􀟈  Test "SourceLocation comparisons" started.
+􀟈  Test "SourceLocation.line and .column properties" started.
+􀟈  Test "Custom source location argument to #expect()" started.
+􀟈  Test "Bool(false) suppresses the warning about always failing" started.
+􀟈  Test testNotAnXCTestCaseMethod() started.
+􀟈  Test "SourceLocation.moduleName property" started.
+􀟈  Test "SourceLocation.fileID property must be well-formed" started.
+􀟈  Test "#require(throws: Never.self) produces a diagnostic" started.
+􀟈  Test "Macro expansion is performed within a test function" started.
+􀟈  Test "SourceLocation.fileID property ignores middle components" started.
+􀟈  Test "Two parameters" started.
+􀟈  Test "One 1-tuple parameter" started.
+􀟈  Test "Two Dictionary element (key, value) parameters" started.
+􀟈  Test "One Dictionary element tuple (key, value) parameter" started.
+􀟈  Test "SourceLocation._filePath property" started.
+􀟈  Test "One parameter" started.
+􀟈  Test "Unicode characters influence generated identifiers" started.
+􀟈  Test "SourceLocation.line and column properties must be positive" started.
+􀟈  Test "Capturing comments above #expect()/#require()" started.
+􀟈  Test "#expect(true) and #require(true) note they always pass" started.
+􀟈  Test "One 2-tuple parameter" started.
+􀟈  Test typeComparison() started.
+􀟈  Test "SourceLocation.description property" started.
+􀟈  Test "comment property" started.
+􀟈  Test "Test.associatedBugs property" started.
+􀟈  Test "SourceLocation.fileID property" started.
+􀟈  Test "Explicitly nil comment" started.
+􀟈  Test "Bug hashing" started.
+􀟈  Test ".bug() with SignedInteger" started.
+􀟈  Test "#require(non-optional value) produces a diagnostic" started.
+􀟈  Test ".bug() with String" started.
+􀟈  Test ".bug() with UnsignedInteger" started.
+􀟈  Test "Test.comments property" started.
+􀟈  Test "Methods on non-XCTestCase subclasses are supported" started.
+􀟈  Test "sourceLocation property" started.
+􀟈  Test ".bug() with URL string" started.
+􀟈  Test "removeValue(at:keepingChildren:) function (removing root, sparse)" started.
+􀟈  Test "Unwrapping #require() macro" started.
+􀟈  Test "Encoding/decoding" started.
+􀟈  Test "updateValue(_:at:) function (no existing value)" started.
+􀟈  Test ".comment() factory method" started.
+􀟈  Test "insertValue(_:at:) function (no existing value)" started.
+􀟈  Test "init() (sparse)" started.
+􀟈  Test "updateValue(_:at:) function" started.
+􀟈  Test "SourceLocation.fileName property" started.
+􀟈  Test "compactMap(_:) function" started.
+􀟈  Test "flatMap(_:) function (async)" started.
+􀟈  Test "subscript([K]) operator" started.
+􀟈  Test "insertValue(_:at:) function" started.
+􀟈  Test "removeValue(at:keepingChildren:) function (no value at key path)" started.
+􀟈  Test "forEach(_:) function" started.
+􀟈  Test ".bug() is not recursively applied" started.
+􀟈  Test "mapValues(_:) function (async, recursively applied)" started.
+􀟈  Test "insertValue(_:at:) function (no existing value, sparse)" started.
+􀟈  Test "mapValues(_:) function" started.
+􀟈  Test "mapValues(_:) function (recursively applied)" started.
+􀟈  Test "compactMapValues(_:) function (async, recursively applied)" started.
+􀟈  Test "compactMapValues(_:) function" started.
+􀟈  Test "flatMap(_:) function" started.
+􀟈  Test ".serialized trait is recursively applied" started.
+􀟈  Test "compactMapValues(_:) function (async)" started.
+􀟈  Test "Cartesian product with empty first input is empty" started.
+􀟈  Test "subscript([K]) operator (sparse, mutating)" started.
+􀟈  Test "Comparing Bug instances" started.
+􀟈  Test "CartesianProduct.underestimatedCount is clamped at .max" started.
+􀟈  Test "init(value:)" started.
+􀟈  Test "First element is correct" started.
+􀟈  Test "Cartesian product with empty second input is empty" started.
+􀟈  Test ".serialized trait serializes parameterized test" started.
+􀟈  Test "mapValues(_:) function (async)" started.
+􀟈  Test "underestimatedCount and count properties" started.
+􀟈  Test sourceLocationPropertyGetter() started.
+􀟈  Test "Concurrent access (summing ten times) is consistent" started.
+􀟈  Test "takeValues(at:) function" started.
+􀟈  Test "subgraph(at:)" started.
+􀟈  Test errorSnapshot() started.
+􀟈  Test "map(_:) function" started.
+􀟈  Test "removeValue(at:keepingChildren:) function (removing children)" started.
+􀟈  Test "Clock.Instant.durationSince1970 property" started.
+􀟈  Test "subscript([K]) operator (sparse)" started.
+􀟈  Test "Codable" started.
+􀟈  Test "Summing values is consistent" started.
+􀟈  Test "removeValue(at:keepingChildren:) function (removing root, should have no effect)" started.
+􀟈  Test "Clock.minimumResolution property" started.
+􀟈  Test "Codable" started.
+􀟈  Test "Multiple arguments conforming to Identifiable, passed to one parameter, selecting one case" started.
+􀟈  Test "Two collections, each with multiple arguments, passed to two parameters, selecting one case" started.
+􀟈  Test "Clock.Instant basics" started.
+􀟈  Test "Clock.Instant.nanoseconds(until:) method" started.
+􀟈  Test "Creating a SuspendingClock.Instant from Test.Clock.Instant" started.
+􀟈  Test "Custom descriptions are the same" started.
+􀟈  Test "Multiple arguments passed to one parameter, selecting a subset of cases" started.
+􀟈  Test "Multiple arguments conforming to CustomTestArgumentEncodable, passed to one parameter, selecting one case" started.
+􀟈  Test "Casting Test.Clock.Instant to Date" started.
+􀟈  Test "init(value:children:)" started.
+􀟈  Test "Multiple arguments conforming to RawRepresentable, passed to one parameter, selecting one case" started.
+􀟈  Test "Clock.Instant.timeComponentsSince1970 property" started.
+􀟈  Test "Cartesian products compare equal" started.
+􀟈  Test ".hidden trait" started.
+􀟈  Test "No --filter or --skip argument" started.
+􀟈  Test "Count of cartesian product" started.
+􀟈  Test "Event's and Event.Kinds's Codable Conformances" started.
+􀟈  Test sourceLocationPropertySetter() started.
+􀟈  Test "removeValue(at:keepingChildren:) function" started.
+􀟈  Test "Multiple arguments passed to one parameter, selecting one case" started.
+􀟈  Test "list subcommand" started.
+􀟈  Test "Zipped collections are not combinatoric" started.
+􀟈  Test "--xunit-output argument (bad path)" started.
+􀟈  Test "forEach(_:) function (async)" started.
+􀟈  Test "Clock.now property" started.
+􀟈  Test "--symbolicate-backtraces argument" started.
+􀟈  Test "Event.Contexts's Codable Conformances" started.
+􀟈  Test "--xunit-output argument (missing path)" started.
+􀟈  Test "--parallel/--no-parallel argument" started.
+􀟈  Test "--verbosity argument" started.
+􀟈  Test "EXIT_NO_TESTS_FOUND is unique" started.
+􀟈  Test "Clock.Instant.advanced(by:) and .duration(to:) methods" started.
+􀟈  Test "All elements of two ranges are equal" started.
+􀟈  Test "--verbose, --very-verbose, and --quiet arguments" started.
+􀟈  Test "Clock.sleep(until:tolerance:) method" started.
+􀟈  Test "--repeat-until pass argument (alone)" started.
+􀟈  Test "--filter/--skip arguments and .hidden trait" started.
+􀟈  Test "--repetitions and --repeat-until arguments" started.
+􀟈  Test "Multiple --filter arguments" started.
+􀟈  Test "--event-stream-output-path argument (writes to a stream and can be read back)" started.
+􀟈  Test "--filter or --skip argument with bad regex" started.
+􀙟  Test "Repeated calls to #expect() run in reasonable time" skipped: "time-sensitive"
+􀟈  Test "--xunit-output argument (writes to file)" started.
+􀟈  Test "Test.id property" started.
+􀟈  Test "--configuration-path argument" started.
+􀟈  Test "--filter with no matches" started.
+􀟈  Test "Parameterized free functions are runnable" started.
+􀟈  Test "--repeat-until fail argument (alone)" started.
+􀟈  Test "Test.ID.parent property" started.
+􀟈  Test "--repeat-until argument with garbage value (alone)" started.
+􀟈  Test "Test.parameters property" started.
+􀟈  Test "--repetitions argument (alone)" started.
+􀟈  Test "Free function's name" started.
+􀟈  Test "Properties related to parameterization" started.
+􀟈  Test "failureBreakpoint() call" started.
+􀟈  Test "Test.ID.init() with no arguments" started.
+􀟈  Test "Parameterized member functions are runnable" started.
+􀟈  Test "Test.sourceLocation.column is used when sorting" started.
+􀟈  Test "Test suite type's name" started.
+􀟈  Test "Free functions are runnable" started.
+􀟈  Test "Parameterizing over a collection with a poor underestimatedCount property" started.
+􀟈  Test "--skip argument" started.
+􀟈  Test "Command line arguments are available" started.
+􀟈  Test "--filter argument" started.
+􀟈  Test "list --verbose subcommand" started.
+􀟈  Test "Free function has custom display name" started.
+􀟈  Test "Test times out when overrunning default time limit" started.
+􀟈  Test "Test suite types are runnable" started.
+􀟈  Test "Test.all deduping" started.
+􀟈  Test "Issue.Kind.timeLimitExceeded.description property" started.
+􀟈  Test "Cancelled tests can exit early (cancellation checking works)" started.
+􀟈  Test "Parameterized cases are all executed (2 arguments)" started.
+􀟈  Test "Time limit exceeded event includes its associated Test" started.
+􀟈  Test "Value reflecting an object with a reference to another object which has a cyclic back-reference the first" started.
+􀟈  Test "Member function has custom display name" started.
+􀟈  Test "Value reflecting an object with multiple cyclic references" started.
+􀟈  Test "Configuration.maximumTestTimeLimit property" started.
+􀟈  Test "Test times out when overrunning .timeLimit() trait" started.
+􀟈  Test "adjustedTimeLimit(configuration:) function" started.
+􀟈  Test "Parameterized cases are all executed (1 argument)" started.
+􀟈  Test "Test times out when overrunning .timeLimit() trait (inherited)" started.
+􀟈  Test "TimeoutError.description property" started.
+􀟈  Test "Configuration.defaultTestTimeLimit property set higher than maximum" started.
+􀟈  Test "Instance methods are runnable" started.
+􀟈  Test "XCTest test methods are currently unsupported" started.
+􀟈  Test "Test times out when overrunning maximum time limit" started.
+􀟈  Test "Main actor isolation" started.
+􀟈  Test "Confirmation requires positive count" started.
+􀟈  Test "Configuration.defaultTestTimeLimit property" started.
+􀟈  Test "Relative order of recursively applied traits" started.
+􀟈  Test "Value reflecting a simple struct with one property" started.
+􀟈  Test "Selected tests by any tag" started.
+􀟈  Test "Test cases of a disabled test are not evaluated" started.
+􀟈  Test "Mixed included and excluded tests by ID" started.
+􀟈  Test "Combining test filter by ID with .unfiltered (rhs)" started.
+􀟈  Test "Unsuccessful confirmations" started.
+􀟈  Test "Static functions are nested at the same level as instance functions" started.
+􀟈  Test "Selected tests by all tags" started.
+􀟈  Test "Value reflecting an object with multiple non-cyclic references" started.
+􀟈  Test "Test does not block until end of time limit" started.
+􀟈  Test "Excluded tests by ID" started.
+􀟈  Test "Value reflecting an object with a cyclic reference to itself" started.
+􀟈  Test "Combining test filters with .or" started.
+􀟈  Test isImportedFromC() started.
+􀟈  Test "Excluded tests by any tag" started.
+􀟈  Test "Recursive trait application" started.
+􀟈  Test initWithType(type:expectedTypeInfo:) started.
+􀟈  Test "Excluded tests by all tags" started.
+􀟈  Test isSwiftEnumeration() started.
+􀟈  Test "Combining test filter by ID with .unfiltered (lhs)" started.
+􀟈  Test "Objective-C selectors are discovered" started.
+􀟈  Test "Successful confirmations" started.
+􀟈  Test "Selected tests by ID" started.
+􀟈  Test "Teardown occurs after child tests run" started.
+􀟈  Test "Multiple selected tests by ID" started.
+􀙟  Test "Dumping a Runner.Plan" skipped.
+􀟈  Test "Combining test filter by ID with by tag" started.
+􀟈  Test typeNameOfFunctionIsMungedCorrectly() started.
+􀟈  Test ".hidden trait" started.
+􀟈  Test typeNameInExtensionIsMungedCorrectly() started.
+􀟈  Test runnerStateScopedEventHandler() started.
+􀟈  Test "Execute code before and after a parameterized test." started.
+􀟈  Test "Codable" started.
+􀟈  Test "Custom execution trait throws an error" started.
+􀟈  Test ".timeLimit() factory method" started.
+􀟈  Test eventPostingInTaskGroup() started.
+􀟈  Test "Unfiltered tests" started.
+􀟈  Passing 1 argument tagExpr → ".f()" to "Invalid tag expressions are detected"
+􀟈  Passing 1 argument tagExpr → "WrongType.tag" to "Invalid tag expressions are detected"
+􀟈  Passing 1 argument tagExpr → "f()" to "Invalid tag expressions are detected"
+􀟈  Passing 1 argument tagExpr → "WrongType.f()" to "Invalid tag expressions are detected"
+􀟈  Passing 1 argument tagExpr → "loose" to "Invalid tag expressions are detected"
+􀟈  Test "Execute code before and after a non-parameterized test." started.
+􀟈  Passing 1 argument tagExpr → ".f.g(_:).h" to "Invalid tag expressions are detected"
+􀟈  Passing 1 argument value → 0 to parameterizedTestWithTrailingComment(value:)
+􀟈  Test mangledTypeName() started.
+􀟈  Test "Long key path, then short key path, then medium key path" started.
+􀟈  Test "One-element key path before two-element key path" started.
+􀟈  Test "Two-element key path before one-element key path" started.
+􀟈  Passing 1 argument tagExpr → ".f.g(123).h" to "Invalid tag expressions are detected"
+􀟈  Test "Short key path before long key path" started.
+􀟈  Test "Long key path before short key path" started.
+􀟈  Test "Single-element key path" started.
+􀟈  Test "Two peer key paths" started.
+􀟈  Test "Inverted lookup" started.
+􀟈  Passing 1 argument id → "mailto: a@example.com" to "Invalid bug URLs are detected"
+􀟈  Passing 1 argument id → "example.com" to "Invalid bug URLs are detected"
+􀟈  Passing 2 arguments input → "@Test func f(i: Int, j: String, k: Double) {}", expectedDiagnostic → (message: "Attribute \'Test\' must specify arguments when used with function \'f(i:j:k:)\'", fixIts: [TestingMacrosTests.ExpectedFixIt(message: "Add \'arguments:\' with one collection", changes: [TestingMacrosTests.ExpectedFixIt.Change.replace(oldSourceCode: "@Test ", newSourceCode: "@Test(arguments: <#T##[(Int, String, Double)]#>) ")])]) to "Error diagnostics which include fix-its emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test /*comment*/ func f(i: Int) {}", expectedDiagnostic → (message: "Attribute \'Test\' must specify arguments when used with function \'f(i:)\'", fixIts: [TestingMacrosTests.ExpectedFixIt(message: "Add \'arguments:\' with one collection", changes: [TestingMacrosTests.ExpectedFixIt.Change.replace(oldSourceCode: "@Test /*comment*/ ", newSourceCode: "@Test(arguments: <#T##[Int]#>) /*comment*/ ")])]) to "Error diagnostics which include fix-its emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test("Some display name") func f(i: Int) {}", expectedDiagnostic → (message: "Attribute \'Test\' must specify arguments when used with function \'f(i:)\'", fixIts: [TestingMacrosTests.ExpectedFixIt(message: "Add \'arguments:\' with one collection", changes: [TestingMacrosTests.ExpectedFixIt.Change.replace(oldSourceCode: "@Test(\"Some display name\") ", newSourceCode: "@Test(\"Some display name\", arguments: <#T##[Int]#>) ")])]) to "Error diagnostics which include fix-its emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test func f(i: Int, j: String) {}", expectedDiagnostic → (message: "Attribute \'Test\' must specify arguments when used with function \'f(i:j:)\'", fixIts: [TestingMacrosTests.ExpectedFixIt(message: "Add \'arguments:\' with one collection", changes: [TestingMacrosTests.ExpectedFixIt.Change.replace(oldSourceCode: "@Test ", newSourceCode: "@Test(arguments: <#T##[(Int, String)]#>) ")]), TestingMacrosTests.ExpectedFixIt(message: "Add \'arguments:\' with all combinations of 2 collections", changes: [TestingMacrosTests.ExpectedFixIt.Change.replace(oldSourceCode: "@Test ", newSourceCode: "@Test(arguments: <#T##[Int]#>, <#T##[String]#>) ")])]) to "Error diagnostics which include fix-its emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test func f(i: Int) {}", expectedDiagnostic → (message: "Attribute \'Test\' must specify arguments when used with function \'f(i:)\'", fixIts: [TestingMacrosTests.ExpectedFixIt(message: "Add \'arguments:\' with one collection", changes: [TestingMacrosTests.ExpectedFixIt.Change.replace(oldSourceCode: "@Test ", newSourceCode: "@Test(arguments: <#T##[Int]#>) ")])]) to "Error diagnostics which include fix-its emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test func f<T>() {}", expectedMessage → "Attribute 'Test' cannot be applied to a generic function" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "struct S { func f() { @Test func g() {} } }", expectedMessage → "Attribute 'Test' cannot be applied to a function within function 'f()'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test @Test func f() {}", expectedMessage → "Attribute 'Test' cannot be applied to a function more than once" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "final class C: XCTest.XCTestCase { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within class 'C'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite protocol P {}", expectedMessage → "Attribute 'Suite' cannot be applied to a protocol" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test func f() where X == Y {}", expectedMessage → "Attribute 'Test' cannot be applied to a generic function" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension T? { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within a generic extension to type 'T?'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension T! { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within a generic extension to type 'T!'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test(arguments: []) func f() {}", expectedMessage → "Attribute 'Test' cannot specify arguments when used with function 'f()' because it does not take any" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite func f() {}", expectedMessage → "Attribute 'Suite' cannot be applied to a function" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test enum E {}", expectedMessage → "Attribute 'Test' cannot be applied to an enumeration" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@available(*, noasync) @Suite enum E {}", expectedMessage → "Attribute 'Suite' cannot be applied to this enumeration because it has been marked '@available(*, noasync)'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "struct S<T> { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within generic structure 'S'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@available(macOS 999.0, *) @Suite final class C {}", expectedMessage → "Attribute 'Suite' cannot be applied to this class because it has been marked '@available(macOS 999.0, *)'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "{ _ in @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within a closure" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "{ _ in @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within a closure" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "struct S { func f(x: Int) { @Suite struct S { } } }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within function 'f(x:)'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite @Suite final class C {}", expectedMessage → "Attribute 'Suite' cannot be applied to a class more than once" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite struct S where X == Y {}", expectedMessage → "Attribute 'Suite' cannot be applied to a generic structure" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test(arguments: [0.0]) func f(i: _const Double) {}", expectedMessage → "Attribute 'Test' cannot be applied to a function with a parameter marked '_const'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension [T:U] { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within a generic extension to type '[T:U]'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test(arguments: []) func f(x: some T) {}", expectedMessage → "Attribute 'Test' cannot be applied to a generic function" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test macro m()", expectedMessage → "Attribute 'Test' cannot be applied to a macro" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite @Suite struct S {}", expectedMessage → "Attribute 'Suite' cannot be applied to a structure more than once" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite final class C: XCTestCase {}", expectedMessage → "Attribute 'Suite' cannot be applied to a subclass of 'XCTestCase'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "protocol P { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within protocol 'P'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension T? { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within a generic extension to type 'T?'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@_unavailableFromAsync @Suite actor A {}", expectedMessage → "Attribute 'Suite' cannot be applied to this actor because it has been marked '@_unavailableFromAsync'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "enum E { @Test case c }", expectedMessage → "Attribute 'Test' cannot be applied to an enumeration case" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test struct S {}", expectedMessage → "Attribute 'Test' cannot be applied to a structure" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite struct S<T> {}", expectedMessage → "Attribute 'Suite' cannot be applied to a generic structure" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test init() {}", expectedMessage → "Attribute 'Test' cannot be applied to an initializer" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "struct S<T> { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within generic structure 'S'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@available(*, noasync) struct S { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to this structure because it has been marked '@available(*, noasync)'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension [T] { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within a generic extension to type '[T]'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "final class C: XCTestCase { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to a function within class 'C'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test deinit {}", expectedMessage → "Attribute 'Test' cannot be applied to a deinitializer" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "protocol P { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within protocol 'P'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension [T] { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within a generic extension to type '[T]'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@available(*, unavailable) @Suite struct S {}", expectedMessage → "Attribute 'Suite' cannot be applied to this structure because it has been marked '@available(*, unavailable)'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension T! { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within a generic extension to type 'T!'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite final class C: XCTest.XCTestCase {}", expectedMessage → "Attribute 'Suite' cannot be applied to a subclass of 'XCTestCase'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test var x = 0", expectedMessage → "Attribute 'Test' cannot be applied to a property" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "extension [T:U] { @Suite struct S {} }", expectedMessage → "Attribute 'Suite' cannot be applied to a structure within a generic extension to type '[T:U]'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test(arguments: [0]) func f(i: inout Int) {}", expectedMessage → "Attribute 'Test' cannot be applied to a function with a parameter marked 'inout'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test(arguments: []) func f(x: (some T)?) {}", expectedMessage → "Attribute 'Test' cannot be applied to a generic function" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Suite extension X {}", expectedMessage → "Attribute 'Suite' has no effect when applied to an extension" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test subscript() -> Int {}", expectedMessage → "Attribute 'Test' cannot be applied to a subscript" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test typealias X = Y", expectedMessage → "Attribute 'Test' cannot be applied to a typealias" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@available(*, noasync) struct S { @Test func f() {} }", expectedMessage → "Attribute 'Test' cannot be applied to this function because it has been marked '@available(*, noasync)'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test(arguments: [MyActor()]) func f(i: isolated MyActor) {}", expectedMessage → "Attribute 'Test' cannot be applied to a function with a parameter marked 'isolated'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test func f() -> (Int, Int) {}", expectedMessage → "The result of this function will be discarded during testing" to "Warning diagnostics emitted on API misuse"
+􀟈  Passing 3 arguments input → "@Test func f() {}", expectedTypeName → nil, otherCode → nil to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "@Test @available(*, noasync) @MainActor func f() {}", expectedTypeName → nil, otherCode → "MainActor.run" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "@Test @_unavailableFromAsync @MainActor func f() {}", expectedTypeName → nil, otherCode → "MainActor.run" to "Different kinds of functions are handled correctly"
+􀟈  Passing 2 arguments input → "@Test(.serialized) func f() {}", expectedMessage → "Trait '.serialized' has no effect when used with a non-parameterized test function" to "Warning diagnostics emitted on API misuse"
+􀟈  Passing 3 arguments input → "@Test @available(*, noasync) func f() {}", expectedTypeName → nil, otherCode → "__requiringTry" to "Different kinds of functions are handled correctly"
+􀟈  Passing 2 arguments input → "@Test func f() -> Int {}", expectedMessage → "The result of this function will be discarded during testing" to "Warning diagnostics emitted on API misuse"
+􀟈  Passing 2 arguments input → "@Test func f() -> Swift.String {}", expectedMessage → "The result of this function will be discarded during testing" to "Warning diagnostics emitted on API misuse"
+􀟈  Passing 3 arguments input → "@Test @_unavailableFromAsync func f() {}", expectedTypeName → nil, otherCode → "__requiringTry" to "Different kinds of functions are handled correctly"
+􀟈  Passing 2 arguments input → "@Test func f() -> Int? {}", expectedMessage → "The result of this function will be discarded during testing" to "Warning diagnostics emitted on API misuse"
+􀟈  Passing 3 arguments input → "@Test(arguments: []) func f(f: () -> String) {}", expectedTypeName → "(() -> String).self", otherCode → nil to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S {
+    @Test func testF() {} }", expectedTypeName → nil, otherCode → "__invokeXCTestCaseMethod" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S {
+    @Test func testF() throws {} }", expectedTypeName → nil, otherCode → "__invokeXCTestCaseMethod" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S {
+    @Test func testF() async {} }", expectedTypeName → nil, otherCode → "__invokeXCTestCaseMethod" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S {
+    @Test func testF() async throws {} }", expectedTypeName → nil, otherCode → "__invokeXCTestCaseMethod" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S {
+  #if SOME_CONDITION
+  @OtherAttribute
+  #endif
+  @Test func testF() async throws {}
+}", expectedTypeName → nil, otherCode → nil to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S_NAME {
+    @Test func f() {} }", expectedTypeName → "S_NAME", otherCode → "let" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S_NAME {
+    @Test mutating func f() {} }", expectedTypeName → "S_NAME", otherCode → "var" to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "struct S_NAME {
+    @Test static func f() {} }", expectedTypeName → "S_NAME", otherCode → nil to "Different kinds of functions are handled correctly"
+􀟈  Passing 3 arguments input → "final class C_NAME {
+    @Test class func f() {} }", expectedTypeName → "C_NAME", otherCode → nil to "Different kinds of functions are handled correctly"
+􀟈  Passing 1 argument input → "@Test(.bug(id: 12345)) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(.bug(id: "12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(.bug("mailto:a@example.com")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(.bug("rdar:12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "@Test(arguments: []) func f(f: () -> String) {}", expectedTypeName → "(() -> String).self", otherCode → nil at TestDeclarationMacroTests.swift:363:7: Expectation failed: !((output → "func f(f: () -> String) {}
+
+@available(*, deprecated, message: "This function is an implementation detail of the testing library. Do not use it directly.")
+@Sendable private  func 8ec6841d5fMu_(f arg0: () -> String) async throws -> Void {
+  @Sendable func 7__localfMu_(f arg0: () -> String, isolated_: isolated (any Actor)? = Testing.__defaultSynchronousIsolationContext) async throws {
+    _ = try await Testing.__requiringTry(Testing.__requiringAwait(f(f: arg0)))
+  }
+  try await 7__localfMu_(f: arg0)
+}
+
+@available(*, deprecated, message: "This type is an implementation detail of the testing library. Do not use it directly.")
+enum 38__🟠$test_container__function__ec6841d5fMu_: Testing.__TestContainer {
+  static var __tests: [Testing.Test] {
+    get async {
+      return [
+  .__function(
+    named: "f(f:)",
+    in: nil,
+    xcTestCompatibleSelector: nil,
+    traits: [], arguments: {
+        []
+    }, sourceLocation: Testing.SourceLocation.__here(),
+    parameters: [(firstName: "f", secondName: nil, type: (() -> String).self)],
+    testFunction:
+  )
+      ]
+    }
+  }
+}").contains(expectedTypeName → "(() -> String).self") → true)
+􀟈  Passing 1 argument input → "@Test(.bug("rdar://12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(.bug(id: "FB12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "final class C_NAME {
+    @Test class func f() {} }", expectedTypeName → "C_NAME", otherCode → nil at TestDeclarationMacroTests.swift:363:7: Expectation failed: !((output → "final class C_NAME {
+    class func f() {
+    }
+
+    @available(*, deprecated, message: "This function is an implementation detail of the testing library. Do not use it directly.")
+    @Sendable private static func 9Z44ae8f7dfMu_() async throws -> Void {
+      @Sendable func 7__localfMu_(isolated_: isolated (any Actor)? = Testing.__defaultSynchronousIsolationContext) async throws {
+        _ = try await Testing.__requiringTry(Testing.__requiringAwait(C_NAME.f()))
+      }
+      try await 7__localfMu_()
+    }
+
+    @available(*, deprecated, message: "This type is an implementation detail of the testing library. Do not use it directly.")
+    enum 38__🟠$test_container__function__44ae8f7dfMu_: Testing.__TestContainer {
+      static var __tests: [Testing.Test] {
+        get async {
+          return [
+      .__function(
+        named: "f()",
+        in: C_NAME.self,
+        xcTestCompatibleSelector: nil,
+        traits: [], sourceLocation: Testing.SourceLocation.__here(),
+        parameters: [],
+        testFunction:
+      )
+    ]
+        }
+      }
+    }
+}").contains(expectedTypeName → "C_NAME") → true)
+􀟈  Passing 1 argument input → "@Test(.bug("https://github.com/swiftlang/swift-testing/issues/12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(.bug("https://github.com/swiftlang/swift-testing/issues/12345", id: "12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {
+    @Test static func f() {} }", expectedTypeName → "S_NAME", otherCode → nil at TestDeclarationMacroTests.swift:363:7: Expectation failed: !((output → "struct S_NAME {
+    static func f() {
+    }
+
+    @available(*, deprecated, message: "This function is an implementation detail of the testing library. Do not use it directly.")
+    @Sendable private static func 6f7e5c6fMu_() async throws -> Void {
+      @Sendable func 7__localfMu_(isolated_: isolated (any Actor)? = Testing.__defaultSynchronousIsolationContext) async throws {
+        _ = try await Testing.__requiringTry(Testing.__requiringAwait(S_NAME.f()))
+      }
+      try await 7__localfMu_()
+    }
+
+    @available(*, deprecated, message: "This type is an implementation detail of the testing library. Do not use it directly.")
+    enum 36__🟠$test_container__function__f7e5c6fMu_: Testing.__TestContainer {
+      static var __tests: [Testing.Test] {
+        get async {
+          return [
+      .__function(
+        named: "f()",
+        in: S_NAME.self,
+        xcTestCompatibleSelector: nil,
+        traits: [], sourceLocation: Testing.SourceLocation.__here(),
+        parameters: [],
+        testFunction:
+      )
+    ]
+        }
+      }
+    }
+}").contains(expectedTypeName → "S_NAME") → true)
+􀟈  Passing 1 argument input → "@Test(.bug("https://github.com/swiftlang/swift-testing/issues/12345", id: 12345)) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(Bug.bug("https://github.com/swiftlang/swift-testing/issues/12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(Testing.Bug.bug("https://github.com/swiftlang/swift-testing/issues/12345")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 1 argument input → "@Test(Bug.bug("https://github.com/swiftlang/swift-testing/issues/12345", "here's what happened...")) func f() {}" to "Valid bug identifiers are allowed"
+􀟈  Passing 2 arguments input → "@available(swift, obsoleted: 2.0) @Test func f() {}", expectedOutputs → [".__available(\"Swift\", obsoleted: (2, 0, nil), ", "#if swift(<2.0)"] to "Availability attributes are captured"
+􀟈  Passing 2 arguments input → "@available(moofOS, introduced: 9) @available(dogCow, introduced: 30) @Test func f() {}", expectedOutputs → [".__available(\"moofOS\", introduced: (9, nil, nil), ", ".__available(\"dogCow\", introduced: (30, nil, nil), ", "guard #available (moofOS 9, *), #available (dogCow 30, *) else"] to "Availability attributes are captured"
+􀟈  Passing 2 arguments input → "@available(*, unavailable, message: "Clarus!") @Test func f() {}", expectedOutputs → [".__unavailable(message: \"Clarus!\", "] to "Availability attributes are captured"
+􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {
+    @Test func f() {} }", expectedTypeName → "S_NAME", otherCode → "let" at TestDeclarationMacroTests.swift:363:7: Expectation failed: !((output → "struct S_NAME {
+    func f() {
+    }
+
+    @available(*, deprecated, message: "This function is an implementation detail of the testing library. Do not use it directly.")
+    @Sendable private static func 9Z72c12a46fMu_() async throws -> Void {
+      @Sendable func 7__localfMu0_(isolated_: isolated (any Actor)? = Testing.__defaultSynchronousIsolationContext) async throws {
+        let 7__localfMu_ = try await Testing.__requiringTry(Testing.__requiringAwait(S_NAME()))
+        _ = try await Testing.__requiringTry(Testing.__requiringAwait(7__localfMu_.f()))
+      }
+      try await 7__localfMu0_()
+    }
+
+    @available(*, deprecated, message: "This type is an implementation detail of the testing library. Do not use it directly.")
+    enum 38__🟠$test_container__function__72c12a46fMu_: Testing.__TestContainer {
+      static var __tests: [Testing.Test] {
+        get async {
+          return [
+      .__function(
+        named: "f()",
+        in: S_NAME.self,
+        xcTestCompatibleSelector: nil,
+        traits: [], sourceLocation: Testing.SourceLocation.__here(),
+        parameters: [],
+        testFunction:
+      )
+    ]
+        }
+      }
+    }
+}").contains(expectedTypeName → "S_NAME") → true)
+􀟈  Passing 2 arguments input → "@available(swift 1.0) @Test func f() {}", expectedOutputs → [".__available(\"Swift\", introduced: (1, 0, nil), ", "#if swift(>=1.0)"] to "Availability attributes are captured"
+􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {
+    @Test mutating func f() {} }", expectedTypeName → "S_NAME", otherCode → "var" at TestDeclarationMacroTests.swift:363:7: Expectation failed: !((output → "struct S_NAME {
+    mutating func f() {
+    }
+
+    @available(*, deprecated, message: "This function is an implementation detail of the testing library. Do not use it directly.")
+    @Sendable private static func 7cbed732fMu_() async throws -> Void {
+      @Sendable func 7__localfMu0_(isolated_: isolated (any Actor)? = Testing.__defaultSynchronousIsolationContext) async throws {
+        var 7__localfMu_ = try await Testing.__requiringTry(Testing.__requiringAwait(S_NAME()))
+        _ = try await Testing.__requiringTry(Testing.__requiringAwait(7__localfMu_.f()))
+      }
+      try await 7__localfMu0_()
+    }
+
+    @available(*, deprecated, message: "This type is an implementation detail of the testing library. Do not use it directly.")
+    enum 37__🟠$test_container__function__cbed732fMu_: Testing.__TestContainer {
+      static var __tests: [Testing.Test] {
+        get async {
+          return [
+      .__function(
+        named: "f()",
+        in: S_NAME.self,
+        xcTestCompatibleSelector: nil,
+        traits: [], sourceLocation: Testing.SourceLocation.__here(),
+        parameters: [],
+        testFunction:
+      )
+    ]
+        }
+      }
+    }
+}").contains(expectedTypeName → "S_NAME") → true)
+􀟈  Passing 2 arguments input → "@available(swift, introduced: 1.0) @Test func f() {}", expectedOutputs → [".__available(\"Swift\", introduced: (1, 0, nil), ", "#if swift(>=1.0)"] to "Availability attributes are captured"
+􀟈  Passing 2 arguments input → "@available(swift, introduced: 1.0, obsoleted: 2.0) @Test func f() {}", expectedOutputs → [".__available(\"Swift\", introduced: (1, 0, nil), ", ".__available(\"Swift\", obsoleted: (2, 0, nil), ", "#if swift(>=1.0) && swift(<2.0)"] to "Availability attributes are captured"
+􀟈  Passing 2 arguments input → "@available(moofOS 9, dogCow 30, *) @Test func f() {}", expectedOutputs → [".__available(\"moofOS\", introduced: (9, nil, nil), ", ".__available(\"dogCow\", introduced: (30, nil, nil), ", "guard #available (moofOS 9, *), #available (dogCow 30, *) else"] to "Availability attributes are captured"
+􀟈  Passing 2 arguments input → "@available(moofOS, obsoleted: 9) @Test func f() {}", expectedOutputs → [".__available(\"moofOS\", obsoleted: (9, nil, nil), "] to "Availability attributes are captured"
+􀟈  Passing 1 argument errorCode → 1 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 2 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 3 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 4 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 5 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 6 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 7 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 8 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 9 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 10 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 11 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 12 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 13 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test("Display Name") func f() {}" to "Display name is preserved"
+􀟈  Passing 1 argument input → "@Test("Display Name", .someTrait) func f() {}" to "Display name is preserved"
+􀟈  Passing 1 argument errorCode → 14 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 15 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test("Display Name", .someTrait, arguments: []) func f(i: Int) {}" to "Display name is preserved"
+􀟈  Passing 2 arguments input → "@Tag struct S {}", expectedMessage → "Attribute 'Tag' cannot be applied to a structure" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 16 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test("Display Name", arguments: []) func f(i: Int) {}" to "Display name is preserved"
+􀟈  Passing 2 arguments input → "@Tag static var x: Tag", expectedMessage → "Attribute 'Tag' cannot be applied to a global variable" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 17 to "CError.description property"
+􀟈  Passing 2 arguments input → "@Tag var x: Tag", expectedMessage → "Attribute 'Tag' cannot be applied to a global variable" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 18 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 19 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag { @Tag var x: Tag }", expectedMessage → "Attribute 'Tag' cannot be applied to an instance property" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 20 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 21 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag { @Tag static var x: String }", expectedMessage → "Attribute 'Tag' cannot be applied to a property of type 'String'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 22 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag { @Tag nonisolated var x: Tag }", expectedMessage → "Attribute 'Tag' cannot be applied to an instance property" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 23 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag.A.B { @Tag static var x: Self }", expectedMessage → "Attribute 'Tag' cannot be applied to a property of type 'Tag.A.B'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 24 to "CError.description property"
+􀟈  Passing 2 arguments input → "@Tag nonisolated var x: Tag", expectedMessage → "Attribute 'Tag' cannot be applied to a global variable" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 25 to "CError.description property"
+􀟈  Passing 2 arguments input → "struct S { @Tag static var x: Tag }", expectedMessage → "Attribute 'Tag' cannot be applied to a property except in an extension to 'Tag'" to "Error diagnostics emitted on API misuse"
+􀟈  Passing 1 argument errorCode → 26 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 27 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 28 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(.tags(.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 29 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 30 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(Tag.List.tags(.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 31 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(Testing.Tag.List.tags(.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 32 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(.tags("abc")) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 33 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(Tag.List.tags("abc")) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 34 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(Testing.Tag.List.tags("abc")) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 35 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(.tags(Tag.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 36 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(.tags(Testing.Tag.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 37 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(.tags(.Foo.Bar.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 38 to "CError.description property"
+􀟈  Passing 1 argument input → "@Test(.tags(Testing.Tag.Foo.Bar.f)) func f() {}" to "Valid tag expressions are allowed"
+􀟈  Passing 1 argument errorCode → 39 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 40 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 41 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 42 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 43 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 44 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag { @Tag static var x: Tag }", typeName → "Tag" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 45 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag { @Tag static var x: Self }", typeName → "Tag" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 46 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Testing.Tag { @Tag static var x: Testing.Tag }", typeName → "Testing.Tag" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 47 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag.A.B { @Tag static var x: Tag }", typeName → "Tag.A.B" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 48 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Testing.Tag.A.B { @Tag static var x: Tag }", typeName → "Testing.Tag.A.B" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 49 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Tag { struct S { @Tag static var x: Tag } }", typeName → "Tag.S" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 50 to "CError.description property"
+􀟈  Passing 2 arguments input → "extension Testing.Tag { enum E { @Tag static var x: Tag } }", typeName → "Testing.Tag.E" to "@Tag macro"
+􀟈  Passing 1 argument errorCode → 51 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 52 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 53 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 54 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 55 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 56 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 57 to "CError.description property"
+􀟈  Test otherProtocols() started.
+􀟈  Test types() started.
+􀟈  Passing 1 argument errorCode → 58 to "CError.description property"
+􀟈  Test optionals() started.
+􀟈  Passing 1 argument errorCode → 59 to "CError.description property"
+􀟈  Test enumerations() started.
+􀟈  Test ranges() started.
+􀟈  Passing 1 argument errorCode → 60 to "CError.description property"
+􀟈  Test strings() started.
+􀟈  Passing 1 argument errorCode → 61 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 62 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 63 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 64 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 65 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 66 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 67 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 68 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 69 to "CError.description property"
+􀟈  Passing 1 argument mode → .mangled to "Symbolication"
+􀟈  Passing 1 argument mode → .demangled to "Symbolication"
+􀟈  Passing 1 argument errorCode → 70 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 71 to "CError.description property"
+􀟈  Test "Exit condition matching operators (==, !=, ===, !==)" started.
+􀟈  Test "Exit test can be main-actor-isolated" started.
+􀟈  Passing 1 argument errorCode → 72 to "CError.description property"
+􀟈  Test "Mock exit test handlers (passing)" started.
+􀟈  Passing 1 argument errorCode → 73 to "CError.description property"
+􀟈  Test "Exit tests (passing)" started.
+􀟈  Test "Exit test reports > 8 bits of the exit code" started.
+􀟈  Passing 1 argument errorCode → 74 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 75 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 76 to "CError.description property"
+􀟈  Test "Exit test forwards issues" started.
+􀟈  Passing 1 argument errorCode → 77 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 78 to "CError.description property"
+􀟈  Test "Mock exit test handlers (failing)" started.
+􀟈  Passing 1 argument errorCode → 79 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 80 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 81 to "CError.description property"
+􀟈  Test "Exit tests (failing)" started.
+􀟈  Passing 1 argument errorCode → 82 to "CError.description property"
+􀟈  Test "Exit test without configured exit test handler" started.
+􀟈  Passing 1 argument errorCode → 83 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 84 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 85 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 86 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 87 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 88 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 89 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 90 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 91 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 92 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 93 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 94 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 95 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 96 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 97 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 98 to "CError.description property"
+􀟈  Passing 1 argument errorCode → 99 to "CError.description property"
+􀟈  Passing 1 argument input → "#expect(x as! T)" to "as! warns when used with #require()"
+􀟈  Passing 1 argument input → "#require(x as! T)" to "as! warns when used with #require()"
+􀟈  Passing 1 argument input → "#expect(x as! Bool)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#require(x as! Bool)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#expect(x as! T?)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#require(x as! T?)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#expect(x as! T!)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#require(x as! T!)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#expect(x as! Optional<T>)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#require(x as! Optional<T>)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#expect(x as! Swift.Optional<T>)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Passing 1 argument input → "#require(x as! Swift.Optional<T>)" to "as! warning is suppressed for explicit Bool and Optional casts"
+􀟈  Test "Mutating a value within withLock(_:)" started.
+􀟈  Passing 1 argument input → "#requireAmbiguous(expression as Bool?)" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 1 argument input → "#requireAmbiguous((expression as Bool?))" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 1 argument input → "#requireAmbiguous((expression) as Bool?)" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 1 argument input → "#requireAmbiguous(a + b as Bool?)" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 1 argument input → "#requireAmbiguous((a + b) as Bool?)" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 1 argument input → "#requireAmbiguous((a) + (b) as Bool?)" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 1 argument input → "#requireAmbiguous(((a) + (b)) as Bool?)" to "#require(as Bool?) suppresses its diagnostic"
+􀟈  Passing 2 arguments input → "#require("a" == "b")", expectedOutput → "Testing.__checkBinaryOperation("a", { $0 == $1() }, "b", expression: .__fromBinaryOperation(.__fromStringLiteral(#""a""#, "a"), "==", .__fromStringLiteral(#""b""#, "b")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a.b(c, d: e))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0.b($1, d: $2) }, c, e, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c")), ("d", .__fromSyntaxNode("e"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a.b { c })", expectedOutput → "Testing.__checkValue(a.b { c }, expression: .__fromSyntaxNode("a.b { c }"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require("123") { let x = 0; return x == 0 }", expectedOutput → "Testing.__checkClosureCall(performing: { let x = 0; return x == 0 }, expression: .__fromSyntaxNode("{ let x = 0; return x == 0 }"), comments: ["123"], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a.isB)", expectedOutput → "Testing.__checkPropertyAccess(a.self, getting: { $0.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a"), .__fromSyntaxNode("isB")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require({}())", expectedOutput → "Testing.__checkValue({}(), expression: .__fromSyntaxNode("{}()"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(!Bool.random())", expectedOutput → "Testing.__checkFunctionCall(Bool.self, calling: { $0.random() }, expression: .__fromNegation(.__fromFunctionCall(.__fromSyntaxNode("Bool"), "random"), false), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(b(c))", expectedOutput → "Testing.__checkFunctionCall((), calling: { b($1) }, c, expression: .__fromFunctionCall(nil, "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a, "b", c: c)", expectedOutput → "Testing.__checkValue(a, c: c, expression: .__fromSyntaxNode("a"), comments: ["b"], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a???.b(c))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0???.b($1) }, c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a???.isB)", expectedOutput → "Testing.__checkPropertyAccess(a.self, getting: { $0???.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a"), .__fromSyntaxNode("isB")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a?.b.c(d))", expectedOutput → "Testing.__checkFunctionCall(a?.b.self, calling: { $0?.c($1) }, d, expression: .__fromFunctionCall(.__fromSyntaxNode("a?.b"), "c", (nil, .__fromSyntaxNode("d"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(try x())", expectedOutput → "Testing.__checkValue(try x(), expression: .__fromSyntaxNode("try x()"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require("123") { 1 == 2 } then: { foo() }", expectedOutput → "Testing.__checkClosureCall(performing: { 1 == 2 }, then: { foo() }, expression: .__fromSyntaxNode("1 == 2"), comments: ["123"], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(false, "Custom message")", expectedOutput → "Testing.__checkValue(false, expression: .__fromSyntaxNode("false"), comments: ["Custom message"], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(9 > 8 && 7 > 6, "Some comment")", expectedOutput → "Testing.__checkBinaryOperation(9 > 8, { $0 && $1() }, 7 > 6, expression: .__fromBinaryOperation(.__fromSyntaxNode("9 > 8"), "&&", .__fromSyntaxNode("7 > 6")), comments: ["Some comment"], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require((true && false))", expectedOutput → "Testing.__checkBinaryOperation(true, { $0 && $1() }, false, expression: .__fromBinaryOperation(.__fromSyntaxNode("true"), "&&", .__fromSyntaxNode("false")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(false)", expectedOutput → "Testing.__checkValue(false, expression: .__fromSyntaxNode("false"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require("123") { let x = 0 }", expectedOutput → "Testing.__checkClosureCall(performing: { let x = 0 }, expression: .__fromSyntaxNode("let x = 0"), comments: ["123"], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#requireAmbiguous(expression)" to "#require(Bool?) produces a diagnostic"
+􀟈  Passing 2 arguments input → "#require(a())", expectedOutput → "Testing.__checkFunctionCall((), calling: { _ in a() }, expression: .__fromFunctionCall(nil, "a"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#requireAmbiguous((expression))" to "#require(Bool?) produces a diagnostic"
+􀟈  Passing 2 arguments input → "#require(a.b(c))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0.b($1) }, c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#requireAmbiguous(a + b)" to "#require(Bool?) produces a diagnostic"
+􀟈  Passing 2 arguments input → "#require(a.b(&c))", expectedOutput → "Testing.__checkInoutFunctionCall(a.self, calling: { $0.b(&$1) }, &c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("&c"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#requireAmbiguous((a + b))" to "#require(Bool?) produces a diagnostic"
+􀟈  Passing 2 arguments input → "#require(a.b(&c, &d))", expectedOutput → "Testing.__checkValue(a.b(&c, &d), expression: .__fromSyntaxNode("a.b(&c, &d)"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#requireAmbiguous((a) + (b))" to "#require(Bool?) produces a diagnostic"
+􀟈  Passing 2 arguments input → "#require(a.b(&c, d))", expectedOutput → "Testing.__checkValue(a.b(&c, d), expression: .__fromSyntaxNode("a.b(&c, d)"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a.b(c: d))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0.b(c: $1) }, d, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", ("c", .__fromSyntaxNode("d"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(isolation: somewhere) {}", expectedOutput → "Testing.__checkClosureCall(performing: {}, expression: .__fromSyntaxNode("{}"), comments: [], isRequired: true, isolation: somewhere, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a?.b.isB)", expectedOutput → "Testing.__checkPropertyAccess(a?.b.self, getting: { $0?.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a?.b"), .__fromSyntaxNode("isB")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(2 > 1)", expectedOutput → "Testing.__checkBinaryOperation(2, { $0 > $1() }, 1, expression: .__fromBinaryOperation(.__fromSyntaxNode("2"), ">", .__fromSyntaxNode("1")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#expect(false)" to "#expect(false) and #require(false) warn they always fail"
+􀟈  Passing 2 arguments input → "#require(a, sourceLocation: someValue)", expectedOutput → "Testing.__checkValue(a, expression: .__fromSyntaxNode("a"), comments: [], isRequired: true, sourceLocation: someValue).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#require(false)" to "#expect(false) and #require(false) warn they always fail"
+􀟈  Passing 1 argument input → "#expect(!true)" to "#expect(false) and #require(false) warn they always fail"
+􀟈  Passing 2 arguments input → "#require(true)", expectedOutput → "Testing.__checkValue(true, expression: .__fromSyntaxNode("true"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(((true || false) && true) || Bool.random())", expectedOutput → "Testing.__checkBinaryOperation(((true || false) && true), { $0 || $1() }, Bool.random(), expression: .__fromBinaryOperation(.__fromSyntaxNode("((true || false) && true)"), "||", .__fromSyntaxNode("Bool.random()")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 1 argument input → "#require(!true)" to "#expect(false) and #require(false) warn they always fail"
+􀟈  Passing 2 arguments input → "#require(a?.b(c))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0?.b($1) }, c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#require(a.b(try c()))", expectedOutput → "Testing.__checkValue(a.b(try c()), expression: .__fromSyntaxNode("a.b(try c())"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b { c })", expectedOutput → "Testing.__checkValue(a.b { c }, expression: .__fromSyntaxNode("a.b { c }"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#require(1 is Int)", expectedOutput → "Testing.__checkCast(1, is: (Int).self, expression: .__fromBinaryOperation(.__fromSyntaxNode("1"), "is", .__fromSyntaxNode("Int")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(&c, &d))", expectedOutput → "Testing.__checkValue(a.b(&c, &d), expression: .__fromSyntaxNode("a.b(&c, &d)"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(&c, d))", expectedOutput → "Testing.__checkValue(a.b(&c, d), expression: .__fromSyntaxNode("a.b(&c, d)"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#require(a?.b().isB)", expectedOutput → "Testing.__checkPropertyAccess(a?.b().self, getting: { $0?.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a?.b()"), .__fromSyntaxNode("isB")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "#require() macro"
+􀟈  Passing 2 arguments input → "#expect(a?.b(c))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0?.b($1) }, c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect("123") { 1 == 2 } then: { foo() }", expectedOutput → "Testing.__checkClosureCall(performing: { 1 == 2 }, then: { foo() }, expression: .__fromSyntaxNode("1 == 2"), comments: ["123"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(&c))", expectedOutput → "Testing.__checkInoutFunctionCall(a.self, calling: { $0.b(&$1) }, &c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("&c"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect("a" == "b")", expectedOutput → "Testing.__checkBinaryOperation("a", { $0 == $1() }, "b", expression: .__fromBinaryOperation(.__fromStringLiteral(#""a""#, "a"), "==", .__fromStringLiteral(#""b""#, "b")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(9 > 8 && 7 > 6, "Some comment")", expectedOutput → "Testing.__checkBinaryOperation(9 > 8, { $0 && $1() }, 7 > 6, expression: .__fromBinaryOperation(.__fromSyntaxNode("9 > 8"), "&&", .__fromSyntaxNode("7 > 6")), comments: ["Some comment"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect("123") { let x = 0 }", expectedOutput → "Testing.__checkClosureCall(performing: { let x = 0 }, expression: .__fromSyntaxNode("let x = 0"), comments: ["123"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect((true && false))", expectedOutput → "Testing.__checkBinaryOperation(true, { $0 && $1() }, false, expression: .__fromBinaryOperation(.__fromSyntaxNode("true"), "&&", .__fromSyntaxNode("false")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(2 > 1)", expectedOutput → "Testing.__checkBinaryOperation(2, { $0 > $1() }, 1, expression: .__fromBinaryOperation(.__fromSyntaxNode("2"), ">", .__fromSyntaxNode("1")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a?.b.c(d))", expectedOutput → "Testing.__checkFunctionCall(a?.b.self, calling: { $0?.c($1) }, d, expression: .__fromFunctionCall(.__fromSyntaxNode("a?.b"), "c", (nil, .__fromSyntaxNode("d"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(false, "Custom message")", expectedOutput → "Testing.__checkValue(false, expression: .__fromSyntaxNode("false"), comments: ["Custom message"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(isolation: somewhere) {}", expectedOutput → "Testing.__checkClosureCall(performing: {}, expression: .__fromSyntaxNode("{}"), comments: [], isRequired: false, isolation: somewhere, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.isB)", expectedOutput → "Testing.__checkPropertyAccess(a.self, getting: { $0.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a"), .__fromSyntaxNode("isB")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(false)", expectedOutput → "Testing.__checkValue(false, expression: .__fromSyntaxNode("false"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(!Bool.random())", expectedOutput → "Testing.__checkFunctionCall(Bool.self, calling: { $0.random() }, expression: .__fromNegation(.__fromFunctionCall(.__fromSyntaxNode("Bool"), "random"), false), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(1 is Int)", expectedOutput → "Testing.__checkCast(1, is: (Int).self, expression: .__fromBinaryOperation(.__fromSyntaxNode("1"), "is", .__fromSyntaxNode("Int")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(b(c))", expectedOutput → "Testing.__checkFunctionCall((), calling: { b($1) }, c, expression: .__fromFunctionCall(nil, "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a())", expectedOutput → "Testing.__checkFunctionCall((), calling: { _ in a() }, expression: .__fromFunctionCall(nil, "a"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a, sourceLocation: someValue)", expectedOutput → "Testing.__checkValue(a, expression: .__fromSyntaxNode("a"), comments: [], isRequired: false, sourceLocation: someValue).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a???.isB)", expectedOutput → "Testing.__checkPropertyAccess(a.self, getting: { $0???.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a"), .__fromSyntaxNode("isB")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect({}())", expectedOutput → "Testing.__checkValue({}(), expression: .__fromSyntaxNode("{}()"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(try x())", expectedOutput → "Testing.__checkValue(try x(), expression: .__fromSyntaxNode("try x()"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(try c()))", expectedOutput → "Testing.__checkValue(a.b(try c()), expression: .__fromSyntaxNode("a.b(try c())"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(c: d))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0.b(c: $1) }, d, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", ("c", .__fromSyntaxNode("d"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a?.b().isB)", expectedOutput → "Testing.__checkPropertyAccess(a?.b().self, getting: { $0?.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a?.b()"), .__fromSyntaxNode("isB")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(c))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0.b($1) }, c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a.b(c, d: e))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0.b($1, d: $2) }, c, e, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c")), ("d", .__fromSyntaxNode("e"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a, "b", c: c)", expectedOutput → "Testing.__checkValue(a, c: c, expression: .__fromSyntaxNode("a"), comments: ["b"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 1 argument input → "#expect(Bool(false))" to "Bool(false) suppresses the warning about always failing"
+􀟈  Passing 2 arguments input → "#expect(a???.b(c))", expectedOutput → "Testing.__checkFunctionCall(a.self, calling: { $0???.b($1) }, c, expression: .__fromFunctionCall(.__fromSyntaxNode("a"), "b", (nil, .__fromSyntaxNode("c"))), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 1 argument input → "#require(Bool(false))" to "Bool(false) suppresses the warning about always failing"
+􀟈  Passing 2 arguments input → "#expect(true)", expectedOutput → "Testing.__checkValue(true, expression: .__fromSyntaxNode("true"), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 1 argument input → "#expect(Bool(!true))" to "Bool(false) suppresses the warning about always failing"
+􀟈  Passing 1 argument input → "#require(Bool(!true))" to "Bool(false) suppresses the warning about always failing"
+􀟈  Passing 2 arguments input → "#expect(((true || false) && true) || Bool.random())", expectedOutput → "Testing.__checkBinaryOperation(((true || false) && true), { $0 || $1() }, Bool.random(), expression: .__fromBinaryOperation(.__fromSyntaxNode("((true || false) && true)"), "||", .__fromSyntaxNode("Bool.random()")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect("123") { let x = 0; return x == 0 }", expectedOutput → "Testing.__checkClosureCall(performing: { let x = 0; return x == 0 }, expression: .__fromSyntaxNode("{ let x = 0; return x == 0 }"), comments: ["123"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Passing 2 arguments input → "#expect(a?.b.isB)", expectedOutput → "Testing.__checkPropertyAccess(a?.b.self, getting: { $0?.isB }, expression: .__fromPropertyAccess(.__fromSyntaxNode("a?.b"), .__fromSyntaxNode("isB")), comments: [], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "#expect() macro"
+􀟈  Test "Can get stderr" started.
+􀟈  Passing 1 argument input → "#requireThrowsNever(throws: Never.self)" to "#require(throws: Never.self) produces a diagnostic"
+􀟈  Test "Can recognize opened pipe" started.
+􀟈  Test "Can get file descriptor" started.
+􀟈  Test "Writing requires contiguous storage" started.
+􀟈  Test "Can recognize opened TTY" started.
+􀟈  Test "Can close ends of a pipe" started.
+􀟈  Test "Can get stdout" started.
+􀟈  Test "Cannot write string to a read-only file" started.
+􀟈  Test "Cannot write bytes to a read-only file" started.
+􀟈  Test "close() function" started.
+􀟈  Test "Init from invalid file descriptor" started.
+􀟈  Test "Can read from a file" started.
+􀟈  Test "Can write to a file" started.
+􀟈  Test "/dev/null is not a TTY or pipe" started.
+􀟈  Test "fmemopen()'ed file is not a TTY or pipe" started.
+􀟈  Passing 2 arguments input → "// Ignore me
+
+// Capture me
+#expect(try x())", expectedOutput → "// Ignore me
+
+// Capture me
+Testing.__checkValue(try x(), expression: .__fromSyntaxNode("try x()"), comments: [.__line("// Capture me")], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "Capturing comments above #expect()/#require()"
+􀟈  Passing 2 arguments input → "// Source comment
+/** Doc comment */
+#expect(try x(), "Argument comment")", expectedOutput → "// Source comment
+/** Doc comment */
+Testing.__checkValue(try x(), expression: .__fromSyntaxNode("try x()"), comments: [.__line("// Source comment"),.__documentationBlock("/** Doc comment */"),"Argument comment"], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "Capturing comments above #expect()/#require()"
+􀟈  Passing 2 arguments input → "// Ignore me
+    
+// Capture me
+#expect(try x())", expectedOutput → "// Ignore me
+    
+// Capture me
+Testing.__checkValue(try x(), expression: .__fromSyntaxNode("try x()"), comments: [.__line("// Capture me")], isRequired: false, sourceLocation: Testing.SourceLocation.__here()).__expected()" to "Capturing comments above #expect()/#require()"
+􀟈  Passing 1 argument input → "#expect(true)" to "#expect(true) and #require(true) note they always pass"
+􀟈  Passing 1 argument input → "#require(true)" to "#expect(true) and #require(true) note they always pass"
+􀟈  Passing 1 argument input → "#expect(!false)" to "#expect(true) and #require(true) note they always pass"
+􀟈  Passing 1 argument input → "#require(!false)" to "#expect(true) and #require(true) note they always pass"
+􀟈  Passing 1 argument input → "#requireNonOptional(expression)" to "#require(non-optional value) produces a diagnostic"
+􀟈  Test "Get whole environment block" started.
+􀟈  Test "Titles of messages ('Test' vs. 'Suite') are determined correctly" started.
+􀟈  Test "Issue counts are summed correctly on test end" started.
+􀟈  Test "JUnitXMLRecorder counts issues without associated tests" started.
+􀟈  Test "JUnitXMLRecorder outputs valid XML" started.
+􀟈  Test "Issue counts are summed correctly on run end" started.
+􀟈  Test "Verbose output" started.
+􀟈  Test "JUnit XML omits time for skipped tests" started.
+􀟈  Test "HumanReadableOutputRecorder counts issues without associated tests" started.
+􀟈  Test "Issue counts are omitted on a successful test" started.
+􀟈  Test "Quiet output" started.
+􀟈  Passing 2 arguments input → "#require(123 as? Double)", expectedOutput → "Testing.__checkCast(123,as: (Double).self, expression: .__fromBinaryOperation(.__fromSyntaxNode("123"), "as?", .__fromSyntaxNode("Double")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "Unwrapping #require() macro"
+􀟈  Test "Writing events" started.
+􀟈  Passing 2 arguments input → "#require(Optional<Int>.none)", expectedOutput → "Testing.__checkPropertyAccess(Optional<Int>.self, getting: { $0.none }, expression: .__fromPropertyAccess(.__fromSyntaxNode("Optional<Int>"), .__fromSyntaxNode("none")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "Unwrapping #require() macro"
+􀟈  Passing 2 arguments input → "#require(123 as Double)", expectedOutput → "Testing.__checkValue(123 as Double, expression: .__fromSyntaxNode("123 as Double"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "Unwrapping #require() macro"
+􀟈  Passing 2 arguments input → "#require(123 as! Double)", expectedOutput → "Testing.__checkValue(123 as! Double, expression: .__fromSyntaxNode("123 as! Double"), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "Unwrapping #require() macro"
+􀟈  Passing 2 arguments input → "#require(123 ?? nil)", expectedOutput → "Testing.__checkBinaryOperation(123, { $0 ?? $1() }, nil, expression: .__fromBinaryOperation(.__fromSyntaxNode("123"), "??", .__fromSyntaxNode("nil")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "Unwrapping #require() macro"
+􀟈  Passing 2 arguments input → "#require(nil ?? 123)", expectedOutput → "Testing.__checkBinaryOperation(nil, { $0 ?? $1() }, 123, expression: .__fromBinaryOperation(.__fromSyntaxNode("nil"), "??", .__fromSyntaxNode("123")), comments: [], isRequired: true, sourceLocation: Testing.SourceLocation.__here()).__required()" to "Unwrapping #require() macro"
+􀟈  Passing 2 arguments lhs → Bug(url: nil, id: Optional("12345"), title: nil), rhs → Bug(url: Optional("67890"), id: nil, title: nil) to "Comparing Bug instances"
+􀟈  Passing 2 arguments lhs → Bug(url: nil, id: Optional("12345"), title: nil), rhs → Bug(url: Optional("https://www.example.com/12345"), id: nil, title: nil) to "Comparing Bug instances"
+􀟈  Passing 2 arguments lhs → Bug(url: Optional("https://www.example.com/67890"), id: nil, title: nil), rhs → Bug(url: Optional("67890"), id: nil, title: nil) to "Comparing Bug instances"
+􀟈  Passing 2 arguments lhs → Bug(url: Optional("https://www.example.com/67890"), id: nil, title: nil), rhs → Bug(url: Optional("https://www.example.com/12345"), id: nil, title: nil) to "Comparing Bug instances"
+􀟈  Passing 1 argument issueKind → An API was misused to "Codable"
+􀟈  Passing 1 argument issueKind → Confirmation was confirmed 13 times, but expected to be confirmed 42 times to "Codable"
+􀟈  Passing 1 argument issueKind → Caught error: Error Domain=Domain Code=13 "(null)" UserInfo={NSCallStackReturnAddresses=(0x193793a08 0x194843ab4 0x10455df5c 0x1045583f4 0x104697b14 0x193444658 0x193445ea0 0x104697e84 0x104698d08 0x10449c951 0x10449cc61 0x1044ba84d 0x1044baaf1 0x1044b98dd 0x1044594d9 0x10445c0a1 0x10445c1f1 0x10445c341 0x104434dcd 0x104435065 0x10442fb15 0x1044318bd 0x104431d59 0x1044320b1 0x1044325d9 0x1044330d9 0x1044330d9 0x1044330d9 0x1044330d9 0x1044301dd 0x10442f6c1 0x104434a19 0x1044568ed 0x10445ce75 0x10445d1d5 0x104474429 0x10439dca1 0x10449202d 0x1044921c9 0x10486a0f5 0x10486a235 0x10486a389 0x10486a4e1 0x10486a619 0x26cd9d035), UserInfoKey=UserInfoValue} to "Codable"
+􀟈  Passing 1 argument issueKind → Expectation failed: abc to "Codable"
+􀟈  Passing 1 argument issueKind → Known issue was not recorded to "Codable"
+􀟈  Passing 1 argument issueKind → A system failure occurred to "Codable"
+􀟈  Passing 1 argument issueKind → Time limit was exceeded: 13.000 seconds to "Codable"
+􀟈  Passing 1 argument issueKind → Issue recorded to "Codable"
+􀟈  Passing 2 arguments offset → 1e-09 seconds, nanoseconds → 1 to "Clock.Instant.nanoseconds(until:) method"
+􀟈  Passing 2 arguments offset → 0.0 seconds, nanoseconds → 0 to "Clock.Instant.nanoseconds(until:) method"
+􀟈  Passing 2 arguments offset → 1.0 seconds, nanoseconds → 1000000000 to "Clock.Instant.nanoseconds(until:) method"
+􀟈  Passing 2 arguments offset → 1e-18 seconds, nanoseconds → 0 to "Clock.Instant.nanoseconds(until:) method"
+􀟈  Passing 1 argument issueKind → An API was misused to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → Confirmation was confirmed 13 times, but expected to be confirmed 42 times to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → Caught error: Error Domain=Domain Code=13 "(null)" UserInfo={NSCallStackReturnAddresses=(0x193793a08 0x194843ab4 0x10455df5c 0x1045583f4 0x104697b14 0x193444658 0x193445ea0 0x104697e84 0x104698d08 0x10449c951 0x10449cc61 0x1044ba84d 0x1044baaf1 0x1044b98dd 0x1044594d9 0x10445c0a1 0x10445c1f1 0x10445c341 0x104434dcd 0x104435065 0x10442fb15 0x1044318bd 0x104431d59 0x1044320b1 0x1044325d9 0x1044330d9 0x1044330d9 0x1044330d9 0x1044330d9 0x1044301dd 0x10442f6c1 0x104434a19 0x1044568ed 0x10445ce75 0x10445d1d5 0x104474429 0x10439dca1 0x10449202d 0x1044921c9 0x10486a0f5 0x10486a235 0x10486a389 0x10486a4e1 0x10486a619 0x26cd9d035), UserInfoKey=UserInfoValue} to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → Expectation failed: abc to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → Known issue was not recorded to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → A system failure occurred to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → Time limit was exceeded: 13.000 seconds to "Custom descriptions are the same"
+􀟈  Passing 1 argument issueKind → Issue recorded to "Custom descriptions are the same"
+􀟈  Passing 1 argument kind → .expectationChecked(Testing.Expectation(evaluatedExpression: Testing.__Expression.Kind.generic("SyntaxNode"), mismatchedErrorDescription: Optional("Mismatched Error Description"), differenceDescription: Optional("Difference Description"), mismatchedExitConditionDescription: nil, isPassing: false, isRequired: true, sourceLocation: M/f.swift:1:1)) to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .testSkipped(Testing.SkipInfo(comment: Optional(Comment), sourceContext: Testing.SourceContext(backtrace: Optional(Testing.Backtrace(addresses: [4365708516, 4365719436, 4365707972, 4368259808, 4366911825, 4366912609, 4367034445, 4367035121, 4367030493, 4366636249, 4366647457, 4366647793, 4366648129, 4366486989, 4366487653, 4366465813, 4366473405, 4366474585, 4366475441, 4366476761, 4366479577, 4366479577, 4366479577, 4366479577, 4366467549, 4366464705, 4366486041, 4366625005, 4366650997, 4366651861, 4366746665, 4365868193, 4366868525, 4366868937, 4370899189, 4370899509, 4370899849, 4370900193, 4370900505, 10416148533])), sourceLocation: Optional(M/f.swift:1:1)))) to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .issueRecorded(A system failure occurred: Comment) to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .runStarted to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .runEnded to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .testCaseStarted to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .testCaseEnded to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .testStarted to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 1 argument kind → .testEnded to "Event's and Event.Kinds's Codable Conformances"
+􀟈  Passing 2 arguments argumentValue → nil, expectedMode → nil to "--symbolicate-backtraces argument"
+􀟈  Passing 2 arguments argumentValue → "mangled", expectedMode → .mangled to "--symbolicate-backtraces argument"
+􀟈  Passing 2 arguments argumentValue → "on", expectedMode → .mangled to "--symbolicate-backtraces argument"
+􀟈  Passing 2 arguments argumentValue → "true", expectedMode → .mangled to "--symbolicate-backtraces argument"
+􀟈  Passing 2 arguments argumentValue → "demangled", expectedMode → .demangled to "--symbolicate-backtraces argument"
+􀟈  Passing 2 arguments i → 0, j → 0 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments i → 1, j → 1 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments i → 2, j → 2 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments i → 3, j → 3 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments argument → "--verbose", expectedVerbosity → 1 to "--verbose, --very-verbose, and --quiet arguments"
+􀟈  Passing 2 arguments i → 4, j → 4 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments argument → "-v", expectedVerbosity → 1 to "--verbose, --very-verbose, and --quiet arguments"
+􀟈  Passing 2 arguments argument → "--very-verbose", expectedVerbosity → 2 to "--verbose, --very-verbose, and --quiet arguments"
+􀟈  Passing 2 arguments i → 5, j → 5 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments argument → "--vv", expectedVerbosity → 2 to "--verbose, --very-verbose, and --quiet arguments"
+􀟈  Passing 2 arguments i → 6, j → 6 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments argument → "--quiet", expectedVerbosity → -1 to "--verbose, --very-verbose, and --quiet arguments"
+􀟈  Passing 2 arguments i → 7, j → 7 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments i → 8, j → 8 to "All elements of two ranges are equal"
+􀟈  Passing 2 arguments argument → "-q", expectedVerbosity → -1 to "--verbose, --very-verbose, and --quiet arguments"
+􀟈  Passing 2 arguments i → 9, j → 9 to "All elements of two ranges are equal"
+􀟈  Passing 3 arguments outputArgumentName → "--event-stream-output-path", versionArgumentName → "--event-stream-version", version → "0" to "--event-stream-output-path argument (writes to a stream and can be read back)"
+􀟈  Passing 3 arguments outputArgumentName → "--experimental-event-stream-output", versionArgumentName → "--experimental-event-stream-version", version → "0" to "--event-stream-output-path argument (writes to a stream and can be read back)"
+􀟈  Passing 1 argument argumentName → "--configuration-path" to "--configuration-path argument"
+􀟈  Passing 1 argument argumentName → "--experimental-configuration-path" to "--configuration-path argument"
+􀟈  Passing 1 argument 0 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 1 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 2 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 3 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 4 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 5 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 6 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 7 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 8 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument 9 to "Test.sourceLocation.column is used when sorting"
+􀟈  Passing 1 argument type → NonSendableTests to "Test suite types are runnable"
+􀟈  Passing 1 argument type → SendableTests to "Test suite types are runnable"
+􀟈  Passing 1 argument type → MainActorIsolatedTests to "Test suite types are runnable"
+􀟈  Passing 3 arguments seconds → 123, attoseconds → 0, description → "123.000" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Passing 3 arguments seconds → 123, attoseconds → 100000000000000, description → "123.000" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Passing 3 arguments seconds → 0, attoseconds → 1000000000, description → "0.001" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Passing 3 arguments seconds → 0, attoseconds → 1, description → "0.001" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Passing 3 arguments seconds → 0, attoseconds → 100000000000000, description → "0.001" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Passing 3 arguments seconds → 123, attoseconds → 456000000000000000, description → "123.456" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Passing 3 arguments seconds → 123, attoseconds → 1000000000000000000, description → "124.000" to "Issue.Kind.timeLimitExceeded.description property"
+􀟈  Test "Iteration while issue recorded" started.
+􀟈  Test "Iteration count must be positive" started.
+􀟈  Test "Iteration until issue recorded" started.
+􀟈  Test "Unconditional iteration" started.
+􀟈  Test "One iteration (default behavior)" started.
+􀟈  Test decodeEmptyConfiguration() started.
+􀟈  Test "v0 entry point with a large number of filter arguments" started.
+􀟈  Test v0_experimental() started.
+􀟈  Test "v0 experimental entry point with a large number of filter arguments" started.
+􀟈  Test "v0 entry point listing tests only" started.
+􀟈  Test v0() started.
+􀟈  Passing 2 arguments type → String, expectedTypeInfo → String to initWithType(type:expectedTypeInfo:)
+􀟈  Passing 2 arguments type → Array<String>, expectedTypeInfo → Array<String> to initWithType(type:expectedTypeInfo:)
+􀟈  Passing 2 arguments type → Array<Test>, expectedTypeInfo → Array<Test> to initWithType(type:expectedTypeInfo:)
+􀟈  Passing 2 arguments type → (key: String, value: Int), expectedTypeInfo → (key: String, value: Int) to initWithType(type:expectedTypeInfo:)
+􀟈  Passing 2 arguments type → () -> String, expectedTypeInfo → () -> String to initWithType(type:expectedTypeInfo:)
+􀟈  Test "Tags are recursively applied" started.
+􀟈  Test "Invalid tag color decoding" started.
+􀟈  Test "Tags as codable dictionary keys" started.
+􀟈  Test "Colors are read from disk" started.
+􀟈  Test "Tag.description property" started.
+􀟈  Test "Tag.List.description property" started.
+􀟈  Test "Encoding/decoding tags" started.
+􀟈  Test "Tags can be parsed from user-provided strings" started.
+􀟈  Test "No colors are read from a bad path" started.
+􀟈  Test ".tags() factory method with one tag" started.
+􀟈  Test "Tag color sorting" started.
+􀟈  Test "Test.tags property" started.
+􀟈  Test ".tags() factory method with two tags" started.
+􀟈  Test "Tag colors are converted to 16-color correctly" started.
+􀟈  Test "Tag.List comparisons" started.
+􁁛  Test variadicCStringArguments() passed after 1.285 seconds.
+􀟈  Test ".tags() factory method with colors" started.
+􁁛  Test "Test function does not conflict with local type names" passed after 1.285 seconds.
+􁁛  Test "Backtrace.current() is populated" passed after 1.285 seconds.
+􁁛  Test "Test function does not conflict with local type names" passed after 1.286 seconds.
+􁁛  Test parameterizedTestWithTrailingComment(value:) passed after 1.286 seconds.
+􁁛  Test "One Identifiable parameter" passed after 1.286 seconds.
+􁁛  Test "An unthrown error has no backtrace" passed after 1.286 seconds.
+􁁛  Test "Codable" passed after 1.286 seconds.
+􁁛  Test "Nil display name" passed after 1.286 seconds.
+􁁛  Test "Invalid tag expressions are detected" passed after 1.286 seconds.
+􁁛  Test "Invalid bug URLs are detected" passed after 1.286 seconds.
+􁁛  Test "comments property" passed after 1.286 seconds.
+􁁛  Test "tags property" passed after 1.286 seconds.
+􁁛  Test "associatedBugs property" passed after 1.286 seconds.
+􁁛  Test "Error diagnostics emitted on API misuse" passed after 1.286 seconds.
+􁁛  Test "Error diagnostics which include fix-its emitted on API misuse" passed after 1.287 seconds.
+􁁛  Test "Encoding/decoding" passed after 1.287 seconds.
+􁁛  Test "One Codable parameter" passed after 1.287 seconds.
+􀢄  Test "Different kinds of functions are handled correctly" failed after 1.288 seconds with 5 issues.
+􁁛  Test "Warning diagnostics emitted on API misuse" passed after 1.287 seconds.
+􁁛  Test "Valid bug identifiers are allowed" passed after 1.288 seconds.
+􁁛  Test "One RawRepresentable parameter" passed after 1.288 seconds.
+􁁛  Test "Self. in @Test attribute is removed" passed after 1.288 seconds.
+􁁛  Test "Thrown NSError has a different backtrace than we generated" passed after 1.287 seconds.
+􁁛  Test "One CustomTestArgumentEncodable parameter" passed after 1.288 seconds.
+􁁛  Test "Error diagnostics emitted on API misuse" passed after 1.287 seconds.
+􁁛  Test "Availability attributes are captured" passed after 1.288 seconds.
+􁁛  Test mutateMe() passed after 1.287 seconds.
+􁁛  Test "Display name is preserved" passed after 1.288 seconds.
+􁁛  Test "@Tag macro" passed after 1.287 seconds.
+􁁛  Test "Thunk identifiers do not contain backticks" passed after 1.288 seconds.
+􁁛  Test "Valid tag expressions are allowed" passed after 1.288 seconds.
+􁁛  Test "CError.description property" passed after 1.288 seconds.
+􁁛  Test "Effects influence generated identifiers" passed after 1.287 seconds.
+􁁛  Test "Thunk identifiers do not contain arbitrary Unicode" passed after 1.288 seconds.
+􁁛  Test "Argument types influence generated identifiers" passed after 1.288 seconds.
+􁁛  Test consumeMe() passed after 1.288 seconds.
+􁁛  Test staticMe() passed after 1.287 seconds.
+􁁛  Test "Symbolication" passed after 1.288 seconds.
+􁁛  Test mangledTypeName() passed after 1.288 seconds.
+􁁛  Test "Body does not influence generated identifiers" passed after 1.288 seconds.
+􁁛  Test borrowMe() passed after 1.288 seconds.
+􁁛  Test "#require(as Bool?) suppresses its diagnostic" passed after 1.287 seconds.
+􁁛  Test "SourceLocation comparisons" passed after 1.287 seconds.
+􁁛  Test "#expect(false) and #require(false) warn they always fail" passed after 1.288 seconds.
+􁁛  Test "SourceLocation.line and .column properties" passed after 1.287 seconds.
+􁁛  Test "as! warns when used with #require()" passed after 1.288 seconds.
+􁁛  Test "as! warning is suppressed for explicit Bool and Optional casts" passed after 1.287 seconds.
+􁁛  Test testNotAnXCTestCaseMethod() passed after 1.288 seconds.
+􁁛  Test "SourceLocation.moduleName property" passed after 1.287 seconds.
+􁁛  Test "Bool(false) suppresses the warning about always failing" passed after 1.287 seconds.
+􁁛  Test "#require(Bool?) produces a diagnostic" passed after 1.288 seconds.
+􁁛  Test "SourceLocation.fileID property ignores middle components" passed after 1.287 seconds.
+􁁛  Test "#require() macro" passed after 1.288 seconds.
+􁁛  Test "#expect() macro" passed after 1.288 seconds.
+􁁛  Test "SourceLocation._filePath property" passed after 1.290 seconds.
+􁁛  Test "Unicode characters influence generated identifiers" passed after 1.292 seconds.
+􁁛  Test typeComparison() passed after 1.293 seconds.
+􁁛  Test "SourceLocation.description property" passed after 1.292 seconds.
+􁁛  Test "SourceLocation.fileID property" passed after 1.291 seconds.
+􁁛  Test "Explicitly nil comment" passed after 1.291 seconds.
+􁁛  Test "Test.associatedBugs property" passed after 1.291 seconds.
+􁁛  Test ".bug() with String" passed after 1.291 seconds.
+􁁛  Test ".bug() with UnsignedInteger" passed after 1.291 seconds.
+􀟈  Passing 2 arguments testName → "f()", isSuite → false to "Titles of messages ('Test' vs. 'Suite') are determined correctly"
+􀟈  Passing 2 arguments testName → "g()", isSuite → false to "Titles of messages ('Test' vs. 'Suite') are determined correctly"
+􀟈  Passing 2 arguments testName → "PredictablyFailingTests", isSuite → true to "Titles of messages ('Test' vs. 'Suite') are determined correctly"
+􁁛  Test "Bug hashing" passed after 1.291 seconds.
+􁁛  Test "comment property" passed after 1.292 seconds.
+􁁛  Test ".bug() with SignedInteger" passed after 1.292 seconds.
+􁁛  Test "#require(throws: Never.self) produces a diagnostic" passed after 1.293 seconds.
+􁁛  Test "Methods on non-XCTestCase subclasses are supported" passed after 1.293 seconds.
+􁁛  Test "sourceLocation property" passed after 1.293 seconds.
+􁁛  Test ".bug() with URL string" passed after 1.293 seconds.
+􁁛  Test "removeValue(at:keepingChildren:) function (removing root, sparse)" passed after 1.293 seconds.
+􀟈  Passing 2 arguments useSFSymbols → false, ansiColorBitDepth → nil to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → false, ansiColorBitDepth → 1 to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → false, ansiColorBitDepth → 4 to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → false, ansiColorBitDepth → 8 to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → false, ansiColorBitDepth → 24 to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → true, ansiColorBitDepth → nil to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → true, ansiColorBitDepth → 1 to "Writing events"
+􀟈  Passing 3 arguments testName → "g()", isSuite → false, issueCount → (total: 2, expected: 1) to "Issue counts are summed correctly on test end"
+􀟈  Passing 3 arguments testName → "f()", isSuite → false, issueCount → (total: 5, expected: 3) to "Issue counts are summed correctly on test end"
+􀟈  Passing 2 arguments useSFSymbols → true, ansiColorBitDepth → 4 to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → true, ansiColorBitDepth → 24 to "Writing events"
+􀟈  Passing 2 arguments useSFSymbols → true, ansiColorBitDepth → 8 to "Writing events"
+􁁛  Test "#expect(true) and #require(true) note they always pass" passed after 1.296 seconds.
+􀟈  Passing 3 arguments testName → "PredictablyFailingTests", isSuite → true, issueCount → (total: 7, expected: 4) to "Issue counts are summed correctly on test end"
+􁁛  Test "Encoding/decoding" passed after 1.296 seconds.
+􁁛  Test "updateValue(_:at:) function (no existing value)" passed after 1.295 seconds.
+􁁛  Test ".comment() factory method" passed after 1.295 seconds.
+􁁛  Test "insertValue(_:at:) function (no existing value)" passed after 1.295 seconds.
+􁁛  Test "init() (sparse)" passed after 1.296 seconds.
+􁁛  Test "updateValue(_:at:) function" passed after 1.296 seconds.
+􁁛  Test "compactMap(_:) function" passed after 1.296 seconds.
+􁁛  Test "SourceLocation.fileName property" passed after 1.296 seconds.
+􁁛  Test "subscript([K]) operator" passed after 1.296 seconds.
+􁁛  Test "insertValue(_:at:) function" passed after 1.296 seconds.
+􁁛  Test "flatMap(_:) function (async)" passed after 1.296 seconds.
+􁁛  Test "forEach(_:) function" passed after 1.296 seconds.
+􁁛  Test "removeValue(at:keepingChildren:) function (no value at key path)" passed after 1.296 seconds.
+􁁛  Test ".bug() is not recursively applied" passed after 1.296 seconds.
+􁁛  Test "insertValue(_:at:) function (no existing value, sparse)" passed after 1.295 seconds.
+􁁛  Test "mapValues(_:) function (async, recursively applied)" passed after 1.296 seconds.
+􁁛  Test "mapValues(_:) function (recursively applied)" passed after 1.295 seconds.
+􁁛  Test "mapValues(_:) function" passed after 1.296 seconds.
+􁁛  Test "compactMapValues(_:) function (async, recursively applied)" passed after 1.295 seconds.
+􁁛  Test "flatMap(_:) function" passed after 1.295 seconds.
+􁁛  Test "compactMapValues(_:) function" passed after 1.295 seconds.
+􁁛  Test "Cartesian product with empty first input is empty" passed after 1.296 seconds.
+􁁛  Test "subscript([K]) operator (sparse, mutating)" passed after 1.297 seconds.
+􁁛  Test "First element is correct" passed after 1.296 seconds.
+􁁛  Test "init(value:)" passed after 1.297 seconds.
+􁁛  Test "compactMapValues(_:) function (async)" passed after 1.297 seconds.
+􁁛  Test "CartesianProduct.underestimatedCount is clamped at .max" passed after 1.296 seconds.
+􁁛  Test "Comparing Bug instances" passed after 1.298 seconds.
+􁁛  Test "Cartesian product with empty second input is empty" passed after 1.296 seconds.
+􁁛  Test "mapValues(_:) function (async)" passed after 1.297 seconds.
+􁁛  Test "underestimatedCount and count properties" passed after 1.297 seconds.
+􁁛  Test sourceLocationPropertyGetter() passed after 1.297 seconds.
+􁁛  Test "removeValue(at:keepingChildren:) function (removing children)" passed after 1.297 seconds.
+􁁛  Test "takeValues(at:) function" passed after 1.297 seconds.
+􁁛  Test "removeValue(at:keepingChildren:) function (removing root, should have no effect)" passed after 1.297 seconds.
+􁁛  Test errorSnapshot() passed after 1.297 seconds.
+􁁛  Test "subscript([K]) operator (sparse)" passed after 1.297 seconds.
+􁁛  Test "#require(non-optional value) produces a diagnostic" passed after 1.299 seconds.
+􁁛  Test "Codable" passed after 1.297 seconds.
+􁁛  Test "Clock.minimumResolution property" passed after 1.297 seconds.
+􁁛  Test "Codable" passed after 1.297 seconds.
+􁁛  Test "Clock.Instant.nanoseconds(until:) method" passed after 1.297 seconds.
+􁁛  Test "Custom descriptions are the same" passed after 1.297 seconds.
+􁁛  Test "Casting Test.Clock.Instant to Date" passed after 1.296 seconds.
+􁁛  Test "init(value:children:)" passed after 1.296 seconds.
+􁁛  Test ".hidden trait" passed after 1.296 seconds.
+􁁛  Test "Capturing comments above #expect()/#require()" passed after 1.300 seconds.
+􁁛  Test "Event's and Event.Kinds's Codable Conformances" passed after 1.296 seconds.
+􁁛  Test "subgraph(at:)" passed after 1.297 seconds.
+􁁛  Test "map(_:) function" passed after 1.297 seconds.
+􁁛  Test sourceLocationPropertySetter() passed after 1.298 seconds.
+􁁛  Test "removeValue(at:keepingChildren:) function" passed after 1.299 seconds.
+􁁛  Test "--symbolicate-backtraces argument" passed after 1.300 seconds.
+􁁛  Test "forEach(_:) function (async)" passed after 1.300 seconds.
+􁁛  Test "--xunit-output argument (bad path)" passed after 1.301 seconds.
+􁁛  Test "--xunit-output argument (missing path)" passed after 1.300 seconds.
+􁁛  Test "--verbosity argument" passed after 1.300 seconds.
+􁁛  Test "EXIT_NO_TESTS_FOUND is unique" passed after 1.301 seconds.
+􁁛  Test "--parallel/--no-parallel argument" passed after 1.301 seconds.
+􁁛  Test "Clock.Instant.advanced(by:) and .duration(to:) methods" passed after 1.301 seconds.
+􁁛  Test "All elements of two ranges are equal" passed after 1.301 seconds.
+􁁛  Test "--verbose, --very-verbose, and --quiet arguments" passed after 1.301 seconds.
+􁁛  Test "Event.Contexts's Codable Conformances" passed after 1.302 seconds.
+􁁛  Test "--repeat-until pass argument (alone)" passed after 1.301 seconds.
+􁁛  Test "--repetitions and --repeat-until arguments" passed after 1.301 seconds.
+􁁛  Test "Unwrapping #require() macro" passed after 1.305 seconds.
+􁁛  Test "Multiple --filter arguments" passed after 1.301 seconds.
+􁁛  Test "--xunit-output argument (writes to file)" passed after 1.301 seconds.
+􁁛  Test "--configuration-path argument" passed after 1.302 seconds.
+􁁛  Test "--filter/--skip arguments and .hidden trait" passed after 1.304 seconds.
+􁁛  Test "Test.ID.parent property" passed after 1.304 seconds.
+􁁛  Test "--repeat-until fail argument (alone)" passed after 1.305 seconds.
+􁁛  Test "--filter or --skip argument with bad regex" passed after 1.305 seconds.
+􁁛  Test "--repeat-until argument with garbage value (alone)" passed after 1.306 seconds.
+􁁛  Test "Test.id property" passed after 1.301 seconds.
+􁁛  Test "--repetitions argument (alone)" passed after 1.306 seconds.
+􁁛  Test "Properties related to parameterization" passed after 1.307 seconds.
+􁁛  Test "failureBreakpoint() call" passed after 1.308 seconds.
+􁁛  Test "Test.ID.init() with no arguments" passed after 1.308 seconds.
+􁁛  Test "Test.sourceLocation.column is used when sorting" passed after 1.308 seconds.
+􁁛  Test "No --filter or --skip argument" passed after 1.302 seconds.
+􁁛  Test "Command line arguments are available" passed after 1.312 seconds.
+􁁛  Test "--filter argument" passed after 1.315 seconds.
+􁁛  Test "--skip argument" passed after 1.314 seconds.
+􁁛  Test "Test.all deduping" passed after 1.318 seconds.
+􁁛  Test "Issue.Kind.timeLimitExceeded.description property" passed after 1.318 seconds.
+􁁛  Test "Configuration.maximumTestTimeLimit property" passed after 1.318 seconds.
+􁁛  Test "Value reflecting an object with a reference to another object which has a cyclic back-reference the first" passed after 1.318 seconds.
+􁁛  Test "Value reflecting an object with multiple cyclic references" passed after 1.318 seconds.
+􁁛  Test "TimeoutError.description property" passed after 1.319 seconds.
+􁁛  Test "Configuration.defaultTestTimeLimit property set higher than maximum" passed after 1.319 seconds.
+􁁛  Test "Configuration.defaultTestTimeLimit property" passed after 1.321 seconds.
+􁁛  Test "Value reflecting a simple struct with one property" passed after 1.321 seconds.
+􁁛  Test "adjustedTimeLimit(configuration:) function" passed after 1.325 seconds.
+􁁛  Test "Summing values is consistent" passed after 1.329 seconds.
+􁁛  Test "Value reflecting an object with multiple non-cyclic references" passed after 1.326 seconds.
+􁁛  Test isImportedFromC() passed after 1.326 seconds.
+􁁛  Test "--event-stream-output-path argument (writes to a stream and can be read back)" passed after 1.329 seconds.
+􁁛  Test "Value reflecting an object with a cyclic reference to itself" passed after 1.327 seconds.
+􁁛  Test initWithType(type:expectedTypeInfo:) passed after 1.328 seconds.
+􁁛  Test isSwiftEnumeration() passed after 1.330 seconds.
+􁁛  Suite "Runner.Plan-dumping Tests" passed after 1.341 seconds.
+􀟈  Passing 1 argument tagColorJSON → ""#NOTHEX"" to "Invalid tag color decoding"
+􀟈  Passing 1 argument tagColorJSON → ""garbageColorName"" to "Invalid tag color decoding"
+􀟈  Passing 2 arguments tag → .blue, expectedDescription → ".blue" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .yellow, expectedDescription → ".yellow" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .red, expectedDescription → ".red" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .orange, expectedDescription → ".orange" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .green, expectedDescription → ".green" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .purple, expectedDescription → ".purple" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .namedConstant, expectedDescription → ".namedConstant" to "Tag.description property"
+􀟈  Passing 2 arguments tag → .anotherConstant, expectedDescription → ".anotherConstant" to "Tag.description property"
+􁁛  Test "Count of cartesian product" passed after 1.340 seconds.
+􁁛  Test typeNameOfFunctionIsMungedCorrectly() passed after 1.337 seconds.
+􁁛  Test ".hidden trait" passed after 1.337 seconds.
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 255, greenComponent: 0, blueComponent: 0), ansiEscapeCodeValue → 91 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 255, greenComponent: 255, blueComponent: 255), ansiEscapeCodeValue → 97 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 255, greenComponent: 255, blueComponent: 0), ansiEscapeCodeValue → 93 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 0, blueComponent: 255), ansiEscapeCodeValue → 94 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 100, greenComponent: 100, blueComponent: 100), ansiEscapeCodeValue → 90 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 192, greenComponent: 0, blueComponent: 224), ansiEscapeCodeValue → 95 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 255, blueComponent: 0), ansiEscapeCodeValue → 92 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 100, greenComponent: 100, blueComponent: 0), ansiEscapeCodeValue → 33 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 255, greenComponent: 128, blueComponent: 0), ansiEscapeCodeValue → 33 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 200, greenComponent: 200, blueComponent: 200), ansiEscapeCodeValue → 37 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 100, greenComponent: 0, blueComponent: 0), ansiEscapeCodeValue → 31 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 100, blueComponent: 0), ansiEscapeCodeValue → 32 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 0, blueComponent: 100), ansiEscapeCodeValue → 34 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 100, blueComponent: 100), ansiEscapeCodeValue → 36 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 200, greenComponent: 0, blueComponent: 0), ansiEscapeCodeValue → 91 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 100, greenComponent: 0, blueComponent: 100), ansiEscapeCodeValue → 35 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 200, greenComponent: 200, blueComponent: 0), ansiEscapeCodeValue → 93 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 200, blueComponent: 200), ansiEscapeCodeValue → 96 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 200, blueComponent: 0), ansiEscapeCodeValue → 92 to "Tag colors are converted to 16-color correctly"
+􁁛  Test eventPostingInTaskGroup() passed after 1.337 seconds.
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 0, blueComponent: 200), ansiEscapeCodeValue → 94 to "Tag colors are converted to 16-color correctly"
+􁁛  Test ".timeLimit() factory method" passed after 1.337 seconds.
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 0, greenComponent: 0, blueComponent: 0), ansiEscapeCodeValue → 30 to "Tag colors are converted to 16-color correctly"
+􀟈  Passing 2 arguments tagColor → Color(redComponent: 200, greenComponent: 0, blueComponent: 200), ansiEscapeCodeValue → 95 to "Tag colors are converted to 16-color correctly"
+􁁛  Test typeNameInExtensionIsMungedCorrectly() passed after 1.338 seconds.
+􁁛  Test mangledTypeName() passed after 1.338 seconds.
+􁁛  Test "One-element key path before two-element key path" passed after 1.337 seconds.
+􁁛  Test "Single-element key path" passed after 1.337 seconds.
+􁁛  Test "Long key path, then short key path, then medium key path" passed after 1.338 seconds.
+􁁛  Test "Short key path before long key path" passed after 1.338 seconds.
+􁁛  Test "Two-element key path before one-element key path" passed after 1.338 seconds.
+􁁛  Test "Inverted lookup" passed after 1.338 seconds.
+􁁛  Test "Long key path before short key path" passed after 1.339 seconds.
+􁁛  Test "Two peer key paths" passed after 1.338 seconds.
+􁁛  Test strings() passed after 0.473 seconds.
+􁁛  Test types() passed after 0.474 seconds.
+􁁛  Test "Cartesian products compare equal" passed after 1.343 seconds.
+􁁛  Test "Exit condition matching operators (==, !=, ===, !==)" passed after 0.468 seconds.
+􁁛  Test optionals() passed after 0.473 seconds.
+􁁛  Test "Mutating a value within withLock(_:)" passed after 0.437 seconds.
+􁁛  Test otherProtocols() passed after 0.474 seconds.
+􁁛  Test ranges() passed after 0.473 seconds.
+􁁛  Test "Can recognize opened pipe" passed after 0.152 seconds.
+􁁛  Test enumerations() passed after 0.474 seconds.
+􁁛  Test "Can get stdout" passed after 0.150 seconds.
+􁁛  Test "Can get stderr" passed after 0.153 seconds.
+􁁛  Test "Cannot write string to a read-only file" passed after 0.150 seconds.
+􁁛  Test "close() function" passed after 0.149 seconds.
+􁁛  Test "Cannot write bytes to a read-only file" passed after 0.150 seconds.
+􁁛  Test "Can recognize opened TTY" passed after 0.152 seconds.
+􁁛  Test "Can write to a file" passed after 0.148 seconds.
+􁁛  Test "/dev/null is not a TTY or pipe" passed after 0.148 seconds.
+􁁛  Test "fmemopen()'ed file is not a TTY or pipe" passed after 0.148 seconds.
+􁁛  Test "Init from invalid file descriptor" passed after 0.149 seconds.
+􁁛  Test "Can get file descriptor" passed after 0.152 seconds.
+􁁛  Test "Can close ends of a pipe" passed after 0.151 seconds.
+􁁛  Test "Get whole environment block" passed after 0.126 seconds.
+􁁛  Test "JUnitXMLRecorder counts issues without associated tests" passed after 0.126 seconds.
+􁁛  Test "JUnit XML omits time for skipped tests" passed after 0.127 seconds.
+􁁛  Test "HumanReadableOutputRecorder counts issues without associated tests" passed after 0.127 seconds.
+􁁛  Test "Can read from a file" passed after 0.155 seconds.
+􁁛  Test "Macro expansion is performed within a test function" passed after 1.371 seconds.
+􁁛  Test "Main actor isolation" passed after 1.679 seconds.
+􁁛  Test decodeEmptyConfiguration() passed after 0.436 seconds.
+􁁛  Test "Invalid tag color decoding" passed after 0.483 seconds.
+􁁛  Test "Tags as codable dictionary keys" passed after 0.484 seconds.
+􁁛  Test "Colors are read from disk" passed after 0.485 seconds.
+􁁛  Test "Tag.description property" passed after 0.485 seconds.
+􁁛  Test "Tag.List.description property" passed after 0.485 seconds.
+􁁛  Test "Tags can be parsed from user-provided strings" passed after 0.486 seconds.
+􁁛  Test "Encoding/decoding tags" passed after 0.486 seconds.
+􁁛  Test "No colors are read from a bad path" passed after 0.486 seconds.
+􁁛  Test ".tags() factory method with one tag" passed after 0.486 seconds.
+􁁛  Test "Tag color sorting" passed after 0.487 seconds.
+􁁛  Test ".tags() factory method with two tags" passed after 0.487 seconds.
+􁁛  Test "Test.tags property" passed after 0.487 seconds.
+􁁛  Test "Tag.List comparisons" passed after 0.487 seconds.
+􁁛  Test "Tag colors are converted to 16-color correctly" passed after 0.487 seconds.
+􁁛  Suite "Type Name Conflict Tests" passed after 1.775 seconds.
+􁁛  Test ".tags() factory method with colors" passed after 0.488 seconds.
+􁁛  Suite "Test.Case.Argument.ID Tests" passed after 1.777 seconds.
+􀢄  Suite "TestDeclarationMacro Tests" failed after 1.778 seconds with 5 issues.
+􁁛  Suite "TagMacro Tests" passed after 1.780 seconds.
+􁁛  Suite "Non-Copyable Tests" passed after 1.780 seconds.
+􁁛  Suite "CError Tests" passed after 1.781 seconds.
+􁁛  Suite "Unique Identifier Tests" passed after 1.781 seconds.
+􁁛  Suite "Bug Tests" passed after 1.783 seconds.
+􁁛  Suite "SkipInfo Tests" passed after 1.784 seconds.
+􁁛  Suite NonXCTestCaseClassTests passed after 1.998 seconds.
+􁁛  Suite "Graph<K, V> Tests" passed after 1.998 seconds.
+􁁛  Suite "Issue Codable Conformance Tests" passed after 2.340 seconds.
+􁁛  Suite FoundationTests passed after 2.341 seconds.
+􁁛  Suite "Event Tests" passed after 2.341 seconds.
+􁁛  Test "Free function's name" passed after 2.336 seconds.
+􁁛  Test "Test suite type's name" passed after 2.337 seconds.
+􁁛  Test "list subcommand" passed after 2.338 seconds.
+􁁛  Test "list --verbose subcommand" passed after 2.337 seconds.
+􁁛  Test "Concurrent access (summing ten times) is consistent" passed after 2.340 seconds.
+􁁛  Test "Free function has custom display name" passed after 2.338 seconds.
+􁁛  Test "Cancelled tests can exit early (cancellation checking works)" passed after 2.338 seconds.
+􁁛  Suite "Expression.Value Tests" passed after 2.347 seconds.
+􁁛  Test "Member function has custom display name" passed after 2.343 seconds.
+􁁛  Test ".serialized trait is recursively applied" passed after 2.362 seconds.
+􁁛  Suite "TypeInfo Tests" passed after 2.444 seconds.
+􁁛  Test "Test.comments property" passed after 2.447 seconds.
+􁁛  Suite "Hidden Trait Tests" passed after 2.454 seconds.
+􁁛  Suite "Test.ID.Selection Tests" passed after 2.457 seconds.
+􁁛  Suite "Locked Tests" passed after 2.461 seconds.
+􁁛  Suite "CustomTestStringConvertible Tests" passed after 2.460 seconds.
+􁁛  Test "Static functions are nested at the same level as instance functions" passed after 2.456 seconds.
+􁁛  Test "Objective-C selectors are discovered" passed after 2.456 seconds.
+􁁛  Test "Unfiltered tests" passed after 2.456 seconds.
+􁁛  Test "Clock.Instant.durationSince1970 property" passed after 2.464 seconds.
+􁁛  Test "Clock.Instant basics" passed after 2.464 seconds.
+􁁛  Test "Creating a SuspendingClock.Instant from Test.Clock.Instant" passed after 2.465 seconds.
+􁁛  Test "Clock.Instant.timeComponentsSince1970 property" passed after 2.472 seconds.
+􁁛  Test "Clock.now property" passed after 2.474 seconds.
+􁁛  Test "Clock.sleep(until:tolerance:) method" passed after 2.473 seconds.
+􁁛  Suite "ConditionMacro Tests" passed after 2.482 seconds.
+􁁛  Test "timeLimit property" passed after 2.523 seconds.
+􁁛  Test "Exit test reports > 8 bits of the exit code" passed after 1.645 seconds.
+􁁛  Test "Writing requires contiguous storage" passed after 1.328 seconds.
+􁁛  Test "isParameterized property" passed after 2.537 seconds.
+􁁛  Suite "Cartesian Product Tests" passed after 2.542 seconds.
+􁁛  Test "isSuite property" passed after 2.543 seconds.
+􁁛  Test "v0 entry point listing tests only" passed after 1.275 seconds.
+􁁛  Suite "Comment Tests" passed after 2.559 seconds.
+􁁛  Test "Recursive trait application" passed after 2.551 seconds.
+􁁛  Test "SourceLocation.fileID property must be well-formed" passed after 2.557 seconds.
+􀟈  Test "Read environment variable" started.
+􁁛  Suite "Clock API Tests" passed after 2.566 seconds.
+􁁛  Suite A passed after 2.605 seconds.
+􁁛  Suite "Test.Snapshot tests" passed after 2.611 seconds.
+􁁛  Test "Exit test can be main-actor-isolated" passed after 1.730 seconds.
+􁁛  Test "SourceLocation.line and column properties must be positive" passed after 2.608 seconds.
+􁁛  Suite "FileHandle Tests" passed after 2.611 seconds.
+􁁛  Test "Iteration count must be positive" passed after 1.365 seconds.
+􁁛  Test "Confirmation requires positive count" passed after 2.636 seconds.
+􁁛  Suite IndependentlyRunnableTests passed after 2.662 seconds.
+􁁛  Test "Read environment variable" passed after 0.105 seconds.
+􁁛  Test "Tags are recursively applied" passed after 1.459 seconds.
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+􁁛  Test "Custom execution trait throws an error" passed after 2.765 seconds.
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+warning: the Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors
+􁁛  Test "Test.parameters property" passed after 2.772 seconds.
+􀢄  Test "Selected tests by ID" recorded an issue at PlanTests.swift:43:5: Expectation failed: !((plan.steps → [Testing.Runner.Plan.Step(test: Testing.Test(name: "SendableTests", displayName: nil, traits: [Testing.HiddenTrait()], sourceLocation: TestingTests/MiscellaneousTests.swift:62:2, containingTypeInfo: Optional(TestingTests.SendableTests), xcTestCompatibleSelector: nil, testCasesState: nil, parameters: nil, isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true))), Testing.Runner.Plan.Step(test: Testing.Test(name: "NestedSendableTests", displayName: nil, traits: [Testing.HiddenTrait(), Testing.HiddenTrait(), .namedConstant], sourceLocation: TestingTests/MiscellaneousTests.swift:81:4, containingTypeInfo: Optional(TestingTests.SendableTests.NestedSendableTests), xcTestCompatibleSelector: nil, testCasesState: nil, parameters: nil, isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true))), Testing.Runner.Plan.Step(test: Testing.Test(name: "succeeds()", displayName: nil, traits: [Testing.HiddenTrait(), Testing.HiddenTrait(), .namedConstant, Testing.HiddenTrait(), .anotherConstant], sourceLocation: TestingTests/MiscellaneousTests.swift:83:6, containingTypeInfo: Optional(TestingTests.SendableTests.NestedSendableTests), xcTestCompatibleSelector: nil, testCasesState: Optional(Testing.Test.(unknown context at $104958b84).TestCasesState.evaluated(Swift.AnySequence<Testing.Test.Case>(_box: Swift._SequenceBox<Testing.Test.Case.Generator<Swift.CollectionOfOne<()>>>))), parameters: Optional([]), isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true)))]).contains(where: { $0.test == outerTestType }) → true)
+􁁛  Test "Codable" passed after 2.772 seconds.
+􁁛  Test "Relative order of recursively applied traits" passed after 2.777 seconds.
+􁁛  Test "Combining test filter by ID with .unfiltered (rhs)" passed after 2.778 seconds.
+􁁛  Test "Excluded tests by ID" passed after 2.779 seconds.
+􁁛  Test "Multiple selected tests by ID" passed after 2.798 seconds.
+􁁛  Test "Combining test filter by ID with by tag" passed after 2.798 seconds.
+􁁛  Test "Combining test filter by ID with .unfiltered (lhs)" passed after 2.798 seconds.
+􁁛  Test "Typed thrown error captures backtrace" passed after 2.808 seconds.
+􁁛  Test "Thrown error captures backtrace" passed after 2.809 seconds.
+􁁛  Test "Thrown NSError captures backtrace" passed after 2.808 seconds.
+􁁛  Test "Custom source location argument to #expect()" passed after 2.808 seconds.
+􀢄  Test "Selected tests by ID" failed after 2.802 seconds with 1 issue.
+􁁛  Suite "Tag/Tag List Tests" passed after 2.820 seconds.
+􁁛  Test "Multiple arguments conforming to CustomTestArgumentEncodable, passed to one parameter, selecting one case" passed after 2.815 seconds.
+􁁛  Test "Multiple arguments passed to one parameter, selecting one case" passed after 2.815 seconds.
+􁁛  Test "Multiple arguments conforming to RawRepresentable, passed to one parameter, selecting one case" passed after 2.816 seconds.
+􁁛  Test "Two collections, each with multiple arguments, passed to two parameters, selecting one case" passed after 2.815 seconds.
+􁁛  Test "Zipped collections are not combinatoric" passed after 2.815 seconds.
+􁁛  Test "Multiple arguments conforming to Identifiable, passed to one parameter, selecting one case" passed after 2.816 seconds.
+􁁛  Test "Multiple arguments passed to one parameter, selecting a subset of cases" passed after 2.816 seconds.
+􁁛  Test "Parameterizing over a collection with a poor underestimatedCount property" passed after 2.815 seconds.
+􁁛  Test "Parameterized cases are all executed (1 argument)" passed after 2.818 seconds.
+􁁛  Test "Execute code before and after a non-parameterized test." passed after 2.819 seconds.
+􁁛  Test "Execute code before and after a parameterized test." passed after 2.820 seconds.
+􁁛  Test runnerStateScopedEventHandler() passed after 2.820 seconds.
+􁁛  Test "Exit test without configured exit test handler" passed after 1.946 seconds.
+􀟈  Test "Read true environment flags" started.
+􁁛  Test "Issue counts are omitted on a successful test" passed after 1.605 seconds.
+􁁛  Suite "Runner.Plan.Snapshot tests" passed after 2.832 seconds.
+􁁛  Test "withKnownIssue {} with main actor isolation" passed after 2.834 seconds.
+􁁛  Test "Selected tests by any tag" passed after 2.825 seconds.
+􁁛  Test "One iteration (default behavior)" passed after 1.560 seconds.
+􁁛  Test "Mixed included and excluded tests by ID" passed after 2.830 seconds.
+􁁛  Suite "Backtrace Tests" passed after 2.840 seconds.
+􁁛  Test "Excluded tests by any tag" passed after 2.832 seconds.
+􁁛  Suite "SourceLocation Tests" passed after 2.843 seconds.
+􀟈  Passing 1 argument value → "1" to "Read true environment flags"
+􁁛  Test "Excluded tests by all tags" passed after 2.834 seconds.
+􁁛  Test "Selected tests by all tags" passed after 2.834 seconds.
+􁁛  Test "Combining test filters with .or" passed after 2.835 seconds.
+􁁛  Suite "zip Tests" passed after 2.845 seconds.
+􁁛  Suite "Test.Case Selection Tests" passed after 2.845 seconds.
+􁁛  Suite "Runner.RuntimeState Tests" passed after 2.849 seconds.
+􀟈  Passing 1 argument value → "18446744073709551615" to "Read true environment flags"
+􁁛  Test "Exit test forwards issues" passed after 1.972 seconds.
+􀟈  Passing 1 argument value → "-9223372036854775808" to "Read true environment flags"
+􁁛  Test "Time limit exceeded event includes its associated Test" passed after 2.846 seconds.
+􁁛  Test "Test times out when overrunning .timeLimit() trait" passed after 2.846 seconds.
+􁁛  Test "Test times out when overrunning maximum time limit" passed after 2.846 seconds.
+􁁛  Test "Test times out when overrunning default time limit" passed after 2.846 seconds.
+􁁛  Test "Test does not block until end of time limit" passed after 2.847 seconds.
+􀟈  Passing 1 argument value → "8235293459676553021" to "Read true environment flags"
+􁁛  Test "Test suite types are runnable" passed after 2.849 seconds.
+􁁛  Test "One Dictionary element tuple (key, value) parameter" passed after 2.854 seconds.
+􁁛  Test "One parameter" passed after 2.853 seconds.
+􁁛  Test "One 2-tuple parameter" passed after 2.854 seconds.
+􁁛  Test "One 1-tuple parameter" passed after 2.855 seconds.
+􁁛  Test "Two parameters" passed after 2.856 seconds.
+􁁛  Test "--filter with no matches" passed after 2.852 seconds.
+􁁛  Test "Teardown occurs after child tests run" passed after 2.850 seconds.
+􁁛  Test "Successful confirmations" passed after 2.850 seconds.
+􁁛  Test "Two Dictionary element (key, value) parameters" passed after 2.856 seconds.
+􁁛  Test "Test cases of a disabled test are not evaluated" passed after 2.851 seconds.
+􁁛  Test "Unsuccessful confirmations" passed after 2.852 seconds.
+􁁛  Test "Verbose output" passed after 1.635 seconds.
+􁁛  Test "JUnitXMLRecorder outputs valid XML" passed after 1.636 seconds.
+􁁛  Test "XCTest test methods are currently unsupported" passed after 2.853 seconds.
+􁁛  Test "Titles of messages ('Test' vs. 'Suite') are determined correctly" passed after 1.637 seconds.
+􁁛  Test "Issue counts are summed correctly on run end" passed after 1.636 seconds.
+􀟈  Passing 1 argument value → "-5025881189458347131" to "Read true environment flags"
+􁁛  Suite "Test.Case.Argument Tests" passed after 2.863 seconds.
+􁁛  Suite "CustomExecutionTrait Tests" passed after 2.863 seconds.
+􁁛  Suite "Confirmation Tests" passed after 2.864 seconds.
+􁁛  Test "Test times out when overrunning .timeLimit() trait (inherited)" passed after 2.855 seconds.
+􁁛  Suite "Objective-C/XCTest Interop Tests" passed after 2.865 seconds.
+􀟈  Passing 1 argument value → "YES" to "Read true environment flags"
+􀢄  Suite "Runner.Plan Tests" failed after 2.863 seconds with 1 issue.
+􁁛  Suite "Swift Package Manager Integration Tests" passed after 2.864 seconds.
+􁁛  Suite "TimeLimitTrait Tests" passed after 2.865 seconds.
+􀟈  Passing 1 argument value → "yes" to "Read true environment flags"
+􁁛  Test v0() passed after 1.585 seconds.
+􁁛  Test v0_experimental() passed after 1.586 seconds.
+􁁛  Test "Quiet output" passed after 1.641 seconds.
+􁁛  Test "Issue counts are summed correctly on test end" passed after 1.642 seconds.
+􁁛  Test "Writing events" passed after 1.641 seconds.
+􀟈  Passing 1 argument value → "yEs" to "Read true environment flags"
+􀟈  Passing 1 argument value → "TRUE" to "Read true environment flags"
+􁁛  Test "Free functions are runnable" passed after 2.862 seconds.
+􁁛  Test "Parameterized free functions are runnable" passed after 2.862 seconds.
+􀟈  Passing 1 argument value → "true" to "Read true environment flags"
+􁁛  Suite EventRecorderTests passed after 2.870 seconds.
+􀟈  Passing 1 argument value → "tRuE" to "Read true environment flags"
+􁁛  Test "Read true environment flags" passed after 0.040 seconds.
+􀟈  Test "Read false environment flags" started.
+􁁛  Test "Iteration while issue recorded" passed after 1.593 seconds.
+􀟈  Passing 1 argument value → "0" to "Read false environment flags"
+􁁛  Test "Iteration until issue recorded" passed after 1.593 seconds.
+􁁛  Test "Parameterized cases are all executed (2 arguments)" passed after 2.863 seconds.
+􀟈  Passing 1 argument value → "" to "Read false environment flags"
+􀟈  Passing 1 argument value → " " to "Read false environment flags"
+􀟈  Passing 1 argument value → "    " to "Read false environment flags"
+􁁛  Test "Mock exit test handlers (failing)" passed after 1.990 seconds.
+􀟈  Passing 1 argument value → "NO" to "Read false environment flags"
+􁁛  Test "Unconditional iteration" passed after 1.593 seconds.
+􁁛  Test "Mock exit test handlers (passing)" passed after 1.991 seconds.
+􁁛  Suite "Configuration.RepetitionPolicy Tests" passed after 2.872 seconds.
+􀟈  Passing 1 argument value → "no" to "Read false environment flags"
+􀟈  Passing 1 argument value → "nO" to "Read false environment flags"
+􀟈  Passing 1 argument value → "FALSE" to "Read false environment flags"
+􀟈  Passing 1 argument value → "false" to "Read false environment flags"
+􀟈  Passing 1 argument value → "fAlSe" to "Read false environment flags"
+􀟈  Passing 1 argument value → "alphabetical" to "Read false environment flags"
+􀟈  Passing 1 argument value → "ümlaut" to "Read false environment flags"
+􀟈  Passing 1 argument value → "😀" to "Read false environment flags"
+􁁛  Test "Read false environment flags" passed after 0.002 seconds.
+􁁛  Suite "Environment Tests" passed after 2.874 seconds.
+􁁛  Test "Instance methods are runnable" passed after 2.944 seconds.
+􁁛  Test "Exit tests (passing)" passed after 2.071 seconds.
+􁁛  Test "Parameterized member functions are runnable" passed after 3.098 seconds.
+􁁛  Suite "Miscellaneous tests" passed after 3.107 seconds.
+􁁛  Test "Exit tests (failing)" passed after 2.287 seconds.
+􁁛  Suite "Exit test tests" passed after 3.170 seconds.
+􁁛  Test ".serialized trait serializes parameterized test" passed after 3.434 seconds.
+􁁛  Suite "Parallelization Trait Tests" passed after 3.440 seconds.
+􁁛  Test "v0 experimental entry point with a large number of filter arguments" passed after 2.497 seconds.
+􁁛  Test "v0 entry point with a large number of filter arguments" passed after 2.505 seconds.
+􁁛  Suite "ABI entry point tests" passed after 3.785 seconds.
+􀢄  Test run with 351 tests failed after 3.787 seconds with 6 issues.

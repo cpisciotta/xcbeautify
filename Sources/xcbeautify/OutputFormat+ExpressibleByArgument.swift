@@ -6,7 +6,7 @@ import ArgumentParser
 import XcbeautifyLib
 
 #if compiler(>=6.0)
-extension XcbeautifyLib.Renderer: @retroactive ExpressibleByArgument { }
+extension XcbeautifyLib.Renderer: ExpressibleByArgument { }
 #else
 extension XcbeautifyLib.Renderer: ExpressibleByArgument { }
 #endif

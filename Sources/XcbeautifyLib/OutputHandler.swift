@@ -42,6 +42,8 @@ package class OutputHandler {
                 lastFormatted = nil
             }
             writer(content)
+        case OutputType.issue:
+            writer(content)
         case OutputType.result:
             writer(content)
         case OutputType.testCase:
