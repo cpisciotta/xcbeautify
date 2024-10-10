@@ -114,6 +114,7 @@ package final class Parser {
         SwiftTestingTestSkippedCaptureGroup.self,
         SwiftTestingTestSkippedReasonCaptureGroup.self,
         SwiftTestingIssueCaptureGroup.self,
+        SwiftTestingIssueArgumentCaptureGroup.self,
         SwiftTestingPassingArgumentCaptureGroup.self,
         SwiftTestingPassingArgumentMultipleCaptureGroup.self,
         SwiftTestingAttributeCaptureGroup.self
