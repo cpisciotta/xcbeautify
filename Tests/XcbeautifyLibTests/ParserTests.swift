@@ -92,7 +92,7 @@ final class ParserTests: XCTestCase {
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunStartedCaptureGroup)
         XCTAssertEqual(captureGroup.message, "Test run started.")
     }
-    
+
     func testMatchSwiftTestingRunCompletion() throws {
         let input = "􁁛  Test run with 5 tests passed after 3.2 seconds."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunCompletionCaptureGroup)

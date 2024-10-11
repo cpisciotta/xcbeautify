@@ -1972,7 +1972,7 @@ struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
               let testName = groups[safe: 1] else { return nil }
         self.symbol = symbol
         self.testName = testName
-        self.wholeMessage = "Test \(testName) started."
+        wholeMessage = "Test \(testName) started."
     }
 }
 
@@ -2113,7 +2113,7 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
               let testName = groups[safe: 1] else { return nil }
         self.symbol = symbol
         self.testName = testName
-        self.reason = groups[safe: 2]
+        reason = groups[safe: 2]
     }
 }
 
@@ -2136,10 +2136,9 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
 
         self.symbol = symbol
         self.testDescription = testDescription
-        self.issueDetails = groups[safe: 2]
+        issueDetails = groups[safe: 2]
     }
 }
-
 
 struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
@@ -2160,7 +2159,7 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
 
         self.symbol = symbol
         self.testDescription = testDescription
-        self.numberOfArguments = groups[safe: 2]
+        numberOfArguments = groups[safe: 2]
     }
 }
 

@@ -571,27 +571,27 @@ extension OutputRendering {
     }
 
     func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
-        return "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
+        "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
     }
 
     func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {
-        return "Test run with \(group.numberOfTests) tests failed after \(group.totalTime) seconds with \(group.numberOfIssues) issue(s)"
+        "Test run with \(group.numberOfTests) tests failed after \(group.totalTime) seconds with \(group.numberOfIssues) issue(s)"
     }
 
     func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String {
-        return "Suite \(group.suiteName) started"
+        "Suite \(group.suiteName) started"
     }
 
     func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String? {
-        return nil
+        nil
     }
 
     func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String {
-        return "Suite \(group.suiteName) passed after \(group.timeTaken) seconds"
+        "Suite \(group.suiteName) passed after \(group.timeTaken) seconds"
     }
 
     func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
-        return "Suite \(group.suiteName) failed after \(group.timeTaken) seconds with \(group.numberOfIssues) issue(s)"
+        "Suite \(group.suiteName) failed after \(group.timeTaken) seconds with \(group.numberOfIssues) issue(s)"
     }
 
     func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
@@ -605,7 +605,6 @@ extension OutputRendering {
         let timeTaken = group.timeTaken
         return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testName + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + " (\(timeTaken) seconds)"
     }
-
 
     func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
         let testName = group.testName + " skipped"
