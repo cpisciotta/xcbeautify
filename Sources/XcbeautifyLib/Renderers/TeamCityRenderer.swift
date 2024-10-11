@@ -10,6 +10,13 @@ struct TeamCityRenderer: OutputRendering {
         self.additionalLines = additionalLines
     }
 
+    private func outputTeamCityInfo(text: String, details: String) -> String {
+        """
+        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='INFO']
+        \(text)
+        """
+    }
+
     private func outputTeamCityProblem(text: String, filePath: String) -> String {
         """
         ##teamcity[buildProblem description='\(filePath)']
@@ -148,6 +155,11 @@ struct TeamCityRenderer: OutputRendering {
             text: "Duplicated localized string key",
             details: colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
         )
+    }
+
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
+        let outputString = "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
+        return outputTeamCityInfo(text: "Test run succeeded", details: outputString)
     }
 
     func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {

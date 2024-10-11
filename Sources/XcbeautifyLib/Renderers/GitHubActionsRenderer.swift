@@ -5,6 +5,7 @@ struct GitHubActionsRenderer: OutputRendering {
         case notice
         case warning
         case error
+        case info
     }
 
     let colored: Bool
@@ -214,6 +215,11 @@ struct GitHubActionsRenderer: OutputRendering {
             annotationType: .warning,
             message: warningMessage
         )
+    }
+
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
+        let outputString = "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
+        return outputGitHubActionsLog(annotationType: .info, message: outputString)
     }
 
     func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {

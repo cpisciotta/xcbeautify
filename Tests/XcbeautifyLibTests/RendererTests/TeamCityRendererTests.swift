@@ -624,6 +624,12 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(actual, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: Multiple commands produce |\'/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy|\'\' status=\'ERROR\']\nBuild error")
     }
 
+    func testSwiftTestingRunCompletion() {
+        let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
+        let output = "##teamcity[message text=\'Test run succeeded\' errorDetails=\'Test run with 5 tests passed after 12.345 seconds\' status=\'INFO\']\nTest run succeeded"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
     func testTestingStarted() {
         let formatted = noColoredFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
