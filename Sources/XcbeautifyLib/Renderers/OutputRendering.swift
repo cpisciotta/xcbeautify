@@ -634,13 +634,13 @@ extension OutputRendering {
     }
 
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
-        let issueDetails = group.issueDetails != nil ? " at \(group.issueDetails!)" : ""
+        let issueDetails = group.issueDetails.map { " at \($0)" } ?? ""
         let message = " Test [\(group.testDescription)] recorded an issue\(issueDetails)"
         return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
     }
 
     func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String {
-        let argumentsInfo = group.numberOfArguments != nil ? " with \(group.numberOfArguments!) argument(s)" : ""
+        let argumentsInfo = group.numberOfArguments.map { " with \($0) argument(s)" } ?? ""
         let message = " Test [\(group.testDescription)] recorded an issue\(argumentsInfo)"
         return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
     }
