@@ -95,7 +95,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testCompile() {
-        #if os(macOS)
+#if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
         // Xcode 11+'s output
@@ -103,7 +103,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         let output = "[xcbeautify] Compiling setup.swift"
         XCTAssertEqual(logFormatted(input1), output)
         XCTAssertEqual(logFormatted(input2), output)
-        #endif
+#endif
     }
 
     func testSwiftCompile_arm64() {
@@ -196,7 +196,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(input4, formatted4)
     }
 
-    #if os(macOS)
+#if os(macOS)
     func testExecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
@@ -214,7 +214,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         let formatted4 = logFormatted(input4)
         XCTAssertEqual(input4, formatted4)
     }
-    #endif
+#endif
 
     func testFailingTest() { }
 
@@ -277,13 +277,13 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testLinkerUndefinedSymbols() { }
 
     func testLinking() {
-        #if os(macOS)
+#if os(macOS)
         let formatted = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
         XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
 
         let formatted2 = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
-        #endif
+#endif
     }
 
     func testModuleIncludesError() { }
@@ -426,24 +426,24 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
 
     func testTestCaseMeasured() {
-        #if os(macOS)
+#if os(macOS)
         let formatted = logFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
         XCTAssertEqual(formatted, #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
-        #endif
+#endif
     }
 
     func testTestCasePassed() {
-        #if os(macOS)
+#if os(macOS)
         let formatted = logFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
         XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
-        #endif
+#endif
     }
 
     func testTestCaseSkipped() {
-        #if os(macOS)
+#if os(macOS)
         let formatted = logFormatted("Test Case '-[SomeTests testName]' skipped (0.004 seconds).")
         XCTAssertEqual(formatted, "::notice ::Skipped SomeTests.testName")
-        #endif
+#endif
     }
 
     func testTestCasePending() { }
@@ -454,21 +454,21 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testTestSuiteStarted() { }
 
-    #if os(macOS)
+#if os(macOS)
     func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
         XCTAssertEqual(input, formatted)
     }
-    #endif
+#endif
 
-    #if os(macOS)
+#if os(macOS)
     func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
         XCTAssertEqual(input, formatted)
     }
-    #endif
+#endif
 
     func testTestsRunCompletion() { }
 
@@ -606,5 +606,61 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testTestingStarted() {
         let formatted = logFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
+    }
+
+    func testSwiftTestingRunFailed() {
+        let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingSuiteFailed() {
+        let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Suite MyTestSuite failed after 8.456 seconds with 2 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestFailed() {
+        let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::myTest (1.234 seconds) 1 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestSkipped() {
+        let input = #"􀙟 Test "myTest" skipped."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Skipped myTest"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestSkippedReason() {
+        let input = #"􀙟 Test "myTest" skipped: "Reason for skipping""#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Skipped myTest.(Reason for skipping)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssue() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueArguments() {
+        let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Recorded an issue (2) argument(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueDetails() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 }

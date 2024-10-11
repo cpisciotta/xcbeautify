@@ -1879,6 +1879,7 @@ struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
     let message: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let message = groups[safe: 1] else { return nil }
         self.symbol = symbol
@@ -1900,6 +1901,7 @@ struct SwiftTestingRunCompletionCaptureGroup: CaptureGroup {
     let totalTime: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
               let numberOfTests = groups[safe: 1],
               let totalTime = groups[safe: 2] else { return nil }
@@ -1920,15 +1922,16 @@ struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(􀢄)\s*Test run with (\d+) tests failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
 
     let symbol: String
-    let numberOfTests: String
+    let numberOfTests: Int
     let totalTime: String
-    let numberOfIssues: String
+    let numberOfIssues: Int
 
     init?(groups: [String]) {
+        assert(groups.count >= 4)
         guard let symbol = groups[safe: 0],
-              let numberOfTests = groups[safe: 1],
+              let numberOfTests = groups[safe: 1].flatMap(Int.init),
               let totalTime = groups[safe: 2],
-              let numberOfIssues = groups[safe: 3] else { return nil }
+              let numberOfIssues = groups[safe: 3].flatMap(Int.init) else { return nil }
         self.symbol = symbol
         self.numberOfTests = numberOfTests
         self.totalTime = totalTime
@@ -1948,6 +1951,7 @@ struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
     let suiteName: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let suiteName = groups[safe: 1] else { return nil }
         self.symbol = symbol
@@ -1968,6 +1972,7 @@ struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
     let wholeMessage: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let testName = groups[safe: 1] else { return nil }
         self.symbol = symbol
@@ -1990,6 +1995,7 @@ struct SwiftTestingSuitePassedCaptureGroup: CaptureGroup {
     let timeTaken: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
               let suiteName = groups[safe: 1],
               let timeTaken = groups[safe: 2] else { return nil }
@@ -2012,13 +2018,14 @@ struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
     let symbol: String
     let suiteName: String
     let timeTaken: String
-    let numberOfIssues: String
+    let numberOfIssues: Int
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
               let suiteName = groups[safe: 1],
               let timeTaken = groups[safe: 2],
-              let numberOfIssues = groups[safe: 3] else { return nil }
+              let numberOfIssues = groups[safe: 3].flatMap(Int.init) else { return nil }
         self.symbol = symbol
         self.suiteName = suiteName
         self.timeTaken = timeTaken
@@ -2039,13 +2046,14 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
     let symbol: String
     let testName: String
     let timeTaken: String
-    let numberOfIssues: String
+    let numberOfIssues: Int
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
               let testName = groups[safe: 1],
               let timeTaken = groups[safe: 2],
-              let numberOfIssues = groups[safe: 3] else { return nil }
+              let numberOfIssues = groups[safe: 3].flatMap(Int.init) else { return nil }
         self.symbol = symbol
         self.testName = testName
         self.timeTaken = timeTaken
@@ -2067,6 +2075,7 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
     let timeTaken: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
               let testName = groups[safe: 1],
               let timeTaken = groups[safe: 2] else { return nil }
@@ -2088,6 +2097,7 @@ struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
     let testName: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let testName = groups[safe: 1] else { return nil }
         self.symbol = symbol
@@ -2109,6 +2119,7 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
     let reason: String?
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let testName = groups[safe: 1] else { return nil }
         self.symbol = symbol
@@ -2131,6 +2142,7 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
     let issueDetails: String?
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let testDescription = groups[safe: 1] else { return nil }
 
@@ -2151,15 +2163,16 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
 
     let symbol: String
     let testDescription: String
-    let numberOfArguments: String?
+    let numberOfArguments: Int?
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
               let testDescription = groups[safe: 1] else { return nil }
 
         self.symbol = symbol
         self.testDescription = testDescription
-        numberOfArguments = groups[safe: 2]
+        numberOfArguments = groups[safe: 2].flatMap(Int.init)
     }
 }
 
@@ -2172,11 +2185,12 @@ struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(􀟈)\s*Passing (\d+) argument[s]?.*$"#)
 
     let symbol: String
-    let numberOfArguments: String
+    let numberOfArguments: Int
 
     init?(groups: [String]) {
+        assert(groups.count >= 2)
         guard let symbol = groups[safe: 0],
-              let numberOfArguments = groups[safe: 1] else { return nil }
+              let numberOfArguments = groups[safe: 1].flatMap(Int.init) else { return nil }
 
         self.symbol = symbol
         self.numberOfArguments = numberOfArguments
@@ -2193,12 +2207,13 @@ struct SwiftTestingPassingArgumentMultipleCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(􀟈)\s*Passing (\d+) argument[s]? input → "(.*)"(?:,.*)? to .*$"#)
 
     let symbol: String
-    let numberOfArguments: String
+    let numberOfArguments: Int
     let input: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
-              let numberOfArguments = groups[safe: 1],
+              let numberOfArguments = groups[safe: 1].flatMap(Int.init),
               let input = groups[safe: 2] else { return nil }
 
         self.symbol = symbol
@@ -2221,6 +2236,7 @@ struct SwiftTestingAttributeCaptureGroup: CaptureGroup {
     let inputValue: String
 
     init?(groups: [String]) {
+        assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
               let inputType = groups[safe: 1],
               let inputValue = groups[safe: 2] else { return nil }

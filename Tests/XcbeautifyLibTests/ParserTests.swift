@@ -103,9 +103,9 @@ final class ParserTests: XCTestCase {
     func testMatchSwiftTestingRunFailed() throws {
         let input = "􀢄 Test run with 7 tests failed after 4.8 seconds with 2 issues."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunFailedCaptureGroup)
-        XCTAssertEqual(captureGroup.numberOfTests, "7")
+        XCTAssertEqual(captureGroup.numberOfTests, 7)
         XCTAssertEqual(captureGroup.totalTime, "4.8")
-        XCTAssertEqual(captureGroup.numberOfIssues, "2")
+        XCTAssertEqual(captureGroup.numberOfIssues, 2)
     }
 
     func testMatchSwiftTestingSuiteStarted() throws {
@@ -132,7 +132,7 @@ final class ParserTests: XCTestCase {
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingSuiteFailedCaptureGroup)
         XCTAssertEqual(captureGroup.suiteName, "AnotherTestSuite")
         XCTAssertEqual(captureGroup.timeTaken, "6.4")
-        XCTAssertEqual(captureGroup.numberOfIssues, "3")
+        XCTAssertEqual(captureGroup.numberOfIssues, 3)
     }
 
     func testMatchSwiftTestingTestFailed() throws {
@@ -140,7 +140,7 @@ final class ParserTests: XCTestCase {
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestFailedCaptureGroup)
         XCTAssertEqual(captureGroup.testName, "SomeTest")
         XCTAssertEqual(captureGroup.timeTaken, "2.5")
-        XCTAssertEqual(captureGroup.numberOfIssues, "1")
+        XCTAssertEqual(captureGroup.numberOfIssues, 1)
     }
 
     func testMatchSwiftTestingTestPassed() throws {
@@ -173,6 +173,6 @@ final class ParserTests: XCTestCase {
     func testMatchSwiftTestingPassingArgument() throws {
         let input = #"􀟈 Passing 2 arguments input → "argument1, argument2""#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingPassingArgumentCaptureGroup)
-        XCTAssertEqual(captureGroup.numberOfArguments, "2")
+        XCTAssertEqual(captureGroup.numberOfArguments, 2)
     }
 }

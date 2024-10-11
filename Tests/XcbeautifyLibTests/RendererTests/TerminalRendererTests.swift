@@ -700,4 +700,10 @@ final class TerminalRendererTests: XCTestCase {
         let output = "    [!]  Test [myTest] recorded an issue with 2 argument(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
+
+    func testSwiftTestingIssueDetails() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let output = #"    [!]  Test [myTest] recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
 }

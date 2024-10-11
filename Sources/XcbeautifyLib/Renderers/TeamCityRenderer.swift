@@ -149,6 +149,45 @@ struct TeamCityRenderer: OutputRendering {
             details: colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
         )
     }
+
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {
+        let outputString = "\(group.numberOfTests) tests failed after \(group.totalTime) seconds with \(group.numberOfIssues) issue(s)"
+        return outputTeamCityError(text: "Test run failed", details: outputString)
+    }
+
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
+        let outputString = "\(group.suiteName) failed after \(group.timeTaken) seconds with \(group.numberOfIssues) issue(s)"
+        return outputTeamCityError(text: "Suite failed", details: outputString)
+    }
+
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
+        let message = "\(group.testName) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        let outputString = colored ? message.f.Red : message
+        return outputTeamCityError(text: "Test failed", details: outputString)
+    }
+
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
+        let testName = colored ? group.testName.f.Yellow : group.testName
+        return outputTeamCityWarning(text: "Test skipped", details: testName)
+    }
+
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String {
+        let testName = colored ? group.testName.f.Yellow : group.testName
+        let reason = group.reason.map { " (\($0))" } ?? ""
+        let outputString = "\(testName)\(reason)"
+        return outputTeamCityWarning(text: "Test skipped", details: outputString)
+    }
+
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
+        let issueDetails = group.issueDetails.map { "(\($0))" } ?? ""
+        return outputTeamCityWarning(text: "Recorded an issue", details: issueDetails)
+    }
+
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String {
+        let arguments = group.numberOfArguments.map { "(\($0) argument(s))" } ?? ""
+        return outputTeamCityWarning(text: "Recorded an issue", details: arguments)
+    }
+
 }
 
 private extension String {

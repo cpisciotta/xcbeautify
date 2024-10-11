@@ -85,6 +85,22 @@ protocol OutputRendering {
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
+    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String
+    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String?
+    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String
+    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
+    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
+    func formatSwiftTestingPassingArgumentMultiple(group: SwiftTestingPassingArgumentMultipleCaptureGroup) -> String?
+    func formatSwiftTestingAttribute(group: SwiftTestingAttributeCaptureGroup) -> String?
 }
 
 extension OutputRendering {
