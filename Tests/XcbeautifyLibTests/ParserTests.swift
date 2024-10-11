@@ -96,7 +96,7 @@ final class ParserTests: XCTestCase {
     func testMatchSwiftTestingRunCompletion() throws {
         let input = "􁁛  Test run with 5 tests passed after 3.2 seconds."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunCompletionCaptureGroup)
-        XCTAssertEqual(captureGroup.numberOfTests, "5")
+        XCTAssertEqual(captureGroup.numberOfTests, 5)
         XCTAssertEqual(captureGroup.totalTime, "3.2")
     }
 
