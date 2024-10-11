@@ -1897,13 +1897,13 @@ struct SwiftTestingRunCompletionCaptureGroup: CaptureGroup {
     static let regex = Regex(pattern: #"^(􁁛)\s*Test run with (\d+) tests passed after ([\d.]+) seconds\.$"#)
 
     let symbol: String
-    let numberOfTests: String
+    let numberOfTests: Int
     let totalTime: String
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
         guard let symbol = groups[safe: 0],
-              let numberOfTests = groups[safe: 1],
+              let numberOfTests = groups[safe: 1].flatMap(Int.init),
               let totalTime = groups[safe: 2] else { return nil }
         self.symbol = symbol
         self.numberOfTests = numberOfTests
