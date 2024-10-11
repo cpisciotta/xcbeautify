@@ -642,6 +642,7 @@ final class TeamCityRendererTests: XCTestCase {
 
         XCTAssertEqual(formatted, "##teamcity[message text=\'Suite failed\' errorDetails=\'MyTestSuite failed after 8.456 seconds with 2 issue(s)\' status=\'ERROR\']\nSuite failed")
     }
+
     func testSwiftTestingTestFailed() {
         let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
         let formatted = noColoredFormatted(input)
@@ -670,7 +671,6 @@ final class TeamCityRendererTests: XCTestCase {
         let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
         let formatted = noColoredFormatted(input)
         XCTAssertEqual(formatted, "##teamcity[message text=\'Recorded an issue|n(2 argument(s))\' status=\'WARNING\']\nRecorded an issue")
-
     }
 
     func testSwiftTestingIssueDetails() {

@@ -187,7 +187,6 @@ struct TeamCityRenderer: OutputRendering {
         let arguments = group.numberOfArguments.map { "(\($0) argument(s))" } ?? ""
         return outputTeamCityWarning(text: "Recorded an issue", details: arguments)
     }
-
 }
 
 private extension String {
