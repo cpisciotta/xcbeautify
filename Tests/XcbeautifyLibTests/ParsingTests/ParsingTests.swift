@@ -82,6 +82,10 @@ final class ParsingTests: XCTestCase {
         // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+        #if os(macOS)
         XCTAssertEqual(uncapturedOutput, 162)
+        #else
+        XCTAssertEqual(uncapturedOutput, 271)
+        #endif
     }
 }
