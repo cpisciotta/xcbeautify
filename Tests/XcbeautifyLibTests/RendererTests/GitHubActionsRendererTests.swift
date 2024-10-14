@@ -611,7 +611,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testSwiftTestingRunCompletion() {
         let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::info ::Test run with 5 tests passed after 12.345 seconds"
+        let expectedOutput = "::notice ::Test run with 5 tests passed after 12.345 seconds"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
