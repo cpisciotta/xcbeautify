@@ -1867,7 +1867,6 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     }
 }
 
-
 struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
 
@@ -1897,7 +1896,7 @@ struct SwiftTestingRunCompletionCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         assert(groups.count >= 2)
-              guard let numberOfTests = groups[safe: 0].flatMap(Int.init),
+        guard let numberOfTests = groups[safe: 0].flatMap(Int.init),
               let totalTime = groups[safe: 1] else { return nil }
         self.numberOfTests = numberOfTests
         self.totalTime = totalTime
