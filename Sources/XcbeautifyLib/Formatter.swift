@@ -240,10 +240,6 @@ package struct Formatter {
             return renderer.formatSwiftTestingIssueArguments(group: group)
         case let group as SwiftTestingPassingArgumentCaptureGroup:
             return renderer.formatSwiftTestingPassingArgument(group: group)
-        case let group as SwiftTestingPassingArgumentMultipleCaptureGroup:
-            return renderer.formatSwiftTestingPassingArgumentMultiple(group: group)
-        case let group as SwiftTestingAttributeCaptureGroup:
-            return renderer.formatSwiftTestingAttribute(group: group)
         default:
             assertionFailure()
             return nil

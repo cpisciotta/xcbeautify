@@ -72,6 +72,7 @@ final class ParsingTests: XCTestCase {
         while !buildLog.isEmpty {
             let line = buildLog.removeFirst()
             if !line.isEmpty, parser.parse(line: line) == nil {
+                print(line)
                 uncapturedOutput += 1
             }
         }
