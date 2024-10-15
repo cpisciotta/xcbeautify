@@ -607,4 +607,67 @@ final class GitHubActionsRendererTests: XCTestCase {
         let formatted = logFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
     }
+
+    func testSwiftTestingRunCompletion() {
+        let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Test run with 5 tests passed after 12.345 seconds"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingRunFailed() {
+        let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingSuiteFailed() {
+        let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Suite MyTestSuite failed after 8.456 seconds with 2 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestFailed() {
+        let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::myTest (1.234 seconds) 1 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestSkipped() {
+        let input = #"􀙟 Test "myTest" skipped."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Skipped myTest"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestSkippedReason() {
+        let input = #"􀙟 Test "myTest" skipped: "Reason for skipping""#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Skipped myTest.(Reason for skipping)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssue() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueArguments() {
+        let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Recorded an issue (2) argument(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueDetails() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
 }

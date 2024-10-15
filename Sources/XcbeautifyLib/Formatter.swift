@@ -212,6 +212,38 @@ package struct Formatter {
             return renderer.formatSwiftDriverJobDiscoveryCompiling(group: group)
         case let group as TestingStartedCaptureGroup:
             return renderer.formatTestingStarted(group: group)
+        case let group as SwiftTestingRunStartedCaptureGroup:
+            return renderer.formatSwiftTestingRunStarted(group: group)
+        case let group as SwiftTestingRunCompletionCaptureGroup:
+            return renderer.formatSwiftTestingRunCompletion(group: group)
+        case let group as SwiftTestingRunFailedCaptureGroup:
+            return renderer.formatSwiftTestingRunFailed(group: group)
+        case let group as SwiftTestingSuiteStartedCaptureGroup:
+            return renderer.formatSwiftTestingSuiteStarted(group: group)
+        case let group as SwiftTestingSuitePassedCaptureGroup:
+            return renderer.formatSwiftTestingSuitePassed(group: group)
+        case let group as SwiftTestingSuiteFailedCaptureGroup:
+            return renderer.formatSwiftTestingSuiteFailed(group: group)
+        case let group as SwiftTestingTestStartedCaptureGroup:
+            return renderer.formatSwiftTestingTestStarted(group: group)
+        case let group as SwiftTestingTestPassedCaptureGroup:
+            return renderer.formatSwiftTestingTestPassed(group: group)
+        case let group as SwiftTestingTestFailedCaptureGroup:
+            return renderer.formatSwiftTestingTestFailed(group: group)
+        case let group as SwiftTestingTestSkippedCaptureGroup:
+            return renderer.formatSwiftTestingTestSkipped(group: group)
+        case let group as SwiftTestingTestSkippedReasonCaptureGroup:
+            return renderer.formatSwiftTestingTestSkippedReason(group: group)
+        case let group as SwiftTestingIssueCaptureGroup:
+            return renderer.formatSwiftTestingIssue(group: group)
+        case let group as SwiftTestingIssueArgumentCaptureGroup:
+            return renderer.formatSwiftTestingIssueArguments(group: group)
+        case let group as SwiftTestingPassingArgumentCaptureGroup:
+            return renderer.formatSwiftTestingPassingArgument(group: group)
+        case let group as SwiftTestingPassingArgumentMultipleCaptureGroup:
+            return renderer.formatSwiftTestingPassingArgumentMultiple(group: group)
+        case let group as SwiftTestingAttributeCaptureGroup:
+            return renderer.formatSwiftTestingAttribute(group: group)
         default:
             assertionFailure()
             return nil

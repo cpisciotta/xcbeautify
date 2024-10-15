@@ -30,6 +30,7 @@ package enum OutputType {
     case warning
     case error
     case result
+    case issue
 }
 
 /// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.

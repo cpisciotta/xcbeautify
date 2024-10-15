@@ -85,6 +85,22 @@ protocol OutputRendering {
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
+    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String
+    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String?
+    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String
+    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
+    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
+    func formatSwiftTestingPassingArgumentMultiple(group: SwiftTestingPassingArgumentMultipleCaptureGroup) -> String?
+    func formatSwiftTestingAttribute(group: SwiftTestingAttributeCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -564,5 +580,80 @@ extension OutputRendering {
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
         colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
+    }
+
+    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String {
+        colored ? group.message.s.Bold : group.message
+    }
+
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
+        "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
+    }
+
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {
+        "Test run with \(group.numberOfTests) tests failed after \(group.totalTime) seconds with \(group.numberOfIssues) issue(s)"
+    }
+
+    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String {
+        "Suite \(group.suiteName) started"
+    }
+
+    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String {
+        "Suite \(group.suiteName) passed after \(group.timeTaken) seconds"
+    }
+
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
+        "Suite \(group.suiteName) failed after \(group.timeTaken) seconds with \(group.numberOfIssues) issue(s)"
+    }
+
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
+        let message = "\(group.testName) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        let wholeMessage = colored ? TestStatus.fail.foreground.Red + " " + message.f.Red : TestStatus.fail + " " + message
+        return Format.indent + wholeMessage
+    }
+
+    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String {
+        let testName = group.testName
+        let timeTaken = group.timeTaken
+        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testName + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + " (\(timeTaken) seconds)"
+    }
+
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
+        let testName = group.testName + " skipped"
+        return colored ? Format.indent + TestStatus.skipped.foreground.Yellow + " " + testName : Format.indent + TestStatus.skipped + " " + testName
+    }
+
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String {
+        let testName = group.testName + " skipped"
+        let reason = group.reason.map { " (\(String($0)))" } ?? ""
+        return colored ? Format.indent + TestStatus.skipped.foreground.Yellow + " " + testName + reason : Format.indent + TestStatus.skipped + " " + testName + reason
+    }
+
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
+        let issueDetails = group.issueDetails.map { " at \($0)" } ?? ""
+        let message = " Test [\(group.testDescription)] recorded an issue\(issueDetails)"
+        return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
+    }
+
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String {
+        let argumentsInfo = group.numberOfArguments.map { " with \($0) argument(s)" } ?? ""
+        let message = " Test [\(group.testDescription)] recorded an issue\(argumentsInfo)"
+        return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
+    }
+
+    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftTestingPassingArgumentMultiple(group: SwiftTestingPassingArgumentMultipleCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftTestingAttribute(group: SwiftTestingAttributeCaptureGroup) -> String? {
+        nil
     }
 }

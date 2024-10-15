@@ -215,6 +215,67 @@ struct GitHubActionsRenderer: OutputRendering {
             message: warningMessage
         )
     }
+
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
+        let outputString = "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
+        return outputGitHubActionsLog(annotationType: .notice, message: outputString)
+    }
+
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {
+        let errorMessage = "Test run with \(group.numberOfTests) tests failed after \(group.totalTime) seconds with \(group.numberOfIssues) issue(s)"
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: errorMessage
+        )
+    }
+
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
+        let errorMessage = "Suite \(group.suiteName) failed after \(group.timeTaken) seconds with \(group.numberOfIssues) issue(s)"
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: errorMessage
+        )
+    }
+
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
+        let errorMessage = "\(group.testName) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        return outputGitHubActionsLog(
+            annotationType: .error,
+            message: errorMessage
+        )
+    }
+
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
+        let message = "Skipped \(group.testName)"
+        return outputGitHubActionsLog(
+            annotationType: .notice,
+            message: message
+        )
+    }
+
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String {
+        let message = "Skipped \(group.testName)" + (group.reason.map { ".(\($0))" } ?? "")
+        return outputGitHubActionsLog(
+            annotationType: .notice,
+            message: message
+        )
+    }
+
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
+        let message = "Recorded an issue" + (group.issueDetails.map { " (\($0))" } ?? "")
+        return outputGitHubActionsLog(
+            annotationType: .notice,
+            message: message
+        )
+    }
+
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String {
+        let message = "Recorded an issue" + (group.numberOfArguments.map { " (\($0)) argument(s)" } ?? "")
+        return outputGitHubActionsLog(
+            annotationType: .notice,
+            message: message
+        )
+    }
 }
 
 private struct FileComponents {

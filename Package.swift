@@ -42,6 +42,7 @@ let package = Package(
             resources: [
                 .copy("ParsingTests/clean_build_xcode_15_1.txt"),
                 .copy("ParsingTests/large_xcodebuild_log.txt"),
+                .copy("ParsingTests/swift_test_log.txt"),
             ]
         ),
     ]
