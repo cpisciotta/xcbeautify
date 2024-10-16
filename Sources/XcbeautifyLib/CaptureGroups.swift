@@ -917,7 +917,7 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = Regex(pattern: #"^Test\s+case\s+'(.*)\.(.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    static let regex = Regex(pattern: #"^Test\s+case\s+'(.*)[\./](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
 
     let suite: String
     let testCase: String

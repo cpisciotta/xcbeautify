@@ -89,12 +89,4 @@ final class ParsingTests: XCTestCase {
         #endif
     }
 
-    func testParsingLineSwiftTestingTestOUtputWIthoutSuite() throws {
-        let parser = Parser()
-        let result = try XCTUnwrap(parser.parse(line: "Test case 'SomeStructThatsNotASuite/someFunctionName()' passed on 'Clone 1 of iPhone 16 Pro - xctest (38347)' (13.060 seconds)") as? ParallelTestCasePassedCaptureGroup)
-        XCTAssertEqual(result.device, "Clone 1 of iPhone 16 Pro - xctest (38347)")
-        XCTAssertEqual(result.suite, "SomeStructThatsNotASuite")
-        XCTAssertEqual(result.time, "13.060")
-        XCTAssertEqual(result.testCase, "someFunctionName")
-    }
 }

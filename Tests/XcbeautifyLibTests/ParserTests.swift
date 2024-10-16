@@ -175,4 +175,19 @@ final class ParserTests: XCTestCase {
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingPassingArgumentCaptureGroup)
         XCTAssertEqual(captureGroup.numberOfArguments, 2)
     }
+
+    func testParsingLineSwiftTestingTestOutputWhenParallelTestingXCTestCases() throws {
+        let parser = Parser()
+        let resultSuccess = try XCTUnwrap(parser.parse(line: "Test case 'SomeStructThatsNotASuite/someFunctionName()' passed on 'Clone 1 of iPhone 16 Pro - xctest (38347)' (13.060 seconds)") as? ParallelTestCasePassedCaptureGroup)
+        XCTAssertEqual(resultSuccess.device, "Clone 1 of iPhone 16 Pro - xctest (38347)")
+        XCTAssertEqual(resultSuccess.suite, "SomeStructThatsNotASuite")
+        XCTAssertEqual(resultSuccess.time, "13.060")
+        XCTAssertEqual(resultSuccess.testCase, "someFunctionName")
+
+        let resultFailed = try XCTUnwrap(parser.parse(line: "Test case 'SubFolderTestDemoTests/exampleFalse()' failed on 'My Mac - TestDemo (29692)' (0.001 seconds)") as? ParallelTestCaseFailedCaptureGroup)
+        XCTAssertEqual(resultFailed.device, "My Mac - TestDemo (29692)")
+        XCTAssertEqual(resultFailed.suite, "SubFolderTestDemoTests")
+        XCTAssertEqual(resultFailed.time, "0.001")
+        XCTAssertEqual(resultFailed.testCase, "exampleFalse")
+    }
 }
