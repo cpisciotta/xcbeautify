@@ -130,7 +130,7 @@ final class ParserTests: XCTestCase {
     func testMatchSwiftTestingSuiteFailed() throws {
         let input = #"􀢄 Suite "AnotherTestSuite" failed after 6.4 seconds with 3 issues."#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingSuiteFailedCaptureGroup)
-        XCTAssertEqual(captureGroup.suiteName, "AnotherTestSuite")
+        XCTAssertEqual(captureGroup.suiteName, "\"AnotherTestSuite\"")
         XCTAssertEqual(captureGroup.timeTaken, "6.4")
         XCTAssertEqual(captureGroup.numberOfIssues, 3)
     }
@@ -138,7 +138,7 @@ final class ParserTests: XCTestCase {
     func testMatchSwiftTestingTestFailed() throws {
         let input = #"􀢄 Test "SomeTest" failed after 2.5 seconds with 1 issue."#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestFailedCaptureGroup)
-        XCTAssertEqual(captureGroup.testName, "SomeTest")
+        XCTAssertEqual(captureGroup.testName, "\"SomeTest\"")
         XCTAssertEqual(captureGroup.timeTaken, "2.5")
         XCTAssertEqual(captureGroup.numberOfIssues, 1)
     }
@@ -153,20 +153,20 @@ final class ParserTests: XCTestCase {
     func testMatchSwiftTestingTestSkipped() throws {
         let input = #"􀙟 Test "SkippedTest" skipped."#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestSkippedCaptureGroup)
-        XCTAssertEqual(captureGroup.testName, "SkippedTest")
+        XCTAssertEqual(captureGroup.testName, "\"SkippedTest\"")
     }
 
     func testMatchSwiftTestingTestSkippedWithReason() throws {
         let input = #"􀙟 Test "SkippedTest" skipped: "Not relevant for this platform.""#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestSkippedReasonCaptureGroup)
-        XCTAssertEqual(captureGroup.testName, "SkippedTest")
+        XCTAssertEqual(captureGroup.testName, "\"SkippedTest\"")
         XCTAssertEqual(captureGroup.reason, "Not relevant for this platform.")
     }
 
     func testMatchSwiftTestingIssue() throws {
         let input = #"􀢄  Test "Selected tests by ID" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingIssueCaptureGroup)
-        XCTAssertEqual(captureGroup.testDescription, "Selected tests by ID")
+        XCTAssertEqual(captureGroup.testDescription, "\"Selected tests by ID\"")
         XCTAssertEqual(captureGroup.issueDetails, "PlanTests.swift:43:5: Expectation failed")
     }
 

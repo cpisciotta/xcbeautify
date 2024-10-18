@@ -666,8 +666,8 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testSwiftTestingSuiteFailed() {
-        let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
-        let output = "Suite MyTestSuite failed after 8.456 seconds with 2 issue(s)"
+        let input = #"􀢄 Suite "My Test Suite" failed after 8.456 seconds with 2 issues."#
+        let output = "Suite \"My Test Suite\" failed after 8.456 seconds with 2 issue(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
@@ -679,31 +679,31 @@ final class TerminalRendererTests: XCTestCase {
 
     func testSwiftTestingTestFailed() {
         let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
-        let output = "    ✖ myTest (1.234 seconds) 1 issue(s)"
+        let output = "    ✖ \"myTest\" (1.234 seconds) 1 issue(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingTestSkipped() {
         let input = #"􀙟 Test "myTest" skipped."#
-        let output = "    ⊘ myTest skipped"
+        let output = "    ⊘ \"myTest\" skipped"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingTestSkippedReason() {
         let input = #"􀙟 Test "myTest" skipped: "Reason for skipping""#
-        let output = "    ⊘ myTest skipped (Reason for skipping)"
+        let output = "    ⊘ \"myTest\" skipped (Reason for skipping)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingIssue() {
         let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
-        let output = "    [!]  Test [myTest] recorded an issue with 2 argument(s)"
+        let output = "    [!]  Test \"myTest\" recorded an issue with 2 argument(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingIssueDetails() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
-        let output = #"    [!]  Test [myTest] recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let output = #"    [!]  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 }
