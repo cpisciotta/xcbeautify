@@ -116,8 +116,6 @@ package final class Parser {
         SwiftTestingIssueCaptureGroup.self,
         SwiftTestingIssueArgumentCaptureGroup.self,
         SwiftTestingPassingArgumentCaptureGroup.self,
-        SwiftTestingPassingArgumentMultipleCaptureGroup.self,
-        SwiftTestingAttributeCaptureGroup.self,
     ]
 
     // MARK: - Init
