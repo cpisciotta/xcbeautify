@@ -119,6 +119,7 @@ package final class Parser {
         SwiftDriverTargetCaptureGroup.self,
         SwiftDriverCompilationTarget.self,
         SwiftDriverCompilationRequirementsCaptureGroup.self,
+        MkDirCaptureGroup.self,
     ]
 
     // MARK: - Init

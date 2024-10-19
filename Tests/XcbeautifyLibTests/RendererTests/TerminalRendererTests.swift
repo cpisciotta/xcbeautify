@@ -721,4 +721,9 @@ final class TerminalRendererTests: XCTestCase {
         let input = #"SwiftDriver\ Compilation\ Requirements Backyard\ Birds normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Backyard Birds' from project 'Backyard Birds')"#
         XCTAssertNil(noColoredFormatted(input))
     }
+
+    func testMkDirCaptureGroup() throws {
+        let input = #"MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
 }

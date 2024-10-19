@@ -31,4 +31,9 @@ final class CaptureGroupTests: XCTestCase {
         let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
         XCTAssertTrue(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.match(string: input))
     }
+
+    func testMkDirCaptureGroup() throws {
+        let input = "MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"
+        XCTAssertTrue(MkDirCaptureGroup.regex.match(string: input))
+    }
 }
