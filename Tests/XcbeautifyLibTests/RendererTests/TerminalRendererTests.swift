@@ -711,4 +711,9 @@ final class TerminalRendererTests: XCTestCase {
         let input = #"SwiftDriver\ Compilation SomeTarget normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Target' from project 'Project')"#
         XCTAssertNil(noColoredFormatted(input))
     }
+
+    func testSwiftDriverCompilationRequirements() throws {
+        let input = #"SwiftDriver\ Compilation\ Requirements Backyard\ Birds normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Backyard Birds' from project 'Backyard Birds')"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
 }

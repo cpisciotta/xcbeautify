@@ -242,6 +242,8 @@ package struct Formatter {
             return renderer.formatSwiftTestingPassingArgument(group: group)
         case let group as SwiftDriverCompilationTarget:
             return renderer.formatSwiftDriverCompilationTarget(group: group)
+        case let group as SwiftDriverCompilationRequirementsCaptureGroup:
+            return renderer.formatSwiftDriverCompilationRequirements(group: group)
         default:
             assertionFailure()
             return nil
