@@ -240,6 +240,8 @@ package struct Formatter {
             return renderer.formatSwiftTestingIssueArguments(group: group)
         case let group as SwiftTestingPassingArgumentCaptureGroup:
             return renderer.formatSwiftTestingPassingArgument(group: group)
+        case let group as SwiftDriverTargetCaptureGroup:
+            return renderer.formatSwiftDriverTarget(group: group)
         case let group as SwiftDriverCompilationTarget:
             return renderer.formatSwiftDriverCompilationTarget(group: group)
         case let group as SwiftDriverCompilationRequirementsCaptureGroup:
