@@ -175,4 +175,10 @@ final class ParserTests: XCTestCase {
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingPassingArgumentCaptureGroup)
         XCTAssertEqual(captureGroup.numberOfArguments, 2)
     }
+
+    func testSwiftDriverCompilationTarget() throws {
+        let input = #"SwiftDriver\ Compilation SomeTarget normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Target' from project 'Project')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftDriverCompilationTarget)
+        XCTAssertEqual(captureGroup.target, "SomeTarget")
+    }
 }
