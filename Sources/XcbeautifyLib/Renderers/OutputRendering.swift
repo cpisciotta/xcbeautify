@@ -100,6 +100,7 @@ protocol OutputRendering {
     func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
     func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
     func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
+    func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -657,6 +658,10 @@ extension OutputRendering {
     }
 
     func formatSwiftDriverCompilationRequirements(group: SwiftDriverCompilationRequirementsCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String? {
         nil
     }
 }

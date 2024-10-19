@@ -246,6 +246,8 @@ package struct Formatter {
             return renderer.formatSwiftDriverCompilationTarget(group: group)
         case let group as SwiftDriverCompilationRequirementsCaptureGroup:
             return renderer.formatSwiftDriverCompilationRequirements(group: group)
+        case let group as MkDirCaptureGroup:
+            return renderer.formatMkDirCaptureGroup(group: group)
         default:
             assertionFailure()
             return nil

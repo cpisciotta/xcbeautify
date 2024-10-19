@@ -2182,3 +2182,11 @@ struct SwiftDriverCompilationRequirementsCaptureGroup: CaptureGroup {
         self.target = target
     }
 }
+
+struct MkDirCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: "^MkDir.*")
+
+    init?(groups: [String]) { }
+}
