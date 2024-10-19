@@ -116,6 +116,7 @@ package final class Parser {
         SwiftTestingIssueCaptureGroup.self,
         SwiftTestingIssueArgumentCaptureGroup.self,
         SwiftTestingPassingArgumentCaptureGroup.self,
+        SwiftDriverTargetCaptureGroup.self,
         SwiftDriverCompilationTarget.self,
         SwiftDriverCompilationRequirementsCaptureGroup.self,
     ]

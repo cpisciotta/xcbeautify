@@ -648,6 +648,10 @@ extension OutputRendering {
         nil
     }
 
+    func formatSwiftDriverTarget(group: SwiftDriverTargetCaptureGroup) -> String? {
+        nil
+    }
+
     func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String? {
         nil
     }
