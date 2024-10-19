@@ -2154,3 +2154,17 @@ struct SwiftDriverCompilationTarget: CaptureGroup {
         self.target = target
     }
 }
+
+struct SwiftDriverCompilationRequirementsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
+    }
+}

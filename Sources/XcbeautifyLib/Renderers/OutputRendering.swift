@@ -651,4 +651,8 @@ extension OutputRendering {
     func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String? {
         nil
     }
+
+    func formatSwiftDriverCompilationRequirements(group: SwiftDriverCompilationRequirementsCaptureGroup) -> String? {
+        nil
+    }
 }
