@@ -2140,3 +2140,17 @@ struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
         self.numberOfArguments = numberOfArguments
     }
 }
+
+struct SwiftDriverCompilationTarget: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = Regex(pattern: #"^SwiftDriver\\ Compilation (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
+    }
+}

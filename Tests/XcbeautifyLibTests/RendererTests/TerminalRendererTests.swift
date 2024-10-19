@@ -706,4 +706,9 @@ final class TerminalRendererTests: XCTestCase {
         let output = #"    [!]  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         XCTAssertEqual(noColoredFormatted(input), output)
     }
+
+    func testSwiftDriverCompilationTarget() throws {
+        let input = #"SwiftDriver\ Compilation SomeTarget normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Target' from project 'Project')"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
 }
