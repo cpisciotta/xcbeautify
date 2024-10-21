@@ -4,6 +4,12 @@ import XcbeautifyLib
 
 @main
 struct Xcbeautify: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "A tool to format `swift` and `xcodebuild` command output.",
+        discussion: "EXAMPLE: xcodebuild test ... | xcbeautify",
+        version: version
+    )
+
     enum Report: String, ExpressibleByArgument {
         case junit
     }
