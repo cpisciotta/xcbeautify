@@ -25,12 +25,16 @@ package final class JunitReporter {
 
         if FailingTestCaptureGroup.regex.match(string: line) {
             guard let testCase = generateFailingTest(line: line) else { return }
+            // reduce failing retrys, if any
+            components.removePreviousFailingTestsAfter(testCase)
             components.append(.failingTest(testCase))
         } else if RestartingTestCaptureGroup.regex.match(string: line) {
             guard let testCase = generateRestartingTest(line: line) else { return }
             components.append(.failingTest(testCase))
         } else if TestCasePassedCaptureGroup.regex.match(string: line) {
             guard let testCase = generatePassingTest(line: line) else { return }
+            // filter out failing retrys, if any
+            components.removePreviousFailingTestsAfter(testCase)
             components.append(.testCasePassed(testCase))
         } else if TestCaseSkippedCaptureGroup.regex.match(string: line) {
             guard let testCase = generateSkippedTest(line: line) else { return }
@@ -164,6 +168,32 @@ private enum JunitComponent {
     case failingTest(TestCase)
     case testCasePassed(TestCase)
     case skippedTest(TestCase)
+}
+
+private extension JunitComponent {
+    var testCase: TestCase? {
+        switch self {
+        case .testSuiteStart: nil
+        case let .failingTest(testCase), let .testCasePassed(testCase), let .skippedTest(testCase):
+            testCase
+        }
+    }
+}
+
+private extension [JunitComponent] {
+    mutating func removePreviousFailingTestsAfter(_ testCase: TestCase) {
+        // base case, empty array or last is not the given TestCase
+        guard let previousTestCase = last?.testCase,
+              previousTestCase.failure != nil,
+              testCase.classname == previousTestCase.classname,
+              testCase.name == previousTestCase.name
+        else {
+            return
+        }
+        removeLast()
+        // keep removing
+        removePreviousFailingTestsAfter(testCase)
+    }
 }
 
 private struct Testsuites: Encodable, DynamicNodeEncoding {
