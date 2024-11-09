@@ -134,25 +134,20 @@ package final class Parser {
             return nil
         }
 
-        // Find first parser that can parse specified string
-        guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
-            return nil
+        for (index, captureGroupType) in captureGroupTypes.enumerated() {
+            guard let groups = captureGroupType.regex.captureGroups(for: line) else { continue }
+
+            guard let captureGroup = captureGroupType.init(groups: groups) else {
+                assertionFailure()
+                return nil
+            }
+
+            // Move found parser to the top, so next time it will be checked first
+            captureGroupTypes.insert(captureGroupTypes.remove(at: index), at: 0)
+
+            return captureGroup
         }
 
-        guard let captureGroupType = captureGroupTypes[safe: idx] else {
-            assertionFailure()
-            return nil
-        }
-
-        let groups: [String] = captureGroupType.regex.captureGroups(for: line)
-        guard let captureGroup = captureGroupType.init(groups: groups) else {
-            assertionFailure()
-            return nil
-        }
-
-        // Move found parser to the top, so next time it will be checked first
-        captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
-
-        return captureGroup
+        return nil
     }
 }
