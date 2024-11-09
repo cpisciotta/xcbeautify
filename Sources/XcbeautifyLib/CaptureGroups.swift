@@ -10,11 +10,6 @@ package extension CaptureGroup {
     var outputType: OutputType { Self.outputType }
 }
 
-extension CaptureGroup {
-    static var pattern: String { regex.pattern }
-    var pattern: String { Self.regex.pattern }
-}
-
 protocol ErrorCaptureGroup: CaptureGroup {
     var wholeError: String { get }
 }

@@ -3,7 +3,7 @@ import Foundation
 // `NSRegularExpression` is marked as `@unchecked Sendable`.
 // Match the definition here.
 package final class XCRegex: @unchecked Sendable {
-    let pattern: String
+    private let pattern: String
 
     private lazy var regex: NSRegularExpression? = {
         let regex = try? NSRegularExpression(pattern: "^" + pattern, options: [.caseInsensitive])
