@@ -15,14 +15,15 @@ package final class XCRegex: @unchecked Sendable {
         self.pattern = pattern
     }
 
-    func match(string: String) -> Bool {
-        let fullRange = NSRange(string.startIndex..., in: string)
-        return regex?.rangeOfFirstMatch(in: string, range: fullRange).location != NSNotFound
-    }
+    func captureGroups(for line: String) -> [String]? {
+        assert(regex != nil)
 
-    func captureGroups(for line: String) -> [String] {
-        let matches = regex?.matches(in: line, range: NSRange(location: 0, length: line.utf16.count))
-        guard let match = matches?.first else { return [] }
+        guard
+            let matches = regex?.matches(in: line, range: NSRange(location: 0, length: line.utf16.count)),
+            let match = matches.first
+        else {
+            return nil
+        }
 
         let lastRangeIndex = match.numberOfRanges - 1
         guard lastRangeIndex >= 1 else { return [] }
