@@ -271,7 +271,7 @@ struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = target
     /// $3 = project
-    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|\\ )+) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
@@ -363,7 +363,7 @@ struct CopyFilesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     // ((?:\S|(?<=\\) )+) --> Match any non-whitespace character OR any escaped space (space in filename)
-    static let regex = XCRegex(pattern: #"^Copy ((?:\S|(?<=\\) )+) ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '.*'\)$"#)
+    static let regex = XCRegex(pattern: #"^Copy ((?:\S|\\ )+) ((?:\S|\\ )+) \(in target '(.*)' from project '.*'\)$"#)
 
     let firstFilePath: String
     let firstFilename: String
@@ -1061,7 +1061,7 @@ struct ProcessPchCommandCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 file path
-    static let regex = XCRegex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#)
+    static let regex = XCRegex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)[^\\]\s.*\-o\s.*\.gch"#)
 
     let filePath: String
 
@@ -1843,7 +1843,7 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     // $3 = filenames
     // $4 = target
     // $5 = project
-    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|\\ )+) \(in target '(.*)' from project '(.*)'\)"#)
 
     let state: String // Currently, the only expected/known value is `normal`
     let architecture: String
