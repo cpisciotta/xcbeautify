@@ -1,4 +1,4 @@
-let regex63 = /^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch/
-let regex86 = /^Copy ((?:\S|(?<=\\) )+) ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '.*'\)$/
-let regex103 = /^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$/
-let regex108 = /^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)/
+let regex63 = /^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)[^\\]\s.*\-o\s.*\.gch/
+let regex86 = /^Copy ((?:\S|\\ )+) ((?:\S|\\ )+) \(in target '(.*)' from project '.*'\)$/
+let regex103 = /^SwiftCompile \w+ \w+ ((?:\S|\\ )+) \(in target '(.*)' from project '(.*)'\)$/
+let regex108 = /^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|\\ )+) \(in target '(.*)' from project '(.*)'\)/
