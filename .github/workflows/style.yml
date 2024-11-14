@@ -1,4 +1,4 @@
-name: 'Code Style'
+name: "Code Style"
 
 on: pull_request
 
