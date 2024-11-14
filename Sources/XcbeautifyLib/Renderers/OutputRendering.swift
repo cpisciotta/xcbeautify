@@ -40,6 +40,7 @@ protocol OutputRendering {
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String
     func formatLinking(group: LinkingCaptureGroup) -> String
+    func formatNonPCHClangCommand(group: NonPCHClangCommandCaptureGroup) -> String?
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String
     func formatPackageEnd() -> String
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String
@@ -214,6 +215,10 @@ extension OutputRendering {
         let filename = group.binaryFilename
         return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
         #endif
+    }
+
+    func formatNonPCHClangCommand(group: NonPCHClangCommandCaptureGroup) -> String? {
+        nil
     }
 
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String {
