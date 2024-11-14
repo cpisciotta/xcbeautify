@@ -1,14 +1,13 @@
 on:
   push:
     tags:
-      - '*'
+      - "*"
 name: Release
 
 env:
   SWIFT_VERSION: 5.9
 
 jobs:
-
   create_release:
     name: Create Release
     runs-on: ubuntu-latest
@@ -29,7 +28,7 @@ jobs:
 
   macos:
     name: Release macOS
-    runs-on: macos-13
+    runs-on: macos-14
     needs: create_release
     steps:
       - name: Checkout

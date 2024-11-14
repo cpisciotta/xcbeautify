@@ -17,21 +17,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - macos-latest
-          - ubuntu-latest
-        version:
-          - swift_version: "5.9"
-            xcode_version: "15.2"
-          - swift_version: "5.10"
-            xcode_version: "15.4"
-          - swift_version: "6.0"
-            xcode_version: "16.0"
-        exclude:
+        include:
+          - platform: macos-14
+            version:
+              swift_version: "5.9"
+              xcode_version: "15.2"
+          - platform: macos-14
+            version:
+              swift_version: "5.10"
+              xcode_version: "15.4"
+          - platform: macos-15
+            version:
+              swift_version: "6.0"
+              xcode_version: "16.0"
           # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
           - platform: ubuntu-latest
             version:
-              swift_version: "6.0"
+              swift_version: "5.9"
+              xcode_version: "15.2"
+          - platform: ubuntu-latest
+            version:
+              swift_version: "5.10"
+              xcode_version: "15.4"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.version.xcode_version }}.app/Contents/Developer
     steps:
@@ -50,21 +57,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - macos-latest
-          - ubuntu-latest
-        version:
-          - swift_version: "5.9"
-            xcode_version: "15.2"
-          - swift_version: "5.10"
-            xcode_version: "15.4"
-          - swift_version: "6.0"
-            xcode_version: "16.0"
-        exclude:
+        include:
+          - platform: macos-14
+            version:
+              swift_version: "5.9"
+              xcode_version: "15.2"
+          - platform: macos-14
+            version:
+              swift_version: "5.10"
+              xcode_version: "15.4"
+          - platform: macos-15
+            version:
+              swift_version: "6.0"
+              xcode_version: "16.0"
           # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
           - platform: ubuntu-latest
             version:
-              swift_version: "6.0"
+              swift_version: "5.9"
+              xcode_version: "15.2"
+          - platform: ubuntu-latest
+            version:
+              swift_version: "5.10"
+              xcode_version: "15.4"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.version.xcode_version }}.app/Contents/Developer
     steps:
