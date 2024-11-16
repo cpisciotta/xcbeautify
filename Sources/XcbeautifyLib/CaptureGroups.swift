@@ -913,7 +913,7 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = device
-    static let regex = /^\s*Test\s+Suite\s+'(.*)'\s+started\s+on\s+'(.*)'/
+    static let regex = /^\s*Test\s+suite\s+'(.*)'\s+started\s+on\s+'(.*)'/
 
     let suite: String
     let device: String
