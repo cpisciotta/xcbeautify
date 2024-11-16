@@ -199,7 +199,7 @@ struct CodesignCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file
-    static let regex = XCRegex(pattern: #"^CodeSign\s(((?!.framework/Versions/A)(?:\ |[^ ]))*?)( \(in target '.*' from project '.*' at path '.*'\))?$"#)
+    static let regex = XCRegex(pattern: #"^CodeSign\s(((?!.framework\/Versions\/A)(?:\ |[^ ]))*?)( \(in target '.*' from project '.*' at path '.*'\))?$"#)
 
     let file: String
 
@@ -215,7 +215,7 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file
-    static let regex = XCRegex(pattern: #"^CodeSign\s((?:\ |[^ ])*.framework)\/Versions/A"#)
+    static let regex = XCRegex(pattern: #"^CodeSign\s((?:\ |[^ ])*.framework)\/Versions\/A"#)
 
     let frameworkPath: String
 
@@ -912,7 +912,7 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\./](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
 
     let suite: String
     let testCase: String
@@ -1391,7 +1391,7 @@ struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
 
     /// Regular expresion captured groups:
     /// $1 = warning message.
-    static let regex = XCRegex(pattern: #"^[\d\s-:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$"#)
+    static let regex = XCRegex(pattern: #"^[\d -:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$"#)
 
     let warningMessage: String
 
@@ -1660,7 +1660,7 @@ struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = error reason
-    static let regex = XCRegex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#)
+    static let regex = XCRegex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$\/"#)
 
     let wholeError: String
 
