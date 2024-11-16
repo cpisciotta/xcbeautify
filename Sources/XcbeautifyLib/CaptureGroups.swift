@@ -570,7 +570,7 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = coverage report file path
-    static let regex = /^generating\s+coverage\s+data\.*/
+    static let regex = /^Generating\s+coverage\s+data\.*/
 
     init(match: Regex<RegexOutput>.Match) { }
 }
