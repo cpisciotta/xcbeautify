@@ -1061,7 +1061,7 @@ struct ProcessPchCommandCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 file path
-    static let regex = XCRegex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*?)(?<!\\)\s.*\-o\s.*\.gch"#)
+    static let regex = XCRegex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*)\s\-o\s.*\.gch"#)
 
     let filePath: String
 
