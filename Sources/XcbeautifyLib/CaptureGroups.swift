@@ -50,7 +50,7 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
-    static let regex = /^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filePath: String
     let filename: String
@@ -223,7 +223,7 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
     /// $3 = target
-    static let regex = /^Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((?:in target: (.*)|in target '(.*)' from project '.*')\)/
     #endif
 
     #if !os(Linux)
@@ -300,7 +300,7 @@ struct CompileXibCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = filename (e.g. MainMenu.xib)
     /// $3 = target
-    static let regex = /^CompileXIB\s(.*\/(.*\.xib))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^CompileXIB\s(.*\/(.*\.xib))\s.*\((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filePath: String
     let filename: String
@@ -321,7 +321,7 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = filename (e.g. Main.storyboard)
     /// $3 = target
-    static let regex = /^CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filePath: String
     let filename: String
@@ -363,7 +363,7 @@ struct CopyHeaderCaptureGroup: CopyCaptureGroup {
     /// $1 = source file
     /// $2 = target file
     /// $3 = target
-    static let regex = /^CpHeader\s(.*\.h)\s(.*\.h) \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^CpHeader\s(.*\.h)\s(.*\.h) \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let targetFile: String
@@ -383,7 +383,7 @@ struct CopyPlistCaptureGroup: CopyCaptureGroup {
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
-    static let regex = /^CopyPlistFile\s(.*\.plist)\s(.*\.plist) \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^CopyPlistFile\s(.*\.plist)\s(.*\.plist) \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let target: String
@@ -400,7 +400,7 @@ struct CopyStringsCaptureGroup: CopyCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file
-    static let regex = /^CopyStringsFile\s(.*\.strings)\s(.*\.strings) \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^CopyStringsFile\s(.*\.strings)\s(.*\.strings) \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let target: String
@@ -417,7 +417,7 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = resource
-    static let regex = /^CpResource\s(.*)\s\/(.*) \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^CpResource\s(.*)\s\/(.*) \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let target: String
@@ -592,7 +592,7 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = dsym
     /// $2 = target
-    static let regex = /^GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let dsym: String
     let target: String
@@ -610,7 +610,7 @@ struct LibtoolCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = library
     /// $2 = target
-    static let regex = /^Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^Libtool.*\/(.*) .* .* \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filename: String
     let target: String
@@ -633,7 +633,7 @@ struct LinkingCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = binary filename
     /// $2 = target
-    static let regex = /^Ld \/?.*\/(.*?) normal .* \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^Ld \/?.*\/(.*?) normal .* \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
     #endif
 
     #if !os(Linux)
@@ -941,7 +941,7 @@ struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = phase name
     /// $2 = target
-    static let regex = /^PhaseScriptExecution\s(.*)\s\/.*\.sh\s\((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^PhaseScriptExecution\s(.*)\s\/.*\.sh\s\((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let phaseName: String
     let target: String
@@ -959,7 +959,7 @@ struct ProcessPchCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
-    static let regex = /^ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*) normal .* .* .* \((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let buildTarget: String
@@ -1015,7 +1015,7 @@ struct PbxcpCaptureGroup: CopyCaptureGroup {
     /// $1 = source file
     /// $2 = target file
     /// $3 = build target
-    static let regex = /^PBXCp\s(.*)\s\/(.*)\s\((in target: (.*)|in target '(.*)' from project '.*')\)/
+    static let regex = /^PBXCp\s(.*)\s\/(.*)\s\((?:in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let targetFile: String
@@ -1036,7 +1036,7 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = filename
     /// $4 = target
-    static let regex = /^ProcessInfoPlistFile\s.*\.plist\s(.*\/+(.*\.plist))( \((in target: (.*)|in target '(.*)' from project '.*')\))?/
+    static let regex = /^ProcessInfoPlistFile\s.*\.plist\s(.*\/+(.*\.plist))( \((?:in target: (.*)|in target '(.*)' from project '.*')\))?/
 
     let filePath: String
     let filename: String
@@ -1154,7 +1154,7 @@ struct TouchCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = filename
     /// $3 = target
-    static let regex = /^Touch\s(.*\/(.+))( \((in target: (.*)|in target '(.*)' from project '.*')\))/
+    static let regex = /^Touch\s(.*\/(.+))( \((?:in target: (.*)|in target '(.*)' from project '.*')\))/
 
     let filename: String
     let target: String
