@@ -127,7 +127,7 @@ struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
 /// Nothing returned here for now
 struct CheckDependenciesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = /^Check dependencies/
+    static let regex = /^Check Dependencies/
 
     init(match: Regex<RegexOutput>.Match) { }
 }
