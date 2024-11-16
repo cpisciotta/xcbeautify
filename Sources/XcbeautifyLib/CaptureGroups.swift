@@ -1843,7 +1843,7 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     // $3 = filenames
     // $4 = target
     // $5 = project
-    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling (.*) \(in target '(.*)' from project '(.*)'\)"#)
 
     let state: String // Currently, the only expected/known value is `normal`
     let architecture: String
