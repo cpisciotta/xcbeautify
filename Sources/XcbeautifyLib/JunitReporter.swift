@@ -23,29 +23,29 @@ package final class JunitReporter {
         // Remove any preceding or excessive spaces
         let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        if let groups = FailingTestCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generateFailingTest(groups: groups) else { return }
+        if let group = FailingTestCaptureGroup.match(against: line) {
+            let testCase = generateFailingTest(group: group)
             components.append(.failingTest(testCase))
-        } else if let groups = RestartingTestCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generateRestartingTest(groups: groups, line: line) else { return }
+        } else if let group = RestartingTestCaptureGroup.match(against: line) {
+            let testCase = generateRestartingTest(group: group, line: line)
             components.append(.failingTest(testCase))
-        } else if let groups = TestCasePassedCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generatePassingTest(groups: groups) else { return }
+        } else if let group = TestCasePassedCaptureGroup.match(against: line) {
+            let testCase = generatePassingTest(group: group)
             components.append(.testCasePassed(testCase))
-        } else if let groups = TestCaseSkippedCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generateSkippedTest(groups: groups) else { return }
+        } else if let group = TestCaseSkippedCaptureGroup.match(against: line) {
+            let testCase = generateSkippedTest(group: group)
             components.append(.skippedTest(testCase))
-        } else if let groups = TestSuiteStartCaptureGroup.regex.captureGroups(for: line) {
-            guard let testStart = generateSuiteStart(groups: groups) else { return }
+        } else if let group = TestSuiteStartCaptureGroup.match(against: line) {
+            let testStart = generateSuiteStart(group: group)
             components.append(.testSuiteStart(testStart))
-        } else if let groups = ParallelTestCaseFailedCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generateParallelFailingTest(groups: groups) else { return }
+        } else if let group = ParallelTestCaseFailedCaptureGroup.match(against: line) {
+            let testCase = generateParallelFailingTest(group: group)
             parallelComponents.append(.failingTest(testCase))
-        } else if let groups = ParallelTestCasePassedCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generatePassingParallelTest(groups: groups) else { return }
+        } else if let group = ParallelTestCasePassedCaptureGroup.match(against: line) {
+            let testCase = generatePassingParallelTest(group: group)
             parallelComponents.append(.testCasePassed(testCase))
-        } else if let groups = ParallelTestCaseSkippedCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generateSkippedParallelTest(groups: groups) else { return }
+        } else if let group = ParallelTestCaseSkippedCaptureGroup.match(against: line) {
+            let testCase = generateSkippedParallelTest(group: group)
             parallelComponents.append(.testCasePassed(testCase))
         } else {
             // Not needed for generating a junit report
@@ -53,45 +53,37 @@ package final class JunitReporter {
         }
     }
 
-    private func generateFailingTest(groups: [String]) -> TestCase? {
-        guard let group = FailingTestCaptureGroup(groups: groups) else { return nil }
+    private func generateFailingTest(group: FailingTestCaptureGroup) -> TestCase {
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
 
     // TODO: Delete `line` parameter
-    private func generateRestartingTest(groups: [String], line: String) -> TestCase? {
-        guard let group = RestartingTestCaptureGroup(groups: groups) else { return nil }
+    private func generateRestartingTest(group: RestartingTestCaptureGroup, line: String) -> TestCase {
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: line))
     }
 
-    private func generateParallelFailingTest(groups: [String]) -> TestCase? {
+    private func generateParallelFailingTest(group: ParallelTestCaseFailedCaptureGroup) -> TestCase {
         // Parallel tests do not provide meaningful failure messages
-        guard let group = ParallelTestCaseFailedCaptureGroup(groups: groups) else { return nil }
         return TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
     }
 
-    private func generatePassingTest(groups: [String]) -> TestCase? {
-        guard let group = TestCasePassedCaptureGroup(groups: groups) else { return nil }
+    private func generatePassingTest(group: TestCasePassedCaptureGroup) -> TestCase {
         return TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
 
-    private func generateSkippedTest(groups: [String]) -> TestCase? {
-        guard let group = TestCaseSkippedCaptureGroup(groups: groups) else { return nil }
+    private func generateSkippedTest(group: TestCaseSkippedCaptureGroup) -> TestCase {
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
-    private func generatePassingParallelTest(groups: [String]) -> TestCase? {
-        guard let group = ParallelTestCasePassedCaptureGroup(groups: groups) else { return nil }
+    private func generatePassingParallelTest(group: ParallelTestCasePassedCaptureGroup) -> TestCase {
         return TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
 
-    private func generateSkippedParallelTest(groups: [String]) -> TestCase? {
-        guard let group = ParallelTestCaseSkippedCaptureGroup(groups: groups) else { return nil }
+    private func generateSkippedParallelTest(group: ParallelTestCaseSkippedCaptureGroup) -> TestCase {
         return TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
-    private func generateSuiteStart(groups: [String]) -> String? {
-        guard let group = TestSuiteStartCaptureGroup(groups: groups) else { return nil }
+    private func generateSuiteStart(group: TestSuiteStartCaptureGroup) -> String {
         return group.testSuiteName
     }
 

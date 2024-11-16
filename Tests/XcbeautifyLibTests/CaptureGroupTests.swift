@@ -18,22 +18,22 @@ final class CaptureGroupTests: XCTestCase {
         ]
 
         for input in inputs {
-            XCTAssertNotNil(SwiftCompilingCaptureGroup.regex.captureGroups(for: input))
+            XCTAssertNotNil(SwiftCompilingCaptureGroup.match(against: input))
         }
     }
 
     func testMatchCompilationResults() {
         let input = #"/* com.apple.actool.compilation-results */"#
-        XCTAssertNotNil(CompilationResultCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertNotNil(CompilationResultCaptureGroup.match(against: input))
     }
 
     func testMatchSwiftDriverJobDiscoveryEmittingModule() {
         let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
-        XCTAssertNotNil(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertNotNil(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.match(against: input))
     }
 
     func testMkDirCaptureGroup() throws {
         let input = "MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"
-        XCTAssertNotNil(MkDirCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertNotNil(MkDirCaptureGroup.match(against: input))
     }
 }

@@ -135,12 +135,7 @@ package final class Parser {
         }
 
         for (index, captureGroupType) in captureGroupTypes.enumerated() {
-            guard let groups = captureGroupType.regex.captureGroups(for: line) else { continue }
-
-            guard let captureGroup = captureGroupType.init(groups: groups) else {
-                assertionFailure()
-                return nil
-            }
+            guard let captureGroup = captureGroupType.match(against: line) else { continue }
 
             // Move found parser to the top, so next time it will be checked first
             captureGroupTypes.insert(captureGroupTypes.remove(at: index), at: 0)

@@ -2,12 +2,18 @@ import Foundation
 
 package protocol CaptureGroup {
     static var outputType: OutputType { get }
-    static var regex: XCRegex { get }
-    init?(groups: [String])
+    associatedtype RegexOutput
+    static var regex: Regex<RegexOutput> { get }
+    init(match: Regex<RegexOutput>.Match)
 }
 
 package extension CaptureGroup {
     var outputType: OutputType { Self.outputType }
+
+    static func match(against line: String) -> Self? {
+        guard let match = line.prefixMatch(of: regex) else { return nil }
+        return Self.init(match: match)
+    }
 }
 
 protocol ErrorCaptureGroup: CaptureGroup {
@@ -44,18 +50,17 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
-    static let regex = XCRegex(pattern: #"^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filePath: String
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -66,18 +71,16 @@ struct BuildTargetCaptureGroup: TargetCaptureGroup {
     /// $1 = target
     /// $2 = project
     /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== BUILD TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
+    static let regex = /^=== BUILD TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s===/
 
     let target: String
     let project: String
     let configuration: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
-        self.target = target
-        self.project = project
-        self.configuration = configuration
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
+        self.project = String(match.output.2)
+        self.configuration = String(match.output.3)
     }
 }
 
@@ -88,18 +91,16 @@ struct AggregateTargetCaptureGroup: TargetCaptureGroup {
     /// $1 = target
     /// $2 = project
     /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== BUILD AGGREGATE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
+    static let regex = /^=== BUILD AGGREGATE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s===/
 
     let target: String
     let project: String
     let configuration: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
-        self.target = target
-        self.project = project
-        self.configuration = configuration
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
+        self.project = String(match.output.2)
+        self.configuration = String(match.output.3)
     }
 }
 
@@ -110,32 +111,25 @@ struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
     /// $1 = target
     /// $2 = project
     /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== ANALYZE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
+    static let regex = /^=== ANALYZE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s===/
 
     let target: String
     let project: String
     let configuration: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
-        self.target = target
-        self.project = project
-        self.configuration = configuration
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
+        self.project = String(match.output.2)
+        self.configuration = String(match.output.3)
     }
 }
 
 /// Nothing returned here for now
 struct CheckDependenciesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^Check dependencies"#)
+    static let regex = /^Check dependencies/
 
-    private init() { }
-
-    init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
-    }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 struct ShellCommandCaptureGroup: CaptureGroup {
@@ -144,16 +138,14 @@ struct ShellCommandCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = command path
     /// $2 = arguments
-    static let regex = XCRegex(pattern: #"^\s{4}(cd|setenv|(?:[\w\/:\s\-.]+?\/)?[\w\-]+)\s(.*)$"#)
+    static let regex = /^\s{4}(cd|setenv|(?:[\w\/:\s\-.]+?\/)?[\w\-]+)\s(.*)$/
 
     let commandPath: String
     let arguments: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let commandPath = groups[safe: 0], let arguments = groups[safe: 1] else { return nil }
-        self.commandPath = commandPath
-        self.arguments = arguments
+    init(match: Regex<RegexOutput>.Match) {
+        self.commandPath = String(match.output.1)
+        self.arguments = String(match.output.2)
     }
 }
 
@@ -161,14 +153,12 @@ struct CleanRemoveCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     /// Nothing returned here for now
-    static let regex = XCRegex(pattern: #"^Clean.Remove(.*)"#)
+    static let regex = /^Clean.Remove(.*)/
 
     let directory: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let directory = groups[safe: 0] else { return nil }
-        self.directory = directory.lastPathComponent
+    init(match: Regex<RegexOutput>.Match) {
+        self.directory = String(match.output.1).lastPathComponent
     }
 }
 
@@ -179,18 +169,16 @@ struct CleanTargetCaptureGroup: TargetCaptureGroup {
     /// $1 = target
     /// $2 = project
     /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== CLEAN TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH CONFIGURATION\s(.*)\s==="#)
+    static let regex = /^=== CLEAN TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH CONFIGURATION\s(.*)\s===/
 
     let target: String
     let project: String
     let configuration: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
-        self.target = target
-        self.project = project
-        self.configuration = configuration
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
+        self.project = String(match.output.2)
+        self.configuration = String(match.output.3)
     }
 }
 
@@ -199,14 +187,12 @@ struct CodesignCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file
-    static let regex = XCRegex(pattern: #"^CodeSign\s(((?!.framework\/Versions\/A)(?:\ |[^ ]))*?)( \(in target '.*' from project '.*' at path '.*'\))?$"#)
+    static let regex = /^CodeSign\s(((?!.framework\/Versions\/A)(?:\ |[^ ]))*?)( \(in target '.*' from project '.*' at path '.*'\))?$/
 
     let file: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let file = groups[safe: 0] else { return nil }
-        self.file = file
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1)
     }
 }
 
@@ -215,14 +201,12 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file
-    static let regex = XCRegex(pattern: #"^CodeSign\s((?:\ |[^ ])*.framework)\/Versions\/A"#)
+    static let regex = /^CodeSign\s((?:\ |[^ ])*.framework)\/Versions\/A/
 
     let frameworkPath: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let frameworkPath = groups[safe: 0] else { return nil }
-        self.frameworkPath = frameworkPath
+    init(match: Regex<RegexOutput>.Match) {
+        self.frameworkPath = String(match.output.1)
     }
 }
 
@@ -233,13 +217,13 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     /// Regular expression captured groups:
     /// $1 = filename (e.g. KWNull.m)
     /// $2 = target
-    static let regex = XCRegex(pattern: #"^\[\d+\/\d+\]\sCompiling\s([^ ]+)\s([^ \.]+\.(?:m|mm|c|cc|cpp|cxx|swift))"#)
+    static let regex = /^\[\d+\/\d+\]\sCompiling\s([^ ]+)\s([^ \.]+\.(?:m|mm|c|cc|cpp|cxx|swift))/
     #else
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename (e.g. KWNull.m)
     /// $3 = target
-    static let regex = XCRegex(pattern: #"^Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^Compile[\w]+\s.+?\s((?:\.|[^ ])+\/((?:\.|[^ ])+\.(?:m|mm|c|cc|cpp|cxx|swift)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
     #endif
 
     #if !os(Linux)
@@ -248,18 +232,16 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
+    init(match: Regex<RegexOutput>.Match) {
         #if os(Linux)
-        assert(groups.count >= 2)
-        guard let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filename = filename
-        self.target = target
+        self.filename = String(match.output.1)
+        #warning("FIXME")
+        self.target = ""
         #else
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
         #endif
     }
 }
@@ -271,29 +253,27 @@ struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = target
     /// $3 = project
-    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?!Compiling\\ ).*) \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = /^SwiftCompile \w+ \w+ ((?!Compiling\\ ).*) \(in target '(.*)' from project '(.*)'\)$/
 
     let filePath: String
     let filename: String
     let target: String
     let project: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        filename = filePath.lastPathComponent
-        self.target = target
-        self.project = project
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        filename = String(match.output.1).lastPathComponent
+        self.target = String(match.output.2)
+        self.project = String(match.output.3)
     }
 }
 
 struct SwiftCompilingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ Compiling\\"#)
+    static let regex = /^SwiftCompile \w+ \w+ Compiling\\/
 
-    init?(groups: [String]) { }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 struct CompileCommandCaptureGroup: CaptureGroup {
@@ -302,16 +282,14 @@ struct CompileCommandCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = compiler command
     /// $2 = file path
-    static let regex = XCRegex(pattern: #"^\s*(.*clang\s.*\s\-c\s(.*\.(?:m|mm|c|cc|cpp|cxx))\s.*\.o)$"#)
+    static let regex = /^\s*(.*clang\s.*\s\-c\s(.*\.(?:m|mm|c|cc|cpp|cxx))\s.*\.o)$/
 
     let compilerCommand: String
     let filePath: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let compilerCommand = groups[safe: 0], let filePath = groups[safe: 1] else { return nil }
-        self.compilerCommand = compilerCommand
-        self.filePath = filePath
+    init(match: Regex<RegexOutput>.Match) {
+        self.compilerCommand = String(match.output.1)
+        self.filePath = String(match.output.2)
     }
 }
 
@@ -322,18 +300,17 @@ struct CompileXibCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = filename (e.g. MainMenu.xib)
     /// $3 = target
-    static let regex = XCRegex(pattern: #"^CompileXIB\s(.*\/(.*\.xib))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^CompileXIB\s(.*\/(.*\.xib))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filePath: String
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -344,18 +321,17 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = filename (e.g. Main.storyboard)
     /// $3 = target
-    static let regex = XCRegex(pattern: #"^CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filePath: String
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -363,7 +339,7 @@ struct CopyFilesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     // ((?:\S|(?:\\ ))+) --> Match any non-whitespace character OR any escaped space (space in filename)
-    static let regex = XCRegex(pattern: #"^Copy ((?:\S|(?:\\ ))+) ((?:\S|(?:\\ ))+) \(in target '(.*)' from project '.*'\)$"#)
+    static let regex = /^Copy ((?:\S|(?:\\ ))+) ((?:\S|(?:\\ ))+) \(in target '(.*)' from project '.*'\)$/
 
     let firstFilePath: String
     let firstFilename: String
@@ -371,14 +347,12 @@ struct CopyFilesCaptureGroup: CaptureGroup {
     let secondFilename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let firstFilePath = groups[safe: 0], let secondFilePath = groups[safe: 1], let target = groups[safe: 2] else { return nil }
-        self.firstFilePath = firstFilePath
-        firstFilename = firstFilePath.lastPathComponent
-        self.secondFilePath = secondFilePath
-        secondFilename = secondFilePath.lastPathComponent
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.firstFilePath = String(match.output.1)
+        firstFilename = String(match.output.1).lastPathComponent
+        self.secondFilePath = String(match.output.2)
+        secondFilename = String(match.output.2).lastPathComponent
+        self.target = String(match.output.3)
     }
 }
 
@@ -389,18 +363,17 @@ struct CopyHeaderCaptureGroup: CopyCaptureGroup {
     /// $1 = source file
     /// $2 = target file
     /// $3 = target
-    static let regex = XCRegex(pattern: #"^CpHeader\s(.*\.h)\s(.*\.h) \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^CpHeader\s(.*\.h)\s(.*\.h) \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let targetFile: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let file = groups[safe: 0], let targetFile = groups[safe: 1], let target = groups.last else { return nil }
-        self.file = file.lastPathComponent
-        self.targetFile = targetFile
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1).lastPathComponent
+        self.targetFile = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -410,16 +383,15 @@ struct CopyPlistCaptureGroup: CopyCaptureGroup {
     /// Regular expression captured groups:
     /// $1 = source file
     /// $2 = target file
-    static let regex = XCRegex(pattern: #"^CopyPlistFile\s(.*\.plist)\s(.*\.plist) \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^CopyPlistFile\s(.*\.plist)\s(.*\.plist) \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let target = groups.last else { return nil }
-        self.file = file.lastPathComponent
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1).lastPathComponent
+        #warning("FIXME")
+            self.target = ""
     }
 }
 
@@ -428,16 +400,15 @@ struct CopyStringsCaptureGroup: CopyCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file
-    static let regex = XCRegex(pattern: #"^CopyStringsFile\s(.*\.strings)\s(.*\.strings) \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^CopyStringsFile\s(.*\.strings)\s(.*\.strings) \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let target = groups.last else { return nil }
-        self.file = file.lastPathComponent
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1).lastPathComponent
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -446,16 +417,15 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = resource
-    static let regex = XCRegex(pattern: #"^CpResource\s(.*)\s\/(.*) \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^CpResource\s(.*)\s\/(.*) \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let target = groups.last else { return nil }
-        self.file = file.lastPathComponent
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1).lastPathComponent
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -467,7 +437,7 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     /// $2 = number of failures
     /// $3 = number of unexpected failures
     /// $4 = wall clock time in seconds (e.g. 0.295)
-    static let regex = XCRegex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
+    static let regex = /^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$/
 
     let wholeResult: String
     let numberOfTests: Int
@@ -476,15 +446,12 @@ struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     let numberOfUnexpectedFailures: Int
     let wallClockTimeInSeconds: Double
 
-    init?(groups: [String]) {
-        assert(groups.count == 5)
-        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
-        guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
-        self.wholeResult = wholeResult
-        self.numberOfTests = numberOfTests
-        self.numberOfFailures = numberOfFailures
-        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
-        self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeResult = String(match.output.1)
+        self.numberOfTests = Int(match.output.2)!
+        self.numberOfFailures = Int(match.output.3)!
+        self.numberOfUnexpectedFailures = Int(match.output.4)!
+        self.wallClockTimeInSeconds = Double(match.output.5)!
     }
 }
 
@@ -497,7 +464,7 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     /// $3 = number of failures
     /// $4 = number of unexpected failures
     /// $5 = wall clock time in seconds (e.g. 0.295)
-    static let regex = XCRegex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
+    static let regex = /^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$/
 
     let wholeResult: String
     let numberOfTests: Int
@@ -506,32 +473,27 @@ struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
     let numberOfUnexpectedFailures: Int
     let wallClockTimeInSeconds: Double
 
-    init?(groups: [String]) {
-        assert(groups.count == 6)
-        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfSkipped = groups[safe: 2], let _numberOfFailures = groups[safe: 3], let _numberOfUnexpectedFailures = groups[safe: 4], let _wallClockTimeInSeconds = groups[safe: 5] else { return nil }
-        guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
-        self.wholeResult = wholeResult
-        self.numberOfTests = numberOfTests
-        self.numberOfSkipped = numberOfSkipped
-        self.numberOfFailures = numberOfFailures
-        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
-        self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeResult = String(match.output.1)
+        self.numberOfTests = Int(match.output.2)!
+        self.numberOfSkipped = Int(match.output.3)!
+        self.numberOfFailures = Int(match.output.4)!
+        self.numberOfUnexpectedFailures = Int(match.output.5)!
+        self.wallClockTimeInSeconds = Double(match.output.6)!
     }
 }
 
 struct ExplicitDependencyCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^[ \t]*➜ Explicit dependency on target '([^']+)' in project '([^']+)'$"#)
+    static let regex = /^[ \t]*➜ Explicit dependency on target '([^']+)' in project '([^']+)'$/
 
     let target: String
     let project: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 2)
-        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
-        self.target = target
-        self.project = project
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
+        self.project = String(match.output.2)
     }
 }
 
@@ -544,9 +506,9 @@ struct FailingTestCaptureGroup: CaptureGroup {
     /// $3 = test case
     /// $4 = reason
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#)
+    static let regex = /^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)/
     #else
-    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#)
+    static let regex = /^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)/
     #endif
 
     let file: String
@@ -554,13 +516,11 @@ struct FailingTestCaptureGroup: CaptureGroup {
     let testCase: String
     let reason: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let file = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2], let reason = groups[safe: 3] else { return nil }
-        self.file = file
-        self.testSuite = testSuite
-        self.testCase = testCase
-        self.reason = reason
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1)
+        self.testSuite = String(match.output.2)
+        self.testCase = String(match.output.3)
+        self.reason = String(match.output.4)
     }
 }
 
@@ -570,16 +530,14 @@ struct UIFailingTestCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = reason
-    static let regex = XCRegex(pattern: #"^\s{4}t = \s+\d+\.\d+s\s+Assertion Failure: (.*:\d+): (.*)$"#)
+    static let regex = /^\s{4}t = \s+\d+\.\d+s\s+Assertion Failure: (.*:\d+): (.*)$/
 
     let file: String
     let reason: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let reason = groups[safe: 1] else { return nil }
-        self.file = file
-        self.reason = reason
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1)
+        self.reason = String(match.output.2)
     }
 }
 
@@ -591,20 +549,19 @@ struct RestartingTestCaptureGroup: CaptureGroup {
     /// $2 = test suite + test case
     /// $3 = test suite
     /// $4 = test case
-    static let regex = XCRegex(pattern: #"^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)"#)
+    static let regex = /^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)/
 
     let wholeMessage: String
     let testSuiteAndTestCase: String
     let testSuite: String
     let testCase: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let wholeMessage = groups[safe: 0], let testSuiteAndTestCase = groups[safe: 1], let testSuite = groups[safe: 2], let testCase = groups[safe: 3] else { return nil }
-        self.wholeMessage = wholeMessage
-        self.testSuiteAndTestCase = testSuiteAndTestCase
-        self.testSuite = testSuite
-        self.testCase = testCase
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeMessage = String(match.output.1)
+        self.testSuiteAndTestCase = String(match.output.2)
+        #warning("FIXME")
+        self.testSuite = "" // String(match.output.3)
+        self.testCase = "" // String(match.output.4)
     }
 }
 
@@ -613,26 +570,19 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = coverage report file path
-    static let regex = XCRegex(pattern: #"^generating\s+coverage\s+data\.*"#)
+    static let regex = /^generating\s+coverage\s+data\.*/
 
-    private init() { }
-
-    init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
-    }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^generated\s+coverage\s+report:\s+(.+)"#)
+    static let regex = /^generated\s+coverage\s+report:\s+(.+)/
 
     let coverageReportFilePath: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let coverageReportFilePath = groups[safe: 0] else { return nil }
-        self.coverageReportFilePath = coverageReportFilePath
+    init(match: Regex<RegexOutput>.Match) {
+        self.coverageReportFilePath = String(match.output.1)
     }
 }
 
@@ -642,16 +592,15 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = dsym
     /// $2 = target
-    static let regex = XCRegex(pattern: #"^GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let dsym: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let dsym = groups[safe: 0], let target = groups.last else { return nil }
-        self.dsym = dsym
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.dsym = String(match.output.1)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -661,16 +610,15 @@ struct LibtoolCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = library
     /// $2 = target
-    static let regex = XCRegex(pattern: #"^Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let filename = groups[safe: 0], let target = groups.last else { return nil }
-        self.filename = filename
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.filename = String(match.output.1)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -680,12 +628,12 @@ struct LinkingCaptureGroup: CaptureGroup {
     #if os(Linux)
     /// Regular expression captured groups:
     /// $1 = target
-    static let regex = XCRegex(pattern: #"^\[\d+\/\d+\]\sLinking\s([^ ]+)"#)
+    static let regex = /^\[\d+\/\d+\]\sLinking\s([^ ]+)/
     #else
     /// Regular expression captured groups:
     /// $1 = binary filename
     /// $2 = target
-    static let regex = XCRegex(pattern: #"^Ld \/?.*\/(.*?) normal .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^Ld \/?.*\/(.*?) normal .* \((in target: (.*)|in target '(.*)' from project '.*')\)/
     #endif
 
     #if !os(Linux)
@@ -693,16 +641,13 @@ struct LinkingCaptureGroup: CaptureGroup {
     #endif
     let target: String
 
-    init?(groups: [String]) {
+    init(match: Regex<RegexOutput>.Match) {
         #if os(Linux)
-        assert(groups.count >= 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
+        self.target = String(match.output.1)
         #else
-        assert(groups.count >= 2)
-        guard let binaryFileName = groups[safe: 0], let target = groups.last else { return nil }
-        binaryFilename = binaryFileName.lastPathComponent
-        self.target = target
+        binaryFilename = String(match.output.1).lastPathComponent
+        #warning("FIXME")
+        self.target = ""
         #endif
     }
 }
@@ -715,21 +660,19 @@ struct TestCaseSkippedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\sskipped\s\((\d*\.\d{1,3})\sseconds\)"#)
+    static let regex = /^\s*Test Case\s'(.*)\.(.*)'\sskipped\s\((\d*\.\d{1,3})\sseconds\)/
     #else
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\sskipped\s\((\d*\.\d{3})\sseconds\)."#)
+    static let regex = /^\s*Test Case\s'-\[(.*?)\s(.*)\]'\sskipped\s\((\d*\.\d{3})\sseconds\)./
     #endif
 
     let suite: String
     let testCase: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.time = String(match.output.3)
     }
 }
 
@@ -741,21 +684,19 @@ struct TestCasePassedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#)
+    static let regex = /^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)/
     #else
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#)
+    static let regex = /^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)./
     #endif
 
     let suite: String
     let testCase: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.time = String(match.output.3)
     }
 }
 
@@ -766,19 +707,17 @@ struct TestCaseStartedCaptureGroup: CaptureGroup {
     /// $1 = suite
     /// $2 = test case
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^Test Case '(.*)\.(.*)' started at"#)
+    static let regex = /^Test Case '(.*)\.(.*)' started at/
     #else
-    static let regex = XCRegex(pattern: #"^Test Case '-\[(.*?) (.*)\]' started.$"#)
+    static let regex = /^Test Case '-\[(.*?) (.*)\]' started.$/
     #endif
 
     let suite: String
     let testCase: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
     }
 }
 
@@ -788,16 +727,14 @@ struct TestCasePendingCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
-    static let regex = XCRegex(pattern: #"^Test Case\s'-\[(.*?)\s(.*)PENDING\]'\spassed"#)
+    static let regex = /^Test Case\s'-\[(.*?)\s(.*)PENDING\]'\spassed/
 
     let suite: String
     let testCase: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
     }
 }
 
@@ -808,9 +745,9 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^[^:]*:[^:]*:\sTest Case\s'(.*?)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#)
+    static let regex = /^[^:]*:[^:]*:\sTest Case\s'(.*?)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})/
     #else
-    static let regex = XCRegex(pattern: #"^[^:]*:[^:]*:\sTest Case\s'-\[(.*?)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#)
+    static let regex = /^[^:]*:[^:]*:\sTest Case\s'-\[(.*?)\s(.*)\]'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})/
     #endif
 
     let suite: String
@@ -820,15 +757,13 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     let value: String
     let deviation: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 6)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let name = groups[safe: 2], let unitName = groups[safe: 3], let value = groups[safe: 4], let deviation = groups[safe: 5] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.name = name
-        self.unitName = unitName
-        self.value = value
-        self.deviation = deviation
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.name = String(match.output.3)
+        self.unitName = String(match.output.4)
+        self.value = String(match.output.5)
+        self.deviation = String(match.output.6)
     }
 }
 
@@ -840,20 +775,18 @@ struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)\.(.*)\(\)'\s+skipped\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    static let regex = /^Test\s+case\s+'(.*)\.(.*)\(\)'\s+skipped\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)/
 
     let suite: String
     let testCase: String
     let device: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.device = device
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.device = String(match.output.3)
+        self.time = String(match.output.4)
     }
 }
 
@@ -865,20 +798,18 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+passed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    static let regex = /^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+passed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)/
 
     let suite: String
     let testCase: String
     let device: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.device = device
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.device = String(match.output.3)
+        self.time = String(match.output.4)
     }
 }
 
@@ -889,18 +820,16 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
-    static let regex = XCRegex(pattern: #"^\s*Test case\s'-\[(.*?)\s(.*)\]'\spassed\son\s'.*'\s\((\d*\.\d{3})\sseconds\)"#)
+    static let regex = /^\s*Test case\s'-\[(.*?)\s(.*)\]'\spassed\son\s'.*'\s\((\d*\.\d{3})\sseconds\)/
 
     let suite: String
     let testCase: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.time = String(match.output.3)
     }
 }
 
@@ -912,20 +841,18 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    static let regex = /^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)/
 
     let suite: String
     let testCase: String
     let device: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-        self.device = device
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.testCase = String(match.output.2)
+        self.device = String(match.output.3)
+        self.time = String(match.output.4)
     }
 }
 
@@ -935,16 +862,14 @@ struct ParallelTestingStartedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole message
     /// $2 = device
-    static let regex = XCRegex(pattern: #"^(Testing\s+started\s+on\s+'(.*)'.*)$"#)
+    static let regex = /^(Testing\s+started\s+on\s+'(.*)'.*)$/
 
     let wholeMessage: String
     let device: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let wholeMessage = groups[safe: 0], let device = groups[safe: 1] else { return nil }
-        self.wholeMessage = wholeMessage
-        self.device = device
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeMessage = String(match.output.1)
+        self.device = String(match.output.2)
     }
 }
 
@@ -954,16 +879,14 @@ struct ParallelTestingPassedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole message
     /// $2 = device
-    static let regex = XCRegex(pattern: #"^(Testing\s+passed\s+on\s+'(.*)'.*)$"#)
+    static let regex = /^(Testing\s+passed\s+on\s+'(.*)'.*)$/
 
     let wholeMessage: String
     let device: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let wholeMessage = groups[safe: 0], let device = groups[safe: 1] else { return nil }
-        self.wholeMessage = wholeMessage
-        self.device = device
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeMessage = String(match.output.1)
+        self.device = String(match.output.2)
     }
 }
 
@@ -973,16 +896,14 @@ struct ParallelTestingFailedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole error
     /// $2 = device
-    static let regex = XCRegex(pattern: #"^(Testing\s+failed\s+on\s+'(.*)'.*)$"#)
+    static let regex = /^(Testing\s+failed\s+on\s+'(.*)'.*)$/
 
     let wholeError: String
     let device: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let wholeError = groups[safe: 0], let device = groups[safe: 1] else { return nil }
-        self.wholeError = wholeError
-        self.device = device
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
+        self.device = String(match.output.2)
     }
 }
 
@@ -992,29 +913,25 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = device
-    static let regex = XCRegex(pattern: #"^\s*Test\s+Suite\s+'(.*)'\s+started\s+on\s+'(.*)'"#)
+    static let regex = /^\s*Test\s+Suite\s+'(.*)'\s+started\s+on\s+'(.*)'/
 
     let suite: String
     let device: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suite = groups[safe: 0], let device = groups[safe: 1] else { return nil }
-        self.suite = suite
-        self.device = device
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.device = String(match.output.2)
     }
 }
 
 struct PhaseSuccessCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
-    static let regex = XCRegex(pattern: #"^\*\*\s(.*)\sSUCCEEDED\s\*\*"#)
+    static let regex = /^\*\*\s(.*)\sSUCCEEDED\s\*\*/
 
     let phase: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let phase = groups[safe: 0] else { return nil }
-        self.phase = phase
+    init(match: Regex<RegexOutput>.Match) {
+        self.phase = String(match.output.1)
     }
 }
 
@@ -1024,16 +941,15 @@ struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = phase name
     /// $2 = target
-    static let regex = XCRegex(pattern: #"^PhaseScriptExecution\s(.*)\s\/.*\.sh\s\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^PhaseScriptExecution\s(.*)\s\/.*\.sh\s\((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let phaseName: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let phaseName = groups[safe: 0], let target = groups.last else { return nil }
-        self.phaseName = phaseName
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.phaseName = String(match.output.1)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -1043,16 +959,15 @@ struct ProcessPchCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = build target
-    static let regex = XCRegex(pattern: #"^ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^ProcessPCH(?:\+\+)?\s.*\s\/.*\/(.*) normal .* .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let buildTarget: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let buildTarget = groups.last else { return nil }
-        self.file = file
-        self.buildTarget = buildTarget
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1)
+        self.buildTarget = ""
+        #warning("FIXME")
     }
 }
 
@@ -1061,14 +976,12 @@ struct ProcessPchCommandCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 file path
-    static let regex = XCRegex(pattern: #"^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*)\s\-o\s.*\.gch"#)
+    static let regex = /^\s*.*\/usr\/bin\/clang\s.*\s\-c\s(.*)\s\-o\s.*\.gch/
 
     let filePath: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let filePath = groups.last else { return nil }
-        self.filePath = filePath
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
     }
 }
 
@@ -1080,20 +993,18 @@ struct PreprocessCaptureGroup: CaptureGroup {
     /// $2 = file
     /// $3 = target
     /// $4 = project
-    static let regex = XCRegex(pattern: #"^Preprocess\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\(in target '(.*)' from project '(.*)'\)"#)
+    static let regex = /^Preprocess\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\(in target '(.*)' from project '(.*)'\)/
 
     let filePath: String
     let file: String
     let target: String
     let project: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let filePath = groups[safe: 0], let file = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
-        self.filePath = filePath
-        self.file = file
-        self.target = target
-        self.project = project
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.file = String(match.output.2)
+        self.target = String(match.output.3)
+        self.project = String(match.output.4)
     }
 }
 
@@ -1104,18 +1015,17 @@ struct PbxcpCaptureGroup: CopyCaptureGroup {
     /// $1 = source file
     /// $2 = target file
     /// $3 = build target
-    static let regex = XCRegex(pattern: #"^PBXCp\s(.*)\s\/(.*)\s\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = /^PBXCp\s(.*)\s\/(.*)\s\((in target: (.*)|in target '(.*)' from project '.*')\)/
 
     let file: String
     let targetFile: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let file = groups[safe: 0], let targetFile = groups[safe: 1], let target = groups.last else { return nil }
-        self.file = file.lastPathComponent
-        self.targetFile = targetFile
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.file = String(match.output.1).lastPathComponent
+        self.targetFile = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -1126,28 +1036,18 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = filename
     /// $4 = target
-    static let regex = XCRegex(pattern: #"^ProcessInfoPlistFile\s.*\.plist\s(.*\/+(.*\.plist))( \((in target: (.*)|in target '(.*)' from project '.*')\))?"#)
+    static let regex = /^ProcessInfoPlistFile\s.*\.plist\s(.*\/+(.*\.plist))( \((in target: (.*)|in target '(.*)' from project '.*')\))?/
 
     let filePath: String
     let filename: String
     let target: String? // Xcode 10+
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1] else { return nil }
-
-        // TODO: Test with target included
-        if groups.count == 2 {
-            // Xcode 9 excludes target output
-            self.filePath = filePath
-            self.filename = filename
-            target = nil
-        } else {
-            // Xcode 10+ includes target output
-            self.filePath = filePath
-            self.filename = filename
-            target = groups.last
-        }
+    init(match: Regex<RegexOutput>.Match) {
+        // Xcode 10+ includes target output
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+#warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -1159,9 +1059,9 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
     /// $2 = result
     /// $3 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*(Test Suite '(.*)' (finished|passed|failed) at (.*).*)"#)
+    static let regex = /^\s*(Test Suite '(.*)' (finished|passed|failed) at (.*).*)/
     #else
-    static let regex = XCRegex(pattern: #"^\s*(Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*).*)"#)
+    static let regex = /^\s*(Test Suite '(?:.*\/)?(.*[ox]ctest.*)' (finished|passed|failed) at (.*).*)/
     #endif
 
     let wholeResult: String
@@ -1169,13 +1069,11 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
     let result: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let wholeResult = groups[safe: 0], let suite = groups[safe: 1], let result = groups[safe: 2], let time = groups[safe: 3] else { return nil }
-        self.wholeResult = wholeResult
-        self.suite = suite
-        self.result = result
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeResult = String(match.output.1)
+        self.suite = String(match.output.2)
+        self.result = String(match.output.3)
+        self.time = String(match.output.4)
     }
 }
 
@@ -1186,19 +1084,17 @@ struct TestSuiteStartedCaptureGroup: CaptureGroup {
     /// $1 = suite
     /// $2 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at(.*)"#)
+    static let regex = /^\s*Test Suite '(.*)' started at(.*)/
     #else
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' started at(.*)"#)
+    static let regex = /^\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' started at(.*)/
     #endif
 
     let suite: String
     let time: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suite = groups[safe: 0], let time = groups[safe: 1] else { return nil }
-        self.suite = suite
-        self.time = time
+    init(match: Regex<RegexOutput>.Match) {
+        self.suite = String(match.output.1)
+        self.time = String(match.output.2)
     }
 }
 
@@ -1207,40 +1103,34 @@ struct TestSuiteStartCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = test suite name
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at"#)
+    static let regex = /^\s*Test Suite '(.*)' started at/
 
     let testSuiteName: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testSuiteName = groups[safe: 0] else { return nil }
-        self.testSuiteName = testSuiteName
+    init(match: Regex<RegexOutput>.Match) {
+        self.testSuiteName = String(match.output.1)
     }
 }
 
 struct TestSuiteAllTestsPassedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
-    static let regex = XCRegex(pattern: #"^\s*(Test Suite 'All tests' passed at.*)"#)
+    static let regex = /^\s*(Test Suite 'All tests' passed at.*)/
 
     let wholeResult: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let wholeResult = groups[safe: 0] else { return nil }
-        self.wholeResult = wholeResult
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeResult = String(match.output.1)
     }
 }
 
 struct TestSuiteAllTestsFailedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
-    static let regex = XCRegex(pattern: #"^\s*(Test Suite 'All tests' failed at.*)"#)
+    static let regex = /^\s*(Test Suite 'All tests' failed at.*)/
 
     let wholeResult: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let wholeResult = groups[safe: 0] else { return nil }
-        self.wholeResult = wholeResult
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeResult = String(match.output.1)
     }
 }
 
@@ -1249,14 +1139,12 @@ struct TIFFutilCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = filename
-    static let regex = XCRegex(pattern: #"^TiffUtil\s(.*)"#)
+    static let regex = /^TiffUtil\s(.*)/
 
     let filename: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let filename = groups[safe: 0] else { return nil }
-        self.filename = filename
+    init(match: Regex<RegexOutput>.Match) {
+        self.filename = String(match.output.1)
     }
 }
 
@@ -1266,16 +1154,15 @@ struct TouchCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = filename
     /// $3 = target
-    static let regex = XCRegex(pattern: #"^Touch\s(.*\/(.+))( \((in target: (.*)|in target '(.*)' from project '.*')\))"#)
+    static let regex = /^Touch\s(.*\/(.+))( \((in target: (.*)|in target '(.*)' from project '.*')\))/
 
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filename = filename
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.filename = String(match.output.2)
+        #warning("FIXME")
+        self.target = ""
     }
 }
 
@@ -1284,32 +1171,28 @@ struct WriteFileCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file path
-    static let regex = XCRegex(pattern: #"^write-file\s(.*)"#)
+    static let regex = /^write-file\s(.*)/
 
     let filePath: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let filePath = groups[safe: 0] else { return nil }
-        self.filePath = filePath
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
     }
 }
 
 struct WriteAuxiliaryFileCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$"#)
+    static let regex = /^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$/
 
     let filePath: String
     let filename: String
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+        self.target = String(match.output.3)
     }
 }
 
@@ -1320,18 +1203,16 @@ struct CompileWarningCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#)
+    static let regex = /^(([^:]*):*\d*:*\d*):\swarning:\s(.*)$/
 
     let filePath: String
     let filename: String
     let reason: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.reason = reason
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.filename = String(match.output.2)
+        self.reason = String(match.output.3)
     }
 }
 
@@ -1341,16 +1222,14 @@ struct LDWarningCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = ld prefix
     /// $2 = warning message
-    static let regex = XCRegex(pattern: #"^(ld: )warning: (.*)"#)
+    static let regex = /^(ld: )warning: (.*)/
 
     let ldPrefix: String
     let warningMessage: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let ldPrefix = groups[safe: 0], let warningMessage = groups[safe: 1] else { return nil }
-        self.ldPrefix = ldPrefix
-        self.warningMessage = warningMessage
+    init(match: Regex<RegexOutput>.Match) {
+        self.ldPrefix = String(match.output.1)
+        self.warningMessage = String(match.output.2)
     }
 }
 
@@ -1359,14 +1238,12 @@ struct GenericWarningCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole warning
-    static let regex = XCRegex(pattern: #"^warning:\s(.*)$"#)
+    static let regex = /^warning:\s(.*)$/
 
     let wholeWarning: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeWarning = groups[safe: 0] else { return nil }
-        self.wholeWarning = wholeWarning
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeWarning = String(match.output.1)
     }
 }
 
@@ -1375,14 +1252,12 @@ struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole warning
-    static let regex = XCRegex(pattern: #"^(.* will not be code signed because .*)$"#)
+    static let regex = /^(.* will not be code signed because .*)$/
 
     let wholeWarning: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeWarning = groups[safe: 0] else { return nil }
-        self.wholeWarning = wholeWarning
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeWarning = String(match.output.1)
     }
 }
 
@@ -1391,14 +1266,12 @@ struct DuplicateLocalizedStringKeyCaptureGroup: CaptureGroup {
 
     /// Regular expresion captured groups:
     /// $1 = warning message.
-    static let regex = XCRegex(pattern: #"^[\d -:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$"#)
+    static let regex = /^[\d -:]+ --- WARNING: (Key ".*" used with multiple values. Value ".*" kept. Value ".*" ignored.)$/
 
     let warningMessage: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeMessage = groups[safe: 0] else { return nil }
-        warningMessage = wholeMessage
+    init(match: Regex<RegexOutput>.Match) {
+        warningMessage = String(match.output.1)
     }
 }
 
@@ -1407,14 +1280,12 @@ struct ClangErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(clang: error:.*)$"#)
+    static let regex = /^(clang: error:.*)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1423,14 +1294,12 @@ struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(Code\s?Sign error:.*|Code signing is required for product type .* in SDK .*|No profile matching .* found:.*|Provisioning profile .* doesn't .*|Swift is unavailable on .*|.?Use Legacy Swift Language Version.*)$"#)
+    static let regex = /^(Code\s?Sign error:.*|Code signing is required for product type .* in SDK .*|No profile matching .* found:.*|Provisioning profile .* doesn't .*|Swift is unavailable on .*|.?Use Legacy Swift Language Version.*)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups.first else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1439,14 +1308,12 @@ struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(.*requires a provisioning profile.*)$"#)
+    static let regex = /^(.*requires a provisioning profile.*)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1455,14 +1322,12 @@ struct NoCertificateCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(No certificate matching.*)$"#)
+    static let regex = /^(No certificate matching.*)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1473,18 +1338,16 @@ struct CompileErrorCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = is fatal error
     /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(.*)$"#)
+    static let regex = /^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(.*)$/
 
     let filePath: String
     let isFatalError: String
     let reason: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let isFatalError = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.isFatalError = isFatalError
-        self.reason = reason
+    init(match: Regex<RegexOutput>.Match) {
+        self.filePath = String(match.output.1)
+        self.isFatalError = String(match.output.2)
+        self.reason = String(match.output.3)
     }
 }
 
@@ -1493,14 +1356,12 @@ struct CursorCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = cursor (with whitespaces and tildes)
-    static let regex = XCRegex(pattern: #"^([\s~]*\^[\s~]*)$"#)
+    static let regex = /^([\s~]*\^[\s~]*)$/
 
     let cursor: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let cursor = groups[safe: 0] else { return nil }
-        self.cursor = cursor
+    init(match: Regex<RegexOutput>.Match) {
+        self.cursor = String(match.output.1)
     }
 }
 
@@ -1510,14 +1371,12 @@ struct FatalErrorCaptureGroup: ErrorCaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole error.
     /// it varies a lot, not sure if it makes sense to catch everything separately
-    static let regex = XCRegex(pattern: #"^(fatal error:.*)$"#)
+    static let regex = /^(fatal error:.*)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1527,16 +1386,14 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole error.
     /// $2 = file path
-    static let regex = XCRegex(pattern: #"^<unknown>:0:\s(error:\s.*)\s'(\/.+\/.*\..*)'$"#)
+    static let regex = /^<unknown>:0:\s(error:\s.*)\s'(\/.+\/.*\..*)'$/
 
     let reason: String
     let filePath: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let reason = groups[safe: 0], let filePath = groups[safe: 1] else { return nil }
-        self.reason = reason
-        self.filePath = filePath
+    init(match: Regex<RegexOutput>.Match) {
+        self.reason = String(match.output.1)
+        self.filePath = String(match.output.2)
     }
 }
 
@@ -1545,14 +1402,12 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(ld:.*)"#)
+    static let regex = /^(ld:.*)/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1561,14 +1416,12 @@ struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = file path
-    static let regex = XCRegex(pattern: #"^\s+(\/.*\.o[\)]?)$"#)
+    static let regex = /^\s+(\/.*\.o[\)]?)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1577,14 +1430,12 @@ struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = reason
-    static let regex = XCRegex(pattern: #"^(duplicate symbol .*):$"#)
+    static let regex = /^(duplicate symbol .*):$/
 
     let reason: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let reason = groups[safe: 0] else { return nil }
-        self.reason = reason
+    init(match: Regex<RegexOutput>.Match) {
+        self.reason = String(match.output.1)
     }
 }
 
@@ -1593,14 +1444,12 @@ struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = symbol location
-    static let regex = XCRegex(pattern: #"^(.* in .*\.o)$"#)
+    static let regex = /^(.* in .*\.o)$/
 
     let symbolLocation: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let symbolLocation = groups[safe: 0] else { return nil }
-        self.symbolLocation = symbolLocation
+    init(match: Regex<RegexOutput>.Match) {
+        self.symbolLocation = String(match.output.1)
     }
 }
 
@@ -1609,14 +1458,12 @@ struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = reason
-    static let regex = XCRegex(pattern: #"^(Undefined symbols for architecture .*):$"#)
+    static let regex = /^(Undefined symbols for architecture .*):$/
 
     let reason: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let reason = groups[safe: 0] else { return nil }
-        self.reason = reason
+    init(match: Regex<RegexOutput>.Match) {
+        self.reason = String(match.output.1)
     }
 }
 
@@ -1625,14 +1472,12 @@ struct PodsErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = reason
-    static let regex = XCRegex(pattern: #"^(error:\s.*)"#)
+    static let regex = /^(error:\s.*)/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1642,16 +1487,14 @@ struct SymbolReferencedFromCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = wholeError
     /// $2 = reference
-    static let regex = XCRegex(pattern: #"(\s+\"(.*)\", referenced from:)$"#)
+    static let regex = /(\s+\"(.*)\", referenced from:)$/
 
     let wholeError: String
     let reference: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let wholeError = groups[safe: 0], let reference = groups[safe: 1] else { return nil }
-        self.wholeError = wholeError
-        self.reference = reference
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
+        self.reference = String(match.output.2)
     }
 }
 
@@ -1660,14 +1503,12 @@ struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = error reason
-    static let regex = XCRegex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$\/"#)
+    static let regex = /^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$\//
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
@@ -1677,84 +1518,66 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
     /// $1 = whole warning
     /// $2 = target
     /// $3 = filename
-    static let regex = XCRegex(pattern: #"(.+ in (.+)\((.+)\.o\))$"#)
+    static let regex = /(.+ in (.+)\((.+)\.o\))$/
 
     let wholeWarning: String
     let target: String
     let filename: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let wholeWarning = groups[safe: 0], let target = groups[safe: 1], let filename = groups[safe: 2] else { return nil }
-        self.wholeWarning = wholeWarning
-        self.target = target
-        self.filename = filename
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeWarning = String(match.output.1)
+        self.target = String(match.output.2)
+        self.filename = String(match.output.3)
     }
 }
 
 struct PackageFetchingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^Fetching from (.*?)$"#)
+    static let regex = /^Fetching from (.*?)$/
 
     let source: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let source = groups[safe: 0] else { return nil }
-        self.source = source
+    init(match: Regex<RegexOutput>.Match) {
+        self.source = String(match.output.1)
     }
 }
 
 struct PackageUpdatingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^Updating from (.*?)$"#)
+    static let regex = /^Updating from (.*?)$/
 
     let source: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let source = groups[safe: 0] else { return nil }
-        self.source = source
+    init(match: Regex<RegexOutput>.Match) {
+        self.source = String(match.output.1)
     }
 }
 
 struct PackageCheckingOutCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^Checking out (.*?) of package (.*?)$"#)
+    static let regex = /^Checking out (.*?) of package (.*?)$/
 
     let version: String
     let package: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let version = groups[safe: 0], let package = groups[safe: 1] else { return nil }
-        self.version = version
-        self.package = package
+    init(match: Regex<RegexOutput>.Match) {
+        self.version = String(match.output.1)
+        self.package = String(match.output.2)
     }
 }
 
 struct PackageGraphResolvingStartCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^\s*Resolve Package Graph\s*$"#)
+    static let regex = /^\s*Resolve Package Graph\s*$/
 
-    private init() { }
-
-    init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
-    }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 struct PackageGraphResolvingEndedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^Resolved source packages:$"#)
+    static let regex = /^Resolved source packages:$/
 
-    private init() { }
-
-    init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
-    }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
@@ -1764,18 +1587,16 @@ struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
     /// $1 = package name
     /// $2 = package url
     /// $3 = package version
-    static let regex = XCRegex(pattern: #"^\s*([^\s:]+):\s([^ ]+)\s@\s(\d+\.\d+\.\d+)"#)
+    static let regex = /^\s*([^\s:]+):\s([^ ]+)\s@\s(\d+\.\d+\.\d+)/
 
     let packageName: String
     let packageURL: String
     let packageVersion: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let packageName = groups[safe: 0], let packageURL = groups[safe: 1], let packageVersion = groups[safe: 2] else { return nil }
-        self.packageName = packageName
-        self.packageURL = packageURL
-        self.packageVersion = packageVersion
+    init(match: Regex<RegexOutput>.Match) {
+        self.packageName = String(match.output.1)
+        self.packageURL = String(match.output.2)
+        self.packageVersion = String(match.output.3)
     }
 }
 
@@ -1784,31 +1605,29 @@ struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(xcodebuild: error:.*)$"#)
+    static let regex = /^(xcodebuild: error:.*)$/
 
     let wholeError: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeError = String(match.output.1)
     }
 }
 
 struct CompilationResultCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^\/\* com.apple.actool.compilation-results \*\/$"#)
+    static let regex = /^\/\* com.apple.actool.compilation-results \*\/$/
 
-    init?(groups: [String]) { }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
+    static let regex = /SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)/
 
-    init?(groups: [String]) { }
+    init(match: Regex<RegexOutput>.Match) { }
 }
 
 /// This output is printed when running
@@ -1818,14 +1637,12 @@ struct TestingStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole message
-    static let regex = XCRegex(pattern: "^(Testing started.*)$")
+    static let regex = /^(Testing started.*)$/
 
     let wholeMessage: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeMessage = groups[safe: 0] else { return nil }
-        self.wholeMessage = wholeMessage
+    init(match: Regex<RegexOutput>.Match) {
+        self.wholeMessage = String(match.output.1)
     }
 }
 
@@ -1843,7 +1660,7 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     // $3 = filenames
     // $4 = target
     // $5 = project
-    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling (.*) \(in target '(.*)' from project '(.*)'\)"#)
+    static let regex = /^SwiftDriverJobDiscovery (\S+) (\S+) Compiling (.*) \(in target '(.*)' from project '(.*)'\)/
 
     let state: String // Currently, the only expected/known value is `normal`
     let architecture: String
@@ -1851,14 +1668,12 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     let target: String
     let project: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 5)
-        guard let state = groups[safe: 0], let architecture = groups[safe: 1], let filenamesGroup = groups[safe: 2], let target = groups[safe: 3], let project = groups[safe: 4] else { return nil }
-        self.state = state
-        self.architecture = architecture
-        filenames = filenamesGroup.components(separatedBy: ", ")
-        self.target = target
-        self.project = project
+    init(match: Regex<RegexOutput>.Match) {
+        self.state = String(match.output.1)
+        self.architecture = String(match.output.2)
+        filenames = String(match.output.3).components(separatedBy: ", ")
+        self.target = String(match.output.4)
+        self.project = String(match.output.5)
     }
 }
 
@@ -1867,14 +1682,12 @@ struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test run.
     /// $1 = message
-    static let regex = XCRegex(pattern: #"^.\s+(Test run started\.)$"#)
+    static let regex = /^.\s+(Test run started\.)$/
 
     let message: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let message = groups[safe: 0] else { return nil }
-        self.message = message
+    init(match: Regex<RegexOutput>.Match) {
+        self.message = String(match.output.1)
     }
 }
 
@@ -1884,17 +1697,15 @@ struct SwiftTestingRunCompletionCaptureGroup: CaptureGroup {
     /// Regular expression to capture the number of tests and total time.
     /// $1 = number of tests
     /// $2 = total time in seconds
-    static let regex = XCRegex(pattern: #"^.\s+Test run with (\d+) test(?:s)? passed after ([\d.]+) seconds\.$"#)
+    static let regex = /^.\s+Test run with (\d+) test(?:s)? passed after ([\d.]+) seconds\.$/
 
     let numberOfTests: Int
     let totalTime: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let numberOfTests = groups[safe: 0].flatMap(Int.init),
-              let totalTime = groups[safe: 1] else { return nil }
-        self.numberOfTests = numberOfTests
-        self.totalTime = totalTime
+    init(match: Regex<RegexOutput>.Match) {
+        #warning("GET RID OF THIS FORCE UNWRAP")
+        self.numberOfTests = Int(match.output.1)!
+        self.totalTime = String(match.output.2)
     }
 }
 
@@ -1905,20 +1716,17 @@ struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
     /// $1 = number of tests
     /// $2 = total time in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^.\s+Test run with (\d+) test(?:s)? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = /^.\s+Test run with (\d+) test(?:s)? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$/
 
     let numberOfTests: Int
     let totalTime: String
     let numberOfIssues: Int
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let numberOfTests = groups[safe: 0].flatMap(Int.init),
-              let totalTime = groups[safe: 1],
-              let numberOfIssues = groups[safe: 2].flatMap(Int.init) else { return nil }
-        self.numberOfTests = numberOfTests
-        self.totalTime = totalTime
-        self.numberOfIssues = numberOfIssues
+    init(match: Regex<RegexOutput>.Match) {
+        #warning("GET RID OF THIS FORCE UNWRAP")
+        self.numberOfTests = Int(match.output.1)!
+        self.totalTime = String(match.output.2)
+        self.numberOfIssues = Int(match.output.3)!
     }
 }
 
@@ -1927,14 +1735,12 @@ struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test suite.
     /// $1 = suite name
-    static let regex = XCRegex(pattern: #"^.\s+Suite (.*) started\.$"#)
+    static let regex = /^.\s+Suite (.*) started\.$/
 
     let suiteName: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let suiteName = groups[safe: 0] else { return nil }
-        self.suiteName = suiteName
+    init(match: Regex<RegexOutput>.Match) {
+        self.suiteName = String(match.output.1)
     }
 }
 
@@ -1943,15 +1749,13 @@ struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test case.
     /// $1 = test name
-    static let regex = XCRegex(pattern: #"^.\s+Test\s+(.*) started\.$"#)
+    static let regex = /^.\s+Test\s+(.*) started\.$/
 
     let testName: String
     let wholeMessage: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testName = groups[safe: 0] else { return nil }
-        self.testName = testName
+    init(match: Regex<RegexOutput>.Match) {
+        self.testName = String(match.output.1)
         wholeMessage = "Test \(testName) started."
     }
 }
@@ -1962,17 +1766,14 @@ struct SwiftTestingSuitePassedCaptureGroup: CaptureGroup {
     /// Regular expression to capture the successful completion of a test suite.
     /// $1 = suite name
     /// $2 = total time taken in seconds
-    static let regex = XCRegex(pattern: #"^.\s+Suite (.*) passed after ([\d.]+) seconds\.$"#)
+    static let regex = /^.\s+Suite (.*) passed after ([\d.]+) seconds\.$/
 
     let suiteName: String
     let timeTaken: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suiteName = groups[safe: 0],
-              let timeTaken = groups[safe: 1] else { return nil }
-        self.suiteName = suiteName
-        self.timeTaken = timeTaken
+    init(match: Regex<RegexOutput>.Match) {
+        self.suiteName = String(match.output.1)
+        self.timeTaken = String(match.output.2)
     }
 }
 
@@ -1983,20 +1784,17 @@ struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
     /// $1 = suite name
     /// $2 = total time taken in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^.\s+Suite (.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = /^.\s+Suite (.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$/
 
     let suiteName: String
     let timeTaken: String
     let numberOfIssues: Int
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let suiteName = groups[safe: 0],
-              let timeTaken = groups[safe: 1],
-              let numberOfIssues = groups[safe: 2].flatMap(Int.init) else { return nil }
-        self.suiteName = suiteName
-        self.timeTaken = timeTaken
-        self.numberOfIssues = numberOfIssues
+    init(match: Regex<RegexOutput>.Match) {
+        #warning("GET RID OF THIS FORCE UNWRAP")
+        self.suiteName = String(match.output.1)
+        self.timeTaken = String(match.output.2)
+        self.numberOfIssues = Int(match.output.3)!
     }
 }
 
@@ -2007,20 +1805,17 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
     /// $1 = test name
     /// $2 = time taken in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^.\s+Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = /^.\s+Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$/
 
     let testName: String
     let timeTaken: String
     let numberOfIssues: Int
 
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let testName = groups[safe: 0],
-              let timeTaken = groups[safe: 1],
-              let numberOfIssues = groups[safe: 2].flatMap(Int.init) else { return nil }
-        self.testName = testName
-        self.timeTaken = timeTaken
-        self.numberOfIssues = numberOfIssues
+    init(match: Regex<RegexOutput>.Match) {
+        #warning("GET RID OF THIS FORCE UNWRAP")
+        self.testName = String(match.output.1)
+        self.timeTaken = String(match.output.2)
+        self.numberOfIssues = Int(match.output.3)!
     }
 }
 
@@ -2030,17 +1825,14 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
     /// Regular expression to capture the successful completion of a test case.
     /// $1 = test name
     /// $2 = time taken in seconds
-    static let regex = XCRegex(pattern: #"^.*Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$"#)
+    static let regex = /^.*Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$/
 
     let testName: String
     let timeTaken: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let testName = groups[safe: 0],
-              let timeTaken = groups[safe: 1] else { return nil }
-        self.testName = testName
-        self.timeTaken = timeTaken
+    init(match: Regex<RegexOutput>.Match) {
+        self.testName = String(match.output.1)
+        self.timeTaken = String(match.output.2)
     }
 }
 
@@ -2049,14 +1841,12 @@ struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture a skipped test case.
     /// $1 = test name
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*) skipped\.$"#)
+    static let regex = /^.\s+Test (.*) skipped\.$/
 
     let testName: String
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testName = groups[safe: 0] else { return nil }
-        self.testName = testName
+    init(match: Regex<RegexOutput>.Match) {
+        self.testName = String(match.output.1)
     }
 }
 
@@ -2066,16 +1856,14 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
     /// Regular expression to capture a skipped test case with a reason.
     /// $1 = test name
     /// $2 = optional reason
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*) skipped(?:\s*:\s*"(.*)")?$"#)
+    static let regex = /^.\s+Test (.*) skipped(?:\s*:\s*"(.*)")?$/
 
     let testName: String
     let reason: String?
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testName = groups[safe: 0] else { return nil }
-        self.testName = testName
-        reason = groups[safe: 1]
+    init(match: Regex<RegexOutput>.Match) {
+        self.testName = String(match.output.1)
+        reason = match.output.2 != nil ? String(match.output.2!) : nil
     }
 }
 
@@ -2085,17 +1873,14 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
     /// Regular expression to capture the symbol, test description, and issue details.
     /// $1 = test description
     /// $2 = issue details
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*?) recorded an issue(?: at (.*))?$"#)
+    static let regex = /^.\s+Test (.*?) recorded an issue(?: at (.*))?$/
 
     let testDescription: String
     let issueDetails: String?
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testDescription = groups[safe: 0] else { return nil }
-
-        self.testDescription = testDescription
-        issueDetails = groups[safe: 1]
+    init(match: Regex<RegexOutput>.Match) {
+        self.testDescription = String(match.output.1)
+        issueDetails = match.output.2 != nil ? String(match.output.2!) : nil
     }
 }
 
@@ -2105,17 +1890,14 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
     /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
     /// $2 = number of arguments (optional)
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*?) recorded an issue(?: with (\d+) arguments?)?"#)
+    static let regex = /^.\s+Test (.*?) recorded an issue(?: with (\d+) arguments?)?/
 
     let testDescription: String
     let numberOfArguments: Int?
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testDescription = groups[safe: 0] else { return nil }
-
-        self.testDescription = testDescription
-        numberOfArguments = groups[safe: 1].flatMap(Int.init)
+    init(match: Regex<RegexOutput>.Match) {
+        self.testDescription = String(match.output.1)
+        numberOfArguments = match.output.2 != nil ? Int(match.output.2!) : nil
     }
 }
 
@@ -2124,64 +1906,56 @@ struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the symbol and number of arguments.
     /// $1 = number of arguments
-    static let regex = XCRegex(pattern: #"^.\s+Passing (\d+) argument[s]?.*$"#)
+    static let regex = /^.\s+Passing (\d+) argument[s]?.*$/
 
     let numberOfArguments: Int
 
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let numberOfArguments = groups[safe: 0].flatMap(Int.init) else { return nil }
-
-        self.numberOfArguments = numberOfArguments
+    init(match: Regex<RegexOutput>.Match) {
+        #warning("GET RID OF THIS FORCE UNWRAP")
+        self.numberOfArguments = Int(match.output.1)!
     }
 }
 
 struct SwiftDriverTargetCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = /^SwiftDriver (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler/
 
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
     }
 }
 
 struct SwiftDriverCompilationTarget: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = /^SwiftDriver\\ Compilation (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler/
 
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
     }
 }
 
 struct SwiftDriverCompilationRequirementsCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = /^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler/
 
     let target: String
 
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
+    init(match: Regex<RegexOutput>.Match) {
+        self.target = String(match.output.1)
     }
 }
 
 struct MkDirCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: "^MkDir.*")
+    static let regex = /^MkDir.*/
 
-    init?(groups: [String]) { }
+    init(match: Regex<RegexOutput>.Match) { }
 }
