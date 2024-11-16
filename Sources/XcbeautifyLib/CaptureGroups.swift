@@ -362,8 +362,8 @@ struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
 struct CopyFilesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    // ((?:\S|(?<=\\) )+) --> Match any non-whitespace character OR any escaped space (space in filename)
-    static let regex = XCRegex(pattern: #"^Copy ((?:\S|(?<=\\) )+) ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '.*'\)$"#)
+    // ((?:\S|(?:\\ ))+) --> Match any non-whitespace character OR any escaped space (space in filename)
+    static let regex = XCRegex(pattern: #"^Copy ((?:\S|(?:\\ ))+) ((?:\S|(?:\\ ))+) \(in target '(.*)' from project '.*'\)$"#)
 
     let firstFilePath: String
     let firstFilename: String
