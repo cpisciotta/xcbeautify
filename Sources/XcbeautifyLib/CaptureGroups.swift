@@ -271,7 +271,7 @@ struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
     /// $1 = file path
     /// $2 = target
     /// $3 = project
-    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?!Compiling\\ ).*) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
