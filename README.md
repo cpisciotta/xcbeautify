@@ -119,6 +119,14 @@ set -o pipefail && xcodebuild [flags] | xcbeautify --renderer github-actions
 set -o pipefail && xcodebuild [flags] | xcbeautify --renderer teamcity
 ```
 
+### Azure DevOps Pipeline
+
+`xcbeautify` features an integrated Azure DevOps Pipeline renderer that harnesses [logging commands](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands) to highlight warnings, errors and results directly within the Azure DevOps Pipeline user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer azure-devops-pipelines` flag during execution:
+
+```
+set -o pipefail && xcodebuild [flags] | xcbeautify --renderer azure-devops-pipelines
+```
+
 ## Development
 
 Generate Xcode project:
