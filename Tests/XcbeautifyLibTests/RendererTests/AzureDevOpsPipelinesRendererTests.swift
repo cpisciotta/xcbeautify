@@ -1,15 +1,22 @@
-import Testing
+import XCTest
 @testable import XcbeautifyLib
 
-@MainActor
-@Suite
-struct AzureDevOpsPipelinesRendererTests {
+final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     private var parser: Parser!
     private var formatter: XcbeautifyLib.Formatter!
 
-    init() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
         parser = Parser()
         formatter = Formatter(colored: false, renderer: .azureDevOpsPipelines, additionalLines: { nil })
+    }
+
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+
+        parser = nil
+        formatter = nil
     }
 
     private func logFormatted(_ string: String) -> String? {
@@ -17,760 +24,652 @@ struct AzureDevOpsPipelinesRendererTests {
         return formatter.format(captureGroup: captureGroup)
     }
 
-    @Test
-    func aggregateTarget() {
+    func testAggregateTarget() {
         let formatted = logFormatted("=== BUILD AGGREGATE TARGET Be Aggro OF PROJECT AggregateExample WITH CONFIGURATION Debug ===")
-        #expect(formatted == "Aggregate target Be Aggro of project AggregateExample with configuration Debug")
+        XCTAssertEqual(formatted, "Aggregate target Be Aggro of project AggregateExample with configuration Debug")
     }
 
-    @Test
-    func analyze() {
+    func testAnalyze() {
         let formatted = logFormatted("AnalyzeShallow /Users/admin/CocoaLumberjack/Classes/DDTTYLogger.m normal x86_64 (in target: CocoaLumberjack-Static)")
-        #expect(formatted == "[CocoaLumberjack-Static] Analyzing DDTTYLogger.m")
+        XCTAssertEqual(formatted, "[CocoaLumberjack-Static] Analyzing DDTTYLogger.m")
     }
 
-    @Test
-    func analyzeTarget() {
+    func testAnalyzeTarget() {
         let formatted = logFormatted("=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
-        #expect(formatted == "Analyze target The Spacer of project Pods with configuration Debug")
+        XCTAssertEqual(formatted, "Analyze target The Spacer of project Pods with configuration Debug")
     }
 
-    @Test
-    func buildTarget() {
+    func testBuildTarget() {
         let formatted = logFormatted("=== BUILD TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
-        #expect(formatted == "Build target The Spacer of project Pods with configuration Debug")
+        XCTAssertEqual(formatted, "Build target The Spacer of project Pods with configuration Debug")
     }
 
-    @Test
-    func checkDependenciesErrors() { }
+    func testCheckDependenciesErrors() { }
 
-    @Test
-    func checkDependencies() {
+    func testCheckDependencies() {
         let command = "Check Dependencies"
         let formatted = logFormatted(command)
-        #expect(formatted == command)
+        XCTAssertEqual(formatted, command)
     }
 
-    @Test
-    func clangError() {
+    func testclangError() {
         let formatted = logFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
-        #expect(formatted == "###vso[task.logissue type=error]clang: error: linker command failed with exit code 1 (use -v to see invocation)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]clang: error: linker command failed with exit code 1 (use -v to see invocation)")
     }
 
-    @Test
-    func cleanRemove() {
+    func testcleanRemove() {
         let formatted = logFormatted("Clean.Remove clean /Users/admin/Library/Developer/Xcode/DerivedData/MyLibrary-abcd/Build/Intermediates/MyLibrary.build/Debug-iphonesimulator/MyLibraryTests.build")
-        #expect(formatted == "Cleaning MyLibraryTests.build")
+        XCTAssertEqual(formatted, "Cleaning MyLibraryTests.build")
     }
 
-    @Test
-    func cleanTarget() {
+    func testcleanTarget() {
         let formatted = logFormatted("=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
-        #expect(formatted == "Analyze target The Spacer of project Pods with configuration Debug")
+        XCTAssertEqual(formatted, "Analyze target The Spacer of project Pods with configuration Debug")
     }
 
-    @Test
-    func codesignFramework() {
+    func testcodesignFramework() {
         let formatted = logFormatted("CodeSign build/Release/MyFramework.framework/Versions/A")
-        #expect(formatted == "Signing build/Release/MyFramework.framework")
+        XCTAssertEqual(formatted, "Signing build/Release/MyFramework.framework")
     }
 
-    @Test
-    func codesign() {
+    func testcodesign() {
         let formatted = logFormatted("CodeSign build/Release/MyApp.app")
-        #expect(formatted == "Signing MyApp.app")
+        XCTAssertEqual(formatted, "Signing MyApp.app")
     }
 
-    @Test
-    func multipleCodesigns() {
+    func testmultipleCodesigns() {
         let formattedApp = logFormatted("CodeSign build/Release/MyApp.app")
         let formattedFramework = logFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
-        #expect(formattedApp == "Signing MyApp.app")
-        #expect(formattedFramework == "Signing build/Release/MyFramework.framework")
+        XCTAssertEqual(formattedApp, "Signing MyApp.app")
+        XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
     }
 
-    @Test
-    func compileCommand() { }
+    func testcompileCommand() { }
 
-    @Test
-    func compileError() {
+    func testcompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
-        let outputError = "###vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
-        #expect(logFormatted(inputError) == outputError)
+        let outputError = "##vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
+        XCTAssertEqual(logFormatted(inputError), outputError)
 
         let inputFatal = "/path/file.swift:64:69: fatal error: cannot find 'input' in scope"
-        let outputFatal = "###vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
-        #expect(logFormatted(inputFatal) == outputFatal)
+        let outputFatal = "##vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
+        XCTAssertEqual(logFormatted(inputFatal), outputFatal)
     }
 
-    @Test
-    func compile() {
+    func testcompile() {
         #if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
         // Xcode 11+'s output
         let input2 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target 'xcbeautify' from project 'xcbeautify')"
         let output = "[xcbeautify] Compiling setup.swift"
-        #expect(logFormatted(input1) == output)
-        #expect(logFormatted(input2) == output)
+        XCTAssertEqual(logFormatted(input1), output)
+        XCTAssertEqual(logFormatted(input2), output)
         #endif
     }
 
-    @Test
-    func swiftCompile_arm64() {
+    func testswiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func swiftCompile_x86_64() {
+    func testswiftCompile_x86_64() {
         let input = "SwiftCompile normal x86_64 /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/DerivedSources/resource_bundle_accessor.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"
         let output = "[BackyardBirdsData] Compiling resource_bundle_accessor.swift"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func swiftCompiling() {
+    func testswiftCompiling() {
         let input = #"SwiftCompile normal x86_64 Compiling\ BackyardBirdsDataContainer.swift,\ ColorData.swift,\ DataGeneration.swift,\ DataGenerationOptions.swift /Backyard-Birds/BackyardBirdsData/General/BackyardBirdsDataContainer.swift /Backyard-Birds/BackyardBirdsData/General/ColorData.swift /Backyard-Birds/BackyardBirdsData/General/DataGeneration.swift /Backyard-Birds/BackyardBirdsData/General/DataGenerationOptions.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#
-        #expect(logFormatted(input) == nil)
+        XCTAssertNil(logFormatted(input))
     }
 
-    @Test
-    func compileStoryboard() {
+    func testcompileStoryboard() {
         let formatted = logFormatted("CompileStoryboard /Users/admin/MyApp/MyApp/Main.storyboard (in target: MyApp)")
-        #expect(formatted == "[MyApp] Compiling Main.storyboard")
+        XCTAssertEqual(formatted, "[MyApp] Compiling Main.storyboard")
     }
 
-    @Test
-    func compileWarning() {
+    func testcompileWarning() {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
-        let output = "###vso[task.logissue type=warning;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=warning;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func compileXib() {
+    func testcompileXib() {
         let input = "CompileXIB /path/file.xib (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Compiling file.xib"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func copyHeader() {
+    func testcopyHeader() {
         let input = "CpHeader /path/to/destination/file.h /path/file.h (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.h"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func copyPlist() {
+    func testcopyPlist() {
         let input = "CopyPlistFile /path/to/destination/file.plist /path/file.plist (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.plist"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func copyStrings() {
+    func testcopyStrings() {
         let input = "CopyStringsFile /path/to/destination/file.strings /path/file.strings (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.strings"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func cpResource() {
+    func testcpResource() {
         let input = "CpResource /path/to/destination/file.ttf /path/file.ttf (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.ttf"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func copyMatchingSourceAndDestinationFiles() {
+    func testcopyMatchingSourceAndDestinationFiles() {
         let input = "Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Copy file.swift -> file.swift"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func copyDifferentSourceAndDestinationFiles() {
+    func testcopyDifferentSourceAndDestinationFiles() {
         let input = #"Copy /Backyard-Birds/Build/Products/Debug/Backyard_Birds.swiftmodule/x86_64-apple-macos.abi.json /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds.abi.json (in target 'Backyard Birds' from project 'Backyard Birds')"#
         let output = "[Backyard Birds] Copy x86_64-apple-macos.abi.json -> Backyard_Birds.abi.json"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func cursor() { }
+    func testcursor() { }
 
-    @Test
-    func executed() throws {
+    func testexecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
-        #expect(input1 == formatted1)
+        XCTAssertEqual(input1, formatted1)
 
         let input2 = "Executed 3 tests, with 2 failures (1 unexpected) in 0.112 (0.112) seconds"
         let formatted2 = logFormatted(input2)
-        #expect(input2 == formatted2)
+        XCTAssertEqual(input2, formatted2)
 
         let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
         let formatted3 = logFormatted(input3)
-        #expect(input3 == formatted3)
+        XCTAssertEqual(input3, formatted3)
 
         let input4 = "Executed 1 test, with 1 failure (1 unexpected) in 0.200 (0.200) seconds"
         let formatted4 = logFormatted(input4)
-        #expect(input4 == formatted4)
+        XCTAssertEqual(input4, formatted4)
     }
 
     #if os(macOS)
-    @Test
-    func executedWithSkipped() {
+    func testexecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
-        #expect(input1 == formatted1)
+        XCTAssertEqual(input1, formatted1)
 
         let input2 = "Executed 56 tests, with 3 test skipped and 2 failures (1 unexpected) in 1.029 (1.029) seconds"
         let formatted2 = logFormatted(input2)
-        #expect(input2 == formatted2)
+        XCTAssertEqual(input2, formatted2)
 
         let input3 = "Test Suite 'All tests' passed at 2022-01-15 21:33:49.073."
         let formatted3 = logFormatted(input3)
-        #expect(input3 == formatted3)
+        XCTAssertEqual(input3, formatted3)
 
         let input4 = "Executed 1 test, with 1 test skipped and 1 failure (1 unexpected) in 3.000 (3.000) seconds"
         let formatted4 = logFormatted(input4)
-        #expect(input4 == formatted4)
+        XCTAssertEqual(input4, formatted4)
     }
     #endif
 
-    @Test
-    func failingTest() { }
+    func testfailingTest() { }
 
-    @Test
-    func fatalError() {
+    func testfatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
-        let output = "###vso[task.logissue type=error]fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=error]fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func fileMissingError() {
+    func testfileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "###vso[task.logissue type=error;sourcepath=/path/file.swift]error: no such file or directory:"
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=error;sourcepath=/path/file.swift]error: no such file or directory:"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func generateCoverageData() {
+    func testgenerateCoverageData() {
         let formatted = logFormatted("Generating coverage data...")
-        #expect(formatted == "Generating code coverage data...")
+        XCTAssertEqual(formatted, "Generating code coverage data...")
     }
 
-    @Test
-    func generatedCoverageReport() {
+    func testgeneratedCoverageReport() {
         let formatted = logFormatted("Generated coverage report: /path/to/code coverage.xccovreport")
-        #expect(formatted == "Generated code coverage report: /path/to/code coverage.xccovreport")
+        XCTAssertEqual(formatted, "Generated code coverage report: /path/to/code coverage.xccovreport")
     }
 
-    @Test
-    func generateDsym() {
+    func testgenerateDsym() {
         let input = "GenerateDSYMFile /path/file.dSYM /path/to/file (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Generating file.dSYM"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func genericWarning() {
+    func testgenericWarning() {
         let input = "warning: some warning here 123"
-        let output = "###vso[task.logissue type=warning]some warning here 123"
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=warning]some warning here 123"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func ldError() {
+    func testldError() {
         let inputLdLibraryError = "ld: library not found for -lPods-Yammer"
-        #expect(logFormatted(inputLdLibraryError) == "###vso[task.logissue type=error]ld: library not found for -lPods-Yammer")
+        XCTAssertEqual(logFormatted(inputLdLibraryError), "##vso[task.logissue type=error]ld: library not found for -lPods-Yammer")
 
         let inputLdSymbolsError = "ld: symbol(s) not found for architecture x86_64"
-        #expect(logFormatted(inputLdSymbolsError) == "###vso[task.logissue type=error]ld: symbol(s) not found for architecture x86_64")
+        XCTAssertEqual(logFormatted(inputLdSymbolsError), "##vso[task.logissue type=error]ld: symbol(s) not found for architecture x86_64")
     }
 
-    @Test
-    func ldWarning() {
+    func testldWarning() {
         let input = "ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"
-        let output = "###vso[task.logissue type=warning]ld: embedded dylibs/frameworks only run on iOS 8 or later"
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=warning]ld: embedded dylibs/frameworks only run on iOS 8 or later"
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func libtool() { }
+    func testlibtool() { }
 
-    @Test
-    func linkerDuplicateSymbolsLocation() { }
+    func testlinkerDuplicateSymbolsLocation() { }
 
-    @Test
-    func linkerDuplicateSymbols() { }
+    func testlinkerDuplicateSymbols() { }
 
-    @Test
-    func linkerUndefinedSymbolLocation() { }
+    func testlinkerUndefinedSymbolLocation() { }
 
-    @Test
-    func linkerUndefinedSymbols() { }
+    func testlinkerUndefinedSymbols() { }
 
-    @Test
-    func linking() {
+    func testlinking() {
         #if os(macOS)
         let formatted = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
-        #expect(formatted == "[xcbeautify] Linking xcbeautify")
+        XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
 
         let formatted2 = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
-        #expect(formatted2 == "[MyApp] Linking My\\ App")
+        XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
         #endif
     }
 
-    @Test
-    func moduleIncludesError() { }
+    func testmoduleIncludesError() { }
 
-    @Test
-    func noCertificate() { }
+    func testnoCertificate() { }
 
-    @Test
-    func parallelTestCaseFailed() {
+    func testparallelTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
-        #expect(formatted == "###vso[task.logissue type=error]    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
-    @Test
-    func parallelTestCasePassed() {
+    func testparallelTestCasePassed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'xctest (49438)' (0.131 seconds)")
-        #expect(formatted == "    ✔ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ✔ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
-    @Test
-    func parallelTestCaseSkipped() {
+    func testparallelTestCaseSkipped() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' skipped on 'xctest (49438)' (0.131 seconds)")
-        #expect(formatted == "    ⊘ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ⊘ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
-    @Test
-    func concurrentDestinationTestSuiteStarted() {
+    func testconcurrentDestinationTestSuiteStarted() {
         let formatted = logFormatted("Test suite 'XcbeautifyLibTests (iOS).xctest' started on 'iPhone X'")
-        #expect(formatted == "Test Suite XcbeautifyLibTests (iOS).xctest started on 'iPhone X'")
+        XCTAssertEqual(formatted, "Test Suite XcbeautifyLibTests (iOS).xctest started on 'iPhone X'")
     }
 
-    @Test
-    func concurrentDestinationTestCaseFailed() {
+    func testconcurrentDestinationTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'iPhone X' (77.158 seconds)")
-        #expect(formatted == "###vso[task.logissue type=error]    testBuildTarget on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]    testBuildTarget on 'iPhone X' (77.158 seconds)")
     }
 
-    @Test
-    func concurrentDestinationTestCasePassed() {
+    func testconcurrentDestinationTestCasePassed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'iPhone X' (77.158 seconds)")
-        #expect(formatted == "    ✔ [XcbeautifyLibTests] testBuildTarget on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "    ✔ [XcbeautifyLibTests] testBuildTarget on 'iPhone X' (77.158 seconds)")
     }
 
-    @Test
-    func parallelTestCaseAppKitPassed() {
+    func testparallelTestCaseAppKitPassed() {
         let formatted = logFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds).")
-        #expect(formatted == "    ✔ [XcbeautifyLibTests.XcbeautifyLibTests] testBuildTarget (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ✔ [XcbeautifyLibTests.XcbeautifyLibTests] testBuildTarget (0.131 seconds)")
     }
 
-    @Test
-    func parallelTestingStarted() {
+    func testparallelTestingStarted() {
         let formatted = logFormatted("Testing started on 'iPhone X'")
-        #expect(formatted == "Testing started on 'iPhone X'")
+        XCTAssertEqual(formatted, "Testing started on 'iPhone X'")
     }
 
-    @Test
-    func parallelTestingPassed() {
+    func testparallelTestingPassed() {
         let formatted = logFormatted("Testing passed on 'iPhone X'")
-        #expect(formatted == "Testing passed on 'iPhone X'")
+        XCTAssertEqual(formatted, "Testing passed on 'iPhone X'")
     }
 
-    @Test
-    func parallelTestingFailed() {
+    func testparallelTestingFailed() {
         let formatted = logFormatted("Testing failed on 'iPhone X'")
-        #expect(formatted == "###vso[task.logissue type=error]Testing failed on 'iPhone X'")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]Testing failed on 'iPhone X'")
     }
 
-    @Test
-    func pbxCp() {
+    func testpbxCp() {
         let formatted = logFormatted("PBXCp /Users/admin/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Products/Release/include/CocoaLumberjack/DDDispatchQueueLogFormatter.h (in target: CocoaLumberjack-Static)")
-        #expect(formatted == "[CocoaLumberjack-Static] Copying DDDispatchQueueLogFormatter.h")
+        XCTAssertEqual(formatted, "[CocoaLumberjack-Static] Copying DDDispatchQueueLogFormatter.h")
     }
 
-    @Test
-    func phaseScriptExecution() {
+    func testphaseScriptExecution() {
         let input1 = "PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)"
         let input2 = "PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target 'App' from project 'App')"
-        #expect(logFormatted(input1) == "[App] Running script [CP] Check Pods Manifest.lock")
-        #expect(logFormatted(input2) == "[App] Running script [CP] Check Pods Manifest.lock")
+        XCTAssertEqual(logFormatted(input1), "[App] Running script [CP] Check Pods Manifest.lock")
+        XCTAssertEqual(logFormatted(input2), "[App] Running script [CP] Check Pods Manifest.lock")
     }
 
-    @Test
-    func phaseSuccess() {
+    func testphaseSuccess() {
         let formatted = logFormatted("** CLEAN SUCCEEDED ** [0.085 sec]")
-        #expect(formatted == "Clean Succeeded")
+        XCTAssertEqual(formatted, "Clean Succeeded")
     }
 
-    @Test
-    func podsError() {
+    func testpodsError() {
         let input = "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
-        let output = "###vso[task.logissue type=error]error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=error]error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func preprocess() {
+    func testpreprocess() {
         let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
         let output = "[SomeTarget] Preprocess Something.m"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func processInfoPlist() {
+    func testprocessInfoPlist() {
         let formatted = logFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")
-        #expect(formatted == "Processing Guaka_Info.plist")
+        XCTAssertEqual(formatted, "Processing Guaka_Info.plist")
     }
 
-    @Test
-    func processPchCommand() {
+    func testprocessPchCommand() {
         let formatted = logFormatted("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -target x86_64-apple-macos10.13 -c /path/to/my.pch -o /path/to/output/AcVDiff_Prefix.pch.gch")
-        #expect(formatted == "Preprocessing /path/to/my.pch")
+        XCTAssertEqual(formatted, "Preprocessing /path/to/my.pch")
     }
 
-    @Test
-    func processPchCommandArbitraryExtension() {
+    func testprocessPchCommandArbitraryExtension() {
         let formatted = logFormatted(#"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -target x86_64-apple-macos12.3 -c /path/with\ space/cmake_pch.hxx -o /path/with\ space/build/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.gch --serialize-diagnostics /path/with\ space/build/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.dia"#)
-        #expect(formatted == #"Preprocessing /path/with\ space/cmake_pch.hxx"#)
+        XCTAssertEqual(formatted, #"Preprocessing /path/with\ space/cmake_pch.hxx"#)
     }
 
-    @Test
-    func processPch() {
+    func testprocessPch() {
         let formatted = logFormatted("ProcessPCH /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)")
-        #expect(formatted == "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
+        XCTAssertEqual(formatted, "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
     }
 
-    @Test
-    func processPchArbitraryExtension() {
+    func testprocessPchArbitraryExtension() {
         let formatted = logFormatted(#"ProcessPCH++ /Users/admin/src/Test\ Folder/_builds/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.gch /Users/admin/src/Test\ Folder/_builds/CMakeFiles/foo.dir/Debug/cmake_pch.hxx normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler (in target 'foo' from project 'foo')"#)
-        #expect(formatted == "[foo] Processing cmake_pch.hxx")
+        XCTAssertEqual(formatted, "[foo] Processing cmake_pch.hxx")
     }
 
-    @Test
-    func processPchPlusPlus() {
+    func testprocessPchPlusPlus() {
         let formatted = logFormatted("ProcessPCH++ /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)")
-        #expect(formatted == "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
+        XCTAssertEqual(formatted, "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
     }
 
-    @Test
-    func provisioningProfileRequired() {
+    func testprovisioningProfileRequired() {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
-        let output = #"###vso[task.logissue type=error]MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
-        #expect(logFormatted(input) == output)
+        let output = #"##vso[task.logissue type=error]MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func restartingTests() {
+    func testrestartingTests() {
         let formatted = logFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
-        #expect(formatted == "###vso[task.logissue type=error]    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
     }
 
-    @Test
-    func shellCommand() {
+    func testshellCommand() {
         let formatted = logFormatted("    cd /foo/bar/baz")
-        #expect(formatted == nil)
+        XCTAssertNil(formatted)
     }
 
-    @Test
-    func symbolReferencedFrom() {
+    func testsymbolReferencedFrom() {
         let formatted = logFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        #expect(formatted == "###vso[task.logissue type=error]  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
     }
 
-    @Test
-    func undefinedSymbolLocation() {
+    func testundefinedSymbolLocation() {
         let formatted = logFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        #expect(formatted == "###vso[task.logissue type=warning]      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=warning]      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
     }
 
-    @Test
-    func testCaseMeasured() {
+    func testtestCaseMeasured() {
         #if os(macOS)
         let formatted = logFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
-        #expect(formatted == #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
+        XCTAssertEqual(formatted, #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
         #endif
     }
 
-    @Test
-    func testCasePassed() {
+    func testtestCasePassed() {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
-        #expect(formatted == "    ✔ testBuildTarget (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
         #endif
     }
 
-    @Test
-    func testCaseSkipped() {
+    func testtestCaseSkipped() {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[SomeTests testName]' skipped (0.004 seconds).")
-        #expect(formatted == "    ⊘ testName (0.004 seconds)")
+        XCTAssertEqual(formatted, "    ⊘ testName (0.004 seconds)")
         #endif
     }
 
-    @Test
-    func testCasePending() { }
+    func testtestCasePending() { }
 
-    @Test
-    func testCaseStarted() { }
+    func testtestCaseStarted() { }
 
-    @Test
-    func testSuiteStart() { }
+    func testtestSuiteStart() { }
 
-    @Test
-    func testSuiteStarted() { }
+    func testtestSuiteStarted() { }
 
     #if os(macOS)
-    @Test
-    func testSuiteAllTestsPassed() {
+    func testtestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
-        #expect(input == formatted)
+        XCTAssertEqual(input, formatted)
     }
     #endif
 
     #if os(macOS)
-    @Test
-    func testSuiteAllTestsFailed() {
+    func testtestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
-        #expect(input == formatted)
+        XCTAssertEqual(input, formatted)
     }
     #endif
 
-    @Test
-    func testsRunCompletion() { }
+    func testtestsRunCompletion() { }
 
-    @Test
-    func tiffutil() {
+    func testtiffutil() {
         let input = "TiffUtil file.tiff"
-        #expect(logFormatted(input) == nil)
+        XCTAssertEqual(logFormatted(input), nil)
     }
 
-    @Test
-    func touch() {
+    func testtouch() {
         let formatted = logFormatted("Touch /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/XcbeautifyLib.framework (in target: XcbeautifyLib)")
-        #expect(formatted == "[XcbeautifyLib] Touching XcbeautifyLib.framework")
+        XCTAssertEqual(formatted, "[XcbeautifyLib] Touching XcbeautifyLib.framework")
     }
 
-    @Test
-    func uiFailingTest() {
+    func testuiFailingTest() {
         let formatted = logFormatted("    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>")
-        #expect(formatted == "###vso[task.logissue type=error;sourcepath=<unknown>;linenumber=0]    App crashed in <external symbol>")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error;sourcepath=<unknown>;linenumber=0]    App crashed in <external symbol>")
     }
 
-    @Test
-    func willNotBeCodeSigned() {
+    func testwillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
-        let output = "###vso[task.logissue type=warning]FrameworkName will not be code signed because its settings don't specify a development team."
-        #expect(logFormatted(input) == output)
+        let output = "##vso[task.logissue type=warning]FrameworkName will not be code signed because its settings don't specify a development team."
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func writeAuxiliaryFileGeneric() {
+    func testwriteAuxiliaryFileGeneric() {
         let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
         let output = "[Target] Write Auxiliary File file.extension"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func writeAuxiliaryFileBackyardBirds() {
+    func testwriteAuxiliaryFileBackyardBirds() {
         let input = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
         let output = "[LayeredArtworkLibrary_LayeredArtworkLibrary] Write Auxiliary File empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist"
-        #expect(logFormatted(input) == output)
+        XCTAssertEqual(logFormatted(input), output)
     }
 
-    @Test
-    func writeFile() {
+    func testwriteFile() {
         let input = "write-file /path/file.SwiftFileList"
-        #expect(logFormatted(input) == nil)
+        XCTAssertNil(logFormatted(input))
     }
 
-    @Test
-    func packageFetching() {
+    func testpackageFetching() {
         let input1 = "Fetching from https://github.com/cpisciotta/xcbeautify"
         let output1 = "Fetching https://github.com/cpisciotta/xcbeautify"
         let formatted1 = logFormatted(input1)
-        #expect(formatted1 == output1)
+        XCTAssertEqual(formatted1, output1)
 
         let input2 = "Fetching from https://github.com/cpisciotta/xcbeautify (cached)"
         let output2 = "Fetching https://github.com/cpisciotta/xcbeautify (cached)"
         let formatted2 = logFormatted(input2)
-        #expect(formatted2 == output2)
+        XCTAssertEqual(formatted2, output2)
 
         let input3 = "Fetching from https://github.com/cpisciotta/xcbeautify.git"
         let output3 = "Fetching https://github.com/cpisciotta/xcbeautify.git"
         let formatted3 = logFormatted(input3)
-        #expect(formatted3 == output3)
+        XCTAssertEqual(formatted3, output3)
     }
 
-    @Test
-    func packageUpdating() {
+    func testPackageUpdating() {
         let input1 = "Updating from https://github.com/cpisciotta/xcbeautify"
         let output1 = "Updating https://github.com/cpisciotta/xcbeautify"
         let formatted1 = logFormatted(input1)
-        #expect(formatted1 == output1)
+        XCTAssertEqual(formatted1, output1)
 
         let input2 = "Updating from https://github.com/cpisciotta/xcbeautify (cached)"
         let output2 = "Updating https://github.com/cpisciotta/xcbeautify (cached)"
         let formatted2 = logFormatted(input2)
-        #expect(formatted2 == output2)
+        XCTAssertEqual(formatted2, output2)
 
         let input3 = "Updating from https://github.com/cpisciotta/xcbeautify.git"
         let output3 = "Updating https://github.com/cpisciotta/xcbeautify.git"
         let formatted3 = logFormatted(input3)
-        #expect(formatted3 == output3)
+        XCTAssertEqual(formatted3, output3)
     }
 
-    @Test
-    func packageCheckingOut() {
+    func testPackageCheckingOut() {
         let input1 = "Cloning local copy of package 'xcbeautify'"
         let formatted1 = logFormatted(input1)
-        #expect(formatted1 == nil)
+        XCTAssertNil(formatted1)
 
         let input2 = "Checking out x.y.z of package 'xcbeautify'"
         let output2 = "Checking out 'xcbeautify' @ x.y.z"
         let formatted2 = logFormatted(input2)
-        #expect(formatted2 == output2)
+        XCTAssertEqual(formatted2, output2)
     }
 
-    @Test
-    func packageGraphResolved() {
+    func testPackageGraphResolved() {
         // Start
         let start = logFormatted("Resolve Package Graph")
-        #expect(start == "Resolving Package Graph")
+        XCTAssertEqual(start, "Resolving Package Graph")
 
         // Ended
         let ended = logFormatted("Resolved source packages:")
-        #expect(ended == "Resolved source packages")
+        XCTAssertEqual(ended, "Resolved source packages")
 
         // Package
         let package = logFormatted("  StrasbourgParkAPI: https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
-        #expect(package == "StrasbourgParkAPI - https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
+        XCTAssertEqual(package, "StrasbourgParkAPI - https://github.com/yageek/StrasbourgParkAPI.git @ 3.0.2")
     }
 
-    @Test
-    func xcodebuildError() {
+    func testXcodebuildError() {
         let formatted = logFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
-        #expect(formatted == "###vso[task.logissue type=error]xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
     }
 
-    @Test
-    func xcodeprojError() {
+    func testXcodeprojError() {
         // Given
         let errorText = #"/path/to/project.xcodeproj: error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
-        let expectedFormatted = "###vso[task.logissue type=error;sourcepath=/path/to/project.xcodeproj]No signing certificate \"iOS Distribution\" found: No \"iOS Distribution\" signing certificate matching team ID \"xxxxx\" with a private key was found. (in target 'target' from project 'project')\n\n"
+        let expectedFormatted = "##vso[task.logissue type=error;sourcepath=/path/to/project.xcodeproj]No signing certificate \"iOS Distribution\" found: No \"iOS Distribution\" signing certificate matching team ID \"xxxxx\" with a private key was found. (in target 'target' from project 'project')\n\n"
 
         // When
         let actualFormatted = logFormatted(errorText)
 
         // Then
-        #expect(actualFormatted == expectedFormatted)
+        XCTAssertEqual(actualFormatted, expectedFormatted)
     }
 
-    @Test
-    func xcodeprojWarning() {
+    func testXcodeprojWarning() {
         // Given
         let errorText = "/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"
-        let expectedFormatted = "###vso[task.logissue type=warning;sourcepath=/Users/xxxxx/Example/Pods/Pods.xcodeproj]The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')\n\n"
+        let expectedFormatted = "##vso[task.logissue type=warning;sourcepath=/Users/xxxxx/Example/Pods/Pods.xcodeproj]The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')\n\n"
 
         // When
         let actualFormatted = logFormatted(errorText)
 
         // Then
-        #expect(actualFormatted == expectedFormatted)
+        XCTAssertEqual(actualFormatted, expectedFormatted)
     }
 
-    @Test
-    func duplicateLocalizedStringKey() {
+    func testDuplicateLocalizedStringKey() {
         let formatted = logFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
-        #expect(formatted == #"###vso[task.logissue type=warning]Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
+        XCTAssertEqual(formatted, #"##vso[task.logissue type=warning]Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
 
-    @Test
-    func testingStarted() {
+    func testTestingStarted() {
         let formatted = logFormatted(#"Testing started"#)
-        #expect(formatted == #"Testing started"#)
+        XCTAssertEqual(formatted, #"Testing started"#)
     }
 
-    @Test
-    func swiftTestingRunCompletion() {
+    func testSwiftTestingRunCompletion() {
         let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
         let formatted = logFormatted(input)
         let expectedOutput = "Test run with 5 tests passed after 12.345 seconds"
-        #expect(formatted == expectedOutput)
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingRunFailed() {
+    func testSwiftTestingRunFailed() {
         let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
         let formatted = logFormatted(input)
-        let expectedOutput = "###vso[task.logissue type=error]Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
-        #expect(formatted == expectedOutput)
+        let expectedOutput = "##vso[task.logissue type=error]Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingSuiteFailed() {
+    func testSwiftTestingSuiteFailed() {
         let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
         let formatted = logFormatted(input)
-        let expectedOutput = "###vso[task.logissue type=error]Suite \"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)"
-        #expect(formatted == expectedOutput)
+        let expectedOutput = "##vso[task.logissue type=error]Suite \"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingTestFailed() {
+    func testSwiftTestingTestFailed() {
         let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
         let formatted = logFormatted(input)
-        let expectedOutput = "###vso[task.logissue type=error]\"myTest\" (1.234 seconds) 1 issue(s)"
-        #expect(formatted == expectedOutput)
+        let expectedOutput = "##vso[task.logissue type=error]\"myTest\" (1.234 seconds) 1 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingTestSkipped() {
+    func testSwiftTestingTestSkipped() {
         let input = #"􀙟 Test myTest() skipped."#
         let formatted = logFormatted(input)
         let expectedOutput = "    ⊘ myTest() skipped"
-        #expect(formatted == expectedOutput)
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingTestSkippedReason() {
+    func testSwiftTestingTestSkippedReason() {
         let input = #"􀙟 Test myTest() skipped: "Reason for skipping""#
         let formatted = logFormatted(input)
         let expectedOutput = "    ⊘ myTest() skipped (Reason for skipping)"
-        #expect(formatted == expectedOutput)
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingIssue() {
+    func testSwiftTestingIssue() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "###vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
-        #expect(formatted == expectedOutput)
+        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingIssueArguments() {
+    func testSwiftTestingIssueArguments() {
         let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
         let formatted = logFormatted(input)
-        let expectedOutput = "###vso[task.logissue type=error]Recorded an issue (2) argument(s)"
-        #expect(formatted == expectedOutput)
+        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (2) argument(s)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 
-    @Test
-    func swiftTestingIssueDetails() {
+    func testSwiftTestingIssueDetails() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "###vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
-        #expect(formatted == expectedOutput)
+        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
     }
 }
