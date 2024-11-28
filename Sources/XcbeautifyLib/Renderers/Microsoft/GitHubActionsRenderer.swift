@@ -16,7 +16,7 @@ struct GitHubActionsRenderer: MicrosoftOutputRendering {
     ) -> String {
         assert(annotation.platforms.contains(.githubAction))
         let formattedFileComponents = fileComponents?.formatted ?? ""
-        return "::\(annotation.rawValue) \(formattedFileComponents)::\(message)"
+        return "::\(annotation.value) \(formattedFileComponents)::\(message)"
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
