@@ -52,41 +52,41 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formatted, command)
     }
 
-    func testclangError() {
+    func testClangError() {
         let formatted = logFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]clang: error: linker command failed with exit code 1 (use -v to see invocation)")
     }
 
-    func testcleanRemove() {
+    func testCleanRemove() {
         let formatted = logFormatted("Clean.Remove clean /Users/admin/Library/Developer/Xcode/DerivedData/MyLibrary-abcd/Build/Intermediates/MyLibrary.build/Debug-iphonesimulator/MyLibraryTests.build")
         XCTAssertEqual(formatted, "Cleaning MyLibraryTests.build")
     }
 
-    func testcleanTarget() {
+    func testCleanTarget() {
         let formatted = logFormatted("=== ANALYZE TARGET The Spacer OF PROJECT Pods WITH THE DEFAULT CONFIGURATION Debug ===")
         XCTAssertEqual(formatted, "Analyze target The Spacer of project Pods with configuration Debug")
     }
 
-    func testcodesignFramework() {
+    func testCodesignFramework() {
         let formatted = logFormatted("CodeSign build/Release/MyFramework.framework/Versions/A")
         XCTAssertEqual(formatted, "Signing build/Release/MyFramework.framework")
     }
 
-    func testcodesign() {
+    func testCodesign() {
         let formatted = logFormatted("CodeSign build/Release/MyApp.app")
         XCTAssertEqual(formatted, "Signing MyApp.app")
     }
 
-    func testmultipleCodesigns() {
+    func testMultipleCodesigns() {
         let formattedApp = logFormatted("CodeSign build/Release/MyApp.app")
         let formattedFramework = logFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
         XCTAssertEqual(formattedApp, "Signing MyApp.app")
         XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
     }
 
-    func testcompileCommand() { }
+    func testCompileCommand() { }
 
-    func testcompileError() {
+    func testCompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
         let outputError = "##vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
         XCTAssertEqual(logFormatted(inputError), outputError)
@@ -96,7 +96,7 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(inputFatal), outputFatal)
     }
 
-    func testcompile() {
+    func testCompile() {
         #if os(macOS)
         // Xcode 10 and before
         let input1 = "CompileSwift normal x86_64 /Users/admin/dev/Swifttrain/xcbeautify/Sources/xcbeautify/setup.swift (in target: xcbeautify)"
@@ -108,79 +108,79 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         #endif
     }
 
-    func testswiftCompile_arm64() {
+    func testSwiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testswiftCompile_x86_64() {
+    func testSwiftCompile_x86_64() {
         let input = "SwiftCompile normal x86_64 /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/DerivedSources/resource_bundle_accessor.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"
         let output = "[BackyardBirdsData] Compiling resource_bundle_accessor.swift"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testswiftCompiling() {
+    func testSwiftCompiling() {
         let input = #"SwiftCompile normal x86_64 Compiling\ BackyardBirdsDataContainer.swift,\ ColorData.swift,\ DataGeneration.swift,\ DataGenerationOptions.swift /Backyard-Birds/BackyardBirdsData/General/BackyardBirdsDataContainer.swift /Backyard-Birds/BackyardBirdsData/General/ColorData.swift /Backyard-Birds/BackyardBirdsData/General/DataGeneration.swift /Backyard-Birds/BackyardBirdsData/General/DataGenerationOptions.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#
         XCTAssertNil(logFormatted(input))
     }
 
-    func testcompileStoryboard() {
+    func testCompileStoryboard() {
         let formatted = logFormatted("CompileStoryboard /Users/admin/MyApp/MyApp/Main.storyboard (in target: MyApp)")
         XCTAssertEqual(formatted, "[MyApp] Compiling Main.storyboard")
     }
 
-    func testcompileWarning() {
+    func testCompileWarning() {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
         let output = "##vso[task.logissue type=warning;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcompileXib() {
+    func testCompileXib() {
         let input = "CompileXIB /path/file.xib (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Compiling file.xib"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcopyHeader() {
+    func testCopyHeader() {
         let input = "CpHeader /path/to/destination/file.h /path/file.h (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.h"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcopyPlist() {
+    func testCopyPlist() {
         let input = "CopyPlistFile /path/to/destination/file.plist /path/file.plist (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.plist"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcopyStrings() {
+    func testCopyStrings() {
         let input = "CopyStringsFile /path/to/destination/file.strings /path/file.strings (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.strings"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcpResource() {
+    func testCPResource() {
         let input = "CpResource /path/to/destination/file.ttf /path/file.ttf (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.ttf"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcopyMatchingSourceAndDestinationFiles() {
+    func testCopyMatchingSourceAndDestinationFiles() {
         let input = "Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Copy file.swift -> file.swift"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcopyDifferentSourceAndDestinationFiles() {
+    func testCopyDifferentSourceAndDestinationFiles() {
         let input = #"Copy /Backyard-Birds/Build/Products/Debug/Backyard_Birds.swiftmodule/x86_64-apple-macos.abi.json /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds.abi.json (in target 'Backyard Birds' from project 'Backyard Birds')"#
         let output = "[Backyard Birds] Copy x86_64-apple-macos.abi.json -> Backyard_Birds.abi.json"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testcursor() { }
+    func testCursor() { }
 
-    func testexecuted() throws {
+    func testExecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
         XCTAssertEqual(input1, formatted1)
@@ -199,7 +199,7 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     }
 
     #if os(macOS)
-    func testexecutedWithSkipped() {
+    func testExecutedWithSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
         XCTAssertEqual(input1, formatted1)
@@ -218,43 +218,43 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     }
     #endif
 
-    func testfailingTest() { }
+    func testFailingTest() { }
 
-    func testfatalError() {
+    func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         let output = "##vso[task.logissue type=error]fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testfileMissingError() {
+    func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
         let output = "##vso[task.logissue type=error;sourcepath=/path/file.swift]error: no such file or directory:"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testgenerateCoverageData() {
+    func testGenerateCoverageData() {
         let formatted = logFormatted("Generating coverage data...")
         XCTAssertEqual(formatted, "Generating code coverage data...")
     }
 
-    func testgeneratedCoverageReport() {
+    func testGeneratedCoverageReport() {
         let formatted = logFormatted("Generated coverage report: /path/to/code coverage.xccovreport")
         XCTAssertEqual(formatted, "Generated code coverage report: /path/to/code coverage.xccovreport")
     }
 
-    func testgenerateDsym() {
+    func testGenerateDsym() {
         let input = "GenerateDSYMFile /path/file.dSYM /path/to/file (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Generating file.dSYM"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testgenericWarning() {
+    func testGenericWarning() {
         let input = "warning: some warning here 123"
         let output = "##vso[task.logissue type=warning]some warning here 123"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testldError() {
+    func testLDError() {
         let inputLdLibraryError = "ld: library not found for -lPods-Yammer"
         XCTAssertEqual(logFormatted(inputLdLibraryError), "##vso[task.logissue type=error]ld: library not found for -lPods-Yammer")
 
@@ -262,23 +262,23 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(inputLdSymbolsError), "##vso[task.logissue type=error]ld: symbol(s) not found for architecture x86_64")
     }
 
-    func testldWarning() {
+    func testLDWarning() {
         let input = "ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"
         let output = "##vso[task.logissue type=warning]ld: embedded dylibs/frameworks only run on iOS 8 or later"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testlibtool() { }
+    func testLibtool() { }
 
-    func testlinkerDuplicateSymbolsLocation() { }
+    func testLinkerDuplicateSymbolsLocation() { }
 
-    func testlinkerDuplicateSymbols() { }
+    func testLinkerDuplicateSymbols() { }
 
-    func testlinkerUndefinedSymbolLocation() { }
+    func testLinkerUndefinedSymbolLocation() { }
 
-    func testlinkerUndefinedSymbols() { }
+    func testLinkerUndefinedSymbols() { }
 
-    func testlinking() {
+    func testLinking() {
         #if os(macOS)
         let formatted = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/xcbeautify normal x86_64 (in target: xcbeautify)")
         XCTAssertEqual(formatted, "[xcbeautify] Linking xcbeautify")
@@ -288,176 +288,176 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         #endif
     }
 
-    func testmoduleIncludesError() { }
+    func testModuleIncludesError() { }
 
-    func testnoCertificate() { }
+    func testNoCertificate() { }
 
-    func testparallelTestCaseFailed() {
+    func testParallelTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
-    func testparallelTestCasePassed() {
+    func testParallelTestCasePassed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "    ✔ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
-    func testparallelTestCaseSkipped() {
+    func testParallelTestCaseSkipped() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' skipped on 'xctest (49438)' (0.131 seconds)")
         XCTAssertEqual(formatted, "    ⊘ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
-    func testconcurrentDestinationTestSuiteStarted() {
+    func testConcurrentDestinationTestSuiteStarted() {
         let formatted = logFormatted("Test suite 'XcbeautifyLibTests (iOS).xctest' started on 'iPhone X'")
         XCTAssertEqual(formatted, "Test Suite XcbeautifyLibTests (iOS).xctest started on 'iPhone X'")
     }
 
-    func testconcurrentDestinationTestCaseFailed() {
+    func testConcurrentDestinationTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'iPhone X' (77.158 seconds)")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]    testBuildTarget on 'iPhone X' (77.158 seconds)")
     }
 
-    func testconcurrentDestinationTestCasePassed() {
+    func testConcurrentDestinationTestCasePassed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' passed on 'iPhone X' (77.158 seconds)")
         XCTAssertEqual(formatted, "    ✔ [XcbeautifyLibTests] testBuildTarget on 'iPhone X' (77.158 seconds)")
     }
 
-    func testparallelTestCaseAppKitPassed() {
+    func testParallelTestCaseAppKitPassed() {
         let formatted = logFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed on 'xctest (49438)' (0.131 seconds).")
         XCTAssertEqual(formatted, "    ✔ [XcbeautifyLibTests.XcbeautifyLibTests] testBuildTarget (0.131 seconds)")
     }
 
-    func testparallelTestingStarted() {
+    func testParallelTestingStarted() {
         let formatted = logFormatted("Testing started on 'iPhone X'")
         XCTAssertEqual(formatted, "Testing started on 'iPhone X'")
     }
 
-    func testparallelTestingPassed() {
+    func testParallelTestingPassed() {
         let formatted = logFormatted("Testing passed on 'iPhone X'")
         XCTAssertEqual(formatted, "Testing passed on 'iPhone X'")
     }
 
-    func testparallelTestingFailed() {
+    func testParallelTestingFailed() {
         let formatted = logFormatted("Testing failed on 'iPhone X'")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]Testing failed on 'iPhone X'")
     }
 
-    func testpbxCp() {
+    func testPBXCp() {
         let formatted = logFormatted("PBXCp /Users/admin/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Products/Release/include/CocoaLumberjack/DDDispatchQueueLogFormatter.h (in target: CocoaLumberjack-Static)")
         XCTAssertEqual(formatted, "[CocoaLumberjack-Static] Copying DDDispatchQueueLogFormatter.h")
     }
 
-    func testphaseScriptExecution() {
+    func testPhaseScriptExecution() {
         let input1 = "PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target: App)"
         let input2 = "PhaseScriptExecution [CP]\\ Check\\ Pods\\ Manifest.lock /Users/admin/Library/Developer/Xcode/DerivedData/App-abcd/Build/Intermediates.noindex/ArchiveIntermediates/App/IntermediateBuildFilesPath/App.build/Release-iphoneos/App.build/Script-53BECF2B2F2E203E928C31AE.sh (in target 'App' from project 'App')"
         XCTAssertEqual(logFormatted(input1), "[App] Running script [CP] Check Pods Manifest.lock")
         XCTAssertEqual(logFormatted(input2), "[App] Running script [CP] Check Pods Manifest.lock")
     }
 
-    func testphaseSuccess() {
+    func testPhaseSuccess() {
         let formatted = logFormatted("** CLEAN SUCCEEDED ** [0.085 sec]")
         XCTAssertEqual(formatted, "Clean Succeeded")
     }
 
-    func testpodsError() {
+    func testPodsError() {
         let input = "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
         let output = "##vso[task.logissue type=error]error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testpreprocess() {
+    func testPreprocess() {
         let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
         let output = "[SomeTarget] Preprocess Something.m"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testprocessInfoPlist() {
+    func testProcessInfoPlist() {
         let formatted = logFormatted("ProcessInfoPlistFile /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-abcd/Build/Products/Debug/Guaka.framework/Versions/A/Resources/Info.plist /Users/admin/xcbeautify/xcbeautify.xcodeproj/Guaka_Info.plist")
         XCTAssertEqual(formatted, "Processing Guaka_Info.plist")
     }
 
-    func testprocessPchCommand() {
+    func testProcessPchCommand() {
         let formatted = logFormatted("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -target x86_64-apple-macos10.13 -c /path/to/my.pch -o /path/to/output/AcVDiff_Prefix.pch.gch")
         XCTAssertEqual(formatted, "Preprocessing /path/to/my.pch")
     }
 
-    func testprocessPchCommandArbitraryExtension() {
+    func testProcessPchCommandArbitraryExtension() {
         let formatted = logFormatted(#"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -target x86_64-apple-macos12.3 -c /path/with\ space/cmake_pch.hxx -o /path/with\ space/build/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.gch --serialize-diagnostics /path/with\ space/build/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.dia"#)
         XCTAssertEqual(formatted, #"Preprocessing /path/with\ space/cmake_pch.hxx"#)
     }
 
-    func testprocessPch() {
+    func testProcessPch() {
         let formatted = logFormatted("ProcessPCH /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)")
         XCTAssertEqual(formatted, "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
     }
 
-    func testprocessPchArbitraryExtension() {
+    func testProcessPchArbitraryExtension() {
         let formatted = logFormatted(#"ProcessPCH++ /Users/admin/src/Test\ Folder/_builds/SharedPrecompiledHeaders/SharedPrecompiledHeaders/2304651503107189736/cmake_pch.hxx.gch /Users/admin/src/Test\ Folder/_builds/CMakeFiles/foo.dir/Debug/cmake_pch.hxx normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler (in target 'foo' from project 'foo')"#)
         XCTAssertEqual(formatted, "[foo] Processing cmake_pch.hxx")
     }
 
-    func testprocessPchPlusPlus() {
+    func testProcessPchPlusPlus() {
         let formatted = logFormatted("ProcessPCH++ /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Intermediates.noindex/PrecompiledHeaders/SharedPrecompiledHeaders/5872309797734264511/CocoaLumberjack-Prefix.pch.gch /Users/admin/CocoaLumberjack/Framework/Lumberjack/CocoaLumberjack-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer (in target: CocoaLumberjack)")
         XCTAssertEqual(formatted, "[CocoaLumberjack] Processing CocoaLumberjack-Prefix.pch")
     }
 
-    func testprovisioningProfileRequired() {
+    func testProvisioningProfileRequired() {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         let output = #"##vso[task.logissue type=error]MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testrestartingTests() {
+    func testRestartingTests() {
         let formatted = logFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
     }
 
-    func testshellCommand() {
+    func testShellCommand() {
         let formatted = logFormatted("    cd /foo/bar/baz")
         XCTAssertNil(formatted)
     }
 
-    func testsymbolReferencedFrom() {
+    func testSymbolReferencedFrom() {
         let formatted = logFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
     }
 
-    func testundefinedSymbolLocation() {
+    func testUndefinedSymbolLocation() {
         let formatted = logFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
         XCTAssertEqual(formatted, "##vso[task.logissue type=warning]      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
     }
 
-    func testtestCaseMeasured() {
+    func testTestCaseMeasured() {
         #if os(macOS)
         let formatted = logFormatted(#"/Users/cyberbeni/Desktop/framework/TypedNotificationCenter/<compiler-generated>:54: Test Case '-[TypedNotificationCenterPerformanceTests.BridgedNotificationTests test_subscribing_2senders_notificationName]' measured [High Water Mark For Heap Allocations, KB] average: 5407.634, relative standard deviation: 45.772%, values: [9341.718750, 3779.468750, 3779.468750, 9630.344727, 3779.468750, 3779.468750, 3895.093750, 3779.468750, 8532.372070, 3779.468750], performanceMetricID:com.apple.XCTPerformanceMetric_HighWaterMarkForHeapAllocations, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 1.000, maxStandardDeviation: 1.000"#)
         XCTAssertEqual(formatted, #"    ◷ test_subscribing_2senders_notificationName measured (5407.634 KB ±45.772% -- High Water Mark For Heap Allocations)"#)
         #endif
     }
 
-    func testtestCasePassed() {
+    func testTestCasePassed() {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.131 seconds).")
         XCTAssertEqual(formatted, "    ✔ testBuildTarget (0.131 seconds)")
         #endif
     }
 
-    func testtestCaseSkipped() {
+    func testTestCaseSkipped() {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[SomeTests testName]' skipped (0.004 seconds).")
         XCTAssertEqual(formatted, "    ⊘ testName (0.004 seconds)")
         #endif
     }
 
-    func testtestCasePending() { }
+    func testTestCasePending() { }
 
-    func testtestCaseStarted() { }
+    func testTestCaseStarted() { }
 
-    func testtestSuiteStart() { }
+    func testTestSuiteStart() { }
 
-    func testtestSuiteStarted() { }
+    func testTestSuiteStarted() { }
 
     #if os(macOS)
-    func testtestSuiteAllTestsPassed() {
+    func testTestSuiteAllTestsPassed() {
         let input = "Test Suite 'All tests' passed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
         XCTAssertEqual(input, formatted)
@@ -465,54 +465,54 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     #endif
 
     #if os(macOS)
-    func testtestSuiteAllTestsFailed() {
+    func testTestSuiteAllTestsFailed() {
         let input = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted = logFormatted(input)
         XCTAssertEqual(input, formatted)
     }
     #endif
 
-    func testtestsRunCompletion() { }
+    func testTestsRunCompletion() { }
 
-    func testtiffutil() {
+    func testTiffutil() {
         let input = "TiffUtil file.tiff"
         XCTAssertEqual(logFormatted(input), nil)
     }
 
-    func testtouch() {
+    func testTouch() {
         let formatted = logFormatted("Touch /Users/admin/Library/Developer/Xcode/DerivedData/xcbeautify-dgnqmpfertotpceazwfhtfwtuuwt/Build/Products/Debug/XcbeautifyLib.framework (in target: XcbeautifyLib)")
         XCTAssertEqual(formatted, "[XcbeautifyLib] Touching XcbeautifyLib.framework")
     }
 
-    func testuiFailingTest() {
+    func testUIFailingTest() {
         let formatted = logFormatted("    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error;sourcepath=<unknown>;linenumber=0]    App crashed in <external symbol>")
     }
 
-    func testwillNotBeCodeSigned() {
+    func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
         let output = "##vso[task.logissue type=warning]FrameworkName will not be code signed because its settings don't specify a development team."
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testwriteAuxiliaryFileGeneric() {
+    func testWriteAuxiliaryFileGeneric() {
         let input = #"WriteAuxiliaryFile /path/to/some/auxiliary/file.extension (in target 'Target' from project 'Project')"#
         let output = "[Target] Write Auxiliary File file.extension"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testwriteAuxiliaryFileBackyardBirds() {
+    func testWriteAuxiliaryFileBackyardBirds() {
         let input = #"WriteAuxiliaryFile /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.build/empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
         let output = "[LayeredArtworkLibrary_LayeredArtworkLibrary] Write Auxiliary File empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testwriteFile() {
+    func testWriteFile() {
         let input = "write-file /path/file.SwiftFileList"
         XCTAssertNil(logFormatted(input))
     }
 
-    func testpackageFetching() {
+    func testPackageFetching() {
         let input1 = "Fetching from https://github.com/cpisciotta/xcbeautify"
         let output1 = "Fetching https://github.com/cpisciotta/xcbeautify"
         let formatted1 = logFormatted(input1)
