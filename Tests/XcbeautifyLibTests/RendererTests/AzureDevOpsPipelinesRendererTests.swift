@@ -218,7 +218,17 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     }
     #endif
 
-    func testFailingTest() { }
+    func testFailingTest() {
+        #if os(Linux)
+        let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
+        let output = "##vso[task.logissue type=error;sourcepath=/path/to/Tests.swift;linenumber=123]    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
+        #else
+        let input = "/path/to/Tests.swift:123: error: -[Tests.Suite testCase] : XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
+        let output = "##vso[task.logissue type=error;sourcepath=/path/to/Tests.swift;linenumber=123]    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
+        #endif
+
+        XCTAssertEqual(logFormatted(input), output)
+    }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
