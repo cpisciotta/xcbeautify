@@ -10,29 +10,14 @@ struct Annotation {
         static let all: Platforms = [.githubAction, .azureDevOps]
     }
 
-    let rawValue: String
+    let value: String
     let platforms: Platforms
 
-    static let warning = Annotation(rawValue: "warning", platforms: [.githubAction, .azureDevOps])
+    static let warning = Annotation(value: "warning", platforms: [.githubAction, .azureDevOps])
 
-    static let error = Annotation(rawValue: "error", platforms: [.githubAction, .azureDevOps])
+    static let error = Annotation(value: "error", platforms: [.githubAction, .azureDevOps])
 
-    static let notice = Annotation(rawValue: "notice", platforms: .githubAction)
-}
-
-extension Annotation: RawRepresentable {
-    init?(rawValue: String) {
-        switch rawValue {
-        case "warning":
-            self = .warning
-        case "error":
-            self = .error
-        case "notice":
-            self = .notice
-        default:
-            return nil
-        }
-    }
+    static let notice = Annotation(value: "notice", platforms: .githubAction)
 }
 
 protocol MicrosoftOutputRendering: OutputRendering {

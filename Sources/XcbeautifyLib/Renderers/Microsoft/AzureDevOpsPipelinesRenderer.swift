@@ -16,7 +16,7 @@ struct AzureDevOpsPipelinesRenderer: MicrosoftOutputRendering {
     ) -> String {
         assert(annotation.platforms.contains(.azureDevOps))
         let formattedFileComponents = fileComponents?.formatted ?? ""
-        return "##vso[task.logissue type=\(annotation.rawValue)\(formattedFileComponents)]\(message)"
+        return "##vso[task.logissue type=\(annotation.value)\(formattedFileComponents)]\(message)"
     }
 }
 
