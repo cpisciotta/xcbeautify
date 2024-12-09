@@ -264,7 +264,7 @@ struct GitHubActionsRenderer: OutputRendering {
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
         let message = "Recorded an issue" + (group.issueDetails.map { " (\($0))" } ?? "")
         return outputGitHubActionsLog(
-            annotationType: .notice,
+            annotationType: .error,
             message: message
         )
     }
@@ -272,7 +272,7 @@ struct GitHubActionsRenderer: OutputRendering {
     func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String {
         let message = "Recorded an issue" + (group.numberOfArguments.map { " (\($0)) argument(s)" } ?? "")
         return outputGitHubActionsLog(
-            annotationType: .notice,
+            annotationType: .error,
             message: message
         )
     }
