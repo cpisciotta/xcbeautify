@@ -1,20 +1,22 @@
 import XCTest
 @testable import XcbeautifyLib
 
-final class GitHubActionsRendererTests: XCTestCase {
+final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     private var parser: Parser!
     private var formatter: XcbeautifyLib.Formatter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+
         parser = Parser()
-        formatter = Formatter(colored: false, renderer: .gitHubActions, additionalLines: { nil })
+        formatter = Formatter(colored: false, renderer: .azureDevOpsPipelines, additionalLines: { nil })
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
+
         parser = nil
         formatter = nil
-        try super.tearDownWithError()
     }
 
     private func logFormatted(_ string: String) -> String? {
@@ -52,7 +54,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testClangError() {
         let formatted = logFormatted("clang: error: linker command failed with exit code 1 (use -v to see invocation)")
-        XCTAssertEqual(formatted, "::error ::clang: error: linker command failed with exit code 1 (use -v to see invocation)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]clang: error: linker command failed with exit code 1 (use -v to see invocation)")
     }
 
     func testCleanRemove() {
@@ -86,11 +88,11 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testCompileError() {
         let inputError = "/path/file.swift:64:69: error: cannot find 'input' in scope"
-        let outputError = "::error file=/path/file.swift,line=64,col=69::cannot find 'input' in scope\n\n"
+        let outputError = "##vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
         XCTAssertEqual(logFormatted(inputError), outputError)
 
         let inputFatal = "/path/file.swift:64:69: fatal error: cannot find 'input' in scope"
-        let outputFatal = "::error file=/path/file.swift,line=64,col=69::cannot find 'input' in scope\n\n"
+        let outputFatal = "##vso[task.logissue type=error;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]cannot find 'input' in scope\n\n"
         XCTAssertEqual(logFormatted(inputFatal), outputFatal)
     }
 
@@ -130,7 +132,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testCompileWarning() {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
-        let output = "::warning file=/path/file.swift,line=64,col=69::'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
+        let output = "##vso[task.logissue type=warning;sourcepath=/path/file.swift;linenumber=64;columnnumber=69]'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
         XCTAssertEqual(logFormatted(input), output)
     }
 
@@ -158,7 +160,7 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testCpresource() {
+    func testCPResource() {
         let input = "CpResource /path/to/destination/file.ttf /path/file.ttf (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Copying file.ttf"
         XCTAssertEqual(logFormatted(input), output)
@@ -219,23 +221,24 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testFailingTest() {
         #if os(Linux)
         let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
-        let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
+        let output = "##vso[task.logissue type=error;sourcepath=/path/to/Tests.swift;linenumber=123]    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         #else
         let input = "/path/to/Tests.swift:123: error: -[Tests.Suite testCase] : XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
-        let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
+        let output = "##vso[task.logissue type=error;sourcepath=/path/to/Tests.swift;linenumber=123]    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
         #endif
+
         XCTAssertEqual(logFormatted(input), output)
     }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
-        let output = "::error ::fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
+        let output = "##vso[task.logissue type=error]fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         XCTAssertEqual(logFormatted(input), output)
     }
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "::error file=/path/file.swift::error: no such file or directory:"
+        let output = "##vso[task.logissue type=error;sourcepath=/path/file.swift]error: no such file or directory:"
         XCTAssertEqual(logFormatted(input), output)
     }
 
@@ -257,21 +260,21 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testGenericWarning() {
         let input = "warning: some warning here 123"
-        let output = "::warning ::some warning here 123"
+        let output = "##vso[task.logissue type=warning]some warning here 123"
         XCTAssertEqual(logFormatted(input), output)
     }
 
-    func testLdError() {
+    func testLDError() {
         let inputLdLibraryError = "ld: library not found for -lPods-Yammer"
-        XCTAssertEqual(logFormatted(inputLdLibraryError), "::error ::ld: library not found for -lPods-Yammer")
+        XCTAssertEqual(logFormatted(inputLdLibraryError), "##vso[task.logissue type=error]ld: library not found for -lPods-Yammer")
 
         let inputLdSymbolsError = "ld: symbol(s) not found for architecture x86_64"
-        XCTAssertEqual(logFormatted(inputLdSymbolsError), "::error ::ld: symbol(s) not found for architecture x86_64")
+        XCTAssertEqual(logFormatted(inputLdSymbolsError), "##vso[task.logissue type=error]ld: symbol(s) not found for architecture x86_64")
     }
 
-    func testLdWarning() {
+    func testLDWarning() {
         let input = "ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"
-        let output = "::warning ::ld: embedded dylibs/frameworks only run on iOS 8 or later"
+        let output = "##vso[task.logissue type=warning]ld: embedded dylibs/frameworks only run on iOS 8 or later"
         XCTAssertEqual(logFormatted(input), output)
     }
 
@@ -301,7 +304,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testParallelTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'xctest (49438)' (0.131 seconds)")
-        XCTAssertEqual(formatted, "::error ::    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
     func testParallelTestCasePassed() {
@@ -311,7 +314,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testParallelTestCaseSkipped() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' skipped on 'xctest (49438)' (0.131 seconds)")
-        XCTAssertEqual(formatted, "::notice ::    testBuildTarget on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "    ⊘ [XcbeautifyLibTests] testBuildTarget on 'xctest (49438)' (0.131 seconds)")
     }
 
     func testConcurrentDestinationTestSuiteStarted() {
@@ -321,7 +324,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testConcurrentDestinationTestCaseFailed() {
         let formatted = logFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' failed on 'iPhone X' (77.158 seconds)")
-        XCTAssertEqual(formatted, "::error ::    testBuildTarget on 'iPhone X' (77.158 seconds)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]    testBuildTarget on 'iPhone X' (77.158 seconds)")
     }
 
     func testConcurrentDestinationTestCasePassed() {
@@ -346,10 +349,10 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testParallelTestingFailed() {
         let formatted = logFormatted("Testing failed on 'iPhone X'")
-        XCTAssertEqual(formatted, "::error ::Testing failed on 'iPhone X'")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]Testing failed on 'iPhone X'")
     }
 
-    func testPbxcp() {
+    func testPBXCp() {
         let formatted = logFormatted("PBXCp /Users/admin/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h /Users/admin/Library/Developer/Xcode/DerivedData/Lumberjack-abcd/Build/Products/Release/include/CocoaLumberjack/DDDispatchQueueLogFormatter.h (in target: CocoaLumberjack-Static)")
         XCTAssertEqual(formatted, "[CocoaLumberjack-Static] Copying DDDispatchQueueLogFormatter.h")
     }
@@ -368,7 +371,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testPodsError() {
         let input = "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
-        let output = "::error ::error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
+        let output = "##vso[task.logissue type=error]error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation."
         XCTAssertEqual(logFormatted(input), output)
     }
 
@@ -410,13 +413,13 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testProvisioningProfileRequired() {
         let input = #"MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
-        let output = #"::error ::MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
+        let output = #"##vso[task.logissue type=error]MyProject requires a provisioning profile. Select a provisioning profile for the "Debug" build configuration in the project editor."#
         XCTAssertEqual(logFormatted(input), output)
     }
 
     func testRestartingTests() {
         let formatted = logFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
-        XCTAssertEqual(formatted, "::error ::    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
     }
 
     func testShellCommand() {
@@ -426,12 +429,12 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testSymbolReferencedFrom() {
         let formatted = logFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
-        XCTAssertEqual(formatted, "::error ::  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
     }
 
     func testUndefinedSymbolLocation() {
         let formatted = logFormatted("      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
-        XCTAssertEqual(formatted, "::warning ::      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=warning]      MediaBrowser.ChatGalleryViewController.downloadImage() -> () in MediaBrowser(ChatGalleryViewController.o)")
     }
 
     func testTestCaseMeasured() {
@@ -451,7 +454,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testTestCaseSkipped() {
         #if os(macOS)
         let formatted = logFormatted("Test Case '-[SomeTests testName]' skipped (0.004 seconds).")
-        XCTAssertEqual(formatted, "::notice ::Skipped SomeTests.testName")
+        XCTAssertEqual(formatted, "    ⊘ testName (0.004 seconds)")
         #endif
     }
 
@@ -483,7 +486,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testTiffutil() {
         let input = "TiffUtil file.tiff"
-        XCTAssertNil(logFormatted(input))
+        XCTAssertEqual(logFormatted(input), nil)
     }
 
     func testTouch() {
@@ -491,14 +494,14 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "[XcbeautifyLib] Touching XcbeautifyLib.framework")
     }
 
-    func testUiFailingTest() {
+    func testUIFailingTest() {
         let formatted = logFormatted("    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>")
-        XCTAssertEqual(formatted, "::error file=<unknown>,line=0::    App crashed in <external symbol>")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error;sourcepath=<unknown>;linenumber=0]    App crashed in <external symbol>")
     }
 
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
-        let output = "::warning ::FrameworkName will not be code signed because its settings don't specify a development team."
+        let output = "##vso[task.logissue type=warning]FrameworkName will not be code signed because its settings don't specify a development team."
         XCTAssertEqual(logFormatted(input), output)
     }
 
@@ -580,13 +583,13 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testXcodebuildError() {
         let formatted = logFormatted("xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
-        XCTAssertEqual(formatted, "::error ::xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
+        XCTAssertEqual(formatted, "##vso[task.logissue type=error]xcodebuild: error: Existing file at -resultBundlePath \"/output/file.xcresult\"")
     }
 
     func testXcodeprojError() {
         // Given
         let errorText = #"/path/to/project.xcodeproj: error: No signing certificate "iOS Distribution" found: No "iOS Distribution" signing certificate matching team ID "xxxxx" with a private key was found. (in target 'target' from project 'project')"#
-        let expectedFormatted = "::error file=/path/to/project.xcodeproj::No signing certificate \"iOS Distribution\" found: No \"iOS Distribution\" signing certificate matching team ID \"xxxxx\" with a private key was found. (in target 'target' from project 'project')\n\n"
+        let expectedFormatted = "##vso[task.logissue type=error;sourcepath=/path/to/project.xcodeproj]No signing certificate \"iOS Distribution\" found: No \"iOS Distribution\" signing certificate matching team ID \"xxxxx\" with a private key was found. (in target 'target' from project 'project')\n\n"
 
         // When
         let actualFormatted = logFormatted(errorText)
@@ -598,7 +601,7 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testXcodeprojWarning() {
         // Given
         let errorText = "/Users/xxxxx/Example/Pods/Pods.xcodeproj: warning: The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')"
-        let expectedFormatted = "::warning file=/Users/xxxxx/Example/Pods/Pods.xcodeproj::The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')\n\n"
+        let expectedFormatted = "##vso[task.logissue type=warning;sourcepath=/Users/xxxxx/Example/Pods/Pods.xcodeproj]The iOS deployment target 'IPHONEOS_DEPLOYMENT_TARGET' is set to 9.0, but the range of supported deployment target versions is 11.0 to 16.0.99. (in target 'XXPay' from project 'Pods')\n\n"
 
         // When
         let actualFormatted = logFormatted(errorText)
@@ -609,7 +612,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testDuplicateLocalizedStringKey() {
         let formatted = logFormatted(#"2022-12-07 16:26:40 --- WARNING: Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
-        XCTAssertEqual(formatted, #"::warning ::Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
+        XCTAssertEqual(formatted, #"##vso[task.logissue type=warning]Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
 
     func testTestingStarted() {
@@ -620,63 +623,63 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testSwiftTestingRunCompletion() {
         let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::notice ::Test run with 5 tests passed after 12.345 seconds"
+        let expectedOutput = "Test run with 5 tests passed after 12.345 seconds"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingRunFailed() {
         let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::error ::Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
+        let expectedOutput = "##vso[task.logissue type=error]Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingSuiteFailed() {
         let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::error ::Suite \"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)"
+        let expectedOutput = "##vso[task.logissue type=error]Suite \"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingTestFailed() {
         let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::error ::\"myTest\" (1.234 seconds) 1 issue(s)"
+        let expectedOutput = "##vso[task.logissue type=error]\"myTest\" (1.234 seconds) 1 issue(s)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingTestSkipped() {
         let input = #"􀙟 Test myTest() skipped."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::notice ::Skipped myTest()"
+        let expectedOutput = "    ⊘ myTest() skipped"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingTestSkippedReason() {
         let input = #"􀙟 Test myTest() skipped: "Reason for skipping""#
         let formatted = logFormatted(input)
-        let expectedOutput = "::notice ::Skipped myTest().(Reason for skipping)"
+        let expectedOutput = "    ⊘ myTest() skipped (Reason for skipping)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingIssue() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "::error ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingIssueArguments() {
         let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::error ::Recorded an issue (2) argument(s)"
+        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (2) argument(s)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingIssueDetails() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "::error ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 }

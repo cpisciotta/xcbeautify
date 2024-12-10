@@ -19,6 +19,8 @@ package struct Formatter {
             self.renderer = GitHubActionsRenderer(colored: colored, additionalLines: additionalLines)
         case .teamcity:
             self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
+        case .azureDevOpsPipelines:
+            self.renderer = AzureDevOpsPipelinesRenderer(colored: colored, additionalLines: additionalLines)
         }
     }
 

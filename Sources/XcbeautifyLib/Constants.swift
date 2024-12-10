@@ -43,4 +43,7 @@ public enum Renderer: String {
 
     /// Formats output suitable for TeamCity service messages. Maps to `TeamCityRenderer`.
     case teamcity
+
+    /// Formats output suitable for Azure DevOps Pipeline annotations. Maps to `AzureDevOpsPipelineRenderer`
+    case azureDevOpsPipelines = "azure-devops-pipelines"
 }
