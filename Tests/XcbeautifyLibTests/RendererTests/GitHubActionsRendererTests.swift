@@ -653,21 +653,21 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testSwiftTestingIssue() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "::notice ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        let expectedOutput = "::error ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingIssueArguments() {
         let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
         let formatted = logFormatted(input)
-        let expectedOutput = "::notice ::Recorded an issue (2) argument(s)"
+        let expectedOutput = "::error ::Recorded an issue (2) argument(s)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingIssueDetails() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "::notice ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        let expectedOutput = "::error ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 }
