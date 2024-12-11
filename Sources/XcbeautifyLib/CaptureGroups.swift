@@ -144,7 +144,7 @@ struct ShellCommandCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = command path
     /// $2 = arguments
-    static let regex = XCRegex(pattern: #"^\s{4}(cd|setenv|(?:[\w\/:\s\-.]+?\/)?[\w\-]+)\s(.*)$"#)
+    static let regex = XCRegex(pattern: #"^\s{0,4}(cd|setenv|(?:[\w\/:\s\-.]+?\/)?[\w\-]+)\s(.*)$"#)
 
     let commandPath: String
     let arguments: String
