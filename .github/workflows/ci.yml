@@ -17,37 +17,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - platform: macos-14
-            version:
-              swift_version: "5.9"
-              xcode_version: "15.2"
-          - platform: macos-14
-            version:
-              swift_version: "5.10"
-              xcode_version: "15.4"
-          - platform: macos-15
-            version:
-              swift_version: "6.0"
-              xcode_version: "16.0"
-          # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
-          - platform: ubuntu-latest
-            version:
-              swift_version: "5.9"
-              xcode_version: "15.2"
-          - platform: ubuntu-latest
-            version:
-              swift_version: "5.10"
-              xcode_version: "15.4"
+        platform: [macos-14, ubuntu-22.04]
+        version:
+          - swift_version: "5.9"
+            xcode_version: "15.2"
+          - swift_version: "5.10"
+            xcode_version: "15.4"
+          - swift_version: "6.0"
+            xcode_version: "16.0"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.version.xcode_version }}.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
-      - name: Install Swift and Tools
-        if: ${{ matrix.platform == 'ubuntu-latest' }}
-        uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
-        with:
-          swift-version: ${{ matrix.version.swift_version }}
+
+      - name: Download Swift ${{ matrix.version.swift_version }}
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: wget https://download.swift.org/swift-${{ matrix.version.swift_version }}-release/ubuntu2204/swift-${{ matrix.version.swift_version }}-RELEASE/swift-${{ matrix.version.swift_version }}-RELEASE-ubuntu22.04.tar.gz
+
+      - name: Extract Swift ${{ matrix.version.swift_version }}
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: tar xzf swift-${{ matrix.version.swift_version }}-RELEASE-ubuntu22.04.tar.gz
+
+      - name: Add Swift toolchain to PATH
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: echo "$GITHUB_WORKSPACE/swift-${{ matrix.version.swift_version }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
+
       - run: swift --version
       - run: swift build --disable-sandbox --configuration release -Xswiftc -warnings-as-errors
 
@@ -57,39 +51,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - platform: macos-14
-            version:
-              swift_version: "5.9"
-              xcode_version: "15.2"
-          - platform: macos-14
-            version:
-              swift_version: "5.10"
-              xcode_version: "15.4"
-          - platform: macos-15
-            version:
-              swift_version: "6.0"
-              xcode_version: "16.0"
-          # Add Swift 6.0 to ubuntu-latest when its available via swift-actions/setup-swift
-          - platform: ubuntu-latest
-            version:
-              swift_version: "5.9"
-              xcode_version: "15.2"
-          - platform: ubuntu-latest
-            version:
-              swift_version: "5.10"
-              xcode_version: "15.4"
+        platform: [macos-14, ubuntu-22.04]
+        version:
+          - swift_version: "5.9"
+            xcode_version: "15.2"
+          - swift_version: "5.10"
+            xcode_version: "15.4"
+          - swift_version: "6.0"
+            xcode_version: "16.0"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.version.xcode_version }}.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
       - name: Load Swift Version
         run: echo "SWIFT_VERSION=$(<.swift-version)" >> $GITHUB_ENV
-      - name: Install Swift and Tools
-        if: ${{ matrix.platform == 'ubuntu-latest' }}
-        uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
-        with:
-          swift-version: ${{ matrix.version.swift_version }}
+
+      - name: Download Swift ${{ matrix.version.swift_version }}
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: wget https://download.swift.org/swift-${{ matrix.version.swift_version }}-release/ubuntu2204/swift-${{ matrix.version.swift_version }}-RELEASE/swift-${{ matrix.version.swift_version }}-RELEASE-ubuntu22.04.tar.gz
+      - name: Extract Swift ${{ matrix.version.swift_version }}
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: tar xzf swift-${{ matrix.version.swift_version }}-RELEASE-ubuntu22.04.tar.gz
+      - name: Add Swift toolchain to PATH
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: echo "$GITHUB_WORKSPACE/swift-${{ matrix.version.swift_version }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
+
       - run: swift --version
       - run: swift test --enable-code-coverage
       - name: Prepare Code Coverage
