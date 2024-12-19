@@ -86,5 +86,4 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: info.lcov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}
