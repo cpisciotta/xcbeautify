@@ -83,8 +83,7 @@ jobs:
         run: ./tools/export_coverage
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.version.swift_version == env.SWIFT_VERSION}}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: info.lcov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}
