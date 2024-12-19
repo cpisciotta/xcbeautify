@@ -6,7 +6,11 @@ jobs:
   SwiftFormat:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/nicklockwood/swiftformat:0.54.3
+      image: ghcr.io/nicklockwood/swiftformat:0.55.3
+      env:
+        GITHUB_WORKSPACE: /workspace
+      volumes:
+        - .:/workspace
     steps:
       - uses: actions/checkout@v4
       - run: ./tools/lint
