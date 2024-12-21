@@ -157,6 +157,23 @@ struct ShellCommandCaptureGroup: CaptureGroup {
     }
 }
 
+// FIXME: Refactor this type.
+// Added to temporarily capture unwanted clang output.
+// This type's regex conflicts with ShellCommandCaptureGroup and ProcessPchCommandCaptureGroup.
+struct NonPCHClangCommandCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^\s{0,4}(.*\/usr\/bin\/clang) (?:(?!(?:pch)).)*$"#)
+
+    let xcodePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let xcodePath = groups[safe: 0] else { return nil }
+        self.xcodePath = xcodePath
+    }
+}
+
 struct CleanRemoveCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 

@@ -38,6 +38,8 @@ package struct Formatter {
             return renderer.formatCheckDependencies()
         case let group as CheckDependenciesErrorsCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as NonPCHClangCommandCaptureGroup:
+            return renderer.formatNonPCHClangCommand(group: group)
         case let group as ClangErrorCaptureGroup:
             return renderer.formatError(group: group)
         case let group as CleanRemoveCaptureGroup:
