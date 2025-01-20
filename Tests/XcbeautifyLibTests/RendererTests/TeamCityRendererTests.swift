@@ -445,6 +445,16 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertNil(formatted)
     }
 
+    func testSigningBundle() {
+        let formatted = noColoredFormatted(#"Signing Some_Bundle.bundle (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some_Bundle.bundle"#)
+    }
+
+    func testSigningObjectFile() {
+       let formatted = noColoredFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+       XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+    }
+
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")

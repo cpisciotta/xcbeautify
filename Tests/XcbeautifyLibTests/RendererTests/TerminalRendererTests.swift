@@ -638,6 +638,16 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"Testing started"#)
     }
 
+    func testSigningBundle() {
+        let formatted = noColoredFormatted(#"Signing Some_Bundle.bundle (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some_Bundle.bundle"#)
+    }
+
+    func testSigningObjectFile() {
+       let formatted = noColoredFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+       XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+    }
+
     func testSwiftTestingRunStarted() {
         let input = #"􀟈 Test run started."#
         let output = "Test run started."

@@ -630,6 +630,16 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"Testing started"#)
     }
 
+    func testSigningBundle() {
+        let formatted = logFormatted(#"Signing Some_Bundle.bundle (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some_Bundle.bundle"#)
+    }
+
+    func testSigningObjectFile() {
+       let formatted = logFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+       XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+    }
+
     func testSwiftTestingRunCompletion() {
         let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
         let formatted = logFormatted(input)
