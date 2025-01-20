@@ -82,6 +82,7 @@ package final class Parser {
         ModuleIncludesErrorCaptureGroup.self,
         ParallelTestingFailedCaptureGroup.self,
         ParallelTestCaseFailedCaptureGroup.self,
+        ScanDependenciesCaptureGroup.self,
         ShellCommandCaptureGroup.self,
         UndefinedSymbolLocationCaptureGroup.self,
         PackageFetchingCaptureGroup.self,
