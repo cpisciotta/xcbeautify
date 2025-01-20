@@ -702,7 +702,7 @@ struct LinkingCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = binary filename
     /// $2 = target
-    static let regex = XCRegex(pattern: #"^Ld \/?.*\/(.*?) normal .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    static let regex = XCRegex(pattern: #"^Ld \/?.*\/(.*?) normal (?:.* )?\((?:in target: (.*)|in target '(.*)' from project '.*')\)"#)
     #endif
 
     #if !os(Linux)
@@ -712,11 +712,11 @@ struct LinkingCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) {
         #if os(Linux)
-        assert(groups.count >= 1)
+        assert(groups.count == 1)
         guard let target = groups[safe: 0] else { return nil }
         self.target = target
         #else
-        assert(groups.count >= 2)
+        assert(groups.count == 2)
         guard let binaryFileName = groups[safe: 0], let target = groups.last else { return nil }
         binaryFilename = binaryFileName.lastPathComponent
         self.target = target

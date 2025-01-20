@@ -27,6 +27,16 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertNotNil(CompilationResultCaptureGroup.regex.captureGroups(for: input))
     }
 
+    #if os(macOS)
+    func testMatchLdCaptureGroup() throws {
+        let input = #"Ld /path/to/output/DerivedData/Build/Products/Debug-iphonesimulator/output.o normal (in target 'Target' from project 'Project')"#
+        let groups = try XCTUnwrap(LinkingCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 2)
+        XCTAssertEqual(groups[0], "output.o")
+        XCTAssertEqual(groups[1], "Target")
+    }
+    #endif
+
     func testMatchSwiftDriverJobDiscoveryEmittingModule() {
         let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
         XCTAssertNotNil(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.captureGroups(for: input))
