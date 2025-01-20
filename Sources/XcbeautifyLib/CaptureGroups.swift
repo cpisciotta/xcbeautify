@@ -1879,7 +1879,7 @@ struct TestingStartedCaptureGroup: CaptureGroup {
 struct SigningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"Signing (.+) \(in target '(.+)' from project '(.+)'\)"#)
+    static let regex = XCRegex(pattern: #"^Signing (.+) \(in target '(.+)' from project '(.+)'\)$"#)
 
     let file: String
     let target: String
