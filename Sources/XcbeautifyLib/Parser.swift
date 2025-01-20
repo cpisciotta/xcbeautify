@@ -93,6 +93,7 @@ package final class Parser {
         PackageGraphResolvingEndedCaptureGroup.self,
         PackageGraphResolvedItemCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
+        SigningCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
         SwiftDriverJobDiscoveryCompilingCaptureGroup.self,
         ExecutedWithoutSkippedCaptureGroup.self,

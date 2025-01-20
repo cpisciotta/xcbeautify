@@ -124,6 +124,14 @@ final class ParserTests: XCTestCase {
         XCTAssertNil(parser.parse(line: input))
     }
 
+    func testMatchSigning() throws {
+        let input = "Signing Some+File.bundle (in target 'Target' from project 'Project')"
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SigningCaptureGroup)
+        XCTAssertEqual(captureGroup.file, "Some+File.bundle")
+        XCTAssertEqual(captureGroup.target, "Target")
+        XCTAssertEqual(captureGroup.project, "Project")
+    }
+
     func testMatchSwiftTestingRunStarted() throws {
         let input = "􀟈 Test run started."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunStartedCaptureGroup)

@@ -178,6 +178,8 @@ package struct Formatter {
             return renderer.formatScanDependencies(group: group)
         case let group as ShellCommandCaptureGroup:
             return renderer.formatShellCommand(group: group)
+        case let group as SigningCaptureGroup:
+            return renderer.formatSigning(group: group)
         case let group as SymbolReferencedFromCaptureGroup:
             return renderer.formatSymbolReferencedFrom(group: group)
         case let group as TestCaseMeasuredCaptureGroup:
