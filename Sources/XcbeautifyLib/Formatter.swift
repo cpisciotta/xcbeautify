@@ -218,6 +218,8 @@ package struct Formatter {
             return renderer.formatSwiftDriverJobDiscoveryEmittingModule(group: group)
         case let group as SwiftDriverJobDiscoveryCompilingCaptureGroup:
             return renderer.formatSwiftDriverJobDiscoveryCompiling(group: group)
+        case let group as SwiftEmitModuleCaptureGroup:
+            return renderer.formatSwiftEmitModule(group: group)
         case let group as TestingStartedCaptureGroup:
             return renderer.formatTestingStarted(group: group)
         case let group as SwiftTestingRunStartedCaptureGroup:

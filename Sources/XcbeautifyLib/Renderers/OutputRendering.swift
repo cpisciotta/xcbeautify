@@ -88,6 +88,7 @@ protocol OutputRendering {
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+    func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String?
     func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
     func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
     func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
@@ -595,6 +596,10 @@ extension OutputRendering {
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
         colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
+    }
+
+    func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String? {
+        nil
     }
 
     func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String {
