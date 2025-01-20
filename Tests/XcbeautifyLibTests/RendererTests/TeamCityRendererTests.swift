@@ -451,8 +451,8 @@ final class TeamCityRendererTests: XCTestCase {
     }
 
     func testSigningObjectFile() {
-       let formatted = noColoredFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
-       XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+        let formatted = noColoredFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
     }
 
     func testSymbolReferencedFrom() {

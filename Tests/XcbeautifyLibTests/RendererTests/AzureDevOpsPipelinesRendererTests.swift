@@ -639,8 +639,8 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     }
 
     func testSigningObjectFile() {
-       let formatted = logFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
-       XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+        let formatted = logFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
     }
 
     func testSwiftTestingRunCompletion() {
