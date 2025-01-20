@@ -237,4 +237,9 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(resultFailed.time, "0.001")
         XCTAssertEqual(resultFailed.testCase, "exampleFalse")
     }
+
+    func tesPrecompileModule() throws {
+        let input = try XCTUnwrap(parser.parse(line: "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan") as? PrecompileModuleCaptureGroup)
+        XCTAssertEqual(input.path, "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")
+    }
 }

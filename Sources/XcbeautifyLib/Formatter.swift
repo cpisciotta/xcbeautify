@@ -158,6 +158,8 @@ package struct Formatter {
             return renderer.formatPhaseSuccess(group: group)
         case let group as PodsErrorCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as PrecompileModuleCaptureGroup:
+            return renderer.formatPrecompileModule(group: group)
         case let group as PreprocessCaptureGroup:
             return renderer.formatPreprocess(group: group)
         case let group as ProcessInfoPlistCaptureGroup:
