@@ -295,6 +295,9 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
 
         let formatted2 = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
+
+        let formatted3 = logFormatted("Ld /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/x86_64/Binary/BackyardBirdsData.o normal (in target 'BackyardBirdsData' from project 'BackyardBirdsData')")
+        XCTAssertEqual(formatted3, "[BackyardBirdsData] Linking BackyardBirdsData.o")
         #endif
     }
 
