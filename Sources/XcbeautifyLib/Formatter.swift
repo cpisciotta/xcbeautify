@@ -82,6 +82,8 @@ package struct Formatter {
             return renderer.formatCursor(group: group)
         case let group as DuplicateLocalizedStringKeyCaptureGroup:
             return renderer.formatDuplicateLocalizedStringKey(group: group)
+        case let group as EmitSwiftModuleCaptureGroup:
+            return renderer.formatEmitSwiftModule(group: group)
         case let group as ExecutedWithoutSkippedCaptureGroup:
             return renderer.formatExecutedWithoutSkipped(group: group)
         case let group as ExecutedWithSkippedCaptureGroup:

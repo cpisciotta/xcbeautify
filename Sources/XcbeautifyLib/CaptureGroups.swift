@@ -2252,3 +2252,21 @@ struct SwiftEmitModuleCaptureGroup: CaptureGroup {
         self.project = project
     }
 }
+
+struct EmitSwiftModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^EmitSwiftModule normal (arm64|x86_64|i386) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let arch: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let arch = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.arch = arch
+        self.target = target
+        self.project = project
+    }
+}

@@ -25,6 +25,7 @@ protocol OutputRendering {
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
+    func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String?
     func formatError(group: any ErrorCaptureGroup) -> String
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
@@ -166,6 +167,10 @@ extension OutputRendering {
     }
 
     func formatCursor(group: CursorCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String? {
         nil
     }
 
