@@ -424,6 +424,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "::error ::    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
     }
 
+    func testScanDependencies() {
+        let formatted = logFormatted(#"ScanDependencies /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-ABC123.o /Users/Some/Other-Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-DEF456.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'SomeTarget' from project 'SomeProject')"#)
+        XCTAssertNil(formatted)
+    }
+
     func testShellCommand() {
         let formatted = logFormatted("    cd /foo/bar/baz")
         XCTAssertNil(formatted)

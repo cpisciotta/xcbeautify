@@ -204,6 +204,13 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.numberOfArguments, 2)
     }
 
+    func testMatchScanDependencies() throws {
+        let input = #"ScanDependencies /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-ABC123.o /Users/Some/Other-Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-DEF456.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'SomeTarget' from project 'SomeProject')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ScanDependenciesCaptureGroup)
+        XCTAssertEqual(captureGroup.target, "SomeTarget")
+        XCTAssertEqual(captureGroup.project, "SomeProject")
+    }
+
     func testSwiftDriverTargetCaptureGroup() throws {
         let input = #"SwiftDriver BackyardBirdsData normal arm64 com.apple.xcode.tools.swift.compiler (in target \'BackyardBirdsData\' from project \'BackyardBirdsData\')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftDriverTargetCaptureGroup)

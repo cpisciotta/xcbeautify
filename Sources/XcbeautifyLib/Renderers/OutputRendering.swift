@@ -63,6 +63,7 @@ protocol OutputRendering {
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
     func formatRestartingTest(group: RestartingTestCaptureGroup) -> String
+    func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String?
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String
@@ -312,6 +313,10 @@ extension OutputRendering {
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String {
         let filePath = group.filePath
         return colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
+    }
+
+    func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String? {
+        nil
     }
 
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String? {

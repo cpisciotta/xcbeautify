@@ -172,6 +172,8 @@ package struct Formatter {
             return renderer.formatError(group: group)
         case let group as RestartingTestCaptureGroup:
             return renderer.formatRestartingTest(group: group)
+        case let group as ScanDependenciesCaptureGroup:
+            return renderer.formatScanDependencies(group: group)
         case let group as ShellCommandCaptureGroup:
             return renderer.formatShellCommand(group: group)
         case let group as SymbolReferencedFromCaptureGroup:

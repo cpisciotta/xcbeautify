@@ -1182,6 +1182,22 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
     }
 }
 
+struct ScanDependenciesCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"ScanDependencies .* normal (?:arm64|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
+        self.target = target
+        self.project = project
+    }
+}
+
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
