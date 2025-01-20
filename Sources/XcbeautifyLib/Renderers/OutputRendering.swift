@@ -57,6 +57,7 @@ protocol OutputRendering {
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String
     func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String
     func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String
+    func formatPrecompileModule(group: PrecompileModuleCaptureGroup) -> String?
     func formatPreprocess(group: PreprocessCaptureGroup) -> String
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
@@ -278,6 +279,10 @@ extension OutputRendering {
     func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String {
         let phase = group.phase.capitalized
         return colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
+    }
+
+    func formatPrecompileModule(group: PrecompileModuleCaptureGroup) -> String? {
+        nil
     }
 
     func formatPreprocess(group: PreprocessCaptureGroup) -> String {

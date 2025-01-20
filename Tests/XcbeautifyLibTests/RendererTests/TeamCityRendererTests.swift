@@ -380,6 +380,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testPrecompileModule() {
+        let input = "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan"
+        XCTAssertNil(noColoredFormatted(input))
+    }
+
     func testPreprocess() {
         let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
         let output = "[SomeTarget] Preprocess Something.m"

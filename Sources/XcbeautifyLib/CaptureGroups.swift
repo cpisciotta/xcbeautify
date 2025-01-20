@@ -1054,6 +1054,20 @@ struct PhaseScriptExecutionCaptureGroup: CaptureGroup {
     }
 }
 
+struct PrecompileModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^PrecompileModule (.*\.scan)$"#)
+
+    let path: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let path = groups[safe: 0] else { return nil }
+        self.path = path
+    }
+}
+
 struct ProcessPchCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
