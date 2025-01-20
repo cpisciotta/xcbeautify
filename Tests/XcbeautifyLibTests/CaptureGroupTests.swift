@@ -85,4 +85,13 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[2], "CasePathsTarget")
         XCTAssertEqual(groups[3], "swift-case-paths")
     }
+
+    func testEmitSwiftModule() throws {
+        let input = #"EmitSwiftModule normal arm64 (in target 'Target' from project 'Project')"#
+        let groups = try XCTUnwrap(EmitSwiftModuleCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 3)
+        XCTAssertEqual(groups[0], "arm64")
+        XCTAssertEqual(groups[1], "Target")
+        XCTAssertEqual(groups[2], "Project")
+    }
 }

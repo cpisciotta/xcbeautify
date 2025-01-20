@@ -266,4 +266,11 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "CasePathsTarget")
         XCTAssertEqual(captureGroup.project, "swift-case-paths")
     }
+
+    func testEmitSwiftModule() throws {
+        let captureGroup = try XCTUnwrap(parser.parse(line: #"EmitSwiftModule normal arm64 (in target 'Target' from project 'Project')"#) as? EmitSwiftModuleCaptureGroup)
+        XCTAssertEqual(captureGroup.arch, "arm64")
+        XCTAssertEqual(captureGroup.target, "Target")
+        XCTAssertEqual(captureGroup.project, "Project")
+    }
 }
