@@ -1876,6 +1876,24 @@ struct TestingStartedCaptureGroup: CaptureGroup {
     }
 }
 
+struct SigningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"Signing (.+) \(in target '(.+)' from project '(.+)'\)"#)
+
+    let file: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let file = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.file = file
+        self.target = target
+        self.project = project
+    }
+}
+
 struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 

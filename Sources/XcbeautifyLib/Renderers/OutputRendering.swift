@@ -66,6 +66,7 @@ protocol OutputRendering {
     func formatRestartingTest(group: RestartingTestCaptureGroup) -> String
     func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String?
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
+    func formatSigning(group: SigningCaptureGroup) -> String
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
@@ -327,6 +328,12 @@ extension OutputRendering {
 
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String? {
         nil
+    }
+
+    func formatSigning(group: SigningCaptureGroup) -> String {
+        let target = group.target
+        let file = group.file
+        return colored ? "[\(target.f.Cyan)] \("Signing".s.Bold) \(file)" : "[\(target)] Signing \(file)"
     }
 
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String {
