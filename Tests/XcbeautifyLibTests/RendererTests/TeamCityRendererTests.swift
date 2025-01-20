@@ -430,6 +430,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testRegisterExecutionPolicyException() {
+        let formatted = noColoredFormatted(#"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, "[Target] RegisterExecutionPolicyException output.o")
+    }
+
     func testRestartingTests() {
         let formatted = noColoredFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(formatted, "    ✖ Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")

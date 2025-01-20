@@ -633,6 +633,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"[!] Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
 
+    func testRegisterExecutionPolicyException() {
+        let formatted = noColoredFormatted(#"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, "[Target] RegisterExecutionPolicyException output.o")
+    }
+
     func testTestingStarted() {
         let formatted = noColoredFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)

@@ -267,6 +267,14 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(input.path, "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")
     }
 
+    func testRegisterExecutionPolicyException() throws {
+        let captureGroup = try XCTUnwrap(parser.parse(line: "RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')") as? RegisterExecutionPolicyExceptionCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/path/to/output.o")
+        XCTAssertEqual(captureGroup.filename, "output.o")
+        XCTAssertEqual(captureGroup.target, "Target")
+        XCTAssertEqual(captureGroup.project, "Project")
+    }
+
     func testSwiftEmitModule() throws {
         let captureGroup = try XCTUnwrap(parser.parse(line: #"SwiftEmitModule normal i386 Emitting\ module\ for\ CasePaths (in target 'CasePathsTarget' from project 'swift-case-paths')"#) as? SwiftEmitModuleCaptureGroup)
         XCTAssertEqual(captureGroup.arch, "i386")

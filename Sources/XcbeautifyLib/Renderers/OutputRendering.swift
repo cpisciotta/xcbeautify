@@ -63,6 +63,7 @@ protocol OutputRendering {
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
+    func formatRegisterExecutionPolicyException(group: RegisterExecutionPolicyExceptionCaptureGroup) -> String
     func formatRestartingTest(group: RestartingTestCaptureGroup) -> String
     func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String?
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
@@ -320,6 +321,12 @@ extension OutputRendering {
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String {
         let filePath = group.filePath
         return colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
+    }
+
+    func formatRegisterExecutionPolicyException(group: RegisterExecutionPolicyExceptionCaptureGroup) -> String {
+        let target = group.target
+        let filename = group.filename
+        return colored ? "[\(target.f.Cyan)] \("RegisterExecutionPolicyException".s.Bold) \(filename)" : "[\(target)] RegisterExecutionPolicyException \(filename)"
     }
 
     func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String? {
