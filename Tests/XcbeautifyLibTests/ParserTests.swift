@@ -258,4 +258,12 @@ final class ParserTests: XCTestCase {
         let input = try XCTUnwrap(parser.parse(line: "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan") as? PrecompileModuleCaptureGroup)
         XCTAssertEqual(input.path, "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")
     }
+
+    func testSwiftEmitModule() throws {
+        let captureGroup = try XCTUnwrap(parser.parse(line: #"SwiftEmitModule normal i386 Emitting\ module\ for\ CasePaths (in target 'CasePathsTarget' from project 'swift-case-paths')"#) as? SwiftEmitModuleCaptureGroup)
+        XCTAssertEqual(captureGroup.arch, "i386")
+        XCTAssertEqual(captureGroup.module, "CasePaths")
+        XCTAssertEqual(captureGroup.target, "CasePathsTarget")
+        XCTAssertEqual(captureGroup.project, "swift-case-paths")
+    }
 }
