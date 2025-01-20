@@ -1182,6 +1182,26 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
     }
 }
 
+struct RegisterExecutionPolicyExceptionCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^RegisterExecutionPolicyException (.+\/(.+\..+)) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 4)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
+        self.project = project
+    }
+}
+
 struct ScanDependenciesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 

@@ -628,6 +628,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"##vso[task.logissue type=warning]Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
 
+    func testRegisterExecutionPolicyException() {
+        let formatted = logFormatted(#"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, "[Target] RegisterExecutionPolicyException output.o")
+    }
+
     func testTestingStarted() {
         let formatted = logFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)

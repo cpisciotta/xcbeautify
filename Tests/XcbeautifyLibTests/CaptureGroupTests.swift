@@ -85,6 +85,16 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[0], "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang")
     }
 
+    func testRegisterExecutionPolicyException() throws {
+        let input = #"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#
+        let groups = try XCTUnwrap(RegisterExecutionPolicyExceptionCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 4)
+        XCTAssertEqual(groups[0], "/path/to/output.o")
+        XCTAssertEqual(groups[1], "output.o")
+        XCTAssertEqual(groups[2], "Target")
+        XCTAssertEqual(groups[3], "Project")
+    }
+
     func testSwiftEmitModule() throws {
         let input = #"SwiftEmitModule normal i386 Emitting\ module\ for\ CasePaths (in target 'CasePathsTarget' from project 'swift-case-paths')"#
         let groups = try XCTUnwrap(SwiftEmitModuleCaptureGroup.regex.captureGroups(for: input))

@@ -172,6 +172,8 @@ package struct Formatter {
             return renderer.formatProcessPchCommand(group: group)
         case let group as ProvisioningProfileRequiredCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as RegisterExecutionPolicyExceptionCaptureGroup:
+            return renderer.formatRegisterExecutionPolicyException(group: group)
         case let group as RestartingTestCaptureGroup:
             return renderer.formatRestartingTest(group: group)
         case let group as ScanDependenciesCaptureGroup:
