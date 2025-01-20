@@ -2232,3 +2232,41 @@ struct MkDirCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) { }
 }
+
+struct SwiftEmitModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftEmitModule normal (arm64|x86_64|i386) Emitting\\ module\\ for\\ (.+) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let arch: String
+    let module: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 4)
+        guard let arch = groups[safe: 0], let module = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
+        self.arch = arch
+        self.module = module
+        self.target = target
+        self.project = project
+    }
+}
+
+struct EmitSwiftModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^EmitSwiftModule normal (arm64|x86_64|i386) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let arch: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let arch = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.arch = arch
+        self.target = target
+        self.project = project
+    }
+}
