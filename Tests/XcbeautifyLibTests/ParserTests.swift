@@ -106,6 +106,14 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "BackyardBirdsData")
     }
 
+    func testMatchSwiftDriverJobDiscoveryCompilingCaptureGroup() throws {
+        let input = #"SwiftMergeGeneratedHeaders /Backyard-Birds/Build/Intermediates.noindex/GeneratedModuleMaps/LayeredArtworkLibrary-Swift.h /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary.build/Objects-normal/arm64/LayeredArtworkLibrary-Swift.h /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary.build/Objects-normal/x86_64/LayeredArtworkLibrary-Swift.h (in target 'LayeredArtworkLibraryTarget' from project 'LayeredArtworkLibraryProject')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftMergeGeneratedHeadersCaptureGroup)
+        XCTAssertEqual(captureGroup.headerFilePaths, "/Backyard-Birds/Build/Intermediates.noindex/GeneratedModuleMaps/LayeredArtworkLibrary-Swift.h /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary.build/Objects-normal/arm64/LayeredArtworkLibrary-Swift.h /Backyard-Birds/Build/Intermediates.noindex/LayeredArtworkLibrary.build/Debug/LayeredArtworkLibrary.build/Objects-normal/x86_64/LayeredArtworkLibrary-Swift.h")
+        XCTAssertEqual(captureGroup.target, "LayeredArtworkLibraryTarget")
+        XCTAssertEqual(captureGroup.project, "LayeredArtworkLibraryProject")
+    }
+
     func testMatchExplicitDependency() throws {
         let input = #"        ➜ Explicit dependency on target 'BackyardBirdsData_BackyardBirdsData' in project 'Backyard Birds Data'"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ExplicitDependencyCaptureGroup)
