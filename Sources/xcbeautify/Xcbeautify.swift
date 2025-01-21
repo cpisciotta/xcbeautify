@@ -102,7 +102,11 @@ struct Xcbeautify: ParsableCommand {
         )
 
         while let line = readLine() {
-            guard !line.isEmpty else { continue }
+            // Continue if a line is empty or only contains whitespace.
+            // Create a separate variable, since passing a line with trimmed whitespace changes our ability to parse non-empty lines.
+            let _line = line.trimmingCharacters(in: .whitespaces)
+            guard !_line.isEmpty else { continue }
+
             guard let captureGroup = parser.parse(line: line) else {
                 if preserveUnbeautified {
                     output.write(.undefined, line)
