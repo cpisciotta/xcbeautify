@@ -78,6 +78,8 @@ package struct Formatter {
             return renderer.formatCopy(group: group)
         case let group as CpresourceCaptureGroup:
             return renderer.formatCopy(group: group)
+        case let group as CreateUniversalBinaryCaptureGroup:
+            return renderer.formatCreateUniversalBinary(group: group)
         case let group as CursorCaptureGroup:
             return renderer.formatCursor(group: group)
         case let group as DuplicateLocalizedStringKeyCaptureGroup:

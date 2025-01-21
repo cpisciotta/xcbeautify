@@ -109,6 +109,11 @@ final class TeamCityRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateUniversalBinary() {
+        let formatted = noColoredFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/BackyardBirdsUI.framework/Versions/A/BackyardBirdsUI normal arm64\ x86_64 (in target 'BackyardBirdsUITarget' from project 'BackyardBirdsUIProject')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsUITarget] Create Universal Binary BackyardBirdsUI")
+    }
+
     func testSwiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"

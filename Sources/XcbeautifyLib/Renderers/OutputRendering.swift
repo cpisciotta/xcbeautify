@@ -16,6 +16,7 @@ protocol OutputRendering {
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String?
     func formatCompile(group: any CompileFileCaptureGroup) -> String
+    func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
@@ -167,6 +168,12 @@ extension OutputRendering {
         let firstFilename = group.firstFilename
         let secondFilename = group.secondFilename
         return colored ? "[\(target.f.Cyan)] \("Copy".s.Bold) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
+    }
+
+    func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String {
+        let target = group.target
+        let filename = group.filename
+        return colored ? "[\(target.f.Cyan)] \("Create Universal Binary".s.Bold) \(filename)" : "[\(target)] Create Universal Binary \(filename)"
     }
 
     func formatCursor(group: CursorCaptureGroup) -> String? {

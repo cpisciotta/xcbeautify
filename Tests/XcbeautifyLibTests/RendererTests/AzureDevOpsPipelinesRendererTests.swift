@@ -77,6 +77,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "Signing MyApp.app")
     }
 
+    func testCreateUniversalBinary() {
+        let formatted = logFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsDataTarget] Create Universal Binary BackyardBirdsData.o")
+    }
+
     func testMultipleCodesigns() {
         let formattedApp = logFormatted("CodeSign build/Release/MyApp.app")
         let formattedFramework = logFormatted("CodeSign build/Release/MyFramework.framework/Versions/A (in target 'X' from project 'Y')")
