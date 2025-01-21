@@ -1,3 +1,11 @@
+enum Architecture: String {
+    case arm64
+    case arm64_32
+    case armv7k
+    case i386
+    case x86_64
+}
+
 enum Format {
     static let indent = "    "
 }
