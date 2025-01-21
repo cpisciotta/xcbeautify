@@ -57,9 +57,10 @@ final class CaptureGroupTests: XCTestCase {
     func testScanDependencies() throws {
         let input = #"ScanDependencies /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-ABC123.o /Users/Some/Other-Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-DEF456.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'SomeTarget' from project 'SomeProject')"#
         let groups = try XCTUnwrap(ScanDependenciesCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 2)
-        XCTAssertEqual(groups[0], "SomeTarget")
-        XCTAssertEqual(groups[1], "SomeProject")
+        XCTAssertEqual(groups.count, 3)
+        XCTAssertEqual(groups[0], "x86_64")
+        XCTAssertEqual(groups[1], "SomeTarget")
+        XCTAssertEqual(groups[2], "SomeProject")
     }
 
     func testSigning() throws {

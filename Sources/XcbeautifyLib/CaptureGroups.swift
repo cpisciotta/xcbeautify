@@ -1205,14 +1205,16 @@ struct RegisterExecutionPolicyExceptionCaptureGroup: CaptureGroup {
 struct ScanDependenciesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"ScanDependencies .* normal (?:arm64|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"ScanDependencies .* normal (arm64|arm64_32|armv7k|i386|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
 
+    let arch: Architecture
     let target: String
     let project: String
 
     init?(groups: [String]) {
-        assert(groups.count == 2)
-        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
+        assert(groups.count == 3)
+        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.arch = arch
         self.target = target
         self.project = project
     }
@@ -1928,17 +1930,17 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     // $3 = filenames
     // $4 = target
     // $5 = project
-    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (\S+) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (arm64|arm64_32|armv7k|i386|x86_64) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
 
     let state: String // Currently, the only expected/known value is `normal`
-    let architecture: String
+    let architecture: Architecture
     let filenames: [String]
     let target: String
     let project: String
 
     init?(groups: [String]) {
         assert(groups.count == 5)
-        guard let state = groups[safe: 0], let architecture = groups[safe: 1], let filenamesGroup = groups[safe: 2], let target = groups[safe: 3], let project = groups[safe: 4] else { return nil }
+        guard let state = groups[safe: 0], let _architecture = groups[safe: 1], let architecture = Architecture(rawValue: _architecture), let filenamesGroup = groups[safe: 2], let target = groups[safe: 3], let project = groups[safe: 4] else { return nil }
         self.state = state
         self.architecture = architecture
         filenames = filenamesGroup.components(separatedBy: ", ")
@@ -2247,7 +2249,7 @@ struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
 struct SwiftDriverTargetCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriver (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
 
     let target: String
 
@@ -2261,7 +2263,7 @@ struct SwiftDriverTargetCaptureGroup: CaptureGroup {
 struct SwiftDriverCompilationTarget: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
 
     let target: String
 
@@ -2275,7 +2277,7 @@ struct SwiftDriverCompilationTarget: CaptureGroup {
 struct SwiftDriverCompilationRequirementsCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
 
     let target: String
 
@@ -2297,16 +2299,16 @@ struct MkDirCaptureGroup: CaptureGroup {
 struct SwiftEmitModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftEmitModule normal (arm64|x86_64|i386) Emitting\\ module\\ for\\ (.+) \(in target '(.+)' from project '(.+)'\)$"#)
+    static let regex = XCRegex(pattern: #"^SwiftEmitModule normal (arm64|arm64_32|armv7k|i386|x86_64) Emitting\\ module\\ for\\ (.+) \(in target '(.+)' from project '(.+)'\)$"#)
 
-    let arch: String
+    let arch: Architecture
     let module: String
     let target: String
     let project: String
 
     init?(groups: [String]) {
         assert(groups.count == 4)
-        guard let arch = groups[safe: 0], let module = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
+        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let module = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
         self.arch = arch
         self.module = module
         self.target = target
@@ -2317,15 +2319,15 @@ struct SwiftEmitModuleCaptureGroup: CaptureGroup {
 struct EmitSwiftModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^EmitSwiftModule normal (arm64|x86_64|i386) \(in target '(.+)' from project '(.+)'\)$"#)
+    static let regex = XCRegex(pattern: #"^EmitSwiftModule normal (arm64|arm64_32|armv7k|i386|x86_64) \(in target '(.+)' from project '(.+)'\)$"#)
 
-    let arch: String
+    let arch: Architecture
     let target: String
     let project: String
 
     init?(groups: [String]) {
         assert(groups.count == 3)
-        guard let arch = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
         self.arch = arch
         self.target = target
         self.project = project
