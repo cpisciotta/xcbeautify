@@ -92,6 +92,7 @@ protocol OutputRendering {
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
     func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String?
+    func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String?
     func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
     func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
     func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
@@ -618,6 +619,10 @@ extension OutputRendering {
     }
 
     func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String? {
         nil
     }
 

@@ -653,6 +653,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
     }
 
+    func testSwiftMergeGeneratedHeaders() {
+        let formatted = noColoredFormatted(#"SwiftMergeGeneratedHeaders /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/DerivedSources/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/arm64/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds-Swift.h (in target 'Backyard Birds' from project 'Backyard Birds')"#)
+        XCTAssertNil(formatted)
+    }
+
     func testSwiftTestingRunStarted() {
         let input = #"􀟈 Test run started."#
         let output = "Test run started."

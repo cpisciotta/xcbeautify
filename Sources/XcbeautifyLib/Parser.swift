@@ -108,6 +108,7 @@ package final class Parser {
         TestSuiteAllTestsFailedCaptureGroup.self,
         TestingStartedCaptureGroup.self,
         SwiftEmitModuleCaptureGroup.self,
+        SwiftMergeGeneratedHeadersCaptureGroup.self,
         SwiftTestingRunStartedCaptureGroup.self,
         SwiftTestingRunCompletionCaptureGroup.self,
         SwiftTestingRunFailedCaptureGroup.self,

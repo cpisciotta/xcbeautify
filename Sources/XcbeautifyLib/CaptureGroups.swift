@@ -1947,6 +1947,29 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     }
 }
 
+struct SwiftMergeGeneratedHeadersCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftMergeGeneratedHeaders (.+) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    // TODO: Split this into String array after requiring macOS 13+
+    // Requires: https://github.com/cpisciotta/xcbeautify/issues/358
+    let headerFilePaths: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let headerFilePaths = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        // TODO: Split headerFilePaths by non-escaped whitespace
+        // Requires: https://github.com/cpisciotta/xcbeautify/issues/358
+        // assert(headerFilePaths.allSatisfy { $0.hasSuffix(".h") })
+        self.headerFilePaths = headerFilePaths
+        self.target = target
+        self.project = project
+    }
+}
+
 struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .result
 
