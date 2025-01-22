@@ -476,6 +476,26 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
     }
 }
 
+struct CreateUniversalBinaryCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^CreateUniversalBinary (.+) normal (?:.+) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        filename = filePath.lastPathComponent
+        self.target = target
+        self.project = project
+    }
+}
+
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     static let outputType: OutputType = .result
 

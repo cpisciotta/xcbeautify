@@ -106,6 +106,11 @@ final class TerminalRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateUniversalBinary() {
+        let formatted = noColoredFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Versions/A/LayeredArtworkLibraryFile normal arm64\ x86_64 (in target 'LayeredArtworkLibraryTarget' from project 'LayeredArtworkLibrary')"#)
+        XCTAssertEqual(formatted, "[LayeredArtworkLibraryTarget] Create Universal Binary LayeredArtworkLibraryFile")
+    }
+
     func testSwiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"

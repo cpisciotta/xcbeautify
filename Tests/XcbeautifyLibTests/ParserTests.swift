@@ -41,6 +41,15 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "Backyard Birds")
     }
 
+    func testMatchCreateUniversalBinary() throws {
+        let input = #"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CreateUniversalBinaryCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o")
+        XCTAssertEqual(captureGroup.filename, "BackyardBirdsData.o")
+        XCTAssertEqual(captureGroup.target, "BackyardBirdsDataTarget")
+        XCTAssertEqual(captureGroup.project, "BackyardBirdsDataProject")
+    }
+
     #if os(macOS)
     func testMatchLdCommandObjectWithoutArch() throws {
         let input = #"Ld /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/x86_64/Binary/BackyardBirdsData.o normal (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#
