@@ -20,6 +20,7 @@ protocol OutputRendering {
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
+    func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
     func formatCopy(group: any CopyCaptureGroup) -> String
     func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
@@ -147,6 +148,12 @@ extension OutputRendering {
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
         nil
+    }
+
+    func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String {
+        let filename = group.filename
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Compile XCStrings".s.Bold) \(filename)" : "[\(target)] Compile XCStrings \(filename)"
     }
 
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String? {

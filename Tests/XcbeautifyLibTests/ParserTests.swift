@@ -21,6 +21,15 @@ final class ParserTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testMatchCompileXCStrings() throws {
+        let input = #"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CompileXCStringsCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings")
+        XCTAssertEqual(captureGroup.filename, "Backyards.xcstrings")
+        XCTAssertEqual(captureGroup.target, "BackyardBirdsData_BackyardBirdsData")
+        XCTAssertEqual(captureGroup.project, "BackyardBirdsData")
+    }
+
     func testMatchCopyFilesMatchingSourceAndDestinationFilenames() throws {
         let input = #"Copy /path/to/some/file.swift /path/to/some/other/file.swift (in target 'Target' from project 'Project')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CopyFilesCaptureGroup)

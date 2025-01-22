@@ -17,6 +17,7 @@ package final class Parser {
         SwiftCompileCaptureGroup.self,
         SwiftCompilingCaptureGroup.self,
         CompileCommandCaptureGroup.self,
+        CompileXCStringsCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,
         CopyFilesCaptureGroup.self,
