@@ -190,6 +190,12 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
 
     func testCursor() { }
 
+    func testDetectedEncoding() {
+        let input = #"/Backyard-Birds/Build/Intermediates.noindex/Backyard Birds.build/Debug/Widgets.build/ar.lproj/Localizable.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'Widgets' from project 'Backyard Birds')"#
+        let formatted = logFormatted(input)
+        XCTAssertNil(formatted)
+    }
+
     func testExecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)

@@ -59,6 +59,18 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.project, "BackyardBirdsDataProject")
     }
 
+    func testMatchDetectedEncoding() throws {
+        let input = #"/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings:35:45: note: detected encoding of input file as Unicode (UTF-8) (in target 'BackyardBirdsUI_BackyardBirdsUI' from project 'BackyardBirdsUI')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? DetectedEncodingCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings")
+        XCTAssertEqual(captureGroup.filename, "Localizable.strings")
+        XCTAssertEqual(captureGroup.lineNumber, 35)
+        XCTAssertEqual(captureGroup.columnNumber, 45)
+        XCTAssertEqual(captureGroup.encoding, "Unicode (UTF-8)")
+        XCTAssertEqual(captureGroup.target, "BackyardBirdsUI_BackyardBirdsUI")
+        XCTAssertEqual(captureGroup.project, "BackyardBirdsUI")
+    }
+
     #if os(macOS)
     func testMatchLdCommandObjectWithoutArch() throws {
         let input = #"Ld /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/x86_64/Binary/BackyardBirdsData.o normal (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#

@@ -84,6 +84,8 @@ package struct Formatter {
             return renderer.formatCreateUniversalBinary(group: group)
         case let group as CursorCaptureGroup:
             return renderer.formatCursor(group: group)
+        case let group as DetectedEncodingCaptureGroup:
+            return renderer.formatDetectedEncoding(group: group)
         case let group as DuplicateLocalizedStringKeyCaptureGroup:
             return renderer.formatDuplicateLocalizedStringKey(group: group)
         case let group as EmitSwiftModuleCaptureGroup:
