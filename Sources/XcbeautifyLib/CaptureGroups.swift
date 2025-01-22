@@ -516,6 +516,32 @@ struct CreateUniversalBinaryCaptureGroup: CaptureGroup {
     }
 }
 
+struct DetectedEncodingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^(\/.+):(\d+):(\d+): note: detected encoding of input file as (.+) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let lineNumber: Int
+    let columnNumber: Int
+    let encoding: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 6)
+        guard let filePath = groups[safe: 0], let _lineNumber = groups[safe: 1], let lineNumber = Int(_lineNumber), let _columnNumber = groups[safe: 2], let columnNumber = Int(_columnNumber), let encoding = groups[safe: 3], let target = groups[safe: 4], let project = groups[safe: 5] else { return nil }
+        self.filePath = filePath
+        filename = filePath.lastPathComponent
+        self.lineNumber = lineNumber
+        self.columnNumber = columnNumber
+        self.encoding = encoding
+        self.target = target
+        self.project = project
+    }
+}
+
 struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
     static let outputType: OutputType = .result
 

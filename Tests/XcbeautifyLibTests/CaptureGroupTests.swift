@@ -45,6 +45,18 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[2], "BackyardBirdsDataProject")
     }
 
+    func testMatchDetectedEncoding() throws {
+        let input = #"/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings:35:45: note: detected encoding of input file as Unicode (UTF-8) (in target 'BackyardBirdsUI_BackyardBirdsUI' from project 'BackyardBirdsUI')"#
+        let groups = try XCTUnwrap(DetectedEncodingCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 6)
+        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings")
+        XCTAssertEqual(groups[1], "35")
+        XCTAssertEqual(groups[2], "45")
+        XCTAssertEqual(groups[3], "Unicode (UTF-8)")
+        XCTAssertEqual(groups[4], "BackyardBirdsUI_BackyardBirdsUI")
+        XCTAssertEqual(groups[5], "BackyardBirdsUI")
+    }
+
     #if os(macOS)
     func testMatchLdCaptureGroup() throws {
         let input = #"Ld /path/to/output/DerivedData/Build/Products/Debug-iphonesimulator/output.o normal (in target 'Target' from project 'Project')"#

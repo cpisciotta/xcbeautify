@@ -26,6 +26,7 @@ protocol OutputRendering {
     func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
+    func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
     func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String?
     func formatError(group: any ErrorCaptureGroup) -> String
@@ -210,6 +211,10 @@ extension OutputRendering {
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String {
         let filePath = group.coverageReportFilePath
         return colored ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)" : "Generated code coverage report: \(filePath)"
+    }
+
+    func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String? {
+        nil
     }
 
     func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String {

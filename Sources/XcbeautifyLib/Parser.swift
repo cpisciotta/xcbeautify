@@ -26,6 +26,7 @@ package final class Parser {
         CopyStringsCaptureGroup.self,
         CpresourceCaptureGroup.self,
         CreateUniversalBinaryCaptureGroup.self,
+        DetectedEncodingCaptureGroup.self,
         EmitSwiftModuleCaptureGroup.self,
         ExplicitDependencyCaptureGroup.self,
         FailingTestCaptureGroup.self,
