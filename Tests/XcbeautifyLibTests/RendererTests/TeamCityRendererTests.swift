@@ -142,6 +142,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testCompileXCStrings() {
+        let formatted = noColoredFormatted(#"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsData_BackyardBirdsData] Compile XCStrings Backyards.xcstrings")
+    }
+
     func testCompileXib() {
         let input = "CompileXIB /path/file.xib (in target 'MyApp' from project 'MyProject')"
         let output = "[MyApp] Compiling file.xib"

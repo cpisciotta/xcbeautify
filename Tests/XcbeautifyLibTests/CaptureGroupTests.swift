@@ -27,6 +27,15 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertNotNil(CompilationResultCaptureGroup.regex.captureGroups(for: input))
     }
 
+    func testMatchCompileXCStrings() throws {
+        let input = #"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#
+        let groups = try XCTUnwrap(CompileXCStringsCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 3)
+        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings")
+        XCTAssertEqual(groups[1], "BackyardBirdsData_BackyardBirdsData")
+        XCTAssertEqual(groups[2], "BackyardBirdsData")
+    }
+
     func testMatchCreateUniversalBinary() throws {
         let input = #"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#
         let groups = try XCTUnwrap(CreateUniversalBinaryCaptureGroup.regex.captureGroups(for: input))
