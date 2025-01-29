@@ -2408,15 +2408,13 @@ struct NoteCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = note
     /// $2 = information
-    static let regex = Regex(pattern: "^(note:) (.*)")
+    static let regex = XCRegex(pattern: "^note: (.*)$")
 
     let note: String
-    let information: String
 
     init?(groups: [String]) {
-        assert(groups.count == 2)
-        guard let note = groups[safe: 0], let information = groups[safe: 1] else { return nil }
+        assert(groups.count == 1)
+        guard let note = groups[safe: 0] else { return nil }
         self.note = note
-        self.information = information
     }
 }

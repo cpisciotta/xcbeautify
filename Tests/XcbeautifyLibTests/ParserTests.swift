@@ -330,21 +330,20 @@ final class ParserTests: XCTestCase {
 
     func testMatchNote() throws {
         let inputs = [
-            (note: "note:", information: "Building targets in dependency order"),
-            (note: "Note:", information: "Building targets in dependency order"),
-            (note: "note:", information: "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
-            (note: "Note:", information: "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
-            (note: "note:", information: #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
-            (note: "Note:", information: #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
-            (note: "note:", information: "Target dependency graph (12 targets)"),
-            (note: "Note:", information: "Target dependency graph (12 targets)"),
+            ("note:", "Building targets in dependency order"),
+            ("Note:", "Building targets in dependency order"),
+            ("note:", "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
+            ("Note:", "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
+            ("note:", #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
+            ("Note:", #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
+            ("note:", "Target dependency graph (12 targets)"),
+            ("Note:", "Target dependency graph (12 targets)"),
         ]
 
-        for (note, information) in inputs {
-            let input = "\(note) \(information)"
+        for (keyword, note) in inputs {
+            let input = "\(keyword) \(note)"
             let captureGroup = try XCTUnwrap(parser.parse(line: input) as? NoteCaptureGroup)
             XCTAssertEqual(captureGroup.note, note)
-            XCTAssertEqual(captureGroup.information, information)
         }
     }
 

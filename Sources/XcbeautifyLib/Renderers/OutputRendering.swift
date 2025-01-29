@@ -730,6 +730,6 @@ extension OutputRendering {
     }
 
     func formatNote(group: NoteCaptureGroup) -> String {
-        colored ? group.note.s.Bold.f.Cyan + " " + group.information : group.note + " " + group.information
+        colored ? "note: ".s.Bold.f.Cyan + group.note : "note: " + group.note
     }
 }
