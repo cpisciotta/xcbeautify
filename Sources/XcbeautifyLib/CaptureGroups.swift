@@ -2407,7 +2407,6 @@ struct NoteCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = note
-    /// $2 = information
     static let regex = XCRegex(pattern: "^note: (.*)$")
 
     let note: String
