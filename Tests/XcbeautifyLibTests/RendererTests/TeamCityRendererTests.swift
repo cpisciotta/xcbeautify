@@ -109,6 +109,11 @@ final class TeamCityRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateUniversalBinary() {
+        let formatted = noColoredFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/BackyardBirdsUI.framework/Versions/A/BackyardBirdsUI normal arm64\ x86_64 (in target 'BackyardBirdsUITarget' from project 'BackyardBirdsUIProject')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsUITarget] Create Universal Binary BackyardBirdsUI")
+    }
+
     func testSwiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"
@@ -135,6 +140,11 @@ final class TeamCityRendererTests: XCTestCase {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
         let output = "##teamcity[message text=\'Compile warning|n|[!|]  /path/file.swift:64:69: |\'flatMap|\' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value|n|n\' status=\'WARNING\']\nCompile warning"
         XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testCompileXCStrings() {
+        let formatted = noColoredFormatted(#"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsData_BackyardBirdsData] Compile XCStrings Backyards.xcstrings")
     }
 
     func testCompileXib() {
@@ -180,6 +190,12 @@ final class TeamCityRendererTests: XCTestCase {
     }
 
     func testCursor() { }
+
+    func testDetectedEncoding() {
+        let input = #"/Backyard-Birds/Build/Intermediates.noindex/Backyard Birds.build/Debug/Widgets.build/ar.lproj/Localizable.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'Widgets' from project 'Backyard Birds')"#
+        let formatted = noColoredFormatted(input)
+        XCTAssertNil(formatted)
+    }
 
     func testExecutedWithoutSkipped() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
@@ -286,6 +302,9 @@ final class TeamCityRendererTests: XCTestCase {
 
         let formatted2 = noColoredFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
+
+        let formatted3 = noColoredFormatted("Ld /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/x86_64/Binary/BackyardBirdsData.o normal (in target 'BackyardBirdsData' from project 'BackyardBirdsData')")
+        XCTAssertEqual(formatted3, "[BackyardBirdsData] Linking BackyardBirdsData.o")
         #endif
     }
 
@@ -380,6 +399,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testPrecompileModule() {
+        let input = "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan"
+        XCTAssertNil(noColoredFormatted(input))
+    }
+
     func testPreprocess() {
         let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
         let output = "[SomeTarget] Preprocess Something.m"
@@ -422,13 +446,38 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testRegisterExecutionPolicyException() {
+        let formatted = noColoredFormatted(#"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, "[Target] RegisterExecutionPolicyException output.o")
+    }
+
     func testRestartingTests() {
         let formatted = noColoredFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(formatted, "    ✖ Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
     }
 
+    func testScanDependencies() {
+        let formatted = noColoredFormatted(#"ScanDependencies /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-ABC123.o /Users/Some/Other-Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-DEF456.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'SomeTarget' from project 'SomeProject')"#)
+        XCTAssertNil(formatted)
+    }
+
     func testShellCommand() {
         let formatted = noColoredFormatted("    cd /foo/bar/baz")
+        XCTAssertNil(formatted)
+    }
+
+    func testSigningBundle() {
+        let formatted = noColoredFormatted(#"Signing Some_Bundle.bundle (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some_Bundle.bundle"#)
+    }
+
+    func testSigningObjectFile() {
+        let formatted = noColoredFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+    }
+
+    func testSwiftMergeGeneratedHeaders() {
+        let formatted = noColoredFormatted(#"SwiftMergeGeneratedHeaders /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/DerivedSources/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/arm64/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds-Swift.h (in target 'Backyard Birds' from project 'Backyard Birds')"#)
         XCTAssertNil(formatted)
     }
 
@@ -624,9 +673,85 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(actual, "##teamcity[message text=\'Build error\' errorDetails=\'|[x|] error: Multiple commands produce |\'/Users/admin/teamcity/work/8906de356cda3a27/build/fastlane/Build/Products/Debug-iphonesimulator/some.app/PrivacyInfo.xcprivacy|\'\' status=\'ERROR\']\nBuild error")
     }
 
+    func testSwiftTestingRunCompletion() {
+        let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
+        let output = "##teamcity[message text=\'Test run succeeded\' errorDetails=\'Test run with 5 tests passed after 12.345 seconds\' status=\'INFO\']\nTest run succeeded"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
     func testTestingStarted() {
         let formatted = noColoredFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
+    }
+
+    func testSwiftTestingRunFailed() {
+        let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
+        let formatted = noColoredFormatted(input)
+        let expectedOutput = "##teamcity[message text=\'Test run failed\' errorDetails=\'10 tests failed after 15.678 seconds with 3 issue(s)\' status=\'ERROR\']\nTest run failed"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingSuiteFailed() {
+        let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
+        let formatted = noColoredFormatted(input)
+
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Suite failed\' errorDetails=\'\"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)\' status=\'ERROR\']\nSuite failed")
+    }
+
+    func testSwiftTestingTestFailed() {
+        let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Test failed\' errorDetails=\'\"myTest\" (1.234 seconds) 1 issue(s)\' status=\'ERROR\']\nTest failed")
+    }
+
+    func testSwiftTestingTestSkipped() {
+        let input = #"􀙟 Test "myTest" skipped."#
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Test skipped|n\"myTest\"\' status=\'WARNING\']\nTest skipped")
+    }
+
+    func testSwiftTestingTestSkippedReason() {
+        let input = #"􀙟 Test "myTest" skipped: "Reason for skipping""#
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Test skipped|n\"myTest\" (Reason for skipping)\' status=\'WARNING\']\nTest skipped")
+    }
+
+    func testSwiftTestingIssue() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Recorded an issue|n(PlanTests.swift:43:5: Expectation failed)\' status=\'WARNING\']\nRecorded an issue")
+    }
+
+    func testSwiftTestingIssueArguments() {
+        let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Recorded an issue|n(2 argument(s))\' status=\'WARNING\']\nRecorded an issue")
+    }
+
+    func testSwiftTestingIssueDetails() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, "##teamcity[message text=\'Recorded an issue|n(PlanTests.swift:43:5: Expectation failed)\' status=\'WARNING\']\nRecorded an issue")
+    }
+
+    func testIndentedClangCommand() {
+        let input = #"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
+
+    func testNonIndentedClangCommand() {
+        let input = #"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
+
+    func testSwiftEmitModule() {
+        let input = #"SwiftEmitModule normal i386 Emitting\ module\ for\ CasePaths (in target 'CasePaths' from project 'swift-case-paths')"#
+        XCTAssertNil(noColoredFormatted(input))
+    }
+
+    func testEmitSwiftModule() {
+        let input = "EmitSwiftModule normal arm64 (in target 'Target' from project 'Project')"
+        XCTAssertNil(noColoredFormatted(input))
     }
 
     func testNote() {

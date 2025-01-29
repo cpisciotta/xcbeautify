@@ -4,6 +4,12 @@ import XcbeautifyLib
 
 @main
 struct Xcbeautify: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "A tool to format `swift` and `xcodebuild` command output.",
+        discussion: "EXAMPLE: xcodebuild test ... | xcbeautify",
+        version: version
+    )
+
     enum Report: String, ExpressibleByArgument {
         case junit
     }
@@ -28,12 +34,14 @@ struct Xcbeautify: ParsableCommand {
 
     // swiftformat:disable redundantReturn
 
-    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions | teamcity ).")
+    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions | teamcity | azure-devops-pipelines).")
     var renderer: Renderer = {
         if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
             return .gitHubActions
         } else if ProcessInfo.processInfo.environment["TEAMCITY_VERSION"] != nil {
             return .teamcity
+        } else if ProcessInfo.processInfo.environment["AZURE_DEVOPS_PIPELINES"] != nil {
+            return .azureDevOpsPipelines
         } else {
             return .terminal
         }
@@ -94,7 +102,11 @@ struct Xcbeautify: ParsableCommand {
         )
 
         while let line = readLine() {
-            guard !line.isEmpty else { continue }
+            // Continue if a line is empty or only contains whitespace.
+            // Create a separate variable, since passing a line with trimmed whitespace changes our ability to parse non-empty lines.
+            let _line = line.trimmingCharacters(in: .whitespaces)
+            guard !_line.isEmpty else { continue }
+
             guard let captureGroup = parser.parse(line: line) else {
                 if preserveUnbeautified {
                     output.write(.undefined, line)

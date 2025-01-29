@@ -19,6 +19,8 @@ package struct Formatter {
             self.renderer = GitHubActionsRenderer(colored: colored, additionalLines: additionalLines)
         case .teamcity:
             self.renderer = TeamCityRenderer(colored: colored, additionalLines: additionalLines)
+        case .azureDevOpsPipelines:
+            self.renderer = AzureDevOpsPipelinesRenderer(colored: colored, additionalLines: additionalLines)
         }
     }
 
@@ -36,6 +38,8 @@ package struct Formatter {
             return renderer.formatCheckDependencies()
         case let group as CheckDependenciesErrorsCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as NonPCHClangCommandCaptureGroup:
+            return renderer.formatNonPCHClangCommand(group: group)
         case let group as ClangErrorCaptureGroup:
             return renderer.formatError(group: group)
         case let group as CleanRemoveCaptureGroup:
@@ -62,6 +66,8 @@ package struct Formatter {
             return renderer.formatCompile(group: group)
         case let group as CompileWarningCaptureGroup:
             return renderer.formatCompileWarning(group: group)
+        case let group as CompileXCStringsCaptureGroup:
+            return renderer.formatCompileXCStrings(group: group)
         case let group as CompileXibCaptureGroup:
             return renderer.formatCompile(group: group)
         case let group as CopyFilesCaptureGroup:
@@ -74,10 +80,16 @@ package struct Formatter {
             return renderer.formatCopy(group: group)
         case let group as CpresourceCaptureGroup:
             return renderer.formatCopy(group: group)
+        case let group as CreateUniversalBinaryCaptureGroup:
+            return renderer.formatCreateUniversalBinary(group: group)
         case let group as CursorCaptureGroup:
             return renderer.formatCursor(group: group)
+        case let group as DetectedEncodingCaptureGroup:
+            return renderer.formatDetectedEncoding(group: group)
         case let group as DuplicateLocalizedStringKeyCaptureGroup:
             return renderer.formatDuplicateLocalizedStringKey(group: group)
+        case let group as EmitSwiftModuleCaptureGroup:
+            return renderer.formatEmitSwiftModule(group: group)
         case let group as ExecutedWithoutSkippedCaptureGroup:
             return renderer.formatExecutedWithoutSkipped(group: group)
         case let group as ExecutedWithSkippedCaptureGroup:
@@ -154,6 +166,8 @@ package struct Formatter {
             return renderer.formatPhaseSuccess(group: group)
         case let group as PodsErrorCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as PrecompileModuleCaptureGroup:
+            return renderer.formatPrecompileModule(group: group)
         case let group as PreprocessCaptureGroup:
             return renderer.formatPreprocess(group: group)
         case let group as ProcessInfoPlistCaptureGroup:
@@ -164,10 +178,16 @@ package struct Formatter {
             return renderer.formatProcessPchCommand(group: group)
         case let group as ProvisioningProfileRequiredCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as RegisterExecutionPolicyExceptionCaptureGroup:
+            return renderer.formatRegisterExecutionPolicyException(group: group)
         case let group as RestartingTestCaptureGroup:
             return renderer.formatRestartingTest(group: group)
+        case let group as ScanDependenciesCaptureGroup:
+            return renderer.formatScanDependencies(group: group)
         case let group as ShellCommandCaptureGroup:
             return renderer.formatShellCommand(group: group)
+        case let group as SigningCaptureGroup:
+            return renderer.formatSigning(group: group)
         case let group as SymbolReferencedFromCaptureGroup:
             return renderer.formatSymbolReferencedFrom(group: group)
         case let group as TestCaseMeasuredCaptureGroup:
@@ -210,8 +230,48 @@ package struct Formatter {
             return renderer.formatSwiftDriverJobDiscoveryEmittingModule(group: group)
         case let group as SwiftDriverJobDiscoveryCompilingCaptureGroup:
             return renderer.formatSwiftDriverJobDiscoveryCompiling(group: group)
+        case let group as SwiftEmitModuleCaptureGroup:
+            return renderer.formatSwiftEmitModule(group: group)
+        case let group as SwiftMergeGeneratedHeadersCaptureGroup:
+            return renderer.formatSwiftMergeGeneratedHeaders(group: group)
         case let group as TestingStartedCaptureGroup:
             return renderer.formatTestingStarted(group: group)
+        case let group as SwiftTestingRunStartedCaptureGroup:
+            return renderer.formatSwiftTestingRunStarted(group: group)
+        case let group as SwiftTestingRunCompletionCaptureGroup:
+            return renderer.formatSwiftTestingRunCompletion(group: group)
+        case let group as SwiftTestingRunFailedCaptureGroup:
+            return renderer.formatSwiftTestingRunFailed(group: group)
+        case let group as SwiftTestingSuiteStartedCaptureGroup:
+            return renderer.formatSwiftTestingSuiteStarted(group: group)
+        case let group as SwiftTestingSuitePassedCaptureGroup:
+            return renderer.formatSwiftTestingSuitePassed(group: group)
+        case let group as SwiftTestingSuiteFailedCaptureGroup:
+            return renderer.formatSwiftTestingSuiteFailed(group: group)
+        case let group as SwiftTestingTestStartedCaptureGroup:
+            return renderer.formatSwiftTestingTestStarted(group: group)
+        case let group as SwiftTestingTestPassedCaptureGroup:
+            return renderer.formatSwiftTestingTestPassed(group: group)
+        case let group as SwiftTestingTestFailedCaptureGroup:
+            return renderer.formatSwiftTestingTestFailed(group: group)
+        case let group as SwiftTestingTestSkippedCaptureGroup:
+            return renderer.formatSwiftTestingTestSkipped(group: group)
+        case let group as SwiftTestingTestSkippedReasonCaptureGroup:
+            return renderer.formatSwiftTestingTestSkippedReason(group: group)
+        case let group as SwiftTestingIssueCaptureGroup:
+            return renderer.formatSwiftTestingIssue(group: group)
+        case let group as SwiftTestingIssueArgumentCaptureGroup:
+            return renderer.formatSwiftTestingIssueArguments(group: group)
+        case let group as SwiftTestingPassingArgumentCaptureGroup:
+            return renderer.formatSwiftTestingPassingArgument(group: group)
+        case let group as SwiftDriverTargetCaptureGroup:
+            return renderer.formatSwiftDriverTarget(group: group)
+        case let group as SwiftDriverCompilationTarget:
+            return renderer.formatSwiftDriverCompilationTarget(group: group)
+        case let group as SwiftDriverCompilationRequirementsCaptureGroup:
+            return renderer.formatSwiftDriverCompilationRequirements(group: group)
+        case let group as MkDirCaptureGroup:
+            return renderer.formatMkDirCaptureGroup(group: group)
         case let group as NoteCaptureGroup:
             return renderer.formatNote(group: group)
         default:

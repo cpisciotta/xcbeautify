@@ -1,3 +1,11 @@
+enum Architecture: String {
+    case arm64
+    case arm64_32
+    case armv7k
+    case i386
+    case x86_64
+}
+
 enum Format {
     static let indent = "    "
 }
@@ -30,6 +38,7 @@ package enum OutputType {
     case warning
     case error
     case result
+    case issue
 }
 
 /// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.
@@ -42,4 +51,7 @@ public enum Renderer: String {
 
     /// Formats output suitable for TeamCity service messages. Maps to `TeamCityRenderer`.
     case teamcity
+
+    /// Formats output suitable for Azure DevOps Pipeline annotations. Maps to `AzureDevOpsPipelineRenderer`
+    case azureDevOpsPipelines = "azure-devops-pipelines"
 }

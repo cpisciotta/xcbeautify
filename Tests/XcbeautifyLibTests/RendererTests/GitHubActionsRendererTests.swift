@@ -106,6 +106,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateUniversalBinary() {
+        let formatted = logFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Versions/A/LayeredArtworkLibrary normal arm64\ x86_64 (in target 'LayeredArtworkLibraryTarget' from project 'LayeredArtworkLibraryProject')"#)
+        XCTAssertEqual(formatted, "[LayeredArtworkLibraryTarget] Create Universal Binary LayeredArtworkLibrary")
+    }
+
     func testSwiftCompile_arm64() {
         let input = "SwiftCompile normal arm64 /path/to/File.swift (in target 'Target' from project 'Project')"
         let output = "[Target] Compiling File.swift"
@@ -132,6 +137,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         let input = "/path/file.swift:64:69: warning: 'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value"
         let output = "::warning file=/path/file.swift,line=64,col=69::'flatMap' is deprecated: Please use compactMap(_:) for the case where closure returns an optional value\n\n"
         XCTAssertEqual(logFormatted(input), output)
+    }
+
+    func testCompileXCStrings() {
+        let formatted = logFormatted(#"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsData_BackyardBirdsData] Compile XCStrings Backyards.xcstrings")
     }
 
     func testCompileXib() {
@@ -178,6 +188,12 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testCursor() { }
 
+    func testDetectedEncoding() {
+        let input = #"/Backyard-Birds/Build/Intermediates.noindex/Backyard Birds.build/Debug/Widgets.build/ar.lproj/Localizable.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'Widgets' from project 'Backyard Birds')"#
+        let formatted = logFormatted(input)
+        XCTAssertNil(formatted)
+    }
+
     func testExecuted() throws {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
@@ -216,7 +232,16 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
     #endif
 
-    func testFailingTest() { }
+    func testFailingTest() {
+        #if os(Linux)
+        let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
+        let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
+        #else
+        let input = "/path/to/Tests.swift:123: error: -[Tests.Suite testCase] : XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
+        let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\")"
+        #endif
+        XCTAssertEqual(logFormatted(input), output)
+    }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
@@ -283,6 +308,9 @@ final class GitHubActionsRendererTests: XCTestCase {
 
         let formatted2 = logFormatted("Ld /Users/admin/Library/Developer/Xcode/DerivedData/MyApp-abcd/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/IntermediateBuildFilesPath/MyApp.build/Release-iphoneos/MyApp.build/Objects-normal/armv7/My\\ App normal armv7 (in target: MyApp)")
         XCTAssertEqual(formatted2, "[MyApp] Linking My\\ App")
+
+        let formatted3 = logFormatted("Ld /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/x86_64/Binary/BackyardBirdsData.o normal (in target 'BackyardBirdsData' from project 'BackyardBirdsData')")
+        XCTAssertEqual(formatted3, "[BackyardBirdsData] Linking BackyardBirdsData.o")
         #endif
     }
 
@@ -363,6 +391,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
+    func testPrecompileModule() {
+        let input = "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan"
+        XCTAssertNil(logFormatted(input))
+    }
+
     func testPreprocess() {
         let input = "Preprocess /Example/Example/Something.m normal arm64 (in target 'SomeTarget' from project 'SomeProject')"
         let output = "[SomeTarget] Preprocess Something.m"
@@ -408,6 +441,11 @@ final class GitHubActionsRendererTests: XCTestCase {
     func testRestartingTests() {
         let formatted = logFormatted("Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
         XCTAssertEqual(formatted, "::error ::    Restarting after unexpected exit, crash, or test timeout in HomePresenterTest.testIsCellPresented(); summary will include totals from previous launches.")
+    }
+
+    func testScanDependencies() {
+        let formatted = logFormatted(#"ScanDependencies /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-ABC123.o /Users/Some/Other-Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-DEF456.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'SomeTarget' from project 'SomeProject')"#)
+        XCTAssertNil(formatted)
     }
 
     func testShellCommand() {
@@ -603,9 +641,112 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"::warning ::Key "duplicate" used with multiple values. Value "First" kept. Value "Second" ignored."#)
     }
 
+    func testRegisterExecutionPolicyException() {
+        let formatted = logFormatted(#"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, "[Target] RegisterExecutionPolicyException output.o")
+    }
+
     func testTestingStarted() {
         let formatted = logFormatted(#"Testing started"#)
         XCTAssertEqual(formatted, #"Testing started"#)
+    }
+
+    func testSigningBundle() {
+        let formatted = logFormatted(#"Signing Some_Bundle.bundle (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some_Bundle.bundle"#)
+    }
+
+    func testSigningObjectFile() {
+        let formatted = logFormatted(#"Signing Some+File.o (in target 'Target' from project 'Project')"#)
+        XCTAssertEqual(formatted, #"[Target] Signing Some+File.o"#)
+    }
+
+    func testSwiftMergeGeneratedHeaders() {
+        let formatted = logFormatted(#"SwiftMergeGeneratedHeaders /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/DerivedSources/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/arm64/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds-Swift.h (in target 'Backyard Birds' from project 'Backyard Birds')"#)
+        XCTAssertNil(formatted)
+    }
+
+    func testSwiftTestingRunCompletion() {
+        let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Test run with 5 tests passed after 12.345 seconds"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingRunFailed() {
+        let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingSuiteFailed() {
+        let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Suite \"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestFailed() {
+        let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::\"myTest\" (1.234 seconds) 1 issue(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestSkipped() {
+        let input = #"􀙟 Test myTest() skipped."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Skipped myTest()"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingTestSkippedReason() {
+        let input = #"􀙟 Test myTest() skipped: "Reason for skipping""#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::notice ::Skipped myTest().(Reason for skipping)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssue() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueArguments() {
+        let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Recorded an issue (2) argument(s)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueDetails() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testIndentedClangCommand() {
+        let input = #"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
+        XCTAssertNil(logFormatted(input))
+    }
+
+    func testNonIndentedClangCommand() {
+        let input = #"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
+        XCTAssertNil(logFormatted(input))
+    }
+
+    func testSwiftEmitModule() {
+        let input = #"SwiftEmitModule normal i386 Emitting\ module\ for\ CasePaths (in target 'CasePaths' from project 'swift-case-paths')"#
+        XCTAssertNil(logFormatted(input))
+    }
+
+    func testEmitSwiftModule() {
+        let input = "EmitSwiftModule normal arm64 (in target 'Target' from project 'Project')"
+        XCTAssertNil(logFormatted(input))
     }
 
     func testNote() {

@@ -17,6 +17,7 @@ package final class Parser {
         SwiftCompileCaptureGroup.self,
         SwiftCompilingCaptureGroup.self,
         CompileCommandCaptureGroup.self,
+        CompileXCStringsCaptureGroup.self,
         CompileXibCaptureGroup.self,
         CompileStoryboardCaptureGroup.self,
         CopyFilesCaptureGroup.self,
@@ -24,6 +25,9 @@ package final class Parser {
         CopyPlistCaptureGroup.self,
         CopyStringsCaptureGroup.self,
         CpresourceCaptureGroup.self,
+        CreateUniversalBinaryCaptureGroup.self,
+        DetectedEncodingCaptureGroup.self,
+        EmitSwiftModuleCaptureGroup.self,
         ExplicitDependencyCaptureGroup.self,
         FailingTestCaptureGroup.self,
         UIFailingTestCaptureGroup.self,
@@ -40,6 +44,7 @@ package final class Parser {
         TestCaseMeasuredCaptureGroup.self,
         PhaseSuccessCaptureGroup.self,
         PhaseScriptExecutionCaptureGroup.self,
+        PrecompileModuleCaptureGroup.self,
         ProcessPchCaptureGroup.self,
         ProcessPchCommandCaptureGroup.self,
         PreprocessCaptureGroup.self,
@@ -81,6 +86,7 @@ package final class Parser {
         ModuleIncludesErrorCaptureGroup.self,
         ParallelTestingFailedCaptureGroup.self,
         ParallelTestCaseFailedCaptureGroup.self,
+        ScanDependenciesCaptureGroup.self,
         ShellCommandCaptureGroup.self,
         UndefinedSymbolLocationCaptureGroup.self,
         PackageFetchingCaptureGroup.self,
@@ -89,7 +95,9 @@ package final class Parser {
         PackageGraphResolvingStartCaptureGroup.self,
         PackageGraphResolvingEndedCaptureGroup.self,
         PackageGraphResolvedItemCaptureGroup.self,
+        RegisterExecutionPolicyExceptionCaptureGroup.self,
         DuplicateLocalizedStringKeyCaptureGroup.self,
+        SigningCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
         SwiftDriverJobDiscoveryCompilingCaptureGroup.self,
         ExecutedWithoutSkippedCaptureGroup.self,
@@ -97,6 +105,32 @@ package final class Parser {
         TestSuiteAllTestsPassedCaptureGroup.self,
         TestSuiteAllTestsFailedCaptureGroup.self,
         TestingStartedCaptureGroup.self,
+        ExecutedWithoutSkippedCaptureGroup.self,
+        ExecutedWithSkippedCaptureGroup.self,
+        TestSuiteAllTestsPassedCaptureGroup.self,
+        TestSuiteAllTestsFailedCaptureGroup.self,
+        TestingStartedCaptureGroup.self,
+        SwiftEmitModuleCaptureGroup.self,
+        SwiftMergeGeneratedHeadersCaptureGroup.self,
+        SwiftTestingRunStartedCaptureGroup.self,
+        SwiftTestingRunCompletionCaptureGroup.self,
+        SwiftTestingRunFailedCaptureGroup.self,
+        SwiftTestingSuiteStartedCaptureGroup.self,
+        SwiftTestingTestStartedCaptureGroup.self,
+        SwiftTestingTestPassedCaptureGroup.self,
+        SwiftTestingTestFailedCaptureGroup.self,
+        SwiftTestingSuitePassedCaptureGroup.self,
+        SwiftTestingSuiteFailedCaptureGroup.self,
+        SwiftTestingTestSkippedCaptureGroup.self,
+        SwiftTestingTestSkippedReasonCaptureGroup.self,
+        SwiftTestingIssueCaptureGroup.self,
+        SwiftTestingIssueArgumentCaptureGroup.self,
+        SwiftTestingPassingArgumentCaptureGroup.self,
+        SwiftDriverTargetCaptureGroup.self,
+        SwiftDriverCompilationTarget.self,
+        SwiftDriverCompilationRequirementsCaptureGroup.self,
+        MkDirCaptureGroup.self,
+        NonPCHClangCommandCaptureGroup.self,
         NoteCaptureGroup.self,
     ]
 
@@ -112,25 +146,20 @@ package final class Parser {
             return nil
         }
 
-        // Find first parser that can parse specified string
-        guard let idx = captureGroupTypes.firstIndex(where: { $0.regex.match(string: line) }) else {
-            return nil
+        for (index, captureGroupType) in captureGroupTypes.enumerated() {
+            guard let groups = captureGroupType.regex.captureGroups(for: line) else { continue }
+
+            guard let captureGroup = captureGroupType.init(groups: groups) else {
+                assertionFailure()
+                return nil
+            }
+
+            // Move found parser to the top, so next time it will be checked first
+            captureGroupTypes.insert(captureGroupTypes.remove(at: index), at: 0)
+
+            return captureGroup
         }
 
-        guard let captureGroupType = captureGroupTypes[safe: idx] else {
-            assertionFailure()
-            return nil
-        }
-
-        let groups: [String] = captureGroupType.regex.captureGroups(for: line)
-        guard let captureGroup = captureGroupType.init(groups: groups) else {
-            assertionFailure()
-            return nil
-        }
-
-        // Move found parser to the top, so next time it will be checked first
-        captureGroupTypes.insert(captureGroupTypes.remove(at: idx), at: 0)
-
-        return captureGroup
+        return nil
     }
 }

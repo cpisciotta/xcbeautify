@@ -16,15 +16,19 @@ protocol OutputRendering {
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String?
     func formatCompile(group: any CompileFileCaptureGroup) -> String
+    func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
+    func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
     func formatCopy(group: any CopyCaptureGroup) -> String
     func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
+    func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
+    func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String?
     func formatError(group: any ErrorCaptureGroup) -> String
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
@@ -40,6 +44,7 @@ protocol OutputRendering {
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String
     func formatLinking(group: LinkingCaptureGroup) -> String
+    func formatNonPCHClangCommand(group: NonPCHClangCommandCaptureGroup) -> String?
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String
     func formatPackageEnd() -> String
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String
@@ -56,12 +61,16 @@ protocol OutputRendering {
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String
     func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String
     func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String
+    func formatPrecompileModule(group: PrecompileModuleCaptureGroup) -> String?
     func formatPreprocess(group: PreprocessCaptureGroup) -> String
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String
+    func formatRegisterExecutionPolicyException(group: RegisterExecutionPolicyExceptionCaptureGroup) -> String
     func formatRestartingTest(group: RestartingTestCaptureGroup) -> String
+    func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String?
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
+    func formatSigning(group: SigningCaptureGroup) -> String
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
@@ -85,6 +94,24 @@ protocol OutputRendering {
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+    func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String?
+    func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String?
+    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
+    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String
+    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String?
+    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String
+    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
+    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
+    func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
+    func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
     func formatNote(group: NoteCaptureGroup) -> String
 }
 
@@ -125,6 +152,12 @@ extension OutputRendering {
         nil
     }
 
+    func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String {
+        let filename = group.filename
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Compile XCStrings".s.Bold) \(filename)" : "[\(target)] Compile XCStrings \(filename)"
+    }
+
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String? {
         nil
     }
@@ -146,7 +179,17 @@ extension OutputRendering {
         return colored ? "[\(target.f.Cyan)] \("Copy".s.Bold) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
     }
 
+    func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String {
+        let target = group.target
+        let filename = group.filename
+        return colored ? "[\(target.f.Cyan)] \("Create Universal Binary".s.Bold) \(filename)" : "[\(target)] Create Universal Binary \(filename)"
+    }
+
     func formatCursor(group: CursorCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String? {
         nil
     }
 
@@ -169,6 +212,10 @@ extension OutputRendering {
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String {
         let filePath = group.coverageReportFilePath
         return colored ? "\("Generated".s.Bold) code coverage report: \(filePath.s.Italic)" : "Generated code coverage report: \(filePath)"
+    }
+
+    func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String? {
+        nil
     }
 
     func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String {
@@ -199,6 +246,10 @@ extension OutputRendering {
         let filename = group.binaryFilename
         return colored ? "[\(target.f.Cyan)] \("Linking".s.Bold) \(filename)" : "[\(target)] Linking \(filename)"
         #endif
+    }
+
+    func formatNonPCHClangCommand(group: NonPCHClangCommandCaptureGroup) -> String? {
+        nil
     }
 
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String {
@@ -260,6 +311,10 @@ extension OutputRendering {
         return colored ? "\(phase) Succeeded".s.Bold.f.Green : "\(phase) Succeeded"
     }
 
+    func formatPrecompileModule(group: PrecompileModuleCaptureGroup) -> String? {
+        nil
+    }
+
     func formatPreprocess(group: PreprocessCaptureGroup) -> String {
         let target = group.target
         let file = group.file
@@ -289,8 +344,24 @@ extension OutputRendering {
         return colored ? "\("Preprocessing".s.Bold) \(filePath)" : "Preprocessing \(filePath)"
     }
 
+    func formatRegisterExecutionPolicyException(group: RegisterExecutionPolicyExceptionCaptureGroup) -> String {
+        let target = group.target
+        let filename = group.filename
+        return colored ? "[\(target.f.Cyan)] \("RegisterExecutionPolicyException".s.Bold) \(filename)" : "[\(target)] RegisterExecutionPolicyException \(filename)"
+    }
+
+    func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String? {
+        nil
+    }
+
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String? {
         nil
+    }
+
+    func formatSigning(group: SigningCaptureGroup) -> String {
+        let target = group.target
+        let file = group.file
+        return colored ? "[\(target.f.Cyan)] \("Signing".s.Bold) \(file)" : "[\(target)] Signing \(file)"
     }
 
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String {
@@ -565,6 +636,97 @@ extension OutputRendering {
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
         colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
+    }
+
+    func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String {
+        colored ? group.message.s.Bold : group.message
+    }
+
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
+        "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
+    }
+
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {
+        "Test run with \(group.numberOfTests) tests failed after \(group.totalTime) seconds with \(group.numberOfIssues) issue(s)"
+    }
+
+    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String {
+        "Suite \(group.suiteName) started"
+    }
+
+    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String {
+        "Suite \(group.suiteName) passed after \(group.timeTaken) seconds"
+    }
+
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
+        "Suite \(group.suiteName) failed after \(group.timeTaken) seconds with \(group.numberOfIssues) issue(s)"
+    }
+
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
+        let message = "\(group.testName) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        let wholeMessage = colored ? TestStatus.fail.foreground.Red + " " + message.f.Red : TestStatus.fail + " " + message
+        return Format.indent + wholeMessage
+    }
+
+    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String {
+        let testName = group.testName
+        let timeTaken = group.timeTaken
+        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testName + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + " (\(timeTaken) seconds)"
+    }
+
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
+        let testName = group.testName + " skipped"
+        return colored ? Format.indent + TestStatus.skipped.foreground.Yellow + " " + testName : Format.indent + TestStatus.skipped + " " + testName
+    }
+
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String {
+        let testName = group.testName + " skipped"
+        let reason = group.reason.map { " (\(String($0)))" } ?? ""
+        return colored ? Format.indent + TestStatus.skipped.foreground.Yellow + " " + testName + reason : Format.indent + TestStatus.skipped + " " + testName + reason
+    }
+
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
+        let issueDetails = group.issueDetails.map { " at \($0)" } ?? ""
+        let message = " Test \(group.testDescription) recorded an issue\(issueDetails)"
+        return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
+    }
+
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String {
+        let argumentsInfo = group.numberOfArguments.map { " with \($0) argument(s)" } ?? ""
+        let message = " Test \(group.testDescription) recorded an issue\(argumentsInfo)"
+        return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
+    }
+
+    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverTarget(group: SwiftDriverTargetCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String? {
+        nil
+    }
+
+    func formatSwiftDriverCompilationRequirements(group: SwiftDriverCompilationRequirementsCaptureGroup) -> String? {
+        nil
+    }
+
+    func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String? {
+        nil
     }
 
     func formatNote(group: NoteCaptureGroup) -> String {
