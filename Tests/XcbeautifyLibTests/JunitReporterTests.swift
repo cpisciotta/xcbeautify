@@ -3,189 +3,6 @@ import XcbeautifyLib
 import XCTest
 
 class JunitReporterTests: XCTestCase {
-    private let testLog = """
-    Test Suite 'All tests' started at 2021-11-05 01:08:23.237
-    Test Suite 'xcbeautifyPackageTests.xctest' started at 2021-11-05 01:08:23.238
-    Test Suite 'OutputHandlerTests' started at 2021-11-05 01:08:23.238
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' started.
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testEarlyReturnIfEmptyString]' passed (0.054 seconds).
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' started.
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintAllOutputTypeByDefault]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithError]' started.
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithWarningOrError]' started.
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintOnlyTasksWithWarningOrError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuiet]' started.
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuiet]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuieter]' started.
-    Test Case '-[XcbeautifyLibTests.OutputHandlerTests testPrintTestResultTooIfIsCIAndQuieter]' passed (0.000 seconds).
-    Test Suite 'OutputHandlerTests' passed at 2021-11-05 01:08:23.294.
-         Executed 6 tests, with 0 failures (0 unexpected) in 0.055 (0.056) seconds
-    Test Suite 'XcbeautifyLibTests' started at 2021-11-05 01:08:23.294
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget]' started.
-    /Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/XcbeautifyLibTests.swift:13: error: -[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget]' failed (0.119 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testAnalyze]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testAnalyze]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testAnalyzeTarget]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testAnalyzeTarget]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCheckDependencies]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCheckDependencies]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCheckDependenciesErrors]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCheckDependenciesErrors]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testClangError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testClangError]' passed (0.002 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCleanRemove]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCleanRemove]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCleanTarget]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCleanTarget]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCodesign]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCodesign]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCodesignFramework]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCodesignFramework]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompile]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompile]' passed (0.002 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileCommand]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileCommand]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileStoryboard]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileStoryboard]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileWarning]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileWarning]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileXib]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCompileXib]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testConcurrentDestinationTestCaseFailed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testConcurrentDestinationTestCaseFailed]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testConcurrentDestinationTestCasePassed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testConcurrentDestinationTestCasePassed]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testConcurrentDestinationTestSuiteStarted]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testConcurrentDestinationTestSuiteStarted]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCopyHeader]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCopyHeader]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCopyPlist]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCopyPlist]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCopyStrings]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCopyStrings]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCpresource]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCpresource]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCursor]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testCursor]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testExecuted]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testExecuted]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testFailingTest]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testFailingTest]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testFatalError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testFatalError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testFileMissingError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testFileMissingError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGenerateCoverageData]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGenerateCoverageData]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGeneratedCoverageReport]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGeneratedCoverageReport]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGenerateDsym]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGenerateDsym]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGenericWarning]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testGenericWarning]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLdError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLdError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLdWarning]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLdWarning]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLibtool]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLibtool]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerDuplicateSymbols]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerDuplicateSymbols]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerDuplicateSymbolsLocation]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerDuplicateSymbolsLocation]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerUndefinedSymbolLocation]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerUndefinedSymbolLocation]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerUndefinedSymbols]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinkerUndefinedSymbols]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinking]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testLinking]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testModuleIncludesError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testModuleIncludesError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testNoCertificate]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testNoCertificate]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPackageGraphResolved]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPackageGraphResolved]' passed (0.003 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestCaseAppKitPassed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestCaseAppKitPassed]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestCaseFailed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestCaseFailed]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestCasePassed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestCasePassed]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestingFailed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestingFailed]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestingPassed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestingPassed]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestingStarted]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testParallelTestingStarted]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPbxcp]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPbxcp]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPhaseScriptExecution]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPhaseScriptExecution]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPhaseSuccess]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPhaseSuccess]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPodsError]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPodsError]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPreprocess]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testPreprocess]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessInfoPlist]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessInfoPlist]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessPch]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessPch]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessPchCommand]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessPchCommand]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessPchPlusPlus]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProcessPchPlusPlus]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProvisioningProfileRequired]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testProvisioningProfileRequired]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testRestartingTests]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testRestartingTests]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testShellCommand]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testShellCommand]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testSymbolReferencedFrom]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testSymbolReferencedFrom]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCaseMeasured]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCaseMeasured]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCasePassed]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCasePassed]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCasePending]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCasePending]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCaseStarted]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestCaseStarted]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestsRunCompletion]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestsRunCompletion]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestSuiteStart]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestSuiteStart]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestSuiteStarted]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTestSuiteStarted]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTiffutil]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTiffutil]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTouch]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testTouch]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testUiFailingTest]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testUiFailingTest]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testUndefinedSymbolLocation]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testUndefinedSymbolLocation]' passed (0.001 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWillNotBeCodeSigned]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWillNotBeCodeSigned]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteAuxiliaryFiles]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteAuxiliaryFiles]' passed (0.000 seconds).
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' started.
-    Test Case '-[XcbeautifyLibTests.XcbeautifyLibTests testWriteFile]' skipped (0.000 seconds).
-    Restarting after unexpected exit, crash, or test timeout in SwiftTests.testExample(); summary will include totals from previous launches.
-    Restarting after unexpected exit, crash, or test timeout in -[ObjCTests testExample]; summary will include totals from previous launches.
-    Test Suite 'XcbeautifyLibTests' failed at 2021-11-05 01:08:23.443.
-         Executed 77 tests, with 1 failure (0 unexpected) in 0.147 (0.149) seconds
-    Test Suite 'xcbeautifyPackageTests.xctest' failed at 2021-11-05 01:08:23.443.
-         Executed 83 tests, with 1 failure (0 unexpected) in 0.202 (0.205) seconds
-    Test Suite 'All tests' failed at 2021-11-05 01:08:23.443.
-         Executed 83 tests, with 1 failure (0 unexpected) in 0.202 (0.206) seconds
-    """
 
     private let expectedMacOsXml = """
     <testsuites name="All tests" tests="85" failures="3">
@@ -398,8 +215,10 @@ class JunitReporterTests: XCTestCase {
     """
 
     func testJunitReport() throws {
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
         let reporter = JunitReporter()
-        for component in testLog.components(separatedBy: .newlines) {
+
+        for component in try String(contentsOf: url).components(separatedBy: .newlines) {
             reporter.add(line: component)
         }
         let data = try reporter.generateReport()
@@ -411,34 +230,6 @@ class JunitReporterTests: XCTestCase {
         #endif
         XCTAssertEqual(xml, expectedXml)
     }
-
-    private let parallelTests = """
-    Test suite 'MobileWebURLRouteTest' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
-    Test suite 'BuildFlagTests' started on 'Clone 1 of iPhone 13 mini - xctest (32507)'
-    Test case 'URL_OutgoingEmailTests.test_outgoingEmailLinkName_urlContainsQueryItem_valueIsReturned()' passed on 'Clone 1 of iPhone 13 mini - xctest (32506)' (0.002 seconds)
-    Test case 'MobileWebURLRouteTest.testReportingDescriptionContainsUrl()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.003 seconds)
-    Test case 'URLRoutingComponentsTests.test_init_urlWithQueryItems_queryItemsReturnsCorrectly()' passed on 'Clone 1 of iPhone 13 mini - xctest (32504)' (0.004 seconds)
-    Test case 'BuildFlagTests.test_logClicksToConsole_isFalse()' passed on 'Clone 1 of iPhone 13 mini - xctest (32507)' (0.003 seconds)
-    Test case 'URL_OutgoingEmailTests.test_outgoingEmailToken_urlContainsQueryItem_valueIsReturned()' passed on 'Clone 1 of iPhone 13 mini - xctest (32506)' (0.003 seconds)
-    Test case 'MobileWebURLRouteTest.testRouteContainsUrl()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.002 seconds)
-    Test suite 'GeneratedTestingFlagTests' started on 'Clone 1 of iPhone 13 mini - xctest (32504)'
-    Test case 'BuildFlagTests.test_logEventsToConsole_isFalse()' passed on 'Clone 1 of iPhone 13 mini - xctest (32507)' (0.002 seconds)
-    Test case 'GeneratedTestingFlagTests.test_generatedTesting_expectedValue()' passed on 'Clone 1 of iPhone 13 mini - xctest (32504)' (0.001 seconds)
-    Test suite 'Event_EmailTests' started on 'Clone 1 of iPhone 13 mini - xctest (32505)'
-    Test case 'Event_EmailTests.test_path_isCorrectValue()' passed on 'Clone 1 of iPhone 13 mini - xctest (32505)' (0.001 seconds)
-    Test case 'UserCoordinatorTests.test_loginWithEmailPasswordAndSSO_callsAuthenticationService_thenCallsCompletion()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.015 seconds)
-    Test case 'BuildFlagTests.test_failIntentionally()' failed on 'Clone 1 of iPhone 13 mini - xctest (59522)' (0.278 seconds)
-    Test case 'UserCoordinatorTests.test_refreshLoginToken_failure_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.012 seconds)
-    Test case 'UserCoordinatorTests.test_refreshLoginToken_failure_recordsError()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.014 seconds)
-    Test case 'UserCoordinatorTests.test_refreshLoginToken_success_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.008 seconds)
-    Test case 'UserCoordinatorTests.test_refreshLoginToken_success_storesLoginToken()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.006 seconds)
-    Test case 'UserCoordinatorTests.test_refreshUser_failure_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
-    Test case 'UserCoordinatorTests.test_refreshUser_failure_logsError()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
-    Test case 'UserCoordinatorTests.test_refreshUser_success_completionIsCalled()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
-    Test case 'UserCoordinatorTests.test_refreshUser_success_userIsStoredInUserDefaults()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.006 seconds)
-    Test case 'UserCoordinatorTests.test_refreshUser_success_userPropertyIsUpdated()' passed on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.032 seconds)
-    Test case 'UserCoordinatorTests.test_resetPassword_requestSucceeds_completionCalledWithSuccess()' skipped on 'Clone 1 of iPhone 13 mini - xctest (32503)' (0.005 seconds)
-    """
 
     private let expectedParallelXml = """
     <testsuites name="PARALLEL_TESTS" tests="21" failures="1">
@@ -485,8 +276,9 @@ class JunitReporterTests: XCTestCase {
     """
 
     func testParallelJunitReport() throws {
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
         let reporter = JunitReporter()
-        for component in parallelTests.components(separatedBy: .newlines) {
+        for component in try String(contentsOf: url).components(separatedBy: .newlines) {
             reporter.add(line: component)
         }
         let data = try reporter.generateReport()
