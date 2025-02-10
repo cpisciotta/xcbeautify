@@ -35,7 +35,7 @@ package final class JunitReporter {
         } else if let groups = TestCaseSkippedCaptureGroup.regex.captureGroups(for: line) {
             guard let testCase = generateSkippedTest(groups: groups) else { return }
             components.append(.skippedTest(testCase))
-        } else if let groups = TestSuiteStartCaptureGroup.regex.captureGroups(for: line) {
+        } else if let groups = TestSuiteStartedCaptureGroup.regex.captureGroups(for: line) {
             guard let testStart = generateSuiteStart(groups: groups) else { return }
             components.append(.testSuiteStart(testStart))
         } else if let groups = ParallelTestCaseFailedCaptureGroup.regex.captureGroups(for: line) {
@@ -91,8 +91,8 @@ package final class JunitReporter {
     }
 
     private func generateSuiteStart(groups: [String]) -> String? {
-        guard let group = TestSuiteStartCaptureGroup(groups: groups) else { return nil }
-        return group.testSuiteName
+        guard let group = TestSuiteStartedCaptureGroup(groups: groups) else { return nil }
+        return group.suiteName
     }
 
     package func generateReport() throws -> Data {

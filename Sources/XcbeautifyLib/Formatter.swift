@@ -204,8 +204,6 @@ package struct Formatter {
             return renderer.formatTestSuiteAllTestsFailed(group: group)
         case let group as TestSuiteAllTestsPassedCaptureGroup:
             return renderer.formatTestSuiteAllTestsPassed(group: group)
-        case let group as TestSuiteStartCaptureGroup:
-            return renderer.formatTestSuiteStart(group: group)
         case let group as TestSuiteStartedCaptureGroup:
             return renderer.formatTestSuiteStarted(group: group)
         case let group as TIFFutilCaptureGroup:

@@ -80,7 +80,6 @@ protocol OutputRendering {
     func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String
     func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String
     func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String
-    func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String
     func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String?
     func formatTouch(group: TouchCaptureGroup) -> String
@@ -387,15 +386,8 @@ extension OutputRendering {
         group.wholeResult
     }
 
-    func formatTestSuiteStart(group: TestSuiteStartCaptureGroup) -> String {
-        let testSuite = group.testSuiteName
-        return colored ? testSuite.s.Bold : testSuite
-    }
-
     func formatTestSuiteStarted(group: TestSuiteStartedCaptureGroup) -> String {
-        let testSuite = group.suite
-        let heading = "Test Suite \(testSuite) started"
-        return colored ? heading.s.Bold.f.Cyan : heading
+        "Test Suite '\(group.suiteName)' started at \(group.time)"
     }
 
     func formatTIFFUtil(group: TIFFutilCaptureGroup) -> String? {

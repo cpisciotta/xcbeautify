@@ -488,9 +488,11 @@ final class TerminalRendererTests: XCTestCase {
 
     func testTestCaseStarted() { }
 
-    func testTestSuiteStart() { }
-
-    func testTestSuiteStarted() { }
+    func testTestSuiteStarted() {
+        let input = "Test Suite 'swift-testingPackageTests.xctest' started at 2024-10-09 16:48:58.588."
+        let formatted = noColoredFormatted(input)
+        XCTAssertEqual(formatted, input)
+    }
 
     #if os(macOS)
     func testTestSuiteAllTestsPassed() {
