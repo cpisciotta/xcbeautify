@@ -676,7 +676,7 @@ final class TeamCityRendererTests: XCTestCase {
     }
 
     func testSwiftTestingRunCompletion() {
-        let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
+        let input = #"􁁛  Test run with 5 tests passed after 12.345 seconds."#
         let output = "##teamcity[message text=\'Test run succeeded\' errorDetails=\'Test run with 5 tests passed after 12.345 seconds\' status=\'INFO\']\nTest run succeeded"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
@@ -687,33 +687,33 @@ final class TeamCityRendererTests: XCTestCase {
     }
 
     func testSwiftTestingRunFailed() {
-        let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
+        let input = #"􀢄  Test run with 10 tests failed after 15.678 seconds with 3 issues."#
         let formatted = noColoredFormatted(input)
         let expectedOutput = "##teamcity[message text=\'Test run failed\' errorDetails=\'10 tests failed after 15.678 seconds with 3 issue(s)\' status=\'ERROR\']\nTest run failed"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
     func testSwiftTestingSuiteFailed() {
-        let input = #"􀢄 Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
+        let input = #"􀢄  Suite "MyTestSuite" failed after 8.456 seconds with 2 issues."#
         let formatted = noColoredFormatted(input)
 
         XCTAssertEqual(formatted, "##teamcity[message text=\'Suite failed\' errorDetails=\'\"MyTestSuite\" failed after 8.456 seconds with 2 issue(s)\' status=\'ERROR\']\nSuite failed")
     }
 
     func testSwiftTestingTestFailed() {
-        let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
+        let input = #"􀢄  Test "myTest" failed after 1.234 seconds with 1 issue."#
         let formatted = noColoredFormatted(input)
         XCTAssertEqual(formatted, "##teamcity[message text=\'Test failed\' errorDetails=\'\"myTest\" (1.234 seconds) 1 issue(s)\' status=\'ERROR\']\nTest failed")
     }
 
     func testSwiftTestingTestSkipped() {
-        let input = #"􀙟 Test "myTest" skipped."#
+        let input = #"􀙟  Test "myTest" skipped."#
         let formatted = noColoredFormatted(input)
         XCTAssertEqual(formatted, "##teamcity[message text=\'Test skipped|n\"myTest\"\' status=\'WARNING\']\nTest skipped")
     }
 
     func testSwiftTestingTestSkippedReason() {
-        let input = #"􀙟 Test "myTest" skipped: "Reason for skipping""#
+        let input = #"􀙟  Test "myTest" skipped: "Reason for skipping""#
         let formatted = noColoredFormatted(input)
         XCTAssertEqual(formatted, "##teamcity[message text=\'Test skipped|n\"myTest\" (Reason for skipping)\' status=\'WARNING\']\nTest skipped")
     }
@@ -725,7 +725,7 @@ final class TeamCityRendererTests: XCTestCase {
     }
 
     func testSwiftTestingIssueArguments() {
-        let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
+        let input = #"􀢄  Test "myTest" recorded an issue with 2 arguments."#
         let formatted = noColoredFormatted(input)
         XCTAssertEqual(formatted, "##teamcity[message text=\'Recorded an issue|n(2 argument(s))\' status=\'WARNING\']\nRecorded an issue")
     }
