@@ -153,4 +153,14 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[1], "Target")
         XCTAssertEqual(groups[2], "Project")
     }
+
+    func testMatchTestFailure() {
+        let input = #"/Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/XcbeautifyLibTests.swift:13: error: -[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")"#
+        XCTAssertNotNil(FailingTestCaptureGroup.regex.captureGroups(for: input))
+    }
+
+    func testNegativeMatchTestFailureAsCompileError() {
+        let input = #"/Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/XcbeautifyLibTests.swift:13: error: -[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")"#
+        XCTAssertNil(CompileErrorCaptureGroup.regex.captureGroups(for: input))
+    }
 }
