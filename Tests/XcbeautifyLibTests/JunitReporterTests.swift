@@ -3,7 +3,6 @@ import XcbeautifyLib
 import XCTest
 
 class JunitReporterTests: XCTestCase {
-
     private let expectedMacOsXml = """
     <testsuites name="All tests" tests="85" failures="3">
         <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
