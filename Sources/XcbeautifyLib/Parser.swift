@@ -77,7 +77,6 @@ package final class Parser {
         CursorCaptureGroup.self,
         FatalErrorCaptureGroup.self,
         LDErrorCaptureGroup.self,
-        LinkerDuplicateSymbolsLocationCaptureGroup.self,
         LinkerDuplicateSymbolsCaptureGroup.self,
         LinkerUndefinedSymbolLocationCaptureGroup.self,
         LinkerUndefinedSymbolsCaptureGroup.self,
