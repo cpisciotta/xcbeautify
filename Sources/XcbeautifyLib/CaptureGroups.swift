@@ -1691,22 +1691,6 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
-struct LinkerDuplicateSymbolsLocationCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    static let regex = XCRegex(pattern: #"^\s+(\/.*\.o[\)]?)$"#)
-
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
 struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 

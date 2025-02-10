@@ -118,8 +118,6 @@ package struct Formatter {
             return renderer.formatLibtool(group: group)
         case let group as LinkerDuplicateSymbolsCaptureGroup:
             return renderer.formatLinkerDuplicateSymbolsError(group: group)
-        case let group as LinkerDuplicateSymbolsLocationCaptureGroup:
-            return renderer.formatLinkerDuplicateSymbolsLocation(group: group)
         case let group as LinkerUndefinedSymbolLocationCaptureGroup:
             return renderer.formatLinkerUndefinedSymbolLocation(group: group)
         case let group as LinkerUndefinedSymbolsCaptureGroup:

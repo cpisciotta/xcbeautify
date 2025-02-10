@@ -40,7 +40,6 @@ protocol OutputRendering {
     func formatLdWarning(group: LDWarningCaptureGroup) -> String
     func formatLibtool(group: LibtoolCaptureGroup) -> String
     func formatLinkerDuplicateSymbolsError(group: LinkerDuplicateSymbolsCaptureGroup) -> String
-    func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String
     func formatLinking(group: LinkingCaptureGroup) -> String
@@ -228,10 +227,6 @@ extension OutputRendering {
         let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Building library".s.Bold) \(filename)" : "[\(target)] Building library \(filename)"
-    }
-
-    func formatLinkerDuplicateSymbolsLocation(group: LinkerDuplicateSymbolsLocationCaptureGroup) -> String? {
-        nil
     }
 
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String? {
