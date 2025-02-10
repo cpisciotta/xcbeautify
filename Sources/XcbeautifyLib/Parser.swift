@@ -52,7 +52,6 @@ package final class Parser {
         ProcessInfoPlistCaptureGroup.self,
         TestsRunCompletionCaptureGroup.self,
         TestSuiteStartedCaptureGroup.self,
-        TestSuiteStartCaptureGroup.self,
         TIFFutilCaptureGroup.self,
         TouchCaptureGroup.self,
         WriteFileCaptureGroup.self,

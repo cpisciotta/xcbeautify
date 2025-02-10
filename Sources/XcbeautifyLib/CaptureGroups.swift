@@ -1318,38 +1318,18 @@ struct TestSuiteStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
-    /// $1 = suite
+    /// $1 = suite name
     /// $2 = time
-    #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at(.*)"#)
-    #else
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(?:.*\/)?(.*[ox]ctest.*)' started at(.*)"#)
-    #endif
+    static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at (.*)$"#)
 
-    let suite: String
+    let suiteName: String
     let time: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suite = groups[safe: 0], let time = groups[safe: 1] else { return nil }
-        self.suite = suite
+        assert(groups.count == 2)
+        guard let suiteName = groups[safe: 0], let time = groups[safe: 1] else { return nil }
+        self.suiteName = suiteName
         self.time = time
-    }
-}
-
-struct TestSuiteStartCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .test
-
-    /// Regular expression captured groups:
-    /// $1 = test suite name
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at"#)
-
-    let testSuiteName: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testSuiteName = groups[safe: 0] else { return nil }
-        self.testSuiteName = testSuiteName
     }
 }
 
