@@ -1584,11 +1584,14 @@ struct NoCertificateCaptureGroup: ErrorCaptureGroup {
 struct CompileErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
+    // Includes `(?!\-)` to prevent capturing XCTest failure messages.
+    // Example: /Users/.../Tests.swift:13: error: -[Tests.Tests someTest] : XCTAssertEqual failed: ("Optional("...")") is not equal to ("Optional("....")")
+    //
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = is fatal error
     /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(.*)$"#)
+    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!\-)(.*)$"#)
 
     let filePath: String
     let isFatalError: String
