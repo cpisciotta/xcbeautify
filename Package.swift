@@ -53,9 +53,7 @@ for target in package.targets {
     var settings = target.swiftSettings ?? []
     settings.append(
         contentsOf: [
-            // TODO: Enable `complete` Strict Concurrency
-            // Currently, it's `targeted` since `XMLCoder` surfaces warnings.
-            .enableExperimentalFeature("StrictConcurrency=targeted"),
+            .enableUpcomingFeature("StrictConcurrency=complete"),
             .enableUpcomingFeature("BareSlashRegexLiterals"),
             .enableUpcomingFeature("ConciseMagicFile"),
             .enableUpcomingFeature("DeprecateApplicationMain"),
@@ -65,9 +63,7 @@ for target in package.targets {
             .enableUpcomingFeature("ForwardTrailingClosures"),
             .enableUpcomingFeature("FullTypedThrows"),
             .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
-            // TODO: Enable GlobalConcurrency
-            // Currently, it's disabled since `XMLCoder` surfaces warnings.
-            // .enableUpcomingFeature("GlobalConcurrency"),
+            .enableUpcomingFeature("GlobalConcurrency"),
             .enableUpcomingFeature("ImplicitOpenExistentials"),
             .enableUpcomingFeature("ImportObjcForwardDeclarations"),
             .enableUpcomingFeature("InferSendableFromCaptures"),
