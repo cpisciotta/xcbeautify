@@ -505,8 +505,6 @@ final class TeamCityRendererTests: XCTestCase {
         #endif
     }
 
-    func testTestCasePending() { }
-
     func testTestCaseStarted() { }
 
     func testTestSuiteStarted() {

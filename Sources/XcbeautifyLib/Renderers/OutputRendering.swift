@@ -75,7 +75,6 @@ protocol OutputRendering {
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String
-    func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
     func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String
     func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String
@@ -363,11 +362,6 @@ extension OutputRendering {
         let project = group.project
         let configuration = group.configuration
         return colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".s.Bold.f.Cyan : "\(command) target \(target) of project \(project) with configuration \(configuration)"
-    }
-
-    func formatTestCasePending(group: TestCasePendingCaptureGroup) -> String {
-        let testCase = group.testCase
-        return colored ? Format.indent + TestStatus.pending.foreground.Yellow + " " + testCase + " [PENDING]" : Format.indent + TestStatus.pending + " " + testCase + " [PENDING]"
     }
 
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String? {

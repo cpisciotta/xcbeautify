@@ -484,8 +484,6 @@ final class TerminalRendererTests: XCTestCase {
         #endif
     }
 
-    func testTestCasePending() { }
-
     func testTestCaseStarted() { }
 
     func testTestSuiteStarted() {

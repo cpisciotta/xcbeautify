@@ -484,8 +484,6 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
-    func testTestCasePending() { }
-
     func testTestCaseStarted() { }
 
     func testTestSuiteStarted() {
