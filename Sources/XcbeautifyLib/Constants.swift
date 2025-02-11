@@ -56,7 +56,6 @@ UsageOptionsDescribable where Self: CaseIterable & RawRepresentable<String> {
 
 /// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.
 public enum Renderer: String, CaseIterable, UsageOptionsDescribable {
-    
     /// The default `OutputRendering` type for local and general use. Maps to `TerminalRenderer`.
     case terminal
 

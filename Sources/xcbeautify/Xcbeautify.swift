@@ -9,9 +9,8 @@ struct Xcbeautify: ParsableCommand {
         discussion: "EXAMPLE: xcodebuild test ... | xcbeautify",
         version: version
     )
-    
+
     enum Report: String, ExpressibleByArgument, CaseIterable, UsageOptionsDescribable {
-        
         case junit
     }
 
