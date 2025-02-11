@@ -40,7 +40,6 @@ package final class Parser {
         TestCasePassedCaptureGroup.self,
         TestCaseSkippedCaptureGroup.self,
         TestCaseStartedCaptureGroup.self,
-        TestCasePendingCaptureGroup.self,
         TestCaseMeasuredCaptureGroup.self,
         PhaseSuccessCaptureGroup.self,
         PhaseScriptExecutionCaptureGroup.self,

@@ -194,8 +194,6 @@ package struct Formatter {
             return renderer.formatTestCasePassed(group: group)
         case let group as TestCaseSkippedCaptureGroup:
             return renderer.formatTestCaseSkipped(group: group)
-        case let group as TestCasePendingCaptureGroup:
-            return renderer.formatTestCasePending(group: group)
         case let group as TestCaseStartedCaptureGroup:
             return renderer.formatTestCasesStarted(group: group)
         case let group as TestsRunCompletionCaptureGroup:

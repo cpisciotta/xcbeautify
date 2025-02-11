@@ -865,25 +865,6 @@ struct TestCaseStartedCaptureGroup: CaptureGroup {
     }
 }
 
-struct TestCasePendingCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
-
-    /// Regular expression captured groups:
-    /// $1 = suite
-    /// $2 = test case
-    static let regex = XCRegex(pattern: #"^Test Case\s'-\[(.*?)\s(.*)PENDING\]'\spassed"#)
-
-    let suite: String
-    let testCase: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suite = groups[safe: 0], let testCase = groups[safe: 1] else { return nil }
-        self.suite = suite
-        self.testCase = testCase
-    }
-}
-
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
