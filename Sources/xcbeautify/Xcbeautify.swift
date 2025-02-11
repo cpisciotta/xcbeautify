@@ -35,7 +35,7 @@ struct Xcbeautify: ParsableCommand {
 
     // swiftformat:disable redundantReturn
 
-    @Option(help: "Specify a renderer to format raw xcodebuild output. (Options: \(Renderer.optionsDescription)). (Default: terminal).")
+    @Option(help: "Specify a renderer to format raw xcodebuild output. (Options: \(Renderer.optionsDescription)).")
     var renderer: Renderer = {
         if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
             return .gitHubActions
@@ -50,7 +50,7 @@ struct Xcbeautify: ParsableCommand {
 
     // swiftformat:enable redundantReturn
 
-    @Option(help: "Generate the specified reports. (Options: \(Report.optionsDescription) (Default: none).")
+    @Option(help: "Generate the specified reports. (Options: \(Report.optionsDescription).")
     var report: [Report] = []
 
     @Option(help: "The path to use when generating reports")

@@ -41,12 +41,14 @@ package enum OutputType {
     case issue
 }
 
-public protocol UsageOptionsDescribable {
+// TODO: ArgumentParser will eventually obviate this, once a release is made that includes ExpressibleByArgument.allValueDescriptions.
+/// A protocol to prepare a string description of all of an option's valid settings, based on the option's CaseIterable enum String rawValues.
+package protocol UsageOptionsDescribable {
     static var optionsDescription: String { get }
 }
 
-public extension
-UsageOptionsDescribable where Self: CaseIterable, Self: RawRepresentable, Self.RawValue: StringProtocol {
+package extension
+UsageOptionsDescribable where Self: CaseIterable & RawRepresentable<String> {
     static var optionsDescription: String {
         allCases.map(\.rawValue).joined(separator: " | ")
     }
