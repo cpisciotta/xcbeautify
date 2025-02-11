@@ -2010,7 +2010,7 @@ struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test run.
     /// $1 = message
-    static let regex = XCRegex(pattern: #"^.\s+(Test run started\.)$"#)
+    static let regex = XCRegex(pattern: #"^􀟈  (Test run started\.)$"#)
 
     let message: String
 
@@ -2027,7 +2027,7 @@ struct SwiftTestingRunCompletionCaptureGroup: CaptureGroup {
     /// Regular expression to capture the number of tests and total time.
     /// $1 = number of tests
     /// $2 = total time in seconds
-    static let regex = XCRegex(pattern: #"^.\s+Test run with (\d+) test(?:s)? passed after ([\d.]+) seconds\.$"#)
+    static let regex = XCRegex(pattern: #"^􁁛  Test run with (\d+) test(?:s)? passed after ([\d.]+) seconds\.$"#)
 
     let numberOfTests: Int
     let totalTime: String
@@ -2048,7 +2048,7 @@ struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
     /// $1 = number of tests
     /// $2 = total time in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^.\s+Test run with (\d+) test(?:s)? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Test run with (\d+) test(?:s)? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
 
     let numberOfTests: Int
     let totalTime: String
@@ -2070,7 +2070,7 @@ struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test suite.
     /// $1 = suite name
-    static let regex = XCRegex(pattern: #"^.\s+Suite (.*) started\.$"#)
+    static let regex = XCRegex(pattern: #"^􀟈  Suite (.*) started\.$"#)
 
     let suiteName: String
 
@@ -2086,7 +2086,7 @@ struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test case.
     /// $1 = test name
-    static let regex = XCRegex(pattern: #"^.\s+Test\s+(.*) started\.$"#)
+    static let regex = XCRegex(pattern: #"^􀟈  Test\s+(.*) started\.$"#)
 
     let testName: String
     let wholeMessage: String
@@ -2105,7 +2105,7 @@ struct SwiftTestingSuitePassedCaptureGroup: CaptureGroup {
     /// Regular expression to capture the successful completion of a test suite.
     /// $1 = suite name
     /// $2 = total time taken in seconds
-    static let regex = XCRegex(pattern: #"^.\s+Suite (.*) passed after ([\d.]+) seconds\.$"#)
+    static let regex = XCRegex(pattern: #"^􁁛  Suite (.*) passed after ([\d.]+) seconds\.$"#)
 
     let suiteName: String
     let timeTaken: String
@@ -2126,7 +2126,7 @@ struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
     /// $1 = suite name
     /// $2 = total time taken in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^.\s+Suite (.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Suite (.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
 
     let suiteName: String
     let timeTaken: String
@@ -2150,7 +2150,7 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
     /// $1 = test name
     /// $2 = time taken in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^.\s+Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
 
     let testName: String
     let timeTaken: String
@@ -2173,7 +2173,7 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
     /// Regular expression to capture the successful completion of a test case.
     /// $1 = test name
     /// $2 = time taken in seconds
-    static let regex = XCRegex(pattern: #"^.*Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$"#)
+    static let regex = XCRegex(pattern: #"^􁁛  Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$"#)
 
     let testName: String
     let timeTaken: String
@@ -2192,7 +2192,7 @@ struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture a skipped test case.
     /// $1 = test name
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*) skipped\.$"#)
+    static let regex = XCRegex(pattern: #"^􀙟  Test (.*) skipped\.$"#)
 
     let testName: String
 
@@ -2209,7 +2209,7 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
     /// Regular expression to capture a skipped test case with a reason.
     /// $1 = test name
     /// $2 = optional reason
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*) skipped(?:\s*:\s*"(.*)")?$"#)
+    static let regex = XCRegex(pattern: #"^􀙟  Test (.*) skipped(?:\s*:\s*"(.*)")?$"#)
 
     let testName: String
     let reason: String?
@@ -2228,7 +2228,7 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
     /// Regular expression to capture the symbol, test description, and issue details.
     /// $1 = test description
     /// $2 = issue details
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*?) recorded an issue(?: at (.*))?$"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Test (.*?) recorded an issue(?: at (.*))?$"#)
 
     let testDescription: String
     let issueDetails: String?
@@ -2248,7 +2248,7 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
     /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
     /// $2 = number of arguments (optional)
-    static let regex = XCRegex(pattern: #"^.\s+Test (.*?) recorded an issue(?: with (\d+) arguments?)?"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Test (.*?) recorded an issue(?: with (\d+) arguments?)?"#)
 
     let testDescription: String
     let numberOfArguments: Int?
@@ -2267,7 +2267,7 @@ struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the symbol and number of arguments.
     /// $1 = number of arguments
-    static let regex = XCRegex(pattern: #"^.\s+Passing (\d+) argument[s]?.*$"#)
+    static let regex = XCRegex(pattern: #"^􀟈  Passing (\d+) argument[s]?.*$"#)
 
     let numberOfArguments: Int
 

@@ -171,7 +171,7 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchSwiftTestingRunStarted() throws {
-        let input = "􀟈 Test run started."
+        let input = "􀟈  Test run started."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunStartedCaptureGroup)
         XCTAssertEqual(captureGroup.message, "Test run started.")
     }
@@ -184,7 +184,7 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchSwiftTestingRunFailed() throws {
-        let input = "􀢄 Test run with 7 tests failed after 4.8 seconds with 2 issues."
+        let input = "􀢄  Test run with 7 tests failed after 4.8 seconds with 2 issues."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingRunFailedCaptureGroup)
         XCTAssertEqual(captureGroup.numberOfTests, 7)
         XCTAssertEqual(captureGroup.totalTime, "4.8")
@@ -204,14 +204,14 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchSwiftTestingSuitePassed() throws {
-        let input = "􁁛 Suite TestSuiteName passed after 5.3 seconds."
+        let input = "􁁛  Suite TestSuiteName passed after 5.3 seconds."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingSuitePassedCaptureGroup)
         XCTAssertEqual(captureGroup.suiteName, "TestSuiteName")
         XCTAssertEqual(captureGroup.timeTaken, "5.3")
     }
 
     func testMatchSwiftTestingSuiteFailed() throws {
-        let input = #"􀢄 Suite "AnotherTestSuite" failed after 6.4 seconds with 3 issues."#
+        let input = #"􀢄  Suite "AnotherTestSuite" failed after 6.4 seconds with 3 issues."#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingSuiteFailedCaptureGroup)
         XCTAssertEqual(captureGroup.suiteName, "\"AnotherTestSuite\"")
         XCTAssertEqual(captureGroup.timeTaken, "6.4")
@@ -219,7 +219,7 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchSwiftTestingTestFailed() throws {
-        let input = #"􀢄 Test "SomeTest" failed after 2.5 seconds with 1 issue."#
+        let input = #"􀢄  Test "SomeTest" failed after 2.5 seconds with 1 issue."#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestFailedCaptureGroup)
         XCTAssertEqual(captureGroup.testName, "\"SomeTest\"")
         XCTAssertEqual(captureGroup.timeTaken, "2.5")
@@ -227,20 +227,20 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchSwiftTestingTestPassed() throws {
-        let input = "􁁛 Test SampleTest passed after 3.0 seconds."
+        let input = "􁁛  Test SampleTest passed after 3.0 seconds."
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestPassedCaptureGroup)
         XCTAssertEqual(captureGroup.testName, "SampleTest")
         XCTAssertEqual(captureGroup.timeTaken, "3.0")
     }
 
     func testMatchSwiftTestingTestSkipped() throws {
-        let input = #"􀙟 Test "SkippedTest" skipped."#
+        let input = #"􀙟  Test "SkippedTest" skipped."#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestSkippedCaptureGroup)
         XCTAssertEqual(captureGroup.testName, "\"SkippedTest\"")
     }
 
     func testMatchSwiftTestingTestSkippedWithReason() throws {
-        let input = #"􀙟 Test "SkippedTest" skipped: "Not relevant for this platform.""#
+        let input = #"􀙟  Test "SkippedTest" skipped: "Not relevant for this platform.""#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingTestSkippedReasonCaptureGroup)
         XCTAssertEqual(captureGroup.testName, "\"SkippedTest\"")
         XCTAssertEqual(captureGroup.reason, "Not relevant for this platform.")
@@ -254,7 +254,7 @@ final class ParserTests: XCTestCase {
     }
 
     func testMatchSwiftTestingPassingArgument() throws {
-        let input = #"􀟈 Passing 2 arguments input → "argument1, argument2""#
+        let input = #"􀟈  Passing 2 arguments input → "argument1, argument2""#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SwiftTestingPassingArgumentCaptureGroup)
         XCTAssertEqual(captureGroup.numberOfArguments, 2)
     }
