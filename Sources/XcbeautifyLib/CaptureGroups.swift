@@ -2209,7 +2209,7 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
     /// Regular expression to capture the symbol, test description, and issue details.
     /// $1 = test description
     /// $2 = issue details
-    static let regex = XCRegex(pattern: #"^􀢄  Test (.*?) recorded an issue(?: at (.*))?$"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Test (.*?) recorded an issue at (.*)$"#)
 
     let testDescription: String
     let issueDetails: String?
@@ -2229,7 +2229,7 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
     /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
     /// $2 = number of arguments (optional)
-    static let regex = XCRegex(pattern: #"^􀢄  Test (.*?) recorded an issue(?: with (\d+) arguments?)?"#)
+    static let regex = XCRegex(pattern: #"^􀢄  Test (.*?) recorded an issue with (\d+) arguments?"#)
 
     let testDescription: String
     let numberOfArguments: Int?
