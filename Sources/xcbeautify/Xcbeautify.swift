@@ -9,8 +9,9 @@ struct Xcbeautify: ParsableCommand {
         discussion: "EXAMPLE: xcodebuild test ... | xcbeautify",
         version: version
     )
-
-    enum Report: String, ExpressibleByArgument {
+    
+    enum Report: String, ExpressibleByArgument, CaseIterable, UsageOptionsDescribable {
+        
         case junit
     }
 
@@ -34,7 +35,7 @@ struct Xcbeautify: ParsableCommand {
 
     // swiftformat:disable redundantReturn
 
-    @Option(help: "Specify a renderer to format raw xcodebuild output ( options: terminal | github-actions | teamcity | azure-devops-pipelines).")
+    @Option(help: "Specify a renderer to format raw xcodebuild output. (Options: \(Renderer.optionsDescription)). (Default: terminal).")
     var renderer: Renderer = {
         if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
             return .gitHubActions
@@ -49,7 +50,7 @@ struct Xcbeautify: ParsableCommand {
 
     // swiftformat:enable redundantReturn
 
-    @Option(help: "Generate the specified reports")
+    @Option(help: "Generate the specified reports. (Options: \(Report.optionsDescription) (Default: none).")
     var report: [Report] = []
 
     @Option(help: "The path to use when generating reports")

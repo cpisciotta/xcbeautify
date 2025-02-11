@@ -41,8 +41,20 @@ package enum OutputType {
     case issue
 }
 
+public protocol UsageOptionsDescribable {
+    static var optionsDescription: String { get }
+}
+
+public extension
+UsageOptionsDescribable where Self: CaseIterable, Self: RawRepresentable, Self.RawValue: StringProtocol {
+    static var optionsDescription: String {
+        allCases.map(\.rawValue).joined(separator: " | ")
+    }
+}
+
 /// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.
-public enum Renderer: String {
+public enum Renderer: String, CaseIterable, UsageOptionsDescribable {
+    
     /// The default `OutputRendering` type for local and general use. Maps to `TerminalRenderer`.
     case terminal
 
