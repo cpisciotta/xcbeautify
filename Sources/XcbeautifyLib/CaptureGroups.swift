@@ -2067,7 +2067,7 @@ struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the start of a test case.
     /// $1 = test name
-    static let regex = XCRegex(pattern: #"^􀟈  Test\s+(.*) started\.$"#)
+    static let regex = XCRegex(pattern: #"^􀟈  Test (?!run )(.*) started\.$"#)
 
     let testName: String
     let wholeMessage: String
