@@ -49,7 +49,7 @@ struct Xcbeautify: ParsableCommand {
 
     // swiftformat:enable redundantReturn
 
-    @Option(help: "Generate the specified reports. (Options: \(Report.optionsDescription).")
+    @Option(help: "Generate the specified reports. (Options: \(Report.optionsDescription)).")
     var report: [Report] = []
 
     @Option(help: "The path to use when generating reports")
