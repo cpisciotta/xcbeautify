@@ -1,0 +1,26 @@
+Test Suite 'Selected tests' started at 2025-02-17 08:27:32.491
+Test Suite 'Selected tests' passed at 2025-02-17 08:27:32.497
+         Executed 0 tests, with 0 failures (0 unexpected) in 0.0 (0.0) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.0.3 (18c42c19cac3faf)
+◇ Suite AnalyzeErrorTests started.
+◇ Test analyze_updateRepository_invalidPackageCachePath() started.
+◇ Test analyze_getPackageInfo_gitCheckout_error() started.
+◇ Test analyze_refreshCheckout_failed() started.
+◇ Test analyze_dumpPackage_missing_manifest() started.
+✘ Test analyze_getPackageInfo_gitCheckout_error() recorded an issue at AnalyzeErrorTests.swift:120:6: Caught error: PSQLError – Generic description to prevent accidental leakage of sensitive data. For debugging details, use `String(reflecting: error)`.
+✘ Test analyze_dumpPackage_missing_manifest() recorded an issue at AnalyzeErrorTests.swift:149:6: Caught error: PSQLError – Generic description to prevent accidental leakage of sensitive data. For debugging details, use `String(reflecting: error)`.
+✘ Test analyze_updateRepository_invalidPackageCachePath() recorded an issue at AnalyzeErrorTests.swift:92:6: Caught error: PSQLError – Generic description to prevent accidental leakage of sensitive data. For debugging details, use `String(reflecting: error)`.
+✘ Test analyze_dumpPackage_missing_manifest() failed after 0.064 seconds with 1 issue.
+✘ Test analyze_updateRepository_invalidPackageCachePath() failed after 0.065 seconds with 1 issue.
+✘ Test analyze_getPackageInfo_gitCheckout_error() failed after 0.064 seconds with 1 issue.
+✔ Test analyze_refreshCheckout_failed() passed after 1.198 seconds.
+✘ Suite AnalyzeErrorTests failed after 1.199 seconds with 3 issues.
+↳ // Test analysis error handling.
+↳ //
+↳ // This suite of tests ensures that errors in batch analysis do not impact processing
+↳ // of later packages.
+↳ //
+↳ // We analyze two packages where the first package is set up to encounter
+↳ // various error states and ensure the second package is successfully processed.
+✘ Test run with 4 tests failed after 1.200 seconds with 3 issues.
