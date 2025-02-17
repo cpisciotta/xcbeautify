@@ -1,0 +1,13 @@
+Test Suite 'All tests' started at 2025-02-17 12:38:15.972.
+Test Suite 'All tests' passed at 2025-02-17 12:38:15.974.
+     Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+􀟈  Test run started.
+􀄵  Testing Library Version: 94 (arm64e-apple-macos13.0)
+􀟈  Test example() started.
+􀟈  Test secondExample() started.
+􀙟  Test skippedTest() skipped: "Skipping this test"
+􁁛  Test example() passed after 0.001 seconds.
+􀢄  Test secondExample() recorded an issue at DemoSwiftTestingTests.swift:11:5: Expectation failed: true == false
+􀄵  // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+􀢄  Test secondExample() failed after 0.001 seconds with 1 issue.
+􀢄  Test run with 3 tests failed after 0.001 seconds with 1 issue.
