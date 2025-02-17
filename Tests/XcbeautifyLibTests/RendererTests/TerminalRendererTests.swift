@@ -675,67 +675,67 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testSwiftTestingRunStarted() {
-        let input = #"􀟈  Test run started."#
+        let input = #"􀟈 Test run started."#
         let output = "Test run started."
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingRunCompletion() {
-        let input = #"􁁛  Test run with 5 tests passed after 12.345 seconds."#
+        let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
         let output = "Test run with 5 tests passed after 12.345 seconds"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingRunFailed() {
-        let input = #"􀢄  Test run with 10 tests failed after 15.678 seconds with 3 issues."#
+        let input = #"􀢄 Test run with 10 tests failed after 15.678 seconds with 3 issues."#
         let output = "Test run with 10 tests failed after 15.678 seconds with 3 issue(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingSuiteStarted() {
-        let input = #"􀟈  Suite MyTestSuite started."#
+        let input = #"􀟈 Suite MyTestSuite started."#
         let output = "Suite MyTestSuite started"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingSuitePassed() {
-        let input = #"􁁛  Suite MyTestSuite passed after 5.123 seconds."#
+        let input = #"􁁛 Suite MyTestSuite passed after 5.123 seconds."#
         let output = "Suite MyTestSuite passed after 5.123 seconds"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingSuiteFailed() {
-        let input = #"􀢄  Suite "My Test Suite" failed after 8.456 seconds with 2 issues."#
+        let input = #"􀢄 Suite "My Test Suite" failed after 8.456 seconds with 2 issues."#
         let output = "Suite \"My Test Suite\" failed after 8.456 seconds with 2 issue(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingTestPassed() {
-        let input = #"􁁛  Test myTest passed after 0.678 seconds."#
+        let input = #"􁁛 Test myTest passed after 0.678 seconds."#
         let output = "    ✔ myTest (0.678 seconds)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingTestFailed() {
-        let input = #"􀢄  Test "myTest" failed after 1.234 seconds with 1 issue."#
+        let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
         let output = "    ✖ \"myTest\" (1.234 seconds) 1 issue(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingTestSkipped() {
-        let input = #"􀙟  Test "myTest" skipped."#
+        let input = #"􀙟 Test "myTest" skipped."#
         let output = "    ⊘ \"myTest\" skipped"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingTestSkippedReason() {
-        let input = #"􀙟  Test "myTest" skipped: "Reason for skipping""#
+        let input = #"􀙟 Test "myTest" skipped: "Reason for skipping""#
         let output = "    ⊘ \"myTest\" skipped (Reason for skipping)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
     func testSwiftTestingIssue() {
-        let input = #"􀢄  Test "myTest" recorded an issue with 2 arguments."#
+        let input = #"􀢄 Test "myTest" recorded an issue with 2 arguments."#
         let output = "    [!]  Test \"myTest\" recorded an issue with 2 argument(s)"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
