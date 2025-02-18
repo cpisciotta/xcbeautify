@@ -708,7 +708,7 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
 
 struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^generated\s+coverage\s+report:\s+(.+)"#)
+    static let regex = XCRegex(pattern: #"^Generated coverage report: (.+)"#)
 
     let coverageReportFilePath: String
 
