@@ -47,7 +47,7 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     func testCheckDependenciesErrors() { }
 
     func testCheckDependencies() {
-        let command = "Check Dependencies"
+        let command = "Check dependencies"
         let formatted = logFormatted(command)
         XCTAssertEqual(formatted, command)
     }
