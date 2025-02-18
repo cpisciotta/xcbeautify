@@ -779,7 +779,7 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = coverage report file path
-    static let regex = XCRegex(pattern: #"^generating\s+coverage\s+data\.*"#)
+    static let regex = XCRegex(pattern: #"^Generating\s+coverage\s+data\.*$"#)
 
     private init() { }
 
