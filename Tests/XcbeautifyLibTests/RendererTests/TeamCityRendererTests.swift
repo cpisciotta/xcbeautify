@@ -54,7 +54,7 @@ final class TeamCityRendererTests: XCTestCase {
     func testCheckDependenciesErrors() { }
 
     func testCheckDependencies() {
-        let command = "Check Dependencies"
+        let command = "Check dependencies"
         let formatted = noColoredFormatted(command)
         XCTAssertEqual(formatted, command)
     }
