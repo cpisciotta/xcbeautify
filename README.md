@@ -49,12 +49,17 @@ import PackageDescription
 
 let package = Package(
     name: "BuildTools",
-    platforms: [.macOS(.v10_11)],
     dependencies: [
-      .package(url: "https://github.com/cpisciotta/xcbeautify", from: "1.7.0"),
+      .package(url: "https://github.com/cpisciotta/xcbeautify", from: "2.23.0"), // Update as needed to the latest version
     ],
     targets: [
-      .target(name: "BuildTools", path: "")
+        .target(
+            name: "BuildTools",
+            dependencies: [
+                .product(name: "XcbeautifyLib", package: "xcbeautify"),
+            ],
+            path: ""
+        )
     ]
 )
 ```
