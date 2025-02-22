@@ -253,6 +253,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
+    func testValidate() {
+        let formatted = logFormatted(#"Validate /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app (in target 'Backyard Birds Target' from project 'Backyard Birds')"#)
+        XCTAssertEqual(formatted, #"[Backyard Birds Target] Validate Backyard\ Birds.app"#)
+    }
+
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         let output = "::error ::fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"

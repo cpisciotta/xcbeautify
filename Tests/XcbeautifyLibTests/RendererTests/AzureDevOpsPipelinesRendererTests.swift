@@ -548,6 +548,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "##vso[task.logissue type=error;sourcepath=<unknown>;linenumber=0]    App crashed in <external symbol>")
     }
 
+    func testValidate() {
+        let formatted = logFormatted("Validate /path/to/DerivedData/Build/Products/Debug-iphonesimulator/some.app (in target 'Target' from project 'Project')")
+        XCTAssertEqual(formatted, "[Target] Validate some.app")
+    }
+
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
         let output = "##vso[task.logissue type=warning]FrameworkName will not be code signed because its settings don't specify a development team."

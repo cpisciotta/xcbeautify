@@ -394,4 +394,13 @@ final class ParserTests: XCTestCase {
             XCTAssertNil(parser.parse(line: input))
         }
     }
+
+    func testValidate() throws {
+        let input = #"Validate /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app (in target 'Backyard Birds Target' from project 'Backyard Birds')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ValidateCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, #"/Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app"#)
+        XCTAssertEqual(captureGroup.filename, #"Backyard\ Birds.app"#)
+        XCTAssertEqual(captureGroup.target, "Backyard Birds Target")
+        XCTAssertEqual(captureGroup.project, "Backyard Birds")
+    }
 }

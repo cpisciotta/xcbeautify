@@ -56,6 +56,7 @@ package final class Parser {
         TestSuiteStartedCaptureGroup.self,
         TIFFutilCaptureGroup.self,
         TouchCaptureGroup.self,
+        ValidateCaptureGroup.self,
         WriteFileCaptureGroup.self,
         WriteAuxiliaryFileCaptureGroup.self,
         ParallelTestCasePassedCaptureGroup.self,

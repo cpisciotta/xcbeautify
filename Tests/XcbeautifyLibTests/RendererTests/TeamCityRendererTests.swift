@@ -566,6 +566,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "    ✖ <unknown>:0, App crashed in <external symbol>")
     }
 
+    func testValidate() {
+        let formatted = noColoredFormatted("Validate /path/to/DerivedData/Build/Products/Debug-iphonesimulator/some.app (in target 'Target' from project 'Project')")
+        XCTAssertEqual(formatted, "[Target] Validate some.app")
+    }
+
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
         let output = "##teamcity[message text=\'Codesign error|n|[!|] FrameworkName will not be code signed because its settings don|\'t specify a development team.\' status=\'WARNING\']\nCodesign error"
