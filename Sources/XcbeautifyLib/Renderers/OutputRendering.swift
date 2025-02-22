@@ -90,6 +90,7 @@ protocol OutputRendering {
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String
     func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String
     func formatValidate(group: ValidateCaptureGroup) -> String
+    func formatValidateEmbeddedBinary(group: ValidateEmbeddedBinaryCaptureGroup) -> String
     func formatWarning(group: GenericWarningCaptureGroup) -> String
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
@@ -425,6 +426,12 @@ extension OutputRendering {
         let target = group.target
         let filename = group.filename
         return colored ? "[\(target.f.Cyan)] \("Validate".s.Bold) \(filename)" : "[\(target)] Validate \(filename)"
+    }
+
+    func formatValidateEmbeddedBinary(group: ValidateEmbeddedBinaryCaptureGroup) -> String {
+        let target = group.target
+        let filename = group.filename
+        return colored ? "[\(target.f.Cyan)] \("Validate Embedded Binary".s.Bold) \(filename)" : "[\(target)] Validate Embedded Binary \(filename)"
     }
 
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String? {

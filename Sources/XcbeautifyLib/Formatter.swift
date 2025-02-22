@@ -230,6 +230,8 @@ package struct Formatter {
             return renderer.formatWriteFile(group: group)
         case let group as ValidateCaptureGroup:
             return renderer.formatValidate(group: group)
+        case let group as ValidateEmbeddedBinaryCaptureGroup:
+            return renderer.formatValidateEmbeddedBinary(group: group)
         case let group as XcodebuildErrorCaptureGroup:
             return renderer.formatError(group: group)
         case let group as SwiftDriverJobDiscoveryEmittingModuleCaptureGroup:

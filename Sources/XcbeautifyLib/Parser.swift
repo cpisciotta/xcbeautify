@@ -58,6 +58,7 @@ package final class Parser {
         TIFFutilCaptureGroup.self,
         TouchCaptureGroup.self,
         ValidateCaptureGroup.self,
+        ValidateEmbeddedBinaryCaptureGroup.self,
         WriteFileCaptureGroup.self,
         WriteAuxiliaryFileCaptureGroup.self,
         ParallelTestCasePassedCaptureGroup.self,

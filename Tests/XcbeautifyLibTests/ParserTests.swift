@@ -410,4 +410,13 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "Backyard Birds Target")
         XCTAssertEqual(captureGroup.project, "Backyard Birds")
     }
+
+    func testValidateEmbeddedBinary() throws {
+        let input = #"ValidateEmbeddedBinary /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex (in target 'Backyard Birds Target' from project 'Backyard Birds Project')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ValidateEmbeddedBinaryCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, #"/Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex"#)
+        XCTAssertEqual(captureGroup.filename, "Widgets.appex")
+        XCTAssertEqual(captureGroup.target, "Backyard Birds Target")
+        XCTAssertEqual(captureGroup.project, "Backyard Birds Project")
+    }
 }

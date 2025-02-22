@@ -1483,6 +1483,26 @@ struct ValidateCaptureGroup: CaptureGroup {
     }
 }
 
+struct ValidateEmbeddedBinaryCaptureGroup: CaptureGroup {
+    static var outputType: OutputType = .task
+
+    static var regex = XCRegex(pattern: #"^ValidateEmbeddedBinary (.+) \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        filename = filePath.lastPathComponent
+        self.target = target
+        self.project = project
+    }
+}
+
 struct WriteFileCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 

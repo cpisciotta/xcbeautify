@@ -555,6 +555,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, #"[Backyard Birds Target] Validate Backyard\ Birds.app"#)
     }
 
+    func testValidateEmbeddedBinary() {
+        let formatted = noColoredFormatted(#"ValidateEmbeddedBinary /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex (in target 'Backyard Birds' from project 'Backyard Birds')"#)
+        XCTAssertEqual(formatted, "[Backyard Birds] Validate Embedded Binary Widgets.appex")
+    }
+
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
         let output = "[!] FrameworkName will not be code signed because its settings don't specify a development team."
