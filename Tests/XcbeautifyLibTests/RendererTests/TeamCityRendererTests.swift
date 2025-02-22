@@ -576,6 +576,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "[Target] Validate some.app")
     }
 
+    func testValidateEmbeddedBinary() {
+        let formatted = noColoredFormatted(#"ValidateEmbeddedBinary /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex (in target 'Backyard Birds' from project 'Backyard Birds')"#)
+        XCTAssertEqual(formatted, "[Backyard Birds] Validate Embedded Binary Widgets.appex")
+    }
+
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
         let output = "##teamcity[message text=\'Codesign error|n|[!|] FrameworkName will not be code signed because its settings don|\'t specify a development team.\' status=\'WARNING\']\nCodesign error"
