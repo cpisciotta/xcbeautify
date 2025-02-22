@@ -265,6 +265,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
+    func testGenerateAssetSymbols() {
+        let formatted = logFormatted("GenerateAssetSymbols /Backyard-Birds/LayeredArtworkLibrary/Assets-Catalog.xcassets (in target 'LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')")
+        XCTAssertEqual(formatted, "[LayeredArtworkLibrary] Generate Asset Symbols Assets-Catalog.xcassets")
+    }
+
     func testGenerateCoverageData() {
         let formatted = logFormatted("Generating coverage data...")
         XCTAssertEqual(formatted, "Generating code coverage data...")

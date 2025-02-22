@@ -256,6 +256,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testGenerateAssetSymbols() {
+        let formatted = noColoredFormatted("GenerateAssetSymbols /Backyard-Birds/BackyardBirdsData/Assets.xcassets (in target 'BackyardBirdsData' from project 'BackyardBirdsData')")
+        XCTAssertEqual(formatted, "[BackyardBirdsData] Generate Asset Symbols Assets.xcassets")
+    }
+
     func testGenerateCoverageData() {
         let formatted = noColoredFormatted("Generating coverage data...")
         XCTAssertEqual(formatted, "Generating code coverage data...")

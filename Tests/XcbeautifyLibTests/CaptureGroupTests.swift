@@ -73,6 +73,15 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[5], "BackyardBirdsUI")
     }
 
+    func testMatchGenerateAssetSymbols() throws {
+        let input = #"GenerateAssetSymbols /Backyard-Birds/Widgets/Assets.xcassets (in target 'Widgets' from project 'Backyard Birds')"#
+        let groups = try XCTUnwrap(GenerateAssetSymbolsCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 3)
+        XCTAssertEqual(groups[0], "/Backyard-Birds/Widgets/Assets.xcassets")
+        XCTAssertEqual(groups[1], "Widgets")
+        XCTAssertEqual(groups[2], "Backyard Birds")
+    }
+
     #if os(macOS)
     func testMatchLdCaptureGroup() throws {
         let input = #"Ld /path/to/output/DerivedData/Build/Products/Debug-iphonesimulator/output.o normal (in target 'Target' from project 'Project')"#

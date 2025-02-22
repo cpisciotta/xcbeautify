@@ -34,6 +34,7 @@ package final class Parser {
         FailingTestCaptureGroup.self,
         UIFailingTestCaptureGroup.self,
         RestartingTestCaptureGroup.self,
+        GenerateAssetSymbolsCaptureGroup.self,
         GenerateCoverageDataCaptureGroup.self,
         GeneratedCoverageReportCaptureGroup.self,
         GenerateDSYMCaptureGroup.self,
