@@ -106,6 +106,8 @@ package struct Formatter {
             return renderer.formatError(group: group)
         case let group as FileMissingErrorCaptureGroup:
             return renderer.formatFileMissingError(group: group)
+        case let group as GenerateAssetSymbolsCaptureGroup:
+            return renderer.formatGenerateAssetSymbols(group: group)
         case let group as GenerateCoverageDataCaptureGroup:
             return renderer.formatGenerateCoverageData(group: group)
         case let group as GeneratedCoverageReportCaptureGroup:

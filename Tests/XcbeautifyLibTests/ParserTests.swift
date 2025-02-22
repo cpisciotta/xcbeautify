@@ -86,6 +86,15 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.project, "BackyardBirdsUI")
     }
 
+    func testGenerateAssetSymbols() throws {
+        let input = #"GenerateAssetSymbols /Backyard-Birds/Widgets/An-Asset_Catalog.xcassets (in target 'Some Target' from project 'A_Project')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? GenerateAssetSymbolsCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/Backyard-Birds/Widgets/An-Asset_Catalog.xcassets")
+        XCTAssertEqual(captureGroup.filename, "An-Asset_Catalog.xcassets")
+        XCTAssertEqual(captureGroup.target, "Some Target")
+        XCTAssertEqual(captureGroup.project, "A_Project")
+    }
+
     #if os(macOS)
     func testMatchLdCommandObjectWithoutArch() throws {
         let input = #"Ld /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/x86_64/Binary/BackyardBirdsData.o normal (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#

@@ -37,6 +37,7 @@ protocol OutputRendering {
     func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String?
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
+    func formatGenerateAssetSymbols(group: GenerateAssetSymbolsCaptureGroup) -> String
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String
     func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String
     func formatLdWarning(group: LDWarningCaptureGroup) -> String
@@ -225,6 +226,12 @@ extension OutputRendering {
 
     func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String? {
         nil
+    }
+
+    func formatGenerateAssetSymbols(group: GenerateAssetSymbolsCaptureGroup) -> String {
+        let filename = group.filename
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Generate Asset Symbols".s.Bold) \(filename)" : "[\(target)] Generate Asset Symbols \(filename)"
     }
 
     func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String {

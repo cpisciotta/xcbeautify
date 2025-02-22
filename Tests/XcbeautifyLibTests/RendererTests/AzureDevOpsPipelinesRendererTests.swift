@@ -268,6 +268,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(logFormatted(input), output)
     }
 
+    func testGenerateAssetSymbols() {
+        let formatted = logFormatted("GenerateAssetSymbols /Backyard-Birds/Multiplatform/An_Asset_Catalog.xcassets (in target 'Backyard Birds' from project 'Backyard Birds')")
+        XCTAssertEqual(formatted, "[Backyard Birds] Generate Asset Symbols An_Asset_Catalog.xcassets")
+    }
+
     func testGenerateCoverageData() {
         let formatted = logFormatted("Generating coverage data...")
         XCTAssertEqual(formatted, "Generating code coverage data...")

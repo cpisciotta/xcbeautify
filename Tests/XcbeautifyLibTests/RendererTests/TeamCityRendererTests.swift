@@ -259,6 +259,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
+    func testGenerateAssetSymbols() {
+        let formatted = noColoredFormatted("GenerateAssetSymbols /Backyard-Birds/BackyardBirdsUI/SomeAssets.xcassets (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')")
+        XCTAssertEqual(formatted, "[BackyardBirdsUI] Generate Asset Symbols SomeAssets.xcassets")
+    }
+
     func testGenerateCoverageData() {
         let formatted = noColoredFormatted("Generating coverage data...")
         XCTAssertEqual(formatted, "Generating code coverage data...")
