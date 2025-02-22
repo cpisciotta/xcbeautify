@@ -168,6 +168,14 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.project, "LayeredArtworkLibraryProject")
     }
 
+    func testMatchSymLink() throws {
+        let input = "SymLink /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Versions/Current A (in target 'LayeredArtworkLibrary_Target' from project 'LayeredArtworkLibrary_Project')"
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? SymLinkCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Versions/Current A")
+        XCTAssertEqual(captureGroup.target, "LayeredArtworkLibrary_Target")
+        XCTAssertEqual(captureGroup.project, "LayeredArtworkLibrary_Project")
+    }
+
     func testMatchExplicitDependency() throws {
         let input = #"        ➜ Explicit dependency on target 'BackyardBirdsData_BackyardBirdsData' in project 'Backyard Birds Data'"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ExplicitDependencyCaptureGroup)

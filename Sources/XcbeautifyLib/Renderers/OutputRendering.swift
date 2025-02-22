@@ -73,6 +73,7 @@ protocol OutputRendering {
     func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String?
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
     func formatSigning(group: SigningCaptureGroup) -> String
+    func formatSymLink(group: SymLinkCaptureGroup) -> String?
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
@@ -536,6 +537,10 @@ extension OutputRendering {
     func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         return colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
+    }
+
+    func formatSymLink(group: SymLinkCaptureGroup) -> String? {
+        nil
     }
 
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String {

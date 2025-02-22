@@ -471,6 +471,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertNil(formatted)
     }
 
+    func testSymLink() {
+        let formatted = logFormatted("SymLink /Backyard-Birds/Build/Products/Debug/PackageFrameworks/BackyardBirdsData.framework/BackyardBirdsData Versions/Current/BackyardBirdsData (in target 'BackyardBirdsData' from project 'BackyardBirdsData')")
+        XCTAssertNil(formatted)
+    }
+
     func testSymbolReferencedFrom() {
         let formatted = logFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "##vso[task.logissue type=error]  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")

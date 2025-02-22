@@ -496,6 +496,11 @@ final class TeamCityRendererTests: XCTestCase {
         XCTAssertNil(formatted)
     }
 
+    func testSymLink() {
+        let formatted = noColoredFormatted("SymLink /Backyard-Birds/Build/Products/Debug/PackageFrameworks/BackyardBirdsData.framework/Versions/Current A (in target 'BackyardBirdsData' from project 'BackyardBirdsData')")
+        XCTAssertNil(formatted)
+    }
+
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")

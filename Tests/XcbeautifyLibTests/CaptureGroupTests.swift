@@ -97,6 +97,15 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertNotNil(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.captureGroups(for: input))
     }
 
+    func testMatchSymLink() throws {
+        let input = "SymLink /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Resources Versions/Current/Resources (in target 'Some Target_Value' from project 'LayeredArtworkLibrary')"
+        let groups = try XCTUnwrap(SymLinkCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 3)
+        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Resources Versions/Current/Resources")
+        XCTAssertEqual(groups[1], "Some Target_Value")
+        XCTAssertEqual(groups[2], "LayeredArtworkLibrary")
+    }
+
     func testMkDirCaptureGroup() throws {
         let input = "MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"
         XCTAssertNotNil(MkDirCaptureGroup.regex.captureGroups(for: input))

@@ -194,6 +194,8 @@ package struct Formatter {
             return renderer.formatSigning(group: group)
         case let group as SymbolReferencedFromCaptureGroup:
             return renderer.formatSymbolReferencedFrom(group: group)
+        case let group as SymLinkCaptureGroup:
+            return renderer.formatSymLink(group: group)
         case let group as TestCaseMeasuredCaptureGroup:
             return renderer.formatTestCaseMeasured(group: group)
         case let group as TestCasePassedCaptureGroup:
