@@ -31,6 +31,7 @@ package final class Parser {
         DetectedEncodingCaptureGroup.self,
         EmitSwiftModuleCaptureGroup.self,
         ExplicitDependencyCaptureGroup.self,
+        ExtractAppIntentsMetadataCaptureGroup.self,
         FailingTestCaptureGroup.self,
         UIFailingTestCaptureGroup.self,
         RestartingTestCaptureGroup.self,

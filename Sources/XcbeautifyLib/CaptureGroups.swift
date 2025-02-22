@@ -652,6 +652,22 @@ struct ExplicitDependencyCaptureGroup: CaptureGroup {
     }
 }
 
+struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
+    static var outputType: OutputType = .task
+
+    static var regex = XCRegex(pattern: #"^ExtractAppIntentsMetadata \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
+        self.target = target
+        self.project = project
+    }
+}
+
 struct FailingTestCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 

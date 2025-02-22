@@ -245,6 +245,11 @@ final class TeamCityRendererTests: XCTestCase {
     }
     #endif
 
+    func testExtractAppIntentsMetadata() {
+        let formatted = noColoredFormatted("ExtractAppIntentsMetadata (in target 'Target' from project 'Project')")
+        XCTAssertEqual(formatted, "[Target] Extract App Intents Metadata")
+    }
+
     func testFailingTest() { }
 
     func testFatalError() {
