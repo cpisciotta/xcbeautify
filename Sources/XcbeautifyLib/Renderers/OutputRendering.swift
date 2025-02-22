@@ -122,7 +122,7 @@ extension OutputRendering {
     }
 
     func formatCheckDependencies() -> String {
-        colored ? "Check Dependencies".style.Bold : "Check Dependencies"
+        colored ? "Check dependencies".style.Bold : "Check dependencies"
     }
 
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String {

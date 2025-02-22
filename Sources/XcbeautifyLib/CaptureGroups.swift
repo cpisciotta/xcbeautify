@@ -730,7 +730,7 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = coverage report file path
-    static let regex = XCRegex(pattern: #"^generating\s+coverage\s+data\.*"#)
+    static let regex = XCRegex(pattern: #"^Generating coverage data\.\.\.*"#)
 
     private init() { }
 
@@ -742,7 +742,7 @@ struct GenerateCoverageDataCaptureGroup: CaptureGroup {
 
 struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^generated\s+coverage\s+report:\s+(.+)"#)
+    static let regex = XCRegex(pattern: #"^Generated coverage report: (.+)"#)
 
     let coverageReportFilePath: String
 
@@ -1090,7 +1090,7 @@ struct ParallelTestSuiteStartedCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = device
-    static let regex = XCRegex(pattern: #"^\s*Test\s+Suite\s+'(.*)'\s+started\s+on\s+'(.*)'"#)
+    static let regex = XCRegex(pattern: #"^\s*Test\s+suite\s+'(.*)'\s+started\s+on\s+'(.*)'"#)
 
     let suite: String
     let device: String
