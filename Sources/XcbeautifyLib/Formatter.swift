@@ -226,6 +226,8 @@ package struct Formatter {
             return renderer.formatWriteAuxiliaryFile(group: group)
         case let group as WriteFileCaptureGroup:
             return renderer.formatWriteFile(group: group)
+        case let group as ValidateCaptureGroup:
+            return renderer.formatValidate(group: group)
         case let group as XcodebuildErrorCaptureGroup:
             return renderer.formatError(group: group)
         case let group as SwiftDriverJobDiscoveryEmittingModuleCaptureGroup:

@@ -545,6 +545,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "    ✖ <unknown>:0, App crashed in <external symbol>")
     }
 
+    func testValidate() {
+        let formatted = noColoredFormatted(#"Validate /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app (in target 'Backyard Birds Target' from project 'Backyard Birds')"#)
+        XCTAssertEqual(formatted, #"[Backyard Birds Target] Validate Backyard\ Birds.app"#)
+    }
+
     func testWillNotBeCodeSigned() {
         let input = "FrameworkName will not be code signed because its settings don't specify a development team."
         let output = "[!] FrameworkName will not be code signed because its settings don't specify a development team."

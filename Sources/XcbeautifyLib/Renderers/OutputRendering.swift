@@ -88,6 +88,7 @@ protocol OutputRendering {
     func formatTouch(group: TouchCaptureGroup) -> String
     func formatUIFailingTest(group: UIFailingTestCaptureGroup) -> String
     func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String
+    func formatValidate(group: ValidateCaptureGroup) -> String
     func formatWarning(group: GenericWarningCaptureGroup) -> String
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
@@ -412,6 +413,12 @@ extension OutputRendering {
         let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Touching".s.Bold) \(filename)" : "[\(target)] Touching \(filename)"
+    }
+
+    func formatValidate(group: ValidateCaptureGroup) -> String {
+        let target = group.target
+        let filename = group.filename
+        return colored ? "[\(target.f.Cyan)] \("Validate".s.Bold) \(filename)" : "[\(target)] Validate \(filename)"
     }
 
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String? {
