@@ -496,6 +496,20 @@ struct CpresourceCaptureGroup: CopyCaptureGroup {
     }
 }
 
+struct CreateBuildDirectoryCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: "^CreateBuildDirectory (.+)$")
+
+    let directory: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let directory = groups[safe: 0] else { return nil }
+        self.directory = directory
+    }
+}
+
 struct CreateUniversalBinaryCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 

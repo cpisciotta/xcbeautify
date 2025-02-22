@@ -109,6 +109,11 @@ final class TeamCityRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateBuildDirectory() {
+        let formatted = noColoredFormatted("CreateBuildDirectory /Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug")
+        XCTAssertNil(formatted)
+    }
+
     func testCreateUniversalBinary() {
         let formatted = noColoredFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/BackyardBirdsUI.framework/Versions/A/BackyardBirdsUI normal arm64\ x86_64 (in target 'BackyardBirdsUITarget' from project 'BackyardBirdsUIProject')"#)
         XCTAssertEqual(formatted, "[BackyardBirdsUITarget] Create Universal Binary BackyardBirdsUI")

@@ -106,6 +106,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateBuildDirectory() {
+        let formatted = logFormatted("CreateBuildDirectory /Backyard-Birds/Build/Products")
+        XCTAssertNil(formatted)
+    }
+
     func testCreateUniversalBinary() {
         let formatted = logFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Versions/A/LayeredArtworkLibrary normal arm64\ x86_64 (in target 'LayeredArtworkLibraryTarget' from project 'LayeredArtworkLibraryProject')"#)
         XCTAssertEqual(formatted, "[LayeredArtworkLibraryTarget] Create Universal Binary LayeredArtworkLibrary")

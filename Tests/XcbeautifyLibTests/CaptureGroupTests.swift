@@ -36,6 +36,13 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[2], "BackyardBirdsData")
     }
 
+    func testMatchCreateBuildDirectory() throws {
+        let input = "CreateBuildDirectory /Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug"
+        let groups = try XCTUnwrap(CreateBuildDirectoryCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug")
+    }
+
     func testMatchCreateUniversalBinary() throws {
         let input = #"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#
         let groups = try XCTUnwrap(CreateUniversalBinaryCaptureGroup.regex.captureGroups(for: input))

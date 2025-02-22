@@ -77,6 +77,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "Signing MyApp.app")
     }
 
+    func testCreateBuildDirectory() {
+        let formatted = logFormatted("CreateBuildDirectory /Backyard-Birds/Build/Products/Debug")
+        XCTAssertNil(formatted)
+    }
+
     func testCreateUniversalBinary() {
         let formatted = logFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#)
         XCTAssertEqual(formatted, "[BackyardBirdsDataTarget] Create Universal Binary BackyardBirdsData.o")
