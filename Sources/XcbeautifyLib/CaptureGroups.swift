@@ -1321,6 +1321,24 @@ struct ScanDependenciesCaptureGroup: CaptureGroup {
     }
 }
 
+struct SymLinkCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SymLink (.+) \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let filePath: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.target = target
+        self.project = project
+    }
+}
+
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 

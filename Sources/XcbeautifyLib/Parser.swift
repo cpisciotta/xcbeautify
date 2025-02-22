@@ -100,6 +100,7 @@ package final class Parser {
         SigningCaptureGroup.self,
         SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.self,
         SwiftDriverJobDiscoveryCompilingCaptureGroup.self,
+        SymLinkCaptureGroup.self,
         ExecutedWithoutSkippedCaptureGroup.self,
         ExecutedWithSkippedCaptureGroup.self,
         TestSuiteAllTestsPassedCaptureGroup.self,

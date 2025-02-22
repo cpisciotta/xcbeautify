@@ -468,6 +468,11 @@ final class TerminalRendererTests: XCTestCase {
         XCTAssertNil(formatted)
     }
 
+    func testSymLink() {
+        let formatted = noColoredFormatted("SymLink /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/LayeredArtworkLibrary Versions/Current/LayeredArtworkLibrary (in target 'LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')")
+        XCTAssertNil(formatted)
+    }
+
     func testSymbolReferencedFrom() {
         let formatted = noColoredFormatted("  \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
         XCTAssertEqual(formatted, "[x]   \"NetworkBusiness.ImageDownloadManager.saveImage(image: __C.UIImage, needWatermark: Swift.Bool, params: [Swift.String : Any], downloadHandler: (Swift.Bool) -> ()?) -> ()\", referenced from:")
