@@ -106,6 +106,11 @@ final class GitHubActionsRendererTests: XCTestCase {
         #endif
     }
 
+    func testCompileAssetCatalog() {
+        let formatted = logFormatted(#"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/BackyardBirdsUI_BackyardBirdsUI.bundle/Contents/Resources /Backyard-Birds/BackyardBirdsUI/SomeAssets.xcassets (in target 'BackyardBirdsUI_BackyardBirdsUI' from project 'BackyardBirdsUI')"#)
+        XCTAssertEqual(formatted, "[BackyardBirdsUI_BackyardBirdsUI] Compile Asset Catalog SomeAssets.xcassets")
+    }
+
     func testCreateBuildDirectory() {
         let formatted = logFormatted("CreateBuildDirectory /Backyard-Birds/Build/Products")
         XCTAssertNil(formatted)

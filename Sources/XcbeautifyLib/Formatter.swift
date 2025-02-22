@@ -58,6 +58,8 @@ package struct Formatter {
             return renderer.formatCompile(group: group)
         case let group as SwiftCompilingCaptureGroup:
             return renderer.formatSwiftCompiling(group: group)
+        case let group as CompileAssetCatalogCaptureGroup:
+            return renderer.formatCompileAssetCatalog(group: group)
         case let group as CompileCommandCaptureGroup:
             return renderer.formatCompileCommand(group: group)
         case let group as CompileErrorCaptureGroup:

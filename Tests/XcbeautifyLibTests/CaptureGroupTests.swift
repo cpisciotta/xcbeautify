@@ -27,6 +27,15 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertNotNil(CompilationResultCaptureGroup.regex.captureGroups(for: input))
     }
 
+    func testMatchAssetCatalog() throws {
+        let input = #"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.bundle/Contents/Resources /Backyard-Birds/LayeredArtworkLibrary/Assets.xcassets (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
+        let groups = try XCTUnwrap(CompileAssetCatalogCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 3)
+        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Products/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.bundle/Contents/Resources /Backyard-Birds/LayeredArtworkLibrary/Assets.xcassets")
+        XCTAssertEqual(groups[1], "LayeredArtworkLibrary_LayeredArtworkLibrary")
+        XCTAssertEqual(groups[2], "LayeredArtworkLibrary")
+    }
+
     func testMatchCompileXCStrings() throws {
         let input = #"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#
         let groups = try XCTUnwrap(CompileXCStringsCaptureGroup.regex.captureGroups(for: input))

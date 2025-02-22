@@ -106,6 +106,11 @@ final class TerminalRendererTests: XCTestCase {
         #endif
     }
 
+    func testCompileAssetCatalog() {
+        let formatted = noColoredFormatted(#"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents/Resources /Backyard-Birds/Widgets/AnAssetCatalog.xcassets (in target 'Widgets' from project 'Backyard Birds')"#)
+        XCTAssertEqual(formatted, "[Widgets] Compile Asset Catalog AnAssetCatalog.xcassets")
+    }
+
     func testCreateBuildDirectory() {
         let formatted = noColoredFormatted("CreateBuildDirectory /Backyard-Birds/Build/Products/Debug/PackageFrameworks")
         XCTAssertNil(formatted)

@@ -18,6 +18,7 @@ protocol OutputRendering {
     func formatCompile(group: any CompileFileCaptureGroup) -> String
     func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String
     func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
+    func formatCompileAssetCatalog(group: CompileAssetCatalogCaptureGroup) -> String
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
     func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String
@@ -144,6 +145,12 @@ extension OutputRendering {
         let filename = group.filename
         let target = group.target
         return colored ? "[\(target.f.Cyan)] \("Compiling".s.Bold) \(filename)" : "[\(target)] Compiling \(filename)"
+    }
+
+    func formatCompileAssetCatalog(group: CompileAssetCatalogCaptureGroup) -> String {
+        let filename = group.filename
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Compile Asset Catalog".s.Bold) \(filename)" : "[\(target)] Compile Asset Catalog \(filename)"
     }
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {

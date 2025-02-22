@@ -13,6 +13,7 @@ package final class Parser {
         CodesignFrameworkCaptureGroup.self,
         CodesignCaptureGroup.self,
         CompilationResultCaptureGroup.self,
+        CompileAssetCatalogCaptureGroup.self,
         CompileCaptureGroup.self,
         SwiftCompileCaptureGroup.self,
         SwiftCompilingCaptureGroup.self,
