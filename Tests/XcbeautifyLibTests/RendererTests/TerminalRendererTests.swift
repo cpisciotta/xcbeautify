@@ -106,6 +106,11 @@ final class TerminalRendererTests: XCTestCase {
         #endif
     }
 
+    func testCreateBuildDirectory() {
+        let formatted = noColoredFormatted("CreateBuildDirectory /Backyard-Birds/Build/Products/Debug/PackageFrameworks")
+        XCTAssertNil(formatted)
+    }
+
     func testCreateUniversalBinary() {
         let formatted = noColoredFormatted(#"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Versions/A/LayeredArtworkLibraryFile normal arm64\ x86_64 (in target 'LayeredArtworkLibraryTarget' from project 'LayeredArtworkLibrary')"#)
         XCTAssertEqual(formatted, "[LayeredArtworkLibraryTarget] Create Universal Binary LayeredArtworkLibraryFile")

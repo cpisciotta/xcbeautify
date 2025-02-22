@@ -25,6 +25,7 @@ protocol OutputRendering {
     func formatCopy(group: any CopyCaptureGroup) -> String
     func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
+    func formatCreateBuildDirectory(group: CreateBuildDirectoryCaptureGroup) -> String?
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
@@ -174,6 +175,10 @@ extension OutputRendering {
         let firstFilename = group.firstFilename
         let secondFilename = group.secondFilename
         return colored ? "[\(target.f.Cyan)] \("Copy".s.Bold) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
+    }
+
+    func formatCreateBuildDirectory(group: CreateBuildDirectoryCaptureGroup) -> String? {
+        nil
     }
 
     func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String {

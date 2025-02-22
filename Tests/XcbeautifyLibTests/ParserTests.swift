@@ -50,6 +50,12 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "Backyard Birds")
     }
 
+    func testCreateBuildDirectory() throws {
+        let input = "CreateBuildDirectory /Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug"
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CreateBuildDirectoryCaptureGroup)
+        XCTAssertEqual(captureGroup.directory, "/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug")
+    }
+
     func testMatchCreateUniversalBinary() throws {
         let input = #"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CreateUniversalBinaryCaptureGroup)
