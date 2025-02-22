@@ -21,6 +21,15 @@ final class ParserTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testMatchCompileAssetCatalog() throws {
+        let input = #"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents/Resources /Backyard-Birds/Widgets/Assets.xcassets (in target 'Widgets' from project 'Backyard Birds')"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CompileAssetCatalogCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents/Resources /Backyard-Birds/Widgets/Assets.xcassets")
+        XCTAssertEqual(captureGroup.filename, "Assets.xcassets")
+        XCTAssertEqual(captureGroup.target, "Widgets")
+        XCTAssertEqual(captureGroup.project, "Backyard Birds")
+    }
+
     func testMatchCompileXCStrings() throws {
         let input = #"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? CompileXCStringsCaptureGroup)

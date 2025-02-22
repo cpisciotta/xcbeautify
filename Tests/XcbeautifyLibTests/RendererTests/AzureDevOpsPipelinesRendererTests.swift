@@ -94,6 +94,11 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formattedFramework, "Signing build/Release/MyFramework.framework")
     }
 
+    func testCompileAssetCatalog() {
+        let formatted = logFormatted(#"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/Resources /Backyard-Birds/Multiplatform/Assets.xcassets (in target 'Backyard Birds' from project 'Backyard Birds')"#)
+        XCTAssertEqual(formatted, "[Backyard Birds] Compile Asset Catalog Assets.xcassets")
+    }
+
     func testCompileCommand() { }
 
     func testCompileError() {

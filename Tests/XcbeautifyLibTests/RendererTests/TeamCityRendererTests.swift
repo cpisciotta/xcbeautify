@@ -109,6 +109,11 @@ final class TeamCityRendererTests: XCTestCase {
         #endif
     }
 
+    func testCompileAssetCatalog() {
+        let formatted = noColoredFormatted(#"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.bundle/Contents/Resources /Backyard-Birds/LayeredArtworkLibrary/AssetCatalog.xcassets (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#)
+        XCTAssertEqual(formatted, "[LayeredArtworkLibrary_LayeredArtworkLibrary] Compile Asset Catalog AssetCatalog.xcassets")
+    }
+
     func testCreateBuildDirectory() {
         let formatted = noColoredFormatted("CreateBuildDirectory /Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug")
         XCTAssertNil(formatted)
