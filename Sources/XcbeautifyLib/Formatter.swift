@@ -100,6 +100,8 @@ package struct Formatter {
             return renderer.formatExecutedWithSkipped(group: group)
         case let group as ExplicitDependencyCaptureGroup:
             return renderer.formatExplicitDependencyCaptureGroup(group: group)
+        case let group as ExtractAppIntentsMetadataCaptureGroup:
+            return renderer.formatExtractAppIntents(group: group)
         case let group as FailingTestCaptureGroup:
             return renderer.formatFailingTest(group: group)
         case let group as FatalErrorCaptureGroup:

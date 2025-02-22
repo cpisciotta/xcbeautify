@@ -86,6 +86,13 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.project, "BackyardBirdsUI")
     }
 
+    func testMatchExtractAppIntentsMetadata() throws {
+        let input = "ExtractAppIntentsMetadata (in target 'Target' from project 'Project')"
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ExtractAppIntentsMetadataCaptureGroup)
+        XCTAssertEqual(captureGroup.target, "Target")
+        XCTAssertEqual(captureGroup.project, "Project")
+    }
+
     func testGenerateAssetSymbols() throws {
         let input = #"GenerateAssetSymbols /Backyard-Birds/Widgets/An-Asset_Catalog.xcassets (in target 'Some Target' from project 'A_Project')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? GenerateAssetSymbolsCaptureGroup)

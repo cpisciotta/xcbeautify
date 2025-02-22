@@ -35,6 +35,7 @@ protocol OutputRendering {
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
     func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String?
+    func formatExtractAppIntents(group: ExtractAppIntentsMetadataCaptureGroup) -> String
     func formatFailingTest(group: FailingTestCaptureGroup) -> String
     func formatFileMissingError(group: FileMissingErrorCaptureGroup) -> String
     func formatGenerateAssetSymbols(group: GenerateAssetSymbolsCaptureGroup) -> String
@@ -228,6 +229,11 @@ extension OutputRendering {
 
     func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String? {
         nil
+    }
+
+    func formatExtractAppIntents(group: ExtractAppIntentsMetadataCaptureGroup) -> String {
+        let target = group.target
+        return colored ? "[\(target.f.Cyan)] \("Extract App Intents Metadata".s.Bold)" : "[\(target)] Extract App Intents Metadata"
     }
 
     func formatGenerateAssetSymbols(group: GenerateAssetSymbolsCaptureGroup) -> String {

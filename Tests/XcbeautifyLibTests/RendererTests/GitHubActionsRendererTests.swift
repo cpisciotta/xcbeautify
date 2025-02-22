@@ -242,6 +242,11 @@ final class GitHubActionsRendererTests: XCTestCase {
     }
     #endif
 
+    func testExtractAppIntentsMetadata() {
+        let formatted = logFormatted("ExtractAppIntentsMetadata (in target 'Target' from project 'Project')")
+        XCTAssertEqual(formatted, "[Target] Extract App Intents Metadata")
+    }
+
     func testFailingTest() {
         #if os(Linux)
         let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
