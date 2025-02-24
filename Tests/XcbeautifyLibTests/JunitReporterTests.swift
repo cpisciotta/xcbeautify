@@ -215,10 +215,13 @@ class JunitReporterTests: XCTestCase {
 
     func testJunitReport() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
+        let parser = Parser()
         let reporter = JunitReporter()
 
-        for component in try String(contentsOf: url).components(separatedBy: .newlines) {
-            reporter.add(line: component)
+        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+            if let captureGroup = parser.parse(line: line) {
+                reporter.add(captureGroup: captureGroup)
+            }
         }
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
@@ -276,9 +279,13 @@ class JunitReporterTests: XCTestCase {
 
     func testParallelJunitReport() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
+        let parser = Parser()
         let reporter = JunitReporter()
-        for component in try String(contentsOf: url).components(separatedBy: .newlines) {
-            reporter.add(line: component)
+
+        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+            if let captureGroup = parser.parse(line: line) {
+                reporter.add(captureGroup: captureGroup)
+            }
         }
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
