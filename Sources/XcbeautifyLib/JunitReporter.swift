@@ -55,6 +55,39 @@ package final class JunitReporter {
         case let group as ParallelTestCaseSkippedCaptureGroup:
             let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
             parallelComponents.append(.testCasePassed(testCase))
+        case let group as SwiftTestingSuiteStartedCaptureGroup:
+            let testStart = group.suiteName
+            components.append(.testSuiteStart(testStart))
+        case let group as SwiftTestingTestPassedCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: group.timeTaken)
+            components.append(.testCasePassed(testCase))
+        case let group as SwiftTestingTestFailedCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: group.timeTaken, failure: .init(message: ""))
+            components.append(.failingTest(testCase))
+        case let group as SwiftTestingTestSkippedCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: "", skipped: .init(message: nil))
+            components.append(.skippedTest(testCase))
+        case let group as SwiftTestingTestSkippedReasonCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: "", skipped: .init(message: group.reason))
+            components.append(.skippedTest(testCase))
+        case is SwiftTestingSuitePassedCaptureGroup:
+            return
+        case is SwiftTestingSuiteFailedCaptureGroup:
+            return
+        case is SwiftTestingTestStartedCaptureGroup:
+            return
+        case is SwiftTestingRunStartedCaptureGroup:
+            return
+        case is SwiftTestingRunCompletionCaptureGroup:
+            return
+        case is SwiftTestingRunFailedCaptureGroup:
+            return
+        case is SwiftTestingIssueCaptureGroup:
+            return
+        case is SwiftTestingIssueArgumentCaptureGroup:
+            return
+        case is SwiftTestingPassingArgumentCaptureGroup:
+            return
         default:
             // Not needed for generating a junit report
             return
