@@ -27,7 +27,7 @@ package final class JunitReporter {
             guard let testCase = generateFailingTest(groups: groups) else { return }
             components.append(.failingTest(testCase))
         } else if let groups = RestartingTestCaptureGroup.regex.captureGroups(for: line) {
-            guard let testCase = generateRestartingTest(groups: groups, line: line) else { return }
+            guard let testCase = generateRestartingTest(groups: groups) else { return }
             components.append(.failingTest(testCase))
         } else if let groups = TestCasePassedCaptureGroup.regex.captureGroups(for: line) {
             guard let testCase = generatePassingTest(groups: groups) else { return }
@@ -58,10 +58,9 @@ package final class JunitReporter {
         return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
 
-    // TODO: Delete `line` parameter
-    private func generateRestartingTest(groups: [String], line: String) -> TestCase? {
+    private func generateRestartingTest(groups: [String]) -> TestCase? {
         guard let group = RestartingTestCaptureGroup(groups: groups) else { return nil }
-        return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: line))
+        return TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: group.wholeMessage))
     }
 
     private func generateParallelFailingTest(groups: [String]) -> TestCase? {
