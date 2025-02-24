@@ -22,28 +22,28 @@ package final class JunitReporter {
     package func add(captureGroup: any CaptureGroup) {
         switch captureGroup {
         case let group as FailingTestCaptureGroup:
-            guard let testCase = generateFailingTest(group: group) else { return }
+            let testCase = generateFailingTest(group: group)
             components.append(.failingTest(testCase))
         case let group as RestartingTestCaptureGroup:
-            guard let testCase = generateRestartingTest(group: group) else { return }
+            let testCase = generateRestartingTest(group: group)
             components.append(.failingTest(testCase))
         case let group as TestCasePassedCaptureGroup:
-            guard let testCase = generatePassingTest(group: group) else { return }
+            let testCase = generatePassingTest(group: group)
             components.append(.testCasePassed(testCase))
         case let group as TestCaseSkippedCaptureGroup:
-            guard let testCase = generateSkippedTest(group: group) else { return }
+            let testCase = generateSkippedTest(group: group)
             components.append(.skippedTest(testCase))
         case let group as TestSuiteStartedCaptureGroup:
-            guard let testStart = generateSuiteStart(group: group) else { return }
+            let testStart = generateSuiteStart(group: group)
             components.append(.testSuiteStart(testStart))
         case let group as ParallelTestCaseFailedCaptureGroup:
-            guard let testCase = generateParallelFailingTest(group: group) else { return }
+            let testCase = generateParallelFailingTest(group: group)
             parallelComponents.append(.failingTest(testCase))
         case let group as ParallelTestCasePassedCaptureGroup:
-            guard let testCase = generatePassingParallelTest(group: group) else { return }
+            let testCase = generatePassingParallelTest(group: group)
             parallelComponents.append(.testCasePassed(testCase))
         case let group as ParallelTestCaseSkippedCaptureGroup:
-            guard let testCase = generateSkippedParallelTest(group: group) else { return }
+            let testCase = generateSkippedParallelTest(group: group)
             parallelComponents.append(.testCasePassed(testCase))
         default:
             // Not needed for generating a junit report
@@ -51,36 +51,36 @@ package final class JunitReporter {
         }
     }
 
-    private func generateFailingTest(group: FailingTestCaptureGroup) -> TestCase? {
+    private func generateFailingTest(group: FailingTestCaptureGroup) -> TestCase {
         TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
     }
 
-    private func generateRestartingTest(group: RestartingTestCaptureGroup) -> TestCase? {
+    private func generateRestartingTest(group: RestartingTestCaptureGroup) -> TestCase {
         TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: group.wholeMessage))
     }
 
-    private func generateParallelFailingTest(group: ParallelTestCaseFailedCaptureGroup) -> TestCase? {
+    private func generateParallelFailingTest(group: ParallelTestCaseFailedCaptureGroup) -> TestCase {
         // Parallel tests do not provide meaningful failure messages
         TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
     }
 
-    private func generatePassingTest(group: TestCasePassedCaptureGroup) -> TestCase? {
+    private func generatePassingTest(group: TestCasePassedCaptureGroup) -> TestCase {
         TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
 
-    private func generateSkippedTest(group: TestCaseSkippedCaptureGroup) -> TestCase? {
+    private func generateSkippedTest(group: TestCaseSkippedCaptureGroup) -> TestCase {
         TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
-    private func generatePassingParallelTest(group: ParallelTestCasePassedCaptureGroup) -> TestCase? {
+    private func generatePassingParallelTest(group: ParallelTestCasePassedCaptureGroup) -> TestCase {
         TestCase(classname: group.suite, name: group.testCase, time: group.time)
     }
 
-    private func generateSkippedParallelTest(group: ParallelTestCaseSkippedCaptureGroup) -> TestCase? {
+    private func generateSkippedParallelTest(group: ParallelTestCaseSkippedCaptureGroup) -> TestCase {
         TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
     }
 
-    private func generateSuiteStart(group: TestSuiteStartedCaptureGroup) -> String? {
+    private func generateSuiteStart(group: TestSuiteStartedCaptureGroup) -> String {
         group.suiteName
     }
 
