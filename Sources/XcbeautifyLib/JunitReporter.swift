@@ -55,6 +55,21 @@ package final class JunitReporter {
         case let group as ParallelTestCaseSkippedCaptureGroup:
             let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
             parallelComponents.append(.testCasePassed(testCase))
+        case let group as SwiftTestingSuiteStartedCaptureGroup:
+            let testStart = group.suiteName
+            parallelComponents.append(.testSuiteStart(testStart))
+        case let group as SwiftTestingTestPassedCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: group.timeTaken)
+            parallelComponents.append(.testCasePassed(testCase))
+        case let group as SwiftTestingTestFailedCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: group.timeTaken, failure: .init(message: ""))
+            parallelComponents.append(.failingTest(testCase))
+        case let group as SwiftTestingTestSkippedCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: "", skipped: .init(message: nil))
+            parallelComponents.append(.skippedTest(testCase))
+        case let group as SwiftTestingTestSkippedReasonCaptureGroup:
+            let testCase = TestCase(classname: "", name: group.testName, time: "", skipped: .init(message: group.reason))
+            parallelComponents.append(.skippedTest(testCase))
         default:
             // Not needed for generating a junit report
             return
