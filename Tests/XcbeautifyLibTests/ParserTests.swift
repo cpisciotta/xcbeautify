@@ -431,4 +431,10 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.target, "Backyard Birds Target")
         XCTAssertEqual(captureGroup.project, "Backyard Birds Project")
     }
+
+    func testXcodebuildError() throws {
+        let input = #"xcodebuild: error: Existing file at -resultBundlePath "/output/file.xcresult""#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? XcodebuildErrorCaptureGroup)
+        XCTAssertEqual(captureGroup.wholeError, input)
+    }
 }
