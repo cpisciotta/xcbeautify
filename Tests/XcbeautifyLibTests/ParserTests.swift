@@ -414,6 +414,13 @@ final class ParserTests: XCTestCase {
         }
     }
 
+    func testUIFailingTestCaptureGroup() throws {
+        let input = "    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>"
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? UIFailingTestCaptureGroup)
+        XCTAssertEqual(captureGroup.file, "<unknown>:0")
+        XCTAssertEqual(captureGroup.reason, "App crashed in <external symbol>")
+    }
+
     func testValidate() throws {
         let input = #"Validate /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app (in target 'Backyard Birds Target' from project 'Backyard Birds')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? ValidateCaptureGroup)

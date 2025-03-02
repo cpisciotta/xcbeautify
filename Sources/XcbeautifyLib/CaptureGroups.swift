@@ -141,10 +141,13 @@ struct CheckDependenciesCaptureGroup: CaptureGroup {
 struct ShellCommandCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
+    // TODO: Improve this regex
+    // `(?:t =)` avoids collisions with `UIFailingTestCaptureGroup`
+    //
     /// Regular expression captured groups:
     /// $1 = command path
     /// $2 = arguments
-    static let regex = XCRegex(pattern: #"^\s{4}(cd|setenv|(?:[\w\/:\-.]+?\/)?[\w\-]+(?<!clang))\s(.*)$"#)
+    static let regex = XCRegex(pattern: #"^\s{4}(?!(?:t =))(cd|setenv|(?:[\w\/:\-.]+?\/)?[\w\-]+(?<!clang))\s(.*)$"#)
 
     let commandPath: String
     let arguments: String
@@ -700,6 +703,7 @@ struct FailingTestCaptureGroup: CaptureGroup {
 struct UIFailingTestCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
+    // // TODO: Is this actually a regex for a UI failing test error?
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = reason

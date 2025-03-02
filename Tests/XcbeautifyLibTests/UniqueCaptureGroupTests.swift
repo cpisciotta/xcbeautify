@@ -101,6 +101,26 @@ final class UniqueCaptureGroupTests: XCTestCase {
         )
     }
 
+    func testUniqueUIFailingTest() {
+        let line = "    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>"
+
+        let capturedTypes = captureGroupTypes.filter { type in
+            guard let groups = type.regex.captureGroups(for: line) else { return false }
+            XCTAssertNotNil(type.init(groups: groups))
+            return true
+        }
+
+        XCTAssertEqual(
+            capturedTypes.count,
+            1,
+            """
+            Failed to uniquely parse xcodebuild output.
+            Line: \(line)
+            Captured Types: \(ListFormatter.localizedString(byJoining: capturedTypes.map(String.init(describing:))))
+            """
+        )
+    }
+
     func testUniqueXcodebuildError() {
         let line = #"xcodebuild: error: Existing file at -resultBundlePath "/output/file.xcresult""#
 
