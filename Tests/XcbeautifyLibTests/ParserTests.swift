@@ -384,13 +384,9 @@ final class ParserTests: XCTestCase {
     func testMatchNote() throws {
         let inputs = [
             ("note:", "Building targets in dependency order"),
-            ("Note:", "Building targets in dependency order"),
             ("note:", "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
-            ("Note:", "Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"),
             ("note:", #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
-            ("Note:", #"Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#),
             ("note:", "Target dependency graph (12 targets)"),
-            ("Note:", "Target dependency graph (12 targets)"),
         ]
 
         for (keyword, note) in inputs {
@@ -398,6 +394,22 @@ final class ParserTests: XCTestCase {
             let captureGroup = try XCTUnwrap(parser.parse(line: input) as? NoteCaptureGroup)
             XCTAssertEqual(captureGroup.note, note)
         }
+    }
+
+    // Note Output expects a lowercase n.
+    func testNegativeMatchNote() {
+        let inputs = [
+            #"Note: Building targets in dependency order"#,
+            #"Note: Metadata extraction skipped. No AppIntents.framework dependency found. (in target 'Target' from project 'Project')"#,
+            #"Note: Run script build phase 'SomeRunScriptBuildPhase' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Target' from project 'Project')"#,
+            #"Note: Target dependency graph (12 targets)"#,
+        ]
+
+        XCTAssertTrue(
+            inputs.allSatisfy { input in
+                parser.parse(line: input) == nil
+            }
+        )
     }
 
     func testNotMatchNote() throws {

@@ -15,7 +15,7 @@ package final class XCRegex: @unchecked Sendable {
     private let pattern: String
 
     private lazy var regex: NSRegularExpression? = {
-        let regex = try? NSRegularExpression(pattern: "^" + pattern, options: [.caseInsensitive])
+        let regex = try? NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
         assert(regex != nil)
         return regex
     }()
@@ -27,10 +27,7 @@ package final class XCRegex: @unchecked Sendable {
     func captureGroups(for line: String) -> [String]? {
         assert(regex != nil)
 
-        guard
-            let matches = regex?.matches(in: line, range: NSRange(location: 0, length: line.utf16.count)),
-            let match = matches.first
-        else {
+        guard let match = regex?.firstMatch(in: line, options: .anchored, range: NSRange(location: 0, length: line.utf16.count)) else {
             return nil
         }
 
