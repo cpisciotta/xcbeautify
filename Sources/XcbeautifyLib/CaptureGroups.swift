@@ -1544,7 +1544,7 @@ struct CompileWarningCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = filename
     /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#)
+    static let regex = XCRegex(pattern: #"^(?!(?:ld))(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#)
 
     let filePath: String
     let filename: String
@@ -1565,15 +1565,14 @@ struct LDWarningCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = ld prefix
     /// $2 = warning message
-    static let regex = XCRegex(pattern: #"^(ld: )warning: (.*)"#)
+    static let regex = XCRegex(pattern: #"^ld: warning: (.*)"#)
 
-    let ldPrefix: String
+    let ldPrefix = "ld: "
     let warningMessage: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let ldPrefix = groups[safe: 0], let warningMessage = groups[safe: 1] else { return nil }
-        self.ldPrefix = ldPrefix
+        assert(groups.count == 1)
+        guard let warningMessage = groups[safe: 0] else { return nil }
         self.warningMessage = warningMessage
     }
 }
@@ -1773,7 +1772,7 @@ struct LDErrorCaptureGroup: ErrorCaptureGroup {
 
     /// Regular expression captured groups:
     /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(ld:.*)"#)
+    static let regex = XCRegex(pattern: #"^(ld: (?!(?:warning)).*)"#)
 
     let wholeError: String
 
