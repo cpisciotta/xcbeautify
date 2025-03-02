@@ -107,6 +107,13 @@ final class CaptureGroupTests: XCTestCase {
     }
     #endif
 
+    func testMatchLDWarningCaptureGroup() throws {
+        let input = #"ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"#
+        let groups = try XCTUnwrap(LDWarningCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(groups[0], "embedded dylibs/frameworks only run on iOS 8 or later")
+    }
+
     func testMatchSwiftDriverJobDiscoveryEmittingModule() {
         let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
         XCTAssertNotNil(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.captureGroups(for: input))
