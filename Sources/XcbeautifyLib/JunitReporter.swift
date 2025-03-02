@@ -24,6 +24,16 @@ package final class JunitReporter {
         case let group as FailingTestCaptureGroup:
             let testCase = TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: "\(group.file) - \(group.reason)"))
             components.append(.failingTest(testCase))
+        case let group as ParallelTestCaseFailedCaptureGroup:
+            // Parallel tests do not provide meaningful failure messages
+            let testCase = TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
+            parallelComponents.append(.failingTest(testCase))
+        case let group as ParallelTestCasePassedCaptureGroup:
+            let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time)
+            parallelComponents.append(.testCasePassed(testCase))
+        case let group as ParallelTestCaseSkippedCaptureGroup:
+            let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
+            parallelComponents.append(.testCasePassed(testCase))
         case let group as RestartingTestCaptureGroup:
             let testCase = TestCase(classname: group.testSuite, name: group.testCase, time: nil, failure: .init(message: group.wholeMessage))
             components.append(.failingTest(testCase))
@@ -36,16 +46,6 @@ package final class JunitReporter {
         case let group as TestSuiteStartedCaptureGroup:
             let testStart = group.suiteName
             components.append(.testSuiteStart(testStart))
-        case let group as ParallelTestCaseFailedCaptureGroup:
-            // Parallel tests do not provide meaningful failure messages
-            let testCase = TestCase(classname: group.suite, name: group.testCase, time: nil, failure: .init(message: "Parallel test failed"))
-            parallelComponents.append(.failingTest(testCase))
-        case let group as ParallelTestCasePassedCaptureGroup:
-            let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time)
-            parallelComponents.append(.testCasePassed(testCase))
-        case let group as ParallelTestCaseSkippedCaptureGroup:
-            let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
-            parallelComponents.append(.testCasePassed(testCase))
         default:
             // Not needed for generating a junit report
             return

@@ -16,17 +16,16 @@ protocol OutputRendering {
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String?
     func formatCompile(group: any CompileFileCaptureGroup) -> String
-    func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String
-    func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
     func formatCompileAssetCatalog(group: CompileAssetCatalogCaptureGroup) -> String
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String?
     func formatCompileError(group: CompileErrorCaptureGroup) -> String
-    func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String
     func formatCompileWarning(group: CompileWarningCaptureGroup) -> String
+    func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String
     func formatCopy(group: any CopyCaptureGroup) -> String
     func formatCopyFiles(group: CopyFilesCaptureGroup) -> String
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCreateBuildDirectory(group: CreateBuildDirectoryCaptureGroup) -> String?
+    func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String
     func formatCursor(group: CursorCaptureGroup) -> String?
     func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
@@ -47,7 +46,9 @@ protocol OutputRendering {
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String
     func formatLinking(group: LinkingCaptureGroup) -> String
+    func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
     func formatNonPCHClangCommand(group: NonPCHClangCommandCaptureGroup) -> String?
+    func formatNote(group: NoteCaptureGroup) -> String
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String
     func formatPackageEnd() -> String
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String
@@ -74,13 +75,34 @@ protocol OutputRendering {
     func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String?
     func formatShellCommand(group: ShellCommandCaptureGroup) -> String?
     func formatSigning(group: SigningCaptureGroup) -> String
-    func formatSymLink(group: SymLinkCaptureGroup) -> String?
+    func formatSwiftCompiling(group: SwiftCompilingCaptureGroup) -> String?
+    func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
+    func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
+    func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
+    func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String?
+    func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String?
+    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
+    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
+    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
+    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
+    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
+    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
+    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String
+    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String
+    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String
+    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String
+    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String
+    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String
+    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
+    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String?
     func formatSymbolReferencedFrom(group: SymbolReferencedFromCaptureGroup) -> String
+    func formatSymLink(group: SymLinkCaptureGroup) -> String?
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String
     func formatTestCaseMeasured(group: TestCaseMeasuredCaptureGroup) -> String
     func formatTestCasePassed(group: TestCasePassedCaptureGroup) -> String
     func formatTestCaseSkipped(group: TestCaseSkippedCaptureGroup) -> String
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String?
+    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
     func formatTestsRunCompletion(group: TestsRunCompletionCaptureGroup) -> String
     func formatTestSuiteAllTestsFailed(group: TestSuiteAllTestsFailedCaptureGroup) -> String
     func formatTestSuiteAllTestsPassed(group: TestSuiteAllTestsPassedCaptureGroup) -> String
@@ -95,28 +117,6 @@ protocol OutputRendering {
     func formatWillNotBeCodesignWarning(group: WillNotBeCodeSignedCaptureGroup) -> String
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String?
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
-    func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
-    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
-    func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
-    func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String?
-    func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String?
-    func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String
-    func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String
-    func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String
-    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String
-    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String?
-    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String
-    func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String
-    func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String
-    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String
-    func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String
-    func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
-    func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
-    func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
-    func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
-    func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
-    func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
-    func formatNote(group: NoteCaptureGroup) -> String
 }
 
 extension OutputRendering {
