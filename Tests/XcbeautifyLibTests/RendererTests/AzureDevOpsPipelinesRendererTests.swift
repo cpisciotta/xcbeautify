@@ -269,7 +269,7 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "##vso[task.logissue type=error;sourcepath=/path/file.swift]error: no such file or directory:"
+        let output = "##vso[task.logissue type=error;sourcepath=/path/file.swift]error: no such file or directory"
         XCTAssertEqual(logFormatted(input), output)
     }
 

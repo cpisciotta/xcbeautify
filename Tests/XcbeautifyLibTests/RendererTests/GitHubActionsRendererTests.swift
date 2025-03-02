@@ -276,7 +276,7 @@ final class GitHubActionsRendererTests: XCTestCase {
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "::error file=/path/file.swift::error: no such file or directory:"
+        let output = "::error file=/path/file.swift::error: no such file or directory"
         XCTAssertEqual(logFormatted(input), output)
     }
 

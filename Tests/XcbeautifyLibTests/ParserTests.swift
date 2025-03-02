@@ -93,6 +93,12 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(captureGroup.project, "Project")
     }
 
+    func testMatchFileMissingError() throws {
+        let input = #"<unknown>:0: error: no such file or directory: '/path/file.swift'"#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? FileMissingErrorCaptureGroup)
+        XCTAssertEqual(captureGroup.filePath, "/path/file.swift")
+    }
+
     func testGenerateAssetSymbols() throws {
         let input = #"GenerateAssetSymbols /Backyard-Birds/Widgets/An-Asset_Catalog.xcassets (in target 'Some Target' from project 'A_Project')"#
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? GenerateAssetSymbolsCaptureGroup)

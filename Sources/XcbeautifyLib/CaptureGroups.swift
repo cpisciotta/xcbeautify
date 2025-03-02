@@ -1693,6 +1693,9 @@ struct NoCertificateCaptureGroup: ErrorCaptureGroup {
 struct CompileErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
+    // TODO: Improve this group's matching
+    // `(?:no such file or directory)` avoids collisions with `FileMissingErrorCaptureGroup`
+    //
     // Includes `(?!\-)` to prevent capturing XCTest failure messages.
     // Example: /Users/.../Tests.swift:13: error: -[Tests.Tests someTest] : XCTAssertEqual failed: ("Optional("...")") is not equal to ("Optional("....")")
     //
@@ -1700,7 +1703,7 @@ struct CompileErrorCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = is fatal error
     /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!\-)(.*)$"#)
+    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!(?:\-)|(?:no such file or directory))(.*)$"#)
 
     let filePath: String
     let isFatalError: String
@@ -1752,17 +1755,15 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
-    /// $1 = whole error.
-    /// $2 = file path
-    static let regex = XCRegex(pattern: #"^<unknown>:0:\s(error:\s.*)\s'(\/.+\/.*\..*)'$"#)
+    /// $1 = file path
+    static let regex = XCRegex(pattern: #"^<unknown>:0: error: no such file or directory: '(.+)'$"#)
 
-    let reason: String
+    let reason = "error: no such file or directory"
     let filePath: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let reason = groups[safe: 0], let filePath = groups[safe: 1] else { return nil }
-        self.reason = reason
+        assert(groups.count == 1)
+        guard let filePath = groups[safe: 0] else { return nil }
         self.filePath = filePath
     }
 }

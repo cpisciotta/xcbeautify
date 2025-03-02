@@ -257,7 +257,7 @@ final class TerminalRendererTests: XCTestCase {
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "[x] /path/file.swift: error: no such file or directory:"
+        let output = "[x] /path/file.swift: error: no such file or directory"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 

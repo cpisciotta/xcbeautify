@@ -81,6 +81,13 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertEqual(groups[1], "Project")
     }
 
+    func testMatchFileMissingError() throws {
+        let input = #"<unknown>:0: error: no such file or directory: '/path/file.swift'"#
+        let groups = try XCTUnwrap(FileMissingErrorCaptureGroup.regex.captureGroups(for: input))
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(groups[0], "/path/file.swift")
+    }
+
     func testMatchGenerateAssetSymbols() throws {
         let input = #"GenerateAssetSymbols /Backyard-Birds/Widgets/Assets.xcassets (in target 'Widgets' from project 'Backyard Birds')"#
         let groups = try XCTUnwrap(GenerateAssetSymbolsCaptureGroup.regex.captureGroups(for: input))

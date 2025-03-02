@@ -260,7 +260,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testFileMissingError() {
         let input = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
-        let output = "##teamcity[message text=\'File missing error\' errorDetails=\'|[x|] /path/file.swift: error: no such file or directory:\' status=\'ERROR\']\nFile missing error"
+        let output = "##teamcity[message text=\'File missing error\' errorDetails=\'|[x|] /path/file.swift: error: no such file or directory\' status=\'ERROR\']\nFile missing error"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
