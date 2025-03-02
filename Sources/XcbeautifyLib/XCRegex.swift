@@ -15,7 +15,7 @@ package final class XCRegex: @unchecked Sendable {
     private let pattern: String
 
     private lazy var regex: NSRegularExpression? = {
-        let regex = try? NSRegularExpression(pattern: "^" + pattern)
+        let regex = try? NSRegularExpression(pattern: pattern)
         assert(regex != nil)
         return regex
     }()

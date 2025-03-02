@@ -1335,7 +1335,7 @@ struct RegisterExecutionPolicyExceptionCaptureGroup: CaptureGroup {
 struct ScanDependenciesCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"ScanDependencies .* normal (arm64|arm64_32|armv7k|i386|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"^ScanDependencies .* normal (arm64|arm64_32|armv7k|i386|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
 
     let arch: Architecture
     let target: String
@@ -1866,7 +1866,7 @@ struct SymbolReferencedFromCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = wholeError
     /// $2 = reference
-    static let regex = XCRegex(pattern: #"(\s+\"(.*)\", referenced from:)$"#)
+    static let regex = XCRegex(pattern: #"^(\s+\"(.*)\", referenced from:)$"#)
 
     let wholeError: String
     let reference: String
@@ -1901,7 +1901,7 @@ struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
     /// $1 = whole warning
     /// $2 = target
     /// $3 = filename
-    static let regex = XCRegex(pattern: #"(.+ in (.+)\((.+)\.o\))$"#)
+    static let regex = XCRegex(pattern: #"^(.+ in (.+)\((.+)\.o\))$"#)
 
     let wholeWarning: String
     let target: String
@@ -2031,7 +2031,7 @@ struct CompilationResultCaptureGroup: CaptureGroup {
 struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
+    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
 
     init?(groups: [String]) { }
 }
