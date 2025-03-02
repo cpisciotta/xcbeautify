@@ -101,7 +101,7 @@ package: package-darwin-universal package-darwin-x86_64 package-darwin-arm64
 
 .PHONY: release
 release:
-	$(SED) -i '' '1s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
+	$(SED) -i '' '10s/.*/let version = "$(VERSION)"/' Sources/xcbeautify/Version.swift
 	$(GIT) add Sources/xcbeautify/Version.swift
 	$(GIT) commit -m "Bump version to $(VERSION)"
 	$(GIT) push origin main
