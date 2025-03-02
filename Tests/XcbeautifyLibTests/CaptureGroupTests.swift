@@ -1,8 +1,10 @@
 //
-//  CaptureGroupTests.swift
+// CaptureGroupTests.swift
 //
+// Copyright (c) 2025 Charles Pisciotta and other contributors
+// Licensed under MIT License
 //
-//  Created by Charles Pisciotta on 2/25/24.
+// See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
 import XCTest
