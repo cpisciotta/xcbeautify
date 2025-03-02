@@ -1,3 +1,12 @@
+//
+// Parser.swift
+//
+// Copyright (c) 2025 Charles Pisciotta and other contributors
+// Licensed under MIT License
+//
+// See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
+//
+
 import Foundation
 
 /// Maps raw `xcodebuild` output to a `CaptureGroup`.

@@ -13,6 +13,7 @@
 # Configuration
 
 --emptybraces spaced
+--header "//\n// {file}\n//\n// Copyright (c) {year} Charles Pisciotta and other contributors\n// Licensed under MIT License\n//\n// See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information\n"
 --importgrouping testable-last
 --ifdef no-indent
 --indent 4
