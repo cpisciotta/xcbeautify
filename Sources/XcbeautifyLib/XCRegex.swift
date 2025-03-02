@@ -27,10 +27,7 @@ package final class XCRegex: @unchecked Sendable {
     func captureGroups(for line: String) -> [String]? {
         assert(regex != nil)
 
-        guard
-            let matches = regex?.matches(in: line, range: NSRange(location: 0, length: line.utf16.count)),
-            let match = matches.first
-        else {
+        guard let match = regex?.firstMatch(in: line, options: .anchored, range: NSRange(location: 0, length: line.utf16.count)) else {
             return nil
         }
 
