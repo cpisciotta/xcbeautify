@@ -101,6 +101,26 @@ final class UniqueCaptureGroupTests: XCTestCase {
         )
     }
 
+    func testUniqueXcodebuildError() {
+        let line = #"xcodebuild: error: Existing file at -resultBundlePath "/output/file.xcresult""#
+
+        let capturedTypes = captureGroupTypes.filter { type in
+            guard let groups = type.regex.captureGroups(for: line) else { return false }
+            XCTAssertNotNil(type.init(groups: groups))
+            return true
+        }
+
+        XCTAssertEqual(
+            capturedTypes.count,
+            1,
+            """
+            Failed to uniquely parse xcodebuild output.
+            Line: \(line)
+            Captured Types: \(ListFormatter.localizedString(byJoining: capturedTypes.map(String.init(describing:))))
+            """
+        )
+    }
+
     func testUniqueTestCaptureGroups() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
         var buildLog: [String] = try String(contentsOf: url)

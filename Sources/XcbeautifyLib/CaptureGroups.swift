@@ -1701,7 +1701,7 @@ struct CompileErrorCaptureGroup: CaptureGroup {
     /// $1 = file path
     /// $2 = is fatal error
     /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!(?:\-)|(?:no such file or directory))(.*)$"#)
+    static let regex = XCRegex(pattern: #"^(?!(?:xcodebuild))(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!(?:\-)|(?:no such file or directory))(.*)$"#)
 
     let filePath: String
     let isFatalError: String
@@ -1997,6 +1997,7 @@ struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
     /// $1 = whole error
     static let regex = XCRegex(pattern: #"^(xcodebuild: error:.*)$"#)
 
+    // TODO: Capture error itself instead of entire line.
     let wholeError: String
 
     init?(groups: [String]) {
