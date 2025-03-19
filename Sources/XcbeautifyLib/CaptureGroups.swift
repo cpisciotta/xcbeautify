@@ -2515,7 +2515,7 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
     /// $1 = path
     /// $2 = target
     /// $3 = project
-    static let regex = XCRegex(pattern: "^DataModelCodegen (.*).xcdatamodeld (in target '(.*)' from project '(.*)')$")
+    static let regex = XCRegex(pattern: "^DataModelCodegen (.*)\\.xcdatamodeld \\(in target '(.*)' from project '(.*)'\\)$")
 
     let path: String
     let target: String
