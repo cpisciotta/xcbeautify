@@ -140,6 +140,7 @@ package final class Parser {
         MkDirCaptureGroup.self,
         NonPCHClangCommandCaptureGroup.self,
         NoteCaptureGroup.self,
+        DataModelCodegenCaptureGroup.self,
     ]
 
     #if DEBUG

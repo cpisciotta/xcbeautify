@@ -2507,3 +2507,25 @@ struct NoteCaptureGroup: CaptureGroup {
         self.note = note
     }
 }
+
+struct DataModelCodegenCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = path
+    /// $2 = target
+    /// $3 = project
+    static let regex = XCRegex(pattern: "^DataModelCodegen (.*).xcdatamodeld (in target '(.*)' from project '(.*)')$")
+
+    let path: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let path = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.path = path
+        self.target = target
+        self.project = project
+    }
+}
