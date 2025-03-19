@@ -479,18 +479,18 @@ final class ParserTests: XCTestCase {
             XCTAssertEqual(captureGroup.project, project)
         }
     }
-  
-  func testNotDataModelCodegen() throws {
-      let inputs = [
-          "DataModelCodegen /pathxcdatamodeld (in target 'target' from project 'project')",
-          "datamodelcodegen /path.xcdatamodeld (in target 'target' from project 'project')",
-          "DataModelCodegen path.xcdatamodeld (in target from project 'project')",
-          "DataModelCodegen path.xcdatamodeld (in target 'target' from project)",
-          "DataModelCodegen path.xcdatamodeld (in target target from project project)",
-      ]
 
-      for input in inputs {
-          XCTAssertNil(parser.parse(line: input))
-      }
-  }
+    func testNotDataModelCodegen() throws {
+        let inputs = [
+            "DataModelCodegen /pathxcdatamodeld (in target 'target' from project 'project')",
+            "datamodelcodegen /path.xcdatamodeld (in target 'target' from project 'project')",
+            "DataModelCodegen path.xcdatamodeld (in target from project 'project')",
+            "DataModelCodegen path.xcdatamodeld (in target 'target' from project)",
+            "DataModelCodegen path.xcdatamodeld (in target target from project project)",
+        ]
+
+        for input in inputs {
+            XCTAssertNil(parser.parse(line: input))
+        }
+    }
 }
