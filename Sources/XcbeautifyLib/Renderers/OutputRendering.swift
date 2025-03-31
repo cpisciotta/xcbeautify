@@ -37,6 +37,7 @@ protocol OutputRendering {
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String
     func formatCreateBuildDirectory(group: CreateBuildDirectoryCaptureGroup) -> String?
     func formatCursor(group: CursorCaptureGroup) -> String?
+    func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String
     func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String?
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
     func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String?
@@ -765,5 +766,9 @@ extension OutputRendering {
 
     func formatNote(group: NoteCaptureGroup) -> String {
         colored ? "note: ".s.Bold.f.Cyan + group.note : "note: " + group.note
+    }
+
+    func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String {
+        colored ? "[\(group.target.f.Cyan)] \("DataModelCodegen".s.Bold) \(group.path)" : "[\(group.target)] DataModelCodegen \(group.path)"
     }
 }

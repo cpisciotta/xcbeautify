@@ -457,4 +457,40 @@ final class ParserTests: XCTestCase {
         let captureGroup = try XCTUnwrap(parser.parse(line: input) as? XcodebuildErrorCaptureGroup)
         XCTAssertEqual(captureGroup.wholeError, input)
     }
+
+    func testMatchDataModelCodegen() throws {
+        let inputs = [
+            ("/path/to/data/model/something", "target", "Project"),
+            ("", "", ""),
+            ("", "iOS", "app"),
+            ("", "visionOS", ""),
+            ("", "", "123"),
+            ("/", "", ""),
+            ("path", "macOS", ""),
+            (".", "", "!"),
+            ("()", "[]", "(.*)"),
+        ]
+
+        for (path, target, project) in inputs {
+            let input = "DataModelCodegen \(path).xcdatamodeld (in target '\(target)' from project '\(project)')"
+            let captureGroup = try XCTUnwrap(parser.parse(line: input) as? DataModelCodegenCaptureGroup)
+            XCTAssertEqual(captureGroup.path, "\(path).xcdatamodeld")
+            XCTAssertEqual(captureGroup.target, target)
+            XCTAssertEqual(captureGroup.project, project)
+        }
+    }
+
+    func testNotDataModelCodegen() throws {
+        let inputs = [
+            "DataModelCodegen /pathxcdatamodeld (in target 'target' from project 'project')",
+            "datamodelcodegen /path.xcdatamodeld (in target 'target' from project 'project')",
+            "DataModelCodegen path.xcdatamodeld (in target from project 'project')",
+            "DataModelCodegen path.xcdatamodeld (in target 'target' from project)",
+            "DataModelCodegen path.xcdatamodeld (in target target from project project)",
+        ]
+
+        for input in inputs {
+            XCTAssertNil(parser.parse(line: input))
+        }
+    }
 }

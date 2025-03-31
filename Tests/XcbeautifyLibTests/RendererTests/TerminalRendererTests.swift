@@ -834,4 +834,9 @@ final class TerminalRendererTests: XCTestCase {
         let formatted = noColoredFormatted("note: Building targets in dependency order")
         XCTAssertEqual(formatted, "note: Building targets in dependency order")
     }
+
+    func testDataModelCodegen() {
+        let formatted = noColoredFormatted("DataModelCodegen /path/to/data/model/something.xcdatamodeld (in target 'Target' from project 'Project')")
+        XCTAssertEqual(formatted, "[Target] DataModelCodegen /path/to/data/model/something.xcdatamodeld")
+    }
 }
