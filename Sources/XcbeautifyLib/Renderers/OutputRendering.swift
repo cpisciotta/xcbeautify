@@ -769,6 +769,6 @@ extension OutputRendering {
     }
 
     func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String {
-        colored ? "DataModelCodegen: ".s.Bold.f.Cyan + group.path.f.Blue + ".xcdatamodeld" + " (in target '" + group.target.f.Blue + "' from project '" + group.project.f.Blue + "')" : "DataModelCodegen: " + group.path + ".xcdatamodeld" + " (in target '" + group.target + "' from project '" + group.project + "')"
+        colored ? "[\(group.target.f.Cyan)] \("DataModelCodegen".s.Bold) \(group.path)" : "[\(group.target)] DataModelCodegen \(group.path)"
     }
 }

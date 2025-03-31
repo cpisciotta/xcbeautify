@@ -474,7 +474,7 @@ final class ParserTests: XCTestCase {
         for (path, target, project) in inputs {
             let input = "DataModelCodegen \(path).xcdatamodeld (in target '\(target)' from project '\(project)')"
             let captureGroup = try XCTUnwrap(parser.parse(line: input) as? DataModelCodegenCaptureGroup)
-            XCTAssertEqual(captureGroup.path, path)
+            XCTAssertEqual(captureGroup.path, "\(path).xcdatamodeld")
             XCTAssertEqual(captureGroup.target, target)
             XCTAssertEqual(captureGroup.project, project)
         }

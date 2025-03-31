@@ -803,6 +803,6 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
 
     func testDataModelCodegen() {
         let formatted = logFormatted("DataModelCodegen /path/to/data/model/something.xcdatamodeld (in target 'Target' from project 'Project')")
-        XCTAssertEqual(formatted, "DataModelCodegen: /path/to/data/model/something.xcdatamodeld (in target 'Target' from project 'Project')")
+        XCTAssertEqual(formatted, "[Target] DataModelCodegen /path/to/data/model/something.xcdatamodeld")
     }
 }
