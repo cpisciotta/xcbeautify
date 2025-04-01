@@ -141,6 +141,7 @@ package final class Parser {
         NonPCHClangCommandCaptureGroup.self,
         NoteCaptureGroup.self,
         DataModelCodegenCaptureGroup.self,
+        MacroTargetCaptureGroup.self,
     ]
 
     #if DEBUG
