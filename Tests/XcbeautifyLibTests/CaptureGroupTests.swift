@@ -337,7 +337,7 @@ final class CaptureGroupTests: XCTestCase {
         13.	If you're seeing a crash here, check that your SDK and dependencies are at least as new as the versions used to build module 'LocalLibraryPod', builder version '6.1(5.10)/Apple Swift version 6.1 (swiftlang-6.1.0.110.21 clang-1700.0.13.3)', built from source against SDK 22E235, non-resilient, loaded from '/Users/agp1/Developer/Rugby/Example/.rugby/build/Debug-iphonesimulator/LocalLibraryPod-framework/LocalLibraryPod.framework/Modules/LocalLibraryPod.swiftmodule/arm64-apple-ios-simulator.swiftmodule'
         """
         let lines = input.components(separatedBy: "\n")
-        lines.forEach { line in
+        for line in lines {
             XCTAssertNotNil(SwiftCompileStackDumpCaptureGroup.regex.captureGroups(for: line))
         }
     }
