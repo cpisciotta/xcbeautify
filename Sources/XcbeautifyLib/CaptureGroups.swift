@@ -2569,7 +2569,7 @@ struct SwiftCompileStackDumpCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the whole stack dump line.
     /// $1 = the whole stack dump line
-    static let regex = XCRegex(pattern: #"^(\s*[0-9]+\s+.*)$"#)
+    static let regex = XCRegex(pattern: #"^(\s*\d+\.\s+.*)$"#)
 
     let wholeLine: String
 
