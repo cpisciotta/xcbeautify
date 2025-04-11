@@ -191,6 +191,18 @@ final class ParsingTests: XCTestCase {
             }
         }
 
+        func parseLine<T: CaptureGroup>(
+            _ line: any CaptureGroup,
+            to type: T.Type,
+            check: (T) -> Void
+        ) {
+            if let parsedLine = line as? T {
+                check(parsedLine)
+            } else {
+                XCTFail("Expected \(type), but got \(Swift.type(of: line))")
+            }
+        }
+        
         parseLine(parsedLines.removeFirst(), to: SwiftCompileFailedCaptureGroup.self) {
             XCTAssertEqual(
                 $0.wholeError,
@@ -215,15 +227,4 @@ final class ParsingTests: XCTestCase {
         XCTAssertTrue(parsedLines.isEmpty)
     }
 
-    private func parseLine<T: CaptureGroup>(
-        _ line: any CaptureGroup,
-        to type: T.Type,
-        check: (T) -> Void
-    ) {
-        if let parsedLine = line as? T {
-            check(parsedLine)
-        } else {
-            XCTFail("Expected \(type), but got \(Swift.type(of: line))")
-        }
-    }
 }
