@@ -202,7 +202,7 @@ final class ParsingTests: XCTestCase {
                 XCTFail("Expected \(type), but got \(Swift.type(of: line))")
             }
         }
-        
+
         parseLine(parsedLines.removeFirst(), to: SwiftCompileFailedCaptureGroup.self) {
             XCTAssertEqual(
                 $0.wholeError,
@@ -215,7 +215,6 @@ final class ParsingTests: XCTestCase {
 
         while let line = parsedLines.first {
             parseLine(line, to: SwiftCompileStackDumpCaptureGroup.self) {
-                print($0.wholeLine)
                 XCTAssertTrue(
                     $0.wholeLine.contains {
                         CharacterSet.decimalDigits.contains($0.unicodeScalars.first!)
@@ -226,5 +225,4 @@ final class ParsingTests: XCTestCase {
         }
         XCTAssertTrue(parsedLines.isEmpty)
     }
-
 }
