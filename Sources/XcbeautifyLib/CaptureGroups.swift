@@ -2529,3 +2529,53 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.project = project
     }
 }
+
+struct SwiftCompileFailedCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = target
+    /// $3 = project
+    static let regex = XCRegex(pattern: #"(^Command SwiftCompile failed with a nonzero exit code)"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
+struct SwiftCompileStackDumpHeaderCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression to capture the "Stack dump:" header line.
+    /// $1 = the whole header line
+    static let regex = XCRegex(pattern: #"^(Stack dump:)$"#)
+
+    let wholeLine: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeLine = groups[safe: 0] else { return nil }
+        self.wholeLine = wholeLine
+    }
+}
+
+struct SwiftCompileStackDumpCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression to capture the whole stack dump line.
+    /// $1 = the whole stack dump line
+    static let regex = XCRegex(pattern: #"^(\s*[0-9]+\s+.*)$"#)
+
+    let wholeLine: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeLine = groups[safe: 0] else { return nil }
+        self.wholeLine = wholeLine
+    }
+}
