@@ -293,6 +293,12 @@ package struct Formatter {
             return renderer.formatMkDirCaptureGroup(group: group)
         case let group as NoteCaptureGroup:
             return renderer.formatNote(group: group)
+        case let group as SwiftCompileStackDumpCaptureGroup:
+            return renderer.formatSwiftCompileStackDump(group: group)
+        case let group as SwiftCompileStackDumpHeaderCaptureGroup:
+            return renderer.formatSwiftCompileStackDumpHeader(group: group)
+        case let group as SwiftCompileFailedCaptureGroup:
+            return renderer.formatSwiftCompileFailed(group: group)
         default:
             assertionFailure()
             return nil
