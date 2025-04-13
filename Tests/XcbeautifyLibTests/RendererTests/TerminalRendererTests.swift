@@ -839,4 +839,23 @@ final class TerminalRendererTests: XCTestCase {
         let formatted = noColoredFormatted("DataModelCodegen /path/to/data/model/something.xcdatamodeld (in target 'Target' from project 'Project')")
         XCTAssertEqual(formatted, "[Target] DataModelCodegen /path/to/data/model/something.xcdatamodeld")
     }
+
+    func testSwiftCompileFailed() {
+        let formatted = noColoredFormatted("Command SwiftCompile failed with a nonzero exit code")
+        XCTAssertEqual(formatted, "Command SwiftCompile failed with a nonzero exit code")
+    }
+
+    func testSwiftCompileStackDump() {
+        let formatted = noColoredFormatted("Stack dump:")
+        XCTAssertEqual(formatted, "Stack dump:")
+    }
+
+    func testSwiftCompileStackDumpHeader() {
+        let formatted = noColoredFormatted("""
+        11.	While cross-referencing conformance for 'CGSize' (at /Applications/Xcode-16.3.0.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFCGTypes.h:58:8)
+        """)
+        XCTAssertEqual(formatted, """
+        11.	While cross-referencing conformance for 'CGSize' (at /Applications/Xcode-16.3.0.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFCGTypes.h:58:8)
+        """)
+    }
 }
