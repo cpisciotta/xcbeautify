@@ -286,6 +286,22 @@ class JunitReporterTests: XCTestCase {
     </testsuites>
     """
 
+    private let expectedXCTestCrashXml = """
+    <testsuites name="All tests" tests="7" failures="1">
+        <testsuite name="DateTests.CalendarDay__Tests" tests="7" failures="1">
+            <testcase classname="DateTests.CalendarDay__Tests" name="testCalendarDayRawValue" time="0.006" />
+            <testcase classname="DateTests.CalendarDay__Tests" name="testCreatingCalendarDay" time="0.000" />
+            <testcase classname="DateTests.CalendarDay__Tests" name="testDateConversion" time="0.000" />
+            <testcase classname="DateTests.CalendarDay__Tests" name="testDateWithTimeConversion" time="0.000" />
+            <testcase classname="DateTests.CalendarDay__Tests" name="testDaysSince" time="0.000" />
+            <testcase classname="DateTests.CalendarDay__Tests" name="testDaysSinceWithDaylightSavings" time="0.000" />
+            <testcase classname="DateTests.CalendarDay__Tests" name="testToday">
+                <failure message="DateTests/CalendarDayTests.swift:63: Fatal error: This test is not implemented yet." />
+            </testcase>
+        </testsuite>
+    </testsuites>
+    """
+
     func testParallelJunitReport() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
         let parser = Parser()
@@ -299,6 +315,22 @@ class JunitReporterTests: XCTestCase {
         let data = try reporter.generateReport()
         let xml = String(data: data, encoding: .utf8)!
         let expectedXml = expectedParallelXml
+        XCTAssertEqual(xml, expectedXml)
+    }
+
+    func testXCTestCrashJunitReport() throws {
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "xctest_crash_log", withExtension: "txt"))
+        let parser = Parser()
+        let reporter = JunitReporter()
+
+        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+            if let captureGroup = parser.parse(line: line) {
+                reporter.add(captureGroup: captureGroup)
+            }
+        }
+        let data = try reporter.generateReport()
+        let xml = String(data: data, encoding: .utf8)!
+        let expectedXml = expectedXCTestCrashXml
         XCTAssertEqual(xml, expectedXml)
     }
 }
