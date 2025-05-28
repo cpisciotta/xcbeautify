@@ -20,6 +20,7 @@ import Foundation
 import XMLCoder
 
 package final class JunitReporter {
+    private let swiftTestingSuiteName = "SwiftTesting"
     private var components: [JunitComponent] = []
     // Parallel output does not guarantee order - so it is _very_ hard
     // to match to the parent suite. We can still capture test success/failure
@@ -55,20 +56,26 @@ package final class JunitReporter {
         case let group as ParallelTestCaseSkippedCaptureGroup:
             let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
             parallelComponents.append(.testCasePassed(testCase))
+        // Swift testing results
+        // ---------------------
+        // With swift testing, tests suites are ran in parallel, and
+        // nothing in the output is available to group test results by suite.
+        // As a consequence, all tests are treated as parallel tests,
+        // and grouped in a SwiftTesting test suite.
         case let group as SwiftTestingSuiteStartedCaptureGroup:
             let testStart = group.suiteName
             parallelComponents.append(.testSuiteStart(testStart))
         case let group as SwiftTestingTestPassedCaptureGroup:
-            let testCase = TestCase(classname: "", name: group.testName, time: group.timeTaken)
+            let testCase = TestCase(classname: swiftTestingSuiteName, name: group.testName, time: group.timeTaken)
             parallelComponents.append(.testCasePassed(testCase))
         case let group as SwiftTestingTestFailedCaptureGroup:
-            let testCase = TestCase(classname: "", name: group.testName, time: group.timeTaken, failure: .init(message: ""))
+            let testCase = TestCase(classname: swiftTestingSuiteName, name: group.testName, time: group.timeTaken, failure: .init(message: "Swift testing test failed"))
             parallelComponents.append(.failingTest(testCase))
         case let group as SwiftTestingTestSkippedCaptureGroup:
-            let testCase = TestCase(classname: "", name: group.testName, time: "", skipped: .init(message: nil))
+            let testCase = TestCase(classname: swiftTestingSuiteName, name: group.testName, time: nil, skipped: .init(message: nil))
             parallelComponents.append(.skippedTest(testCase))
         case let group as SwiftTestingTestSkippedReasonCaptureGroup:
-            let testCase = TestCase(classname: "", name: group.testName, time: "", skipped: .init(message: group.reason))
+            let testCase = TestCase(classname: swiftTestingSuiteName, name: group.testName, time: nil, skipped: .init(message: group.reason))
             parallelComponents.append(.skippedTest(testCase))
         default:
             // Not needed for generating a junit report
