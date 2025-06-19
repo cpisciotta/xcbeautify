@@ -719,7 +719,7 @@ final class TeamCityRendererTests: XCTestCase {
 
     func testSwiftTestingRunCompletion() {
         let input = #"􁁛 Test run with 5 tests passed after 12.345 seconds."#
-        let output = "##teamcity[message text=\'Test run succeeded\' errorDetails=\'Test run with 5 tests passed after 12.345 seconds\' status=\'INFO\']\nTest run succeeded"
+        let output = "##teamcity[message text=\'Test run succeeded\' errorDetails=\'Test run with 5 tests passed after 12.345 seconds\' status=\'NORMAL\']\nTest run succeeded"
         XCTAssertEqual(noColoredFormatted(input), output)
     }
 
