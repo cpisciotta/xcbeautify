@@ -17,7 +17,7 @@ package import Foundation
 #else
 import Foundation
 #endif
-import XMLCoder
+@preconcurrency import XMLCoder
 
 package final class JunitReporter {
     private var components: [JunitComponent] = []
