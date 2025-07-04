@@ -24,7 +24,7 @@ jobs:
           - platform: ubuntu-22.04
             swift_version: "5.9"
             xcode_version: "15.2"
-          - platform: macos-15
+          - platform: macos-14
             swift_version: "5.10"
             xcode_version: "15.4"
           - platform: ubuntu-22.04
@@ -69,7 +69,7 @@ jobs:
           - platform: ubuntu-22.04
             swift_version: "5.9"
             xcode_version: "15.2"
-          - platform: macos-15
+          - platform: macos-14
             swift_version: "5.10"
             xcode_version: "15.4"
           - platform: ubuntu-22.04
