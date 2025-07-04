@@ -36,6 +36,12 @@ jobs:
           - platform: ubuntu-22.04
             swift_version: "6.0"
             xcode_version: "16.0"
+          - platform: macos-15
+            swift_version: "6.1"
+            xcode_version: "16.3"
+          - platform: ubuntu-22.04
+            swift_version: "6.1"
+            xcode_version: "16.3"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
@@ -81,6 +87,12 @@ jobs:
           - platform: ubuntu-22.04
             swift_version: "6.0"
             xcode_version: "16.0"
+          - platform: macos-15
+            swift_version: "6.1"
+            xcode_version: "16.3"
+          - platform: ubuntu-22.04
+            swift_version: "6.1"
+            xcode_version: "16.3"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
