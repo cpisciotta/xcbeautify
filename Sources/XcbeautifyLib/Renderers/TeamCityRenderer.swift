@@ -19,9 +19,9 @@ struct TeamCityRenderer: OutputRendering {
         self.additionalLines = additionalLines
     }
 
-    private func outputTeamCityInfo(text: String, details: String) -> String {
+    private func outputTeamCityNormal(text: String, details: String) -> String {
         """
-        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='INFO']
+        ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='NORMAL']
         \(text)
         """
     }
@@ -168,7 +168,7 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
         let outputString = "Test run with \(group.numberOfTests) tests passed after \(group.totalTime) seconds"
-        return outputTeamCityInfo(text: "Test run succeeded", details: outputString)
+        return outputTeamCityNormal(text: "Test run succeeded", details: outputString)
     }
 
     func formatSwiftTestingRunFailed(group: SwiftTestingRunFailedCaptureGroup) -> String {
