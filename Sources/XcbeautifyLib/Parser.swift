@@ -141,6 +141,9 @@ package final class Parser {
         NonPCHClangCommandCaptureGroup.self,
         NoteCaptureGroup.self,
         DataModelCodegenCaptureGroup.self,
+        SwiftCompileFailedCaptureGroup.self,
+        SwiftCompileStackDumpHeaderCaptureGroup.self,
+        SwiftCompileStackDumpCaptureGroup.self,
     ]
 
     #if DEBUG
