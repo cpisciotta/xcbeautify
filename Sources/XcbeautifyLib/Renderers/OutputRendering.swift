@@ -127,6 +127,9 @@ protocol OutputRendering {
     func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
     func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
     func formatNote(group: NoteCaptureGroup) -> String
+    func formatSwiftCompileStackDump(group: SwiftCompileStackDumpCaptureGroup) -> String?
+    func formatSwiftCompileStackDumpHeader(group: SwiftCompileStackDumpHeaderCaptureGroup) -> String?
+    func formatSwiftCompileFailed(group: SwiftCompileFailedCaptureGroup) -> String?
 }
 
 extension OutputRendering {
@@ -770,5 +773,17 @@ extension OutputRendering {
 
     func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String {
         colored ? "[\(group.target.f.Cyan)] \("DataModelCodegen".s.Bold) \(group.path)" : "[\(group.target)] DataModelCodegen \(group.path)"
+    }
+
+    func formatSwiftCompileStackDump(group: SwiftCompileStackDumpCaptureGroup) -> String? {
+        group.wholeLine
+    }
+
+    func formatSwiftCompileStackDumpHeader(group: SwiftCompileStackDumpHeaderCaptureGroup) -> String? {
+        group.wholeLine
+    }
+
+    func formatSwiftCompileFailed(group: SwiftCompileFailedCaptureGroup) -> String? {
+        colored ? group.wholeError.s.Bold.f.Red : group.wholeError
     }
 }
