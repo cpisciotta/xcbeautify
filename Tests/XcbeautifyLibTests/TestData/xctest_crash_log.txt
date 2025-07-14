@@ -1,0 +1,23 @@
+exec ${PAGER:-/usr/bin/less} "$0" || exit 1
+Executing tests from //Libs/Date:DateTests
+-----------------------------------------------------------------------------
+Existing simulator 'BAZEL_TEST_iPhone 11_18.4' (A75DA946-4A16-48A5-95F2-5E3AC12DF582) state is: booted
+Test Suite 'All tests' started at 2025-05-19 18:43:25.150.
+Test Suite 'DateTests.xctest' started at 2025-05-19 18:43:25.151.
+Test Suite 'CalendarDay__Tests' started at 2025-05-19 18:43:25.151.
+Test Case '-[DateTests.CalendarDay__Tests testCalendarDayRawValue]' started.
+Test Case '-[DateTests.CalendarDay__Tests testCalendarDayRawValue]' passed (0.006 seconds).
+Test Case '-[DateTests.CalendarDay__Tests testCreatingCalendarDay]' started.
+Test Case '-[DateTests.CalendarDay__Tests testCreatingCalendarDay]' passed (0.000 seconds).
+Test Case '-[DateTests.CalendarDay__Tests testDateConversion]' started.
+Test Case '-[DateTests.CalendarDay__Tests testDateConversion]' passed (0.000 seconds).
+Test Case '-[DateTests.CalendarDay__Tests testDateWithTimeConversion]' started.
+Test Case '-[DateTests.CalendarDay__Tests testDateWithTimeConversion]' passed (0.000 seconds).
+Test Case '-[DateTests.CalendarDay__Tests testDaysSince]' started.
+Test Case '-[DateTests.CalendarDay__Tests testDaysSince]' passed (0.000 seconds).
+Test Case '-[DateTests.CalendarDay__Tests testDaysSinceWithDaylightSavings]' started.
+Test Case '-[DateTests.CalendarDay__Tests testDaysSinceWithDaylightSavings]' passed (0.000 seconds).
+Test Case '-[DateTests.CalendarDay__Tests testToday]' started.
+DateTests/CalendarDayTests.swift:63: Fatal error: This test is not implemented yet.
+Child process terminated with signal 5: Trace/BPT trap
+error: tests exited with '133'
