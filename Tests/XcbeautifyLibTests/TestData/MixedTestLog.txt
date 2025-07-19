@@ -1,0 +1,25 @@
+Test Suite 'All tests' started at 2025-05-28 12:34:01.893.
+Test Suite 'testProject.tests' started at 2025-05-28 12:34:01.893.
+Test Suite 'TestClass' started at 2025-05-28 12:34:01.893.
+Test Case '-[testProject.TestClass test1]' started.
+Test Case '-[testProject.TestClass test1]' passed (0.035 seconds).
+Test Case '-[testProject.TestClass test2]' started.
+Test Case '-[testProject.TestClass test2]' passed (0.276 seconds).
+Test Suite 'testProject.tests' passed at 2025-05-28 12:34:02.222.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.327 (0.329) seconds
+Test Suite 'All tests' passed at 2025-05-28 12:34:02.222.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.327 (0.329) seconds
+􀟈 Test run started.
+􀄵 Testing Library Version: 124
+􀄵 Target Platform: arm64e-apple-macos14.0
+􀟈 Suite SwiftTestingSuite1 started.
+􀟈 Suite SwiftTestingSuite2 started.
+􀟈 Test swiftTestingTest1() started.
+􀟈 Test swiftTestingTest2(value:) started.
+􀟈 Passing 1 argument value → 1 to swiftTestingTest2(value:)
+􀟈 Passing 1 argument value → 2 to swiftTestingTest2(value:)
+􁁛 Test swiftTestingTest2(value:) passed after 0.006 seconds.
+􁁛 Test swiftTestingTest1() passed after 0.006 seconds.
+􁁛 Suite SwiftTestingSuite1 passed after 0.006 seconds.
+􁁛 Suite SwiftTestingSuite2 passed after 0.007 seconds.
+􁁛 Test run with 2 tests passed after 0.007 seconds.
