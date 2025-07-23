@@ -57,6 +57,7 @@ protocol OutputRendering {
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String?
     func formatLinkerUndefinedSymbolsError(group: LinkerUndefinedSymbolsCaptureGroup) -> String
     func formatLinking(group: LinkingCaptureGroup) -> String
+    func formatMacroTarget(group: MacroTargetCaptureGroup) -> String
     func formatNonPCHClangCommand(group: NonPCHClangCommandCaptureGroup) -> String?
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String
     func formatPackageEnd() -> String
@@ -770,5 +771,10 @@ extension OutputRendering {
 
     func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String {
         colored ? "[\(group.target.f.Cyan)] \("DataModelCodegen".s.Bold) \(group.path)" : "[\(group.target)] DataModelCodegen \(group.path)"
+    }
+
+    func formatMacroTarget(group: MacroTargetCaptureGroup) -> String {
+        let message = "must be enabled before it can be used."
+        return colored ? "[\(group.package.f.Cyan)] \(message.s.Bold)" : "[\(group.package)] \(message)"
     }
 }
