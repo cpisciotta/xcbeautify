@@ -12,13 +12,8 @@
 // * https://github.com/bazelbuild/bazel/blob/45092bb122b840e3410845522df9fe89c59db465/src/java_tools/junitrunner/java/com/google/testing/junit/runner/model/AntXmlResultWriter.java#L29
 // * http://windyroad.com.au/dl/Open%20Source/JUnit.xsd
 
-#if compiler(>=6.0)
 package import Foundation
 package import XMLCoder
-#else
-import Foundation
-import XMLCoder
-#endif
 
 package protocol JUnitReportable {
     func junitComponent() -> JUnitComponent

@@ -36,6 +36,7 @@
 --ranges no-space
 --redundanttype inferred
 --semicolons never
+--trailing-commas collections-only
 --wraparguments before-first
 --wrapcollections before-first
 --wrapparameters before-first
