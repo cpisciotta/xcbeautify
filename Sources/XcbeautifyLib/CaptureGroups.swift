@@ -330,7 +330,7 @@ struct SwiftCompilingCaptureGroup: CaptureGroup {
 struct CompileAssetCatalogCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static var regex = XCRegex(pattern: #"^CompileAssetCatalog (.+) \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"^CompileAssetCatalog (.+) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
@@ -669,7 +669,7 @@ struct ExplicitDependencyCaptureGroup: CaptureGroup {
 struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static var regex = XCRegex(pattern: #"^ExtractAppIntentsMetadata \(in target '(.+)' from project '(.+)'\)$"#)
+    static let regex = XCRegex(pattern: #"^ExtractAppIntentsMetadata \(in target '(.+)' from project '(.+)'\)$"#)
 
     let target: String
     let project: String
@@ -1521,7 +1521,7 @@ struct TouchCaptureGroup: CaptureGroup {
 struct ValidateCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static var regex = XCRegex(pattern: #"^Validate (.+) \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"^Validate (.+) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
@@ -1541,7 +1541,7 @@ struct ValidateCaptureGroup: CaptureGroup {
 struct ValidateEmbeddedBinaryCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static var regex = XCRegex(pattern: #"^ValidateEmbeddedBinary (.+) \(in target '(.*)' from project '(.*)'\)$"#)
+    static let regex = XCRegex(pattern: #"^ValidateEmbeddedBinary (.+) \(in target '(.*)' from project '(.*)'\)$"#)
 
     let filePath: String
     let filename: String
