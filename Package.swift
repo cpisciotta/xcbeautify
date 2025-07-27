@@ -50,27 +50,8 @@ for target in package.targets {
     var settings = target.swiftSettings ?? []
     settings.append(
         contentsOf: [
-            // TODO: Enable `complete` Strict Concurrency
-            // Currently, it's `targeted` since `XMLCoder` surfaces warnings.
-            .enableExperimentalFeature("StrictConcurrency=targeted"),
-            .enableUpcomingFeature("BareSlashRegexLiterals"),
-            .enableUpcomingFeature("ConciseMagicFile"),
-            .enableUpcomingFeature("DeprecateApplicationMain"),
-            .enableUpcomingFeature("DisableOutwardActorInference"),
-            .enableUpcomingFeature("DynamicActorIsolation"),
             .enableUpcomingFeature("ExistentialAny"),
-            .enableUpcomingFeature("ForwardTrailingClosures"),
-            .enableUpcomingFeature("FullTypedThrows"),
-            .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
-            // TODO: Enable GlobalConcurrency
-            // Currently, it's disabled since `XMLCoder` surfaces warnings.
-            // .enableUpcomingFeature("GlobalConcurrency"),
-            .enableUpcomingFeature("ImplicitOpenExistentials"),
-            .enableUpcomingFeature("ImportObjcForwardDeclarations"),
-            .enableUpcomingFeature("InferSendableFromCaptures"),
             .enableUpcomingFeature("InternalImportsByDefault"),
-            .enableUpcomingFeature("IsolatedDefaultValues"),
-            .enableUpcomingFeature("RegionBasedIsolation"),
         ]
     )
     target.swiftSettings = settings
