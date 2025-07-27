@@ -665,7 +665,7 @@ struct ExplicitDependencyCaptureGroup: CaptureGroup {
 }
 
 struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
-    static var outputType: OutputType = .task
+    static let outputType: OutputType = .task
 
     static var regex = XCRegex(pattern: #"^ExtractAppIntentsMetadata \(in target '(.+)' from project '(.+)'\)$"#)
 
@@ -755,7 +755,7 @@ struct RestartingTestCaptureGroup: CaptureGroup {
 }
 
 struct GenerateAssetSymbolsCaptureGroup: CaptureGroup {
-    static var outputType: OutputType = .task
+    static let outputType: OutputType = .task
 
     static let regex = XCRegex(pattern: #"^GenerateAssetSymbols (.+) \(in target '(.+)' from project '(.+)'\)$"#)
 
@@ -1477,7 +1477,7 @@ struct TouchCaptureGroup: CaptureGroup {
 }
 
 struct ValidateCaptureGroup: CaptureGroup {
-    static var outputType: OutputType = .task
+    static let outputType: OutputType = .task
 
     static var regex = XCRegex(pattern: #"^Validate (.+) \(in target '(.*)' from project '(.*)'\)$"#)
 
@@ -1497,7 +1497,7 @@ struct ValidateCaptureGroup: CaptureGroup {
 }
 
 struct ValidateEmbeddedBinaryCaptureGroup: CaptureGroup {
-    static var outputType: OutputType = .task
+    static let outputType: OutputType = .task
 
     static var regex = XCRegex(pattern: #"^ValidateEmbeddedBinary (.+) \(in target '(.*)' from project '(.*)'\)$"#)
 
