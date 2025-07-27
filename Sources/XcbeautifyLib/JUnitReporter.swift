@@ -132,7 +132,7 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.count }, forKey: .tests)
-        try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.filter { $0.failure != nil }.count }, forKey: .failures)
+        try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.count(where: { $0.failure != nil }) }, forKey: .failures)
         try container.encode(testsuites, forKey: .testsuites)
     }
 }
@@ -163,7 +163,7 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(testcases.count, forKey: .tests)
-        try container.encode(testcases.filter { $0.failure != nil }.count, forKey: .failures)
+        try container.encode(testcases.count(where: { $0.failure != nil }), forKey: .failures)
         try container.encode(testcases, forKey: .testcases)
     }
 }
