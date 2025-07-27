@@ -6,7 +6,7 @@ name: Release
 
 env:
   # TODO: Load from `.swift-version` file
-  SWIFT_VERSION: 5.9
+  SWIFT_VERSION: 6.0
 
 jobs:
   create_release:
