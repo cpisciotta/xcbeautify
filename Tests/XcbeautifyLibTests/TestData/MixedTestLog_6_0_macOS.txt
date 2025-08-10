@@ -1,0 +1,28 @@
+Test Suite 'All tests' started at 2025-08-10 01:38:41.772.
+Test Suite 'xcbeautifyPackageTests.xctest' started at 2025-08-10 01:38:41.773.
+Test Suite 'CaptureGroupTests' started at 2025-08-10 01:38:41.773.
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testForceFailure]' started.
+/Users/runner/work/xcbeautify/xcbeautify/Tests/XcbeautifyLibTests/CaptureGroupTests.swift:34: error: -[XcbeautifyLibTests.CaptureGroupTests testForceFailure] : XCTAssertTrue failed - True is never false.
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testForceFailure]' failed (0.163 seconds).
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testMatchSwiftTestingIssueArgument1]' started.
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testMatchSwiftTestingIssueArgument1]' passed (0.002 seconds).
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testMatchSwiftTestingIssueArgument2]' started.
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testMatchSwiftTestingIssueArgument2]' passed (0.000 seconds).
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testMatchSwiftTestingIssueArgument3]' started.
+Test Case '-[XcbeautifyLibTests.CaptureGroupTests testMatchSwiftTestingIssueArgument3]' passed (0.000 seconds).
+Test Suite 'CaptureGroupTests' failed at 2025-08-10 01:38:41.939.
+     Executed 4 tests, with 1 failure (0 unexpected) in 0.166 (0.166) seconds
+Test Suite 'xcbeautifyPackageTests.xctest' failed at 2025-08-10 01:38:41.939.
+     Executed 4 tests, with 1 failure (0 unexpected) in 0.166 (0.166) seconds
+Test Suite 'All tests' failed at 2025-08-10 01:38:41.939.
+     Executed 4 tests, with 1 failure (0 unexpected) in 0.166 (0.167) seconds
+◇ Test run started.
+↳ Testing Library Version: 94 (arm64e-apple-macos13.0)
+◇ Suite SwiftTestingGroup started.
+◇ Test testTrueIsTrue() started.
+◇ Test testFailTrueIsFalse() started.
+✔ Test testTrueIsTrue() passed after 0.001 seconds.
+✘ Test testFailTrueIsFalse() recorded an issue at Test.swift:17:9: Expectation failed: true == false
+✘ Test testFailTrueIsFalse() failed after 0.001 seconds with 1 issue.
+✘ Suite SwiftTestingGroup failed after 0.001 seconds with 1 issue.
+✘ Test run with 2 tests failed after 0.001 seconds with 1 issue.
