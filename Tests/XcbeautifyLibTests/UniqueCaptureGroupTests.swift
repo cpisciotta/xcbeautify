@@ -170,7 +170,7 @@ final class UniqueCaptureGroupTests: XCTestCase {
     }
 
     func testUniqueSwiftTestingCaptureGroups() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log", withExtension: "txt"))
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
 
