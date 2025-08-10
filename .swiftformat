@@ -20,6 +20,7 @@
 --enable redundantProperty
 --enable singlePropertyPerLine
 --enable sortSwitchCases
+--enable throwingTests
 
 # Configuration
 
