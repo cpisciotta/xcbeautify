@@ -114,7 +114,7 @@ struct Xcbeautify: ParsableCommand {
                 continue
             }
 
-            if report.contains(.junit) {
+            if report.contains(.junit), let captureGroup = captureGroup as? any JUnitReportable {
                 junitReporter.add(captureGroup: captureGroup)
             }
 

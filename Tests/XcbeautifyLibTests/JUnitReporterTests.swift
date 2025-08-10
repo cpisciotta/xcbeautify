@@ -228,7 +228,7 @@ class JUnitReporterTests: XCTestCase {
         let reporter = JUnitReporter()
 
         for line in try String(contentsOf: url).components(separatedBy: .newlines) {
-            if let captureGroup = parser.parse(line: line) {
+            if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
@@ -292,7 +292,7 @@ class JUnitReporterTests: XCTestCase {
         let reporter = JUnitReporter()
 
         for line in try String(contentsOf: url).components(separatedBy: .newlines) {
-            if let captureGroup = parser.parse(line: line) {
+            if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
@@ -798,7 +798,7 @@ class JUnitReporterTests: XCTestCase {
         let reporter = JUnitReporter()
 
         for line in try String(contentsOf: url).components(separatedBy: .newlines) {
-            if let captureGroup = parser.parse(line: line) {
+            if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
@@ -821,7 +821,7 @@ class JUnitReporterTests: XCTestCase {
         let reporter = JUnitReporter()
 
         for line in try String(contentsOf: inputURL).components(separatedBy: .newlines) {
-            if let captureGroup = parser.parse(line: line) {
+            if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
