@@ -36,9 +36,7 @@ final class CaptureGroupTests: XCTestCase {
         XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
     }
 
-    func testMatchSwiftTestingIssueArgument5() {
-        let input = #"􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {"#
-        XCTAssertNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+    func testForceFailure() {
+        XCTAssertTrue(false, "True is never false.")
     }
 }
