@@ -21,6 +21,7 @@
 --enable singlePropertyPerLine
 --enable sortSwitchCases
 --enable throwingTests
+--enable unusedPrivateDeclarations
 
 # Configuration
 
