@@ -16,6 +16,7 @@
 --enable emptyExtensions
 --enable isEmpty
 --enable noGuardInTests
+--enable redundantMemberwiseInit
 
 # Configuration
 

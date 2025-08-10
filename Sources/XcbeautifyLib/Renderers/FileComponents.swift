@@ -13,12 +13,6 @@ struct FileComponents {
     let path: String
     let line: Int?
     let column: Int?
-
-    init(path: String, line: Int?, column: Int?) {
-        self.path = path
-        self.line = line
-        self.column = column
-    }
 }
 
 extension String {
