@@ -72,7 +72,7 @@ final class ParsingTests: XCTestCase {
     }
 
     func testParsingSwiftTestingTestOutput() throws {
-        let url = Bundle.module.url(forResource: "swift_test_log", withExtension: "txt")!
+        let url = Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt")!
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
