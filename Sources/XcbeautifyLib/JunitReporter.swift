@@ -55,6 +55,17 @@ package final class JunitReporter {
         case let group as ParallelTestCaseSkippedCaptureGroup:
             let testCase = TestCase(classname: group.suite, name: group.testCase, time: group.time, skipped: .init(message: nil))
             parallelComponents.append(.testCasePassed(testCase))
+        case let group as TestCaseStartedCaptureGroup:
+            components.append(.testCaseStart(suite: group.suite, testName: group.testCase))
+        case let group as FatalErrorCaptureGroup:
+            switch components.last {
+            case let .testCaseStart(suite, testName):
+                let testCase = TestCase(classname: suite, name: testName, time: nil, failure: .init(message: group.wholeError))
+                components.append(.failingTest(testCase))
+            default:
+                break
+            }
+
         default:
             // Not needed for generating a junit report
             return
@@ -95,6 +106,9 @@ private final class JunitComponentParser {
              let .skippedTest(testCase),
              let .testCasePassed(testCase):
             testCases.append(testCase)
+
+        case .testCaseStart:
+            break
         }
     }
 
@@ -119,6 +133,7 @@ private final class JunitComponentParser {
 
 private enum JunitComponent {
     case testSuiteStart(String)
+    case testCaseStart(suite: String, testName: String)
     case failingTest(TestCase)
     case testCasePassed(TestCase)
     case skippedTest(TestCase)

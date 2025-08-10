@@ -1751,7 +1751,7 @@ struct FatalErrorCaptureGroup: ErrorCaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole error.
     /// it varies a lot, not sure if it makes sense to catch everything separately
-    static let regex = XCRegex(pattern: #"^(fatal error:.*)$"#)
+    static let regex = XCRegex(pattern: #"^((?:.* )?[fF]atal error:.*)$"#)
 
     let wholeError: String
 
