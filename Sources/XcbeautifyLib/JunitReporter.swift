@@ -19,6 +19,10 @@ import Foundation
 #endif
 import XMLCoder
 
+#if compiler(>=6.0)
+extension XMLCoder.XMLEncoder.OutputFormatting: @retroactive @unchecked Sendable { }
+#endif
+
 package final class JunitReporter {
     private let swiftTestingSuiteName = "SwiftTesting"
     private var components: [JunitComponent] = []
