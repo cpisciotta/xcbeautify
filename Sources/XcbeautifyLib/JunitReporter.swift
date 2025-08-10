@@ -113,8 +113,7 @@ private final class JunitComponentParser {
             testSuite.testcases.append(testCase)
             testSuites[index] = testSuite
         }
-        let container = Testsuites(name: mainTestSuiteName, testsuites: testSuites)
-        return container
+        return Testsuites(name: mainTestSuiteName, testsuites: testSuites)
     }
 }
 

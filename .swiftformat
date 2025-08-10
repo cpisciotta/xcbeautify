@@ -17,6 +17,7 @@
 --enable isEmpty
 --enable noGuardInTests
 --enable redundantMemberwiseInit
+--enable redundantProperty
 
 # Configuration
 
