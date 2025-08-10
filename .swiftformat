@@ -13,6 +13,7 @@
 --enable acronyms
 --enable blankLinesBetweenImports
 --enable blockComments
+--enable emptyExtensions
 
 # Configuration
 
