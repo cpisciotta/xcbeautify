@@ -11,6 +11,7 @@
 --disable unusedArguments
 
 --enable acronyms
+--enable blankLinesBetweenImports
 
 # Configuration
 
