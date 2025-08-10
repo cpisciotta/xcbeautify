@@ -9,6 +9,8 @@
 
 import Foundation
 
+private let swiftTestingSuiteName = "SwiftTesting"
+
 package protocol CaptureGroup {
     static var outputType: OutputType { get }
     static var regex: XCRegex { get }
@@ -680,7 +682,7 @@ struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
     }
 }
 
-struct FailingTestCaptureGroup: CaptureGroup {
+struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
@@ -707,6 +709,11 @@ struct FailingTestCaptureGroup: CaptureGroup {
         self.testCase = testCase
         self.reason = reason
     }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: "\(file) - \(reason)"))
+        return .failingTest(testCase)
+    }
 }
 
 struct UIFailingTestCaptureGroup: CaptureGroup {
@@ -729,7 +736,7 @@ struct UIFailingTestCaptureGroup: CaptureGroup {
     }
 }
 
-struct RestartingTestCaptureGroup: CaptureGroup {
+struct RestartingTestCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
@@ -751,6 +758,11 @@ struct RestartingTestCaptureGroup: CaptureGroup {
         self.testSuiteAndTestCase = testSuiteAndTestCase
         self.testSuite = testSuite
         self.testCase = testCase
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: wholeMessage))
+        return .failingTest(testCase)
     }
 }
 
@@ -873,7 +885,7 @@ struct LinkingCaptureGroup: CaptureGroup {
     }
 }
 
-struct TestCaseSkippedCaptureGroup: CaptureGroup {
+struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
@@ -897,9 +909,14 @@ struct TestCaseSkippedCaptureGroup: CaptureGroup {
         self.testCase = testCase
         self.time = time
     }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: suite, name: testCase, time: time, skipped: .init(message: nil))
+        return .skippedTest(testCase)
+    }
 }
 
-struct TestCasePassedCaptureGroup: CaptureGroup {
+struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
@@ -922,6 +939,11 @@ struct TestCasePassedCaptureGroup: CaptureGroup {
         self.suite = suite
         self.testCase = testCase
         self.time = time
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: suite, name: testCase, time: time)
+        return .testCasePassed(testCase)
     }
 }
 
@@ -979,7 +1001,7 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     }
 }
 
-struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup {
+struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
@@ -1002,9 +1024,14 @@ struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup {
         self.device = device
         self.time = time
     }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: suite, name: testCase, time: time, skipped: .init(message: nil))
+        return .testCasePassed(testCase)
+    }
 }
 
-struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
+struct ParallelTestCasePassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
@@ -1026,6 +1053,11 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
         self.testCase = testCase
         self.device = device
         self.time = time
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: suite, name: testCase, time: time)
+        return .testCasePassed(testCase)
     }
 }
 
@@ -1051,7 +1083,7 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
     }
 }
 
-struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
+struct ParallelTestCaseFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
@@ -1073,6 +1105,12 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
         self.testCase = testCase
         self.device = device
         self.time = time
+    }
+
+    func junitComponent() -> JUnitComponent {
+        // Parallel tests do not provide meaningful failure messages
+        let testCase = TestCase(classname: suite, name: testCase, time: nil, failure: .init(message: "Parallel test failed"))
+        return .failingTest(testCase)
     }
 }
 
@@ -1396,7 +1434,7 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
     }
 }
 
-struct TestSuiteStartedCaptureGroup: CaptureGroup {
+struct TestSuiteStartedCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
@@ -1412,6 +1450,10 @@ struct TestSuiteStartedCaptureGroup: CaptureGroup {
         guard let suiteName = groups[safe: 0], let time = groups[safe: 1] else { return nil }
         self.suiteName = suiteName
         self.time = time
+    }
+
+    func junitComponent() -> JUnitComponent {
+        .testSuiteStart(suiteName)
     }
 }
 
@@ -2188,7 +2230,7 @@ struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
     }
 }
 
-struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
+struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .test
 
     /// Regular expression to capture the start of a test suite.
@@ -2201,6 +2243,10 @@ struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
         assert(groups.count >= 1)
         guard let suiteName = groups[safe: 0] else { return nil }
         self.suiteName = suiteName
+    }
+
+    func junitComponent() -> JUnitComponent {
+        .testSuiteStart(suiteName)
     }
 }
 
@@ -2266,7 +2312,7 @@ struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
     }
 }
 
-struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
+struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression to capture the failure of a test case.
@@ -2288,9 +2334,14 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
         self.timeTaken = timeTaken
         self.numberOfIssues = numberOfIssues
     }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken, failure: .init(message: "Swift testing test failed"))
+        return .failingTest(testCase)
+    }
 }
 
-struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
+struct SwiftTestingTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression to capture the successful completion of a test case.
@@ -2308,9 +2359,14 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
         self.testName = testName
         self.timeTaken = timeTaken
     }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken)
+        return .testCasePassed(testCase)
+    }
 }
 
-struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
+struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression to capture a skipped test case.
@@ -2324,9 +2380,14 @@ struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
         guard let testName = groups[safe: 0] else { return nil }
         self.testName = testName
     }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: nil, skipped: .init(message: nil))
+        return .skippedTest(testCase)
+    }
 }
 
-struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
+struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
     /// Regular expression to capture a skipped test case with a reason.
@@ -2342,6 +2403,11 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
         guard let testName = groups[safe: 0] else { return nil }
         self.testName = testName
         reason = groups[safe: 1]
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: nil, skipped: .init(message: reason))
+        return .skippedTest(testCase)
     }
 }
 
