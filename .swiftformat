@@ -10,6 +10,8 @@
 
 --disable unusedArguments
 
+--enable acronyms
+
 # Configuration
 
 --emptybraces spaced
