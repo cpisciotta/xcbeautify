@@ -90,7 +90,7 @@ struct Xcbeautify: ParsableCommand {
         }
 
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCI) { print($0) }
-        let junitReporter = JunitReporter()
+        let junitReporter = JUnitReporter()
 
         let parser = Parser()
 

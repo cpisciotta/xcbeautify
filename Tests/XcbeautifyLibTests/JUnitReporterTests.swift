@@ -1,5 +1,5 @@
 //
-// JunitReporterTests.swift
+// JUnitReporterTests.swift
 //
 // Copyright (c) 2025 Charles Pisciotta and other contributors
 // Licensed under MIT License
@@ -11,7 +11,7 @@ import Foundation
 import XcbeautifyLib
 import XCTest
 
-class JunitReporterTests: XCTestCase {
+class JUnitReporterTests: XCTestCase {
     private let expectedMacOsXml = """
     <testsuites name="All tests" tests="85" failures="3">
         <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
@@ -222,10 +222,10 @@ class JunitReporterTests: XCTestCase {
     </testsuites>
     """
 
-    func testJunitReport() throws {
+    func testJUnitReport() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
         let parser = Parser()
-        let reporter = JunitReporter()
+        let reporter = JUnitReporter()
 
         for line in try String(contentsOf: url).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) {
@@ -286,10 +286,10 @@ class JunitReporterTests: XCTestCase {
     </testsuites>
     """
 
-    func testParallelJunitReport() throws {
+    func testParallelJUnitReport() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
         let parser = Parser()
-        let reporter = JunitReporter()
+        let reporter = JUnitReporter()
 
         for line in try String(contentsOf: url).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) {
@@ -795,7 +795,7 @@ class JunitReporterTests: XCTestCase {
     func testSwiftTestingJUnitReport() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         let parser = Parser()
-        let reporter = JunitReporter()
+        let reporter = JUnitReporter()
 
         for line in try String(contentsOf: url).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) {
@@ -818,7 +818,7 @@ class JunitReporterTests: XCTestCase {
         let outputURL = try XCTUnwrap(Bundle.module.url(forResource: "MixedTestLog_6_0_Expected_XML_macOS", withExtension: "txt"))
         #endif
         let parser = Parser()
-        let reporter = JunitReporter()
+        let reporter = JUnitReporter()
 
         for line in try String(contentsOf: inputURL).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) {

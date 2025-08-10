@@ -1,5 +1,5 @@
 //
-// JunitReporter.swift
+// JUnitReporter.swift
 //
 // Copyright (c) 2025 Charles Pisciotta and other contributors
 // Licensed under MIT License
@@ -19,13 +19,13 @@ import Foundation
 #endif
 import XMLCoder
 
-package final class JunitReporter {
+package final class JUnitReporter {
     private let swiftTestingSuiteName = "SwiftTesting"
-    private var components: [JunitComponent] = []
+    private var components: [JUnitComponent] = []
     // Parallel output does not guarantee order - so it is _very_ hard
     // to match to the parent suite. We can still capture test success/failure
     // and output a generic result file.
-    private var parallelComponents: [JunitComponent] = []
+    private var parallelComponents: [JUnitComponent] = []
 
     package init() { }
 
@@ -84,7 +84,7 @@ package final class JunitReporter {
     }
 
     package func generateReport() throws -> Data {
-        let parser = JunitComponentParser()
+        let parser = JUnitComponentParser()
         for item in components {
             parser.parse(component: item)
         }
@@ -101,11 +101,11 @@ package final class JunitReporter {
     }
 }
 
-private final class JunitComponentParser {
+private final class JUnitComponentParser {
     private var mainTestSuiteName: String?
     private var testCases: [TestCase] = []
 
-    func parse(component: JunitComponent) {
+    func parse(component: JUnitComponent) {
         switch component {
         case let .testSuiteStart(suiteName):
             guard mainTestSuiteName == nil else {
@@ -139,7 +139,7 @@ private final class JunitComponentParser {
     }
 }
 
-private enum JunitComponent {
+private enum JUnitComponent {
     case testSuiteStart(String)
     case failingTest(TestCase)
     case testCasePassed(TestCase)
