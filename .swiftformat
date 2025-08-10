@@ -23,6 +23,7 @@
 --enable throwingTests
 --enable unusedPrivateDeclarations
 --enable wrapEnumCases
+--enable wrapMultilineFunctionChains
 
 # Configuration
 
