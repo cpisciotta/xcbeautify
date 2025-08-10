@@ -3,65 +3,13 @@ name: CI
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - charles/LinuxTests
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  compile:
-    name: Compile (Swift ${{ matrix.swift_version }}) (${{ matrix.platform }})
-    runs-on: ${{ matrix.platform }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: macos-14
-            swift_version: "5.9"
-            xcode_version: "15.2"
-          - platform: ubuntu-22.04
-            swift_version: "5.9"
-            xcode_version: "15.2"
-          - platform: macos-14
-            swift_version: "5.10"
-            xcode_version: "15.4"
-          - platform: ubuntu-22.04
-            swift_version: "5.10"
-            xcode_version: "15.4"
-          - platform: macos-15
-            swift_version: "6.0"
-            xcode_version: "16.0"
-          - platform: ubuntu-22.04
-            swift_version: "6.0"
-            xcode_version: "16.0"
-          - platform: macos-15
-            swift_version: "6.1"
-            xcode_version: "16.3"
-          - platform: ubuntu-22.04
-            swift_version: "6.1"
-            xcode_version: "16.3"
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download Swift ${{ matrix.swift_version }}
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        run: wget https://download.swift.org/swift-${{ matrix.swift_version }}-release/ubuntu2204/swift-${{ matrix.swift_version }}-RELEASE/swift-${{ matrix.swift_version }}-RELEASE-ubuntu22.04.tar.gz
-
-      - name: Extract Swift ${{ matrix.swift_version }}
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        run: tar xzf swift-${{ matrix.swift_version }}-RELEASE-ubuntu22.04.tar.gz
-
-      - name: Add Swift toolchain to PATH
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        run: echo "$GITHUB_WORKSPACE/swift-${{ matrix.swift_version }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
-
-      - run: swift --version
-      - run: swift build --disable-sandbox --configuration release -Xswiftc -warnings-as-errors
-
   test:
     name: Test (Swift ${{ matrix.swift_version }}) (${{ matrix.platform }})
     runs-on: ${{ matrix.platform }}
@@ -69,27 +17,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: macos-14
-            swift_version: "5.9"
-            xcode_version: "15.2"
           - platform: ubuntu-22.04
             swift_version: "5.9"
             xcode_version: "15.2"
-          - platform: macos-14
-            swift_version: "5.10"
-            xcode_version: "15.4"
           - platform: ubuntu-22.04
             swift_version: "5.10"
             xcode_version: "15.4"
-          - platform: macos-15
-            swift_version: "6.0"
-            xcode_version: "16.0"
           - platform: ubuntu-22.04
             swift_version: "6.0"
             xcode_version: "16.0"
-          - platform: macos-15
-            swift_version: "6.1"
-            xcode_version: "16.3"
           - platform: ubuntu-22.04
             swift_version: "6.1"
             xcode_version: "16.3"
@@ -111,12 +47,3 @@ jobs:
         run: echo "$GITHUB_WORKSPACE/swift-${{ matrix.swift_version }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
       - run: swift --version
       - run: swift test --enable-code-coverage
-      - name: Prepare Code Coverage
-        if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
-        run: ./tools/export_coverage
-      - name: Upload coverage reports to Codecov
-        if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
-        uses: codecov/codecov-action@v5
-        with:
-          files: info.lcov
-          token: ${{ secrets.CODECOV_TOKEN }}
