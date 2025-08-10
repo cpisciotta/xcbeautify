@@ -15,6 +15,7 @@
 --enable blockComments
 --enable emptyExtensions
 --enable isEmpty
+--enable noGuardInTests
 
 # Configuration
 
