@@ -19,6 +19,7 @@
 --enable redundantMemberwiseInit
 --enable redundantProperty
 --enable singlePropertyPerLine
+--enable sortSwitchCases
 
 # Configuration
 

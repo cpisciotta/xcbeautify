@@ -92,8 +92,8 @@ private final class JunitComponentParser {
             mainTestSuiteName = suiteName
 
         case let .failingTest(testCase),
-             let .testCasePassed(testCase),
-             let .skippedTest(testCase):
+             let .skippedTest(testCase),
+             let .testCasePassed(testCase):
             testCases.append(testCase)
         }
     }
@@ -138,7 +138,7 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
     static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
-        case .name, .tests, .failures:
+        case .failures, .name, .tests:
             return .attribute
 
         case .testsuites:
@@ -169,7 +169,7 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
     static func nodeEncoding(for key: any CodingKey) -> XMLEncoder.NodeEncoding {
         let key = CodingKeys(stringValue: key.stringValue)!
         switch key {
-        case .name, .tests, .failures:
+        case .failures, .name, .tests:
             return .attribute
 
         case .testcases:
