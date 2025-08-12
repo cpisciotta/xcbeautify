@@ -33,7 +33,7 @@ jobs:
     needs: create_release
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
@@ -73,7 +73,7 @@ jobs:
     needs: create_release
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download Swift ${{ env.SWIFT_VERSION }}
         run: wget https://download.swift.org/swift-${{ env.SWIFT_VERSION }}-release/ubuntu2204/swift-${{ env.SWIFT_VERSION }}-RELEASE/swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04.tar.gz
       - name: Extract Swift ${{ env.SWIFT_VERSION }}
