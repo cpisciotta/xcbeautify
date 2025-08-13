@@ -118,5 +118,7 @@ jobs:
         if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
         uses: codecov/codecov-action@v5
         with:
+          fail_ci_if_error: true
           files: info.lcov
-          token: ${{ secrets.CODECOV_TOKEN }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
