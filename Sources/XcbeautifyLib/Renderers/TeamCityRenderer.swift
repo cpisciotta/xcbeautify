@@ -47,6 +47,14 @@ struct TeamCityRenderer: OutputRendering {
         """
     }
 
+    private func outputTeamCityTestFlowDirective(_ messageName: String, _ group: any SuiteTestCaseNamer, extra: String = "") -> String {
+        "##teamcity[\(messageName) name='\(group.suite.teamCityEscaped()):\(group.testCase.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())'\(extra)]"
+    }
+
+    private func outputTeamCityTestPlainDirective(_ messageName: String, _ group: any PlainTestCaseNamer, extra: String = "") -> String {
+        "##teamcity[\(messageName) name='\(group.testName.teamCityEscaped())'\(extra)]"
+    }
+
     func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         let outputString = colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
@@ -176,40 +184,54 @@ struct TeamCityRenderer: OutputRendering {
         return outputTeamCityError(text: "Test run failed", details: outputString)
     }
 
+    func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String {
+        "##teamcity[testRetrySupport enabled='true']"
+    }
+
+    func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
+        "##teamcity[testRetrySupport enabled='true']"
+    }
+
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String {
         // No matching 'test suite stopped' message
         "##teamcity[testSuiteStarted name='\(group.suite.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']"
     }
 
+    private func outputParallelTestFlow(
+        _ group: any SuiteTestCaseNamer,
+        device: String,
+        duration: String? = nil,
+        failed: Bool = false
+    ) -> String {
+        let testStarted = outputTeamCityTestFlowDirective("testStarted", group)
+        let testFailed = failed ? outputTeamCityTestFlowDirective("testFailed", group) : ""
+        let testMetadata = "##teamcity[testMetadata testName='\(group.suite.teamCityEscaped()):\(group.testCase.teamCityEscaped())' name='device' value='\(device.teamCityEscaped())']"
+        let testFinishedExtra = duration != nil ? " duration='\(duration!.sToMs())'" : ""
+        let testFinished = outputTeamCityTestFlowDirective("testFinished", group, extra: testFinishedExtra)
+
+        return """
+        \(testStarted)
+        \(testMetadata)
+        \(testFailed)
+        \(testFinished)
+        """
+    }
+
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String {
-        // No 'test started' message - prepend one.
-        """
-        ##teamcity[testStarted name='\(group.testCase.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']
-        ##teamcity[testMetadata testName='\(group.testCase.teamCityEscaped())' name='device' value='Device \(group.device)']
-        ##teamcity[testFinished name='\(group.testCase.teamCityEscaped())' duration='\(group.time.sToMs())' flowId='\(group.suite.teamCityEscaped())']
-        """
+        outputParallelTestFlow(group, device: "Device \(group.device)", duration: group.time)
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {
         // Ignored doesn't need start/finish
-        "##teamcity[testIgnored name='\(group.testCase.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']"
+        outputTeamCityTestFlowDirective("testIgnored", group)
     }
 
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String {
-        """
-        ##teamcity[testStarted name='\(group.testCase.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']
-        ##teamcity[testFinished name='\(group.testCase.teamCityEscaped())' duration='\(group.time.sToMs())' flowId='\(group.suite.teamCityEscaped())']
-        """
+        outputParallelTestFlow(group, device: "AppKit", duration: group.time)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {
-        // Record device since we don't capture stdout/err
-        """
-        ##teamcity[testStarted name='\(group.testCase.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']
-        ##teamcity[testMetadata testName='\(group.testCase.teamCityEscaped())' name='device' value='Device \(group.device)']
-        ##teamcity[testFailed name='\(group.testCase.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']
-        ##teamcity[testFinished name='\(group.testCase.teamCityEscaped())' duration='\(group.time.sToMs())' flowId='\(group.suite.teamCityEscaped())']
-        """
+        outputParallelTestFlow(group, device: "Device \(group.device)", duration: group.time, failed: true)
     }
 
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
@@ -222,8 +244,7 @@ struct TeamCityRenderer: OutputRendering {
    }
 
    func formatSwiftTestingTestStarted(group: SwiftTestingTestStartedCaptureGroup) -> String? {
-        // parallel gets test started.
-        "##teamcity[testStarted name='\(group.testName.teamCityEscaped())' captureStandardOutput='true']"
+        outputTeamCityTestPlainDirective("testStarted", group, extra: " captureStandardOutput='true'")
    }
 
    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String {
@@ -231,7 +252,7 @@ struct TeamCityRenderer: OutputRendering {
    }
 
    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String {
-        "##teamcity[testFinished name='\(group.testName.teamCityEscaped())' duration='\(group.timeTaken.sToMs())']"
+        outputTeamCityTestPlainDirective("testFinished", group, extra: " duration='\(group.timeTaken.sToMs())']")
    }
 
     func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
@@ -241,18 +262,18 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
         """
-        ##teamcity[testFailed name='\(group.testName.teamCityEscaped())' message='\(group.numberOfIssues) issues']
-        ##teamcity[testFinished name='\(group.testName.teamCityEscaped())' duration='\(group.timeTaken.sToMs())']
+        \(outputTeamCityTestPlainDirective("testFailed", group, extra: " message='\(group.numberOfIssues) issues'"))
+        \(outputTeamCityTestPlainDirective("testFinished", group, extra: " duration='\(group.timeTaken.sToMs())'"))
         """
     }
 
     func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
-        "##teamcity[testIgnored name='\(group.testName.teamCityEscaped())']"
+        outputTeamCityTestPlainDirective("testIgnored", group)
     }
 
     func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String {
         let reason = group.reason.map { " (\($0))" } ?? ""
-        return "##teamcity[testIgnored name='\(group.testName.teamCityEscaped())' details='\(reason.teamCityEscaped())']"
+        return outputTeamCityTestPlainDirective("testIgnored", group, extra: " details='\(reason.teamCityEscaped())'")
     }
 
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
