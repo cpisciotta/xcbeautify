@@ -122,6 +122,8 @@ struct Xcbeautify: ParsableCommand {
             output.write(captureGroup.outputType, formatted)
         }
 
+        formatter.formatEndOfStream().map { output.write(.test, $0) }
+
         if !report.isEmpty {
             let outputPath = URL(
                 fileURLWithPath: reportPath,

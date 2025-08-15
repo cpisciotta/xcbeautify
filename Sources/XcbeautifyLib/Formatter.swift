@@ -33,6 +33,8 @@ package struct Formatter {
         }
     }
 
+    package func formatEndOfStream() -> String? { renderer.formatEndOfStream() }
+
     package func format(captureGroup: any CaptureGroup) -> String? {
         switch captureGroup {
         case let group as AggregateTargetCaptureGroup:
