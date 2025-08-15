@@ -375,6 +375,35 @@ final class TeamCityRendererTests: XCTestCase {
         """)
     }
 
+    func testParallelTestCaseSkipped() {
+        let formatted = noColoredFormatted("Test case 'XcbeautifyLibTests.testBuildTarget()' skipped on 'xctest (49438)' (0.131 seconds)")
+        XCTAssertEqual(formatted, "##teamcity[testIgnored name='XcbeautifyLibTests:testBuildTarget' flowId='XcbeautifyLibTests']")
+    }
+
+    func testSwiftTestingSuiteStarted() {
+        let input = #"􀟈 Suite MyTestSuite started."#
+        let output = "##teamcity[testSuiteStarted name='MyTestSuite']"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testSwiftTestingSuitePassed() {
+        let input = #"􁁛 Suite MyTestSuite passed after 5.123 seconds."#
+        let output = "##teamcity[testSuiteFinished name='MyTestSuite']"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testSwiftTestingTestStarted() {
+        let input = #"􁁛 Test myTest passed after 0.678 seconds."#
+        let output = "##teamcity[testFinished name='myTest' duration='678']"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
+    func testSwiftTestingTestPassed() {
+        let input = #"􁁛 Test myTest passed after 0.678 seconds."#
+        let output = "##teamcity[testFinished name='myTest' duration='678']"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+
     func testConcurrentDestinationTestSuiteStarted() {
         let formatted = noColoredFormatted("Test suite 'XcbeautifyLibTests (iOS).xctest' started on 'iPhone X'")
         XCTAssertEqual(formatted, "##teamcity[testSuiteStarted name='XcbeautifyLibTests (iOS).xctest' flowId='XcbeautifyLibTests (iOS).xctest']")
@@ -433,6 +462,26 @@ final class TeamCityRendererTests: XCTestCase {
     func testParallelTestingFailed() {
         let formatted = noColoredFormatted("Testing failed on 'iPhone X'")
         XCTAssertEqual(formatted, "Testing failed on 'iPhone X'")
+    }
+
+    func testParallelTestSuiteStarted() {
+        let formatted = noColoredFormatted("Test suite 'boobah' started on 'my frog'")
+        XCTAssertEqual(formatted, "##teamcity[testSuiteStarted name='boobah' flowId='boobah']")
+    }
+
+    func testEndOfStream() {
+        // Clear buildup from other tests
+        _ = noColoredFormatted("Test suite 'ex' started on 'my frog'")
+        _ = noColoredFormatted(#"Testing started"#)
+
+        // Start two suites, to see their ends at EOF
+        _ = noColoredFormatted("Test suite 'why' started on 'my frog'")
+        _ = noColoredFormatted("Test suite 'zed' started on 'my frog'")
+        let formatted = formatter.formatEndOfStream()
+        XCTAssertEqual(formatted, """
+        ##teamcity[testSuiteFinished name='why' flowId='why']
+        ##teamcity[testSuiteFinished name='zed' flowId='zed']
+        """)
     }
 
     func testPbxcp() {

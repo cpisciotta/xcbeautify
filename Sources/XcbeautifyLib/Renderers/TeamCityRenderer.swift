@@ -260,11 +260,11 @@ struct TeamCityRenderer: OutputRendering {
    }
 
    func formatSwiftTestingSuitePassed(group: SwiftTestingSuitePassedCaptureGroup) -> String {
-        "##teamcity[testSuiteFinished name='\(group.suiteName.teamCityEscaped())']'"
+        "##teamcity[testSuiteFinished name='\(group.suiteName.teamCityEscaped())']"
    }
 
    func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String {
-        outputTeamCityTestPlainDirective("testFinished", group, extra: " duration='\(group.timeTaken.sToMs())']")
+        outputTeamCityTestPlainDirective("testFinished", group, extra: " duration='\(group.timeTaken.sToMs())'")
    }
 
     func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String {
