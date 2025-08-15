@@ -14,6 +14,8 @@ struct TeamCityRenderer: OutputRendering {
     let colored: Bool
     let additionalLines: () -> String?
 
+    private static var parallelSuitesToClose: [String] = []
+
     init(colored: Bool, additionalLines: @escaping () -> String?) {
         self.colored = colored
         self.additionalLines = additionalLines
@@ -185,16 +187,21 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String {
-        "##teamcity[testRetrySupport enabled='true']"
+        Self.parallelSuitesToClose.removeAll()
+        return "##teamcity[testRetrySupport enabled='true']"
     }
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
-        "##teamcity[testRetrySupport enabled='true']"
+        // Parallel testing sometimes starts with this.
+        Self.parallelSuitesToClose.removeAll()
+        return "##teamcity[testRetrySupport enabled='true']"
     }
 
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String {
         // No matching 'test suite stopped' message
-        "##teamcity[testSuiteStarted name='\(group.suite.teamCityEscaped())' flowId='\(group.suite.teamCityEscaped())']"
+        let suite = group.suite.teamCityEscaped()
+        Self.parallelSuitesToClose.append("##teamcity[testSuiteFinished name='\(suite)' flowId='\(suite)']")
+        return "##teamcity[testSuiteStarted name='\(suite)' flowId='\(suite)']"
     }
 
     private func outputParallelTestFlow(
@@ -237,6 +244,11 @@ struct TeamCityRenderer: OutputRendering {
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         colored ? group.wholeError.s.Bold.f.Red : group.wholeError
     }
+
+    func formatEndOfStream() -> String? {
+        Self.parallelSuitesToClose.joined(separator: "\n")
+    }
+
 
    func formatSwiftTestingSuiteStarted(group: SwiftTestingSuiteStartedCaptureGroup) -> String {
         // No flowId for non-parallel testing: no suite id given for test lines.
