@@ -2595,3 +2595,19 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.project = project
     }
 }
+
+struct MacroTargetCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = package
+    static let regex = XCRegex(pattern: #"^(.*) Target '(.*)' must be enabled before it can be used.$"#)
+
+    let package: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let package = groups[safe: 1] else { return nil }
+        self.package = package
+    }
+}

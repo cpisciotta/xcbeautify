@@ -839,4 +839,9 @@ final class TerminalRendererTests: XCTestCase {
         let formatted = noColoredFormatted("DataModelCodegen /path/to/data/model/something.xcdatamodeld (in target 'Target' from project 'Project')")
         XCTAssertEqual(formatted, "[Target] DataModelCodegen /path/to/data/model/something.xcdatamodeld")
     }
+
+    func testMacroTarget() {
+        let formatted = noColoredFormatted("/Swallow/Package.swift:PACKAGE-TARGET:SwallowMacros: error: Target 'SwallowMacros' must be enabled before it can be used.")
+        XCTAssertEqual(formatted, "[SwallowMacros] must be enabled before it can be used.")
+    }
 }
