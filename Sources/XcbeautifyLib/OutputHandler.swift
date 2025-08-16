@@ -13,6 +13,7 @@ import Foundation
 package class OutputHandler {
     let quiet: Bool
     let quieter: Bool
+    let quieterAfterError: Bool
     let isCI: Bool
     let writer: (String) -> Void
 
@@ -26,9 +27,13 @@ package class OutputHandler {
     /// Ref: https://github.com/cpisciotta/xcbeautify/pull/15
     private var lastFormatted: String?
 
-    package init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
+    /// Tracks if an error has been encountered when using quieterAfterError mode
+    private var errorEncountered = false
+
+    package init(quiet: Bool, quieter: Bool, quieterAfterError: Bool = false, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
         self.quiet = quiet
         self.quieter = quieter
+        self.quieterAfterError = quieterAfterError
         self.isCI = isCI
         self.writer = writer
     }
@@ -36,14 +41,22 @@ package class OutputHandler {
     package func write(_ type: OutputType, _ content: String?) {
         guard let content else { return }
 
-        if !quiet, !quieter {
+        // Determine effective quiet/quieter mode
+        let effectiveQuiet = quiet || (quieterAfterError && errorEncountered)
+        let effectiveQuieter = quieter || (quieterAfterError && errorEncountered)
+
+        if !effectiveQuiet, !effectiveQuieter {
             writer(content)
+            // Check after writing to activate quieter mode for next output
+            if quieterAfterError, type == .error {
+                errorEncountered = true
+            }
             return
         }
 
         switch type {
         case OutputType.warning:
-            if quieter { return }
+            if effectiveQuieter { return }
             fallthrough
         case OutputType.error:
             if let last = lastFormatted {
@@ -51,6 +64,10 @@ package class OutputHandler {
                 lastFormatted = nil
             }
             writer(content)
+            // Check after writing to activate quieter mode for next output
+            if quieterAfterError, type == .error {
+                errorEncountered = true
+            }
         case OutputType.issue:
             writer(content)
         case OutputType.result:
