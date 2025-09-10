@@ -9,6 +9,7 @@
 
 import XCTest
 @testable import XcbeautifyLib
+import xctestLogParserLib
 
 final class CaptureGroupTests: XCTestCase {
     func testSwiftCompiling() {

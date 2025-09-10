@@ -9,6 +9,7 @@
 
 import XCTest
 @testable import XcbeautifyLib
+import xctestLogParserLib
 
 final class ParserTests: XCTestCase {
     private var parser: Parser!

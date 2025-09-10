@@ -10,6 +10,7 @@
 import Foundation
 import XcbeautifyLib
 import XCTest
+import xctestLogParserLib
 
 class JUnitReporterTests: XCTestCase {
     private let expectedMacOsXml = """

@@ -144,7 +144,7 @@ public final class Parser {
     ]
 
     #if DEBUG
-    func __for_test__captureGroupTypes() -> [any CaptureGroup.Type] {
+    public func __for_test__captureGroupTypes() -> [any CaptureGroup.Type] {
         captureGroupTypes
     }
     #endif

@@ -9,6 +9,7 @@
 
 import XCTest
 @testable import XcbeautifyLib
+import xctestLogParserLib
 
 final class UniqueCaptureGroupTests: XCTestCase {
     private let captureGroupTypes = Parser().__for_test__captureGroupTypes()
