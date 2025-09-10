@@ -8,7 +8,7 @@
 //
 
 import Foundation
-import xctestLogParserLib
+import XcLogParserLib
 
 struct GitHubActionsRenderer: MicrosoftOutputRendering {
     let colored: Bool

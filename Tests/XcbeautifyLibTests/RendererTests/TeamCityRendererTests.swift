@@ -9,7 +9,7 @@
 
 import XCTest
 @testable import XcbeautifyLib
-import xctestLogParserLib
+import XcLogParserLib
 
 final class TeamCityRendererTests: XCTestCase {
     private var parser: Parser!

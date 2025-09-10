@@ -9,7 +9,7 @@
 
 import Colorizer
 import Foundation
-import xctestLogParserLib
+import XcLogParserLib
 
 struct TeamCityRenderer: OutputRendering {
     let colored: Bool

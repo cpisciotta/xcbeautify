@@ -6,7 +6,7 @@ let package = Package(
     products: [
         .executable(name: "xcbeautify", targets: ["xcbeautify"]),
         .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"]),
-        .library(name: "XctestLogParserLib", targets: ["xctestLogParserLib"]),
+        .library(name: "XcLogParserLib", targets: ["XcLogParserLib"]),
     ],
     dependencies: [
         .package(
@@ -35,11 +35,11 @@ let package = Package(
             dependencies: [
                 "Colorizer",
                 "XMLCoder",
-                "xctestLogParserLib"
+                "XcLogParserLib"
             ]
         ),
         .target(
-            name: "xctestLogParserLib"
+            name: "XcLogParserLib"
         ),
         .testTarget(
             name: "XcbeautifyLibTests",

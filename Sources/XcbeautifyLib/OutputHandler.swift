@@ -8,7 +8,7 @@
 //
 
 import Foundation
-public import xctestLogParserLib
+public import XcLogParserLib
 
 /// Filters formatted output by `OutputType` only if `quiet` or `quieter` are specified.
 public class OutputHandler {

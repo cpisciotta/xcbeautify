@@ -8,7 +8,7 @@
 //
 
 import Foundation
-import xctestLogParserLib
+import XcLogParserLib
 
 /// The single type responsible for formatting output.
 public struct XCBeautifier {

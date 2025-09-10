@@ -8,7 +8,7 @@
 //
 
 import Foundation
-public import xctestLogParserLib
+public import XcLogParserLib
 
 /// Formats `CaptureGroup` instances appropriate for the specified `renderer` context.
 public struct Formatter {

@@ -1,4 +1,4 @@
-import xctestLogParserLib
+import XcLogParserLib
 
 extension FailingTestCaptureGroup: JUnitReportable {
     func junitComponent() -> JUnitComponent {

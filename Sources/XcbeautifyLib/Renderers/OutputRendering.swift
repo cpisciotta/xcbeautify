@@ -8,7 +8,7 @@
 //
 
 import Foundation
-import xctestLogParserLib
+import XcLogParserLib
 
 /// A renderer is responsible for formatting raw xcodebuild output.
 /// `OutputRendering` defines many default implementations for output that is similarly formatted across renderers.

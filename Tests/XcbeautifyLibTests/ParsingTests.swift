@@ -9,7 +9,7 @@
 
 import XCTest
 @testable import XcbeautifyLib
-import xctestLogParserLib
+import XcLogParserLib
 
 final class ParsingTests: XCTestCase {
     func testCleanBuildXcode15_1() throws {
