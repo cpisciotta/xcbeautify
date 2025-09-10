@@ -63,6 +63,13 @@ extension SwiftTestingSuiteStartedCaptureGroup:  JUnitParallelReportable {
     }
 }
 
+extension SwiftTestingTestPassedCaptureGroup: JUnitParallelReportable {
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken)
+        return .testCasePassed(testCase)
+    }
+}
+
 extension SwiftTestingTestFailedCaptureGroup: JUnitParallelReportable {
     func junitComponent() -> JUnitComponent {
         let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken, failure: .init(message: "Swift testing test failed"))
