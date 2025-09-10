@@ -8,9 +8,10 @@
 //
 
 import Foundation
+public import xctestLogParserLib
 
 /// Formats `CaptureGroup` instances appropriate for the specified `renderer` context.
-package struct Formatter {
+public struct Formatter {
     private let colored: Bool
     private let renderer: any OutputRendering
 
@@ -33,7 +34,7 @@ package struct Formatter {
         }
     }
 
-    package func format(captureGroup: any CaptureGroup) -> String? {
+    public func format(captureGroup: any CaptureGroup) -> String? {
         switch captureGroup {
         case let group as AggregateTargetCaptureGroup:
             return renderer.formatTargetCommand(command: "Aggregate", group: group)

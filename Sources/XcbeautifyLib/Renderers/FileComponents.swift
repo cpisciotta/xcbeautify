@@ -9,13 +9,13 @@
 
 import Foundation
 
-struct FileComponents {
+public struct FileComponents {
     let path: String
     let line: Int?
     let column: Int?
 }
 
-extension String {
+public extension String {
     func asFileComponents() -> FileComponents {
         let _components = split(separator: ":").map(String.init)
         assert((1...3).contains(_components.count))

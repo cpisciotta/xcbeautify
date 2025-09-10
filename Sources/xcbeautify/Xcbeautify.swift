@@ -10,6 +10,7 @@
 import ArgumentParser
 import Foundation
 import XcbeautifyLib
+import xctestLogParserLib
 
 @main
 struct Xcbeautify: ParsableCommand {

@@ -8,9 +8,10 @@
 //
 
 import Foundation
+public import xctestLogParserLib
 
 /// Filters formatted output by `OutputType` only if `quiet` or `quieter` are specified.
-package class OutputHandler {
+public class OutputHandler {
     let quiet: Bool
     let quieter: Bool
     let isCI: Bool
@@ -33,7 +34,7 @@ package class OutputHandler {
         self.writer = writer
     }
 
-    package func write(_ type: OutputType, _ content: String?) {
+    public func write(_ type: OutputType, _ content: String?) {
         guard let content else { return }
 
         if !quiet, !quieter {

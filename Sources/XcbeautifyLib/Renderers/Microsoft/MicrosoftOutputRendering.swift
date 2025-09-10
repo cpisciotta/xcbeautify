@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import xctestLogParserLib
 
 struct Annotation {
     struct Platforms: OptionSet {

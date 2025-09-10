@@ -7,9 +7,9 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-import Foundation
+public import Foundation
 
-extension String {
+public extension String {
     var lastPathComponent: String {
         NSString(string: self).lastPathComponent
     }
