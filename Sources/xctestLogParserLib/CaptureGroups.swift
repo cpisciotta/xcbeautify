@@ -9,39 +9,39 @@
 
 import Foundation
 
-private let swiftTestingSuiteName = "SwiftTesting"
+public let swiftTestingSuiteName = "SwiftTesting"
 
-package protocol CaptureGroup {
+public protocol CaptureGroup {
     static var outputType: OutputType { get }
     static var regex: XCRegex { get }
     init?(groups: [String])
 }
 
-package extension CaptureGroup {
+public extension CaptureGroup {
     var outputType: OutputType { Self.outputType }
 }
 
-protocol ErrorCaptureGroup: CaptureGroup {
+public protocol ErrorCaptureGroup: CaptureGroup {
     var wholeError: String { get }
 }
 
-protocol TargetCaptureGroup: CaptureGroup {
+public protocol TargetCaptureGroup: CaptureGroup {
     var target: String { get }
     var project: String { get }
     var configuration: String { get }
 }
 
-protocol CompileFileCaptureGroup: CaptureGroup {
+public protocol CompileFileCaptureGroup: CaptureGroup {
     var filename: String { get }
     var target: String { get }
 }
 
-protocol CopyCaptureGroup: CaptureGroup {
+public protocol CopyCaptureGroup: CaptureGroup {
     var file: String { get }
     var target: String { get }
 }
 
-protocol ExecutedCaptureGroup: CaptureGroup {
+public protocol ExecutedCaptureGroup: CaptureGroup {
     var numberOfTests: Int { get }
     var numberOfSkipped: Int { get }
     var numberOfFailures: Int { get }
@@ -49,17 +49,17 @@ protocol ExecutedCaptureGroup: CaptureGroup {
     var wallClockTimeInSeconds: Double { get }
 }
 
-struct AnalyzeCaptureGroup: CaptureGroup {
+public struct AnalyzeCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = filename
-    static let regex = XCRegex(pattern: #"^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    public static let regex = XCRegex(pattern: #"^Analyze(?:Shallow)?\s(.*\/(.*\.(?:m|mm|cc|cpp|c|cxx)))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
 
-    let filePath: String
-    let filename: String
-    let target: String
+    public let filePath: String
+    public let filename: String
+    public let target: String
 
     init?(groups: [String]) {
         assert(groups.count >= 3)
@@ -70,7 +70,7 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     }
 }
 
-struct BuildTargetCaptureGroup: TargetCaptureGroup {
+public struct BuildTargetCaptureGroup: TargetCaptureGroup {
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
@@ -682,8 +682,8 @@ struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
     }
 }
 
-struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .error
+public struct FailingTestCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
     /// $1 = file
@@ -693,26 +693,21 @@ struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#)
     #else
-    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#)
+    public static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#)
     #endif
 
-    let file: String
-    let testSuite: String
-    let testCase: String
-    let reason: String
+    public let file: String
+    public let testSuite: String
+    public let testCase: String
+    public let reason: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 4)
         guard let file = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2], let reason = groups[safe: 3] else { return nil }
         self.file = file
         self.testSuite = testSuite
         self.testCase = testCase
         self.reason = reason
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: "\(file) - \(reason)"))
-        return .failingTest(testCase)
     }
 }
 
@@ -736,33 +731,28 @@ struct UIFailingTestCaptureGroup: CaptureGroup {
     }
 }
 
-struct RestartingTestCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .test
+public struct RestartingTestCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
     /// $1 = whole message
     /// $2 = test suite + test case
     /// $3 = test suite
     /// $4 = test case
-    static let regex = XCRegex(pattern: #"^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)"#)
+    public static let regex = XCRegex(pattern: #"^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)"#)
 
-    let wholeMessage: String
-    let testSuiteAndTestCase: String
-    let testSuite: String
-    let testCase: String
+    public let wholeMessage: String
+    public let testSuiteAndTestCase: String
+    public let testSuite: String
+    public let testCase: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 4)
         guard let wholeMessage = groups[safe: 0], let testSuiteAndTestCase = groups[safe: 1], let testSuite = groups[safe: 2], let testCase = groups[safe: 3] else { return nil }
         self.wholeMessage = wholeMessage
         self.testSuiteAndTestCase = testSuiteAndTestCase
         self.testSuite = testSuite
         self.testCase = testCase
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: wholeMessage))
-        return .failingTest(testCase)
     }
 }
 
@@ -885,55 +875,50 @@ struct LinkingCaptureGroup: CaptureGroup {
     }
 }
 
-struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .testCase
+public struct TestCaseSkippedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\sskipped\s\((\d*\.\d{1,3})\sseconds\)"#)
+    public static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\sskipped\s\((\d*\.\d{1,3})\sseconds\)"#)
     #else
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\sskipped\s\((\d*\.\d{3})\sseconds\)."#)
+    public static let regex = XCRegex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\sskipped\s\((\d*\.\d{3})\sseconds\)."#)
     #endif
 
-    let suite: String
-    let testCase: String
-    let time: String
+    public let suite: String
+    public let testCase: String
+    public let time: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 3)
         guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
         self.suite = suite
         self.testCase = testCase
         self.time = time
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: suite, name: testCase, time: time, skipped: .init(message: nil))
-        return .skippedTest(testCase)
     }
 }
 
-struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .testCase
+public struct TestCasePassedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     /// $3 = time
     #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#)
+    public static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#)
     #else
-    static let regex = XCRegex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#)
+    public static let regex = XCRegex(pattern: #"^\s*Test Case\s'-\[(.*?)\s(.*)\]'\spassed\s\((\d*\.\d{3})\sseconds\)."#)
     #endif
 
-    let suite: String
-    let testCase: String
-    let time: String
+    public let suite: String
+    public let testCase: String
+    public let time: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 3)
         guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
         self.suite = suite
@@ -941,10 +926,6 @@ struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
         self.time = time
     }
 
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: suite, name: testCase, time: time)
-        return .testCasePassed(testCase)
-    }
 }
 
 struct TestCaseStartedCaptureGroup: CaptureGroup {
@@ -1001,63 +982,53 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     }
 }
 
-struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+public struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)\.(.*)\(\)'\s+skipped\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    public static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)\.(.*)\(\)'\s+skipped\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
 
-    let suite: String
-    let testCase: String
-    let device: String
-    let time: String
+    public let suite: String
+    public let testCase: String
+    public let device: String
+    public let time: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 4)
         guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
         self.suite = suite
         self.testCase = testCase
         self.device = device
         self.time = time
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: suite, name: testCase, time: time, skipped: .init(message: nil))
-        return .testCasePassed(testCase)
     }
 }
 
-struct ParallelTestCasePassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+public struct ParallelTestCasePassedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+passed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    public static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\.\/](.*)\(\)'\s+passed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
 
-    let suite: String
-    let testCase: String
-    let device: String
-    let time: String
+    public let suite: String
+    public let testCase: String
+    public let device: String
+    public let time: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 4)
         guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
         self.suite = suite
         self.testCase = testCase
         self.device = device
         self.time = time
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: suite, name: testCase, time: time)
-        return .testCasePassed(testCase)
     }
 }
 
@@ -1083,34 +1054,28 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
     }
 }
 
-struct ParallelTestCaseFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .error
+public struct ParallelTestCaseFailedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .error
 
     /// Regular expression captured groups:
     /// $1 = suite
     /// $2 = test case
     /// $3 = installed app file and ID (e.g. "MyApp.app (12345)"), process (e.g. "xctest (12345)"), or device (e.g. "iPhone X")
     /// $4 = time
-    static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\./](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
+    public static let regex = XCRegex(pattern: #"^Test\s+case\s+'(.*)[\./](.*)\(\)'\s+failed\s+on\s+'(.*)'\s+\((\d*\.(.*){3})\s+seconds\)"#)
 
-    let suite: String
-    let testCase: String
-    let device: String
-    let time: String
+    public let suite: String
+    public let testCase: String
+    public let device: String
+    public let time: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 4)
         guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let device = groups[safe: 2], let time = groups[safe: 3] else { return nil }
         self.suite = suite
         self.testCase = testCase
         self.device = device
         self.time = time
-    }
-
-    func junitComponent() -> JUnitComponent {
-        // Parallel tests do not provide meaningful failure messages
-        let testCase = TestCase(classname: suite, name: testCase, time: nil, failure: .init(message: "Parallel test failed"))
-        return .failingTest(testCase)
     }
 }
 
@@ -1434,26 +1399,22 @@ struct TestsRunCompletionCaptureGroup: CaptureGroup {
     }
 }
 
-struct TestSuiteStartedCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .test
+public struct TestSuiteStartedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .test
 
     /// Regular expression captured groups:
     /// $1 = suite name
     /// $2 = time
-    static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at (.*)$"#)
+    public static let regex = XCRegex(pattern: #"^\s*Test Suite '(.*)' started at (.*)$"#)
 
-    let suiteName: String
-    let time: String
+    public let suiteName: String
+    public let time: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count == 2)
         guard let suiteName = groups[safe: 0], let time = groups[safe: 1] else { return nil }
         self.suiteName = suiteName
         self.time = time
-    }
-
-    func junitComponent() -> JUnitComponent {
-        .testSuiteStart(suiteName)
     }
 }
 
@@ -2230,23 +2191,19 @@ struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
     }
 }
 
-struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .test
+public struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .test
 
     /// Regular expression to capture the start of a test suite.
     /// $1 = suite name
-    static let regex = XCRegex(pattern: #"^[^ ] +Suite (.*) started\.$"#)
+    public static let regex = XCRegex(pattern: #"^[^ ] +Suite (.*) started\.$"#)
 
-    let suiteName: String
+    public let suiteName: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 1)
         guard let suiteName = groups[safe: 0] else { return nil }
         self.suiteName = suiteName
-    }
-
-    func junitComponent() -> JUnitComponent {
-        .testSuiteStart(suiteName)
     }
 }
 
@@ -2312,20 +2269,20 @@ struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
     }
 }
 
-struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+public struct SwiftTestingTestFailedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression to capture the failure of a test case.
     /// $1 = test name
     /// $2 = time taken in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    public static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
 
-    let testName: String
-    let timeTaken: String
-    let numberOfIssues: Int
+    public let testName: String
+    public let timeTaken: String
+    public let numberOfIssues: Int
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 3)
         guard let testName = groups[safe: 0],
               let timeTaken = groups[safe: 1],
@@ -2334,80 +2291,60 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable
         self.timeTaken = timeTaken
         self.numberOfIssues = numberOfIssues
     }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken, failure: .init(message: "Swift testing test failed"))
-        return .failingTest(testCase)
-    }
 }
 
-struct SwiftTestingTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+public struct SwiftTestingTestPassedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression to capture the successful completion of a test case.
     /// $1 = test name
     /// $2 = time taken in seconds
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$"#)
+    public static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$"#)
 
-    let testName: String
-    let timeTaken: String
+    public let testName: String
+    public let timeTaken: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 2)
         guard let testName = groups[safe: 0],
               let timeTaken = groups[safe: 1] else { return nil }
         self.testName = testName
         self.timeTaken = timeTaken
     }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken)
-        return .testCasePassed(testCase)
-    }
 }
 
-struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+public struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression to capture a skipped test case.
     /// $1 = test name
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*) skipped\.$"#)
+    public static let regex = XCRegex(pattern: #"^[^ ] +Test (.*) skipped\.$"#)
 
-    let testName: String
+    public let testName: String
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 1)
         guard let testName = groups[safe: 0] else { return nil }
         self.testName = testName
     }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: nil, skipped: .init(message: nil))
-        return .skippedTest(testCase)
-    }
 }
 
-struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+public struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup {
+    public static let outputType: OutputType = .testCase
 
     /// Regular expression to capture a skipped test case with a reason.
     /// $1 = test name
     /// $2 = optional reason
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*) skipped(?:\s*:\s*"(.*)")?$"#)
+    public static let regex = XCRegex(pattern: #"^[^ ] +Test (.*) skipped(?:\s*:\s*"(.*)")?$"#)
 
-    let testName: String
-    let reason: String?
+    public let testName: String
+    public let reason: String?
 
-    init?(groups: [String]) {
+    public init?(groups: [String]) {
         assert(groups.count >= 1)
         guard let testName = groups[safe: 0] else { return nil }
         self.testName = testName
         reason = groups[safe: 1]
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: nil, skipped: .init(message: reason))
-        return .skippedTest(testCase)
     }
 }
 

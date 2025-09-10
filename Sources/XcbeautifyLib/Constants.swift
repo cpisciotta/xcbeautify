@@ -7,14 +7,6 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-enum Architecture: String {
-    case arm64
-    case arm64_32
-    case armv7k
-    case i386
-    case x86_64
-}
-
 enum Format {
     static let indent = "    "
 }
@@ -34,20 +26,6 @@ enum Symbol {
 
     static let warning = "⚠️"
     static let asciiWarning = "[!]"
-}
-
-/// Specifies the xcodebuild console output type.
-/// As an example, a compiler warning, a compiler error, a test case, etc.
-package enum OutputType {
-    case undefined
-    case task
-    case test
-    case testCase
-    case nonContextualError
-    case warning
-    case error
-    case result
-    case issue
 }
 
 /// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.

@@ -11,7 +11,7 @@ import Foundation
 
 // `NSRegularExpression` is marked as `@unchecked Sendable`.
 // Match the definition here.
-package final class XCRegex: @unchecked Sendable {
+public final class XCRegex: @unchecked Sendable {
     private let pattern: String
 
     private lazy var regex: NSRegularExpression? = {
