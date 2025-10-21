@@ -12,13 +12,8 @@
 // * https://github.com/bazelbuild/bazel/blob/45092bb122b840e3410845522df9fe89c59db465/src/java_tools/junitrunner/java/com/google/testing/junit/runner/model/AntXmlResultWriter.java#L29
 // * http://windyroad.com.au/dl/Open%20Source/JUnit.xsd
 
-#if compiler(>=6.0)
 package import Foundation
 package import XMLCoder
-#else
-import Foundation
-import XMLCoder
-#endif
 
 package protocol JUnitReportable {
     func junitComponent() -> JUnitComponent
@@ -132,7 +127,7 @@ private struct Testsuites: Encodable, DynamicNodeEncoding {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.count }, forKey: .tests)
-        try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.filter { $0.failure != nil }.count }, forKey: .failures)
+        try container.encode(testsuites.reduce(into: 0) { $0 += $1.testcases.count(where: { $0.failure != nil }) }, forKey: .failures)
         try container.encode(testsuites, forKey: .testsuites)
     }
 }
@@ -163,7 +158,7 @@ private struct Testsuite: Encodable, DynamicNodeEncoding {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(testcases.count, forKey: .tests)
-        try container.encode(testcases.filter { $0.failure != nil }.count, forKey: .failures)
+        try container.encode(testcases.count(where: { $0.failure != nil }), forKey: .failures)
         try container.encode(testcases, forKey: .testcases)
     }
 }

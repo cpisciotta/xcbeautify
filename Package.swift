@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.1
 import PackageDescription
 
 let package = Package(
@@ -56,24 +56,12 @@ for target in package.targets {
             // TODO: Enable `complete` Strict Concurrency
             // Currently, it's `targeted` since `XMLCoder` surfaces warnings.
             .enableExperimentalFeature("StrictConcurrency=targeted"),
-            .enableUpcomingFeature("BareSlashRegexLiterals"),
-            .enableUpcomingFeature("ConciseMagicFile"),
-            .enableUpcomingFeature("DeprecateApplicationMain"),
-            .enableUpcomingFeature("DisableOutwardActorInference"),
-            .enableUpcomingFeature("DynamicActorIsolation"),
             .enableUpcomingFeature("ExistentialAny"),
-            .enableUpcomingFeature("ForwardTrailingClosures"),
             .enableUpcomingFeature("FullTypedThrows"),
-            .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
             // TODO: Enable GlobalConcurrency
             // Currently, it's disabled since `XMLCoder` surfaces warnings.
             // .enableUpcomingFeature("GlobalConcurrency"),
-            .enableUpcomingFeature("ImplicitOpenExistentials"),
-            .enableUpcomingFeature("ImportObjcForwardDeclarations"),
-            .enableUpcomingFeature("InferSendableFromCaptures"),
             .enableUpcomingFeature("InternalImportsByDefault"),
-            .enableUpcomingFeature("IsolatedDefaultValues"),
-            .enableUpcomingFeature("RegionBasedIsolation"),
         ]
     )
     target.swiftSettings = settings
