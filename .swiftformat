@@ -1,6 +1,6 @@
 # SwiftFormat Configuration
 
---minversion 0.57.2
+--minversion 0.58.3
 
 # Excluded Files and Paths
 
@@ -15,12 +15,12 @@
 --enable blockComments
 --enable emptyExtensions
 --enable isEmpty
+--enable noForceTryInTests
 --enable noGuardInTests
 --enable redundantMemberwiseInit
 --enable redundantProperty
 --enable singlePropertyPerLine
 --enable sortSwitchCases
---enable throwingTests
 --enable unusedPrivateDeclarations
 --enable wrapEnumCases
 --enable wrapMultilineFunctionChains
