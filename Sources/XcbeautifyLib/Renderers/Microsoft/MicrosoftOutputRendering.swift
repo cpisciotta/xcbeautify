@@ -249,12 +249,12 @@ extension MicrosoftOutputRendering {
             }
         }
 
-        let message: String
-        if let detailMessage, !detailMessage.isEmpty {
-            message = "Recorded an issue (\(detailMessage))"
-        } else {
-            message = "Recorded an issue"
-        }
+        let message =
+            if let detailMessage, !detailMessage.isEmpty {
+                "Recorded an issue (\(detailMessage))"
+            } else {
+                "Recorded an issue"
+            }
         return makeOutputLog(
             annotation: .error,
             fileComponents: fileComponents,
