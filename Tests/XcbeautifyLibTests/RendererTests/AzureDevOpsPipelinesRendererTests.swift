@@ -758,7 +758,7 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     func testSwiftTestingIssue() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        let expectedOutput = "##vso[task.logissue type=error;sourcepath=PlanTests.swift;linenumber=43;columnnumber=5]Recorded an issue (Expectation failed)"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
@@ -772,7 +772,14 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
     func testSwiftTestingIssueDetails() {
         let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5: Expectation failed"#
         let formatted = logFormatted(input)
-        let expectedOutput = "##vso[task.logissue type=error]Recorded an issue (PlanTests.swift:43:5: Expectation failed)"
+        let expectedOutput = "##vso[task.logissue type=error;sourcepath=PlanTests.swift;linenumber=43;columnnumber=5]Recorded an issue (Expectation failed)"
+        XCTAssertEqual(formatted, expectedOutput)
+    }
+
+    func testSwiftTestingIssueWithoutDetailsProvidesFileOnlyAnnotation() {
+        let input = #"􀢄  Test "myTest" recorded an issue at PlanTests.swift:43:5"#
+        let formatted = logFormatted(input)
+        let expectedOutput = "##vso[task.logissue type=error;sourcepath=PlanTests.swift;linenumber=43;columnnumber=5]Recorded an issue"
         XCTAssertEqual(formatted, expectedOutput)
     }
 
