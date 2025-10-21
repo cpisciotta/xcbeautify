@@ -53,9 +53,7 @@ for target in package.targets {
     var settings = target.swiftSettings ?? []
     settings.append(
         contentsOf: [
-            // TODO: Enable `complete` Strict Concurrency
-            // Currently, it's `targeted` since `XMLCoder` surfaces warnings.
-            .enableExperimentalFeature("StrictConcurrency=targeted"),
+            .enableUpcomingFeature("StrictConcurrency"),
             .enableUpcomingFeature("InternalImportsByDefault"),
         ]
     )
