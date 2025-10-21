@@ -29,7 +29,7 @@ jobs:
 
   macos:
     name: Release macOS
-    runs-on: macos-14
+    runs-on: macos-latest
     needs: create_release
     steps:
       - name: Checkout
