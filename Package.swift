@@ -56,7 +56,6 @@ for target in package.targets {
             // TODO: Enable `complete` Strict Concurrency
             // Currently, it's `targeted` since `XMLCoder` surfaces warnings.
             .enableExperimentalFeature("StrictConcurrency=targeted"),
-            .enableUpcomingFeature("ExistentialAny"),
             .enableUpcomingFeature("FullTypedThrows"),
             // TODO: Enable GlobalConcurrency
             // Currently, it's disabled since `XMLCoder` surfaces warnings.
