@@ -229,9 +229,35 @@ extension MicrosoftOutputRendering {
     }
 
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
-        let message = "Recorded an issue" + (group.issueDetails.map { " (\($0))" } ?? "")
+        var fileComponents: FileComponents?
+        var detailMessage = group.issueDetails?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if let issueDetails = detailMessage, !issueDetails.isEmpty {
+            let locationAndMessage = issueDetails.split(separator: ": ", maxSplits: 1, omittingEmptySubsequences: false)
+            if let locationPart = locationAndMessage.first {
+                let locationSegments = locationPart.split(separator: ":").map(String.init)
+                if let path = locationSegments.first, !path.isEmpty {
+                    let line = locationSegments.count > 1 ? Int(locationSegments[1]) : nil
+                    let column = locationSegments.count > 2 ? Int(locationSegments[2]) : nil
+                    fileComponents = FileComponents(path: path, line: line, column: column)
+                    if locationAndMessage.count > 1 {
+                        detailMessage = String(locationAndMessage[1]).trimmingCharacters(in: .whitespacesAndNewlines)
+                    } else {
+                        detailMessage = nil
+                    }
+                }
+            }
+        }
+
+        let message: String
+        if let detailMessage, !detailMessage.isEmpty {
+            message = "Recorded an issue (\(detailMessage))"
+        } else {
+            message = "Recorded an issue"
+        }
         return makeOutputLog(
             annotation: .error,
+            fileComponents: fileComponents,
             message: message
         )
     }
