@@ -143,6 +143,8 @@ package struct Formatter {
             return renderer.formatLinkerUndefinedSymbolsError(group: group)
         case let group as LinkingCaptureGroup:
             return renderer.formatLinking(group: group)
+        case let group as MacroTargetCaptureGroup:
+            return renderer.formatMacroTarget(group: group)
         case let group as ModuleIncludesErrorCaptureGroup:
             return renderer.formatError(group: group)
         case let group as NoCertificateCaptureGroup:
