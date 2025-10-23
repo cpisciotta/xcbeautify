@@ -127,6 +127,8 @@ protocol OutputRendering {
     func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
     func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
     func formatNote(group: NoteCaptureGroup) -> String
+
+    func formatEndOfStream() -> String?
 }
 
 extension OutputRendering {
@@ -771,4 +773,6 @@ extension OutputRendering {
     func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String {
         colored ? "[\(group.target.f.Cyan)] \("DataModelCodegen".s.Bold) \(group.path)" : "[\(group.target)] DataModelCodegen \(group.path)"
     }
+
+    func formatEndOfStream() -> String? { nil }
 }
