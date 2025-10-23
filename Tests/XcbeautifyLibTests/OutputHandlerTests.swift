@@ -127,4 +127,62 @@ class OutputHandlerTests: XCTestCase {
 
         XCTAssertEqual(collector, ["test started", "error", "test completed", "result"])
     }
+
+    func testQuieterAfterErrorSwitchesToQuieterModeAfterFirstError() throws {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: false, quieter: false, quieterAfterError: true, isCI: false) { content in
+            collector.append(content)
+        }
+
+        // Before error, everything should be printed
+        sut.write(.task, "task 1")
+        sut.write(.warning, "warning 1")
+        sut.write(.result, "result 1")
+
+        XCTAssertEqual(collector, ["task 1", "warning 1", "result 1"])
+
+        // Encounter an error
+        sut.write(.error, "error 1")
+
+        XCTAssertEqual(collector, ["task 1", "warning 1", "result 1", "error 1"])
+
+        collector.removeAll()
+
+        // After error, should behave like quieter mode
+        sut.write(.task, "task 2")
+        sut.write(.warning, "warning 2") // Should be suppressed
+        sut.write(.error, "error 2") // Errors should still show (with task 2 banner)
+        sut.write(.result, "result 2") // Results should still show
+        sut.write(.undefined, "undefined") // Should be suppressed
+
+        // Note: task 2 appears because it's the banner for error 2
+        XCTAssertEqual(collector, ["task 2", "error 2", "result 2"])
+    }
+
+    func testQuieterAfterErrorDoesNotAffectNormalQuietMode() throws {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, quieterAfterError: true, isCI: false) { content in
+            collector.append(content)
+        }
+
+        // Should behave like quiet mode even before error
+        sut.write(.task, "task 1")
+        sut.write(.warning, "warning 1")
+        sut.write(.result, "result 1")
+
+        XCTAssertEqual(collector, ["task 1", "warning 1", "result 1"])
+
+        // After error, should still behave like quieter mode
+        sut.write(.error, "error 1")
+
+        collector.removeAll()
+
+        sut.write(.task, "task 2")
+        sut.write(.warning, "warning 2") // Should be suppressed after error
+        sut.write(.error, "error 2")
+        sut.write(.result, "result 2")
+
+        // Note: task 2 appears because it's the banner for error 2
+        XCTAssertEqual(collector, ["task 2", "error 2", "result 2"])
+    }
 }
