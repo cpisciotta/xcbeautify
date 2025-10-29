@@ -7,4 +7,4 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-let version = "3.0.0"
+let version = "3.1.0"
