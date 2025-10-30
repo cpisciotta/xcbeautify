@@ -58,7 +58,7 @@ package-darwin-universal:
 	$(SWIFT) build $(ARM64_SWIFT_BUILD_FLAGS)
 
 	$(eval RELEASE_DIR := release)
-	mkdir $(RELEASE_DIR)
+	$(MKDIR) $(RELEASE_DIR)
 
 	lipo -create -output "$(RELEASE_DIR)/$(PRODUCT_NAME)" "$(X86_64_BUILD_DIRECTORY)/$(PRODUCT_NAME)" "$(ARM64_BUILD_DIRECTORY)/$(PRODUCT_NAME)"
 
