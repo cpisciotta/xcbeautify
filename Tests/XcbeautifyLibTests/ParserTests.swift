@@ -493,4 +493,10 @@ final class ParserTests: XCTestCase {
             XCTAssertNil(parser.parse(line: input))
         }
     }
+
+    func testMacroTarget() throws {
+        let input = #"/path/to/Package.swift:PACKAGE-TARGET:MacroPackage: error: Target 'MacroPackage' must be enabled before it can be used."#
+        let captureGroup = try XCTUnwrap(parser.parse(line: input) as? MacroTargetCaptureGroup)
+        XCTAssertEqual(captureGroup.package, "MacroPackage")
+    }
 }
