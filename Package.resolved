@@ -1,4 +1,5 @@
 {
+  "originHash" : "f227ab50c47f6984542511fcdc3641eb844756adb01e3e1f3ca2ca93fbd79fb1",
   "pins" : [
     {
       "identity" : "colorizer",
@@ -21,12 +22,12 @@
     {
       "identity" : "xmlcoder",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MaxDesiatov/XMLCoder.git",
+      "location" : "https://github.com/CoreOffice/XMLCoder.git",
       "state" : {
         "revision" : "b1e944cbd0ef33787b13f639a5418d55b3bed501",
         "version" : "0.17.1"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

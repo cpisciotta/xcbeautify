@@ -20,7 +20,7 @@ let package = Package(
             from: "0.2.1"
         ),
         .package(
-            url: "https://github.com/MaxDesiatov/XMLCoder.git",
+            url: "https://github.com/CoreOffice/XMLCoder.git",
             from: "0.17.1"
         ),
     ],
