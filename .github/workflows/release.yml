@@ -43,21 +43,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ needs.create_release.outputs.tag_name }}"
-          cp release/xcbeautify.zip "xcbeautify-${TAG}-universal-apple-macosx.zip"
+          mv release/xcbeautify.zip "xcbeautify-${TAG}-universal-apple-macosx.zip"
           gh release upload "$TAG" "xcbeautify-${TAG}-universal-apple-macosx.zip" --clobber
       - name: Upload Darwin x86_64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ needs.create_release.outputs.tag_name }}"
-          cp .build/x86_64-apple-macosx/release/xcbeautify.zip "xcbeautify-${TAG}-x86_64-apple-macosx.zip"
+          mv .build/x86_64-apple-macosx/release/xcbeautify.zip "xcbeautify-${TAG}-x86_64-apple-macosx.zip"
           gh release upload "$TAG" "xcbeautify-${TAG}-x86_64-apple-macosx.zip" --clobber
       - name: Upload Darwin arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ needs.create_release.outputs.tag_name }}"
-          cp .build/arm64-apple-macosx/release/xcbeautify.zip "xcbeautify-${TAG}-arm64-apple-macosx.zip"
+          mv .build/arm64-apple-macosx/release/xcbeautify.zip "xcbeautify-${TAG}-arm64-apple-macosx.zip"
           gh release upload "$TAG" "xcbeautify-${TAG}-arm64-apple-macosx.zip" --clobber
 
   ubuntu_x86_64:
