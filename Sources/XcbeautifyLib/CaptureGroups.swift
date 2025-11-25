@@ -1804,6 +1804,23 @@ struct FatalErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
+struct AssertFatalErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = whole error.
+    /// it varies a lot, not sure if it makes sense to catch everything separately
+    static let regex = XCRegex(pattern: #"^(.*Fatal error.*)$"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
 struct FileMissingErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
