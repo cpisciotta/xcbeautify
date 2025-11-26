@@ -277,7 +277,19 @@ final class GitHubActionsRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "[Backyard Birds] Validate Embedded Binary Widgets.appex")
     }
 
-    func testFatalError() {
+    func testAssertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "::error ::Target/File.swift:193: Fatal error: Assert message"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+    
+    func testAssertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "::error ::Target/File.swift:193: Fatal error"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+    
+    func testAssertionFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         let output = "::error ::fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         XCTAssertEqual(logFormatted(input), output)

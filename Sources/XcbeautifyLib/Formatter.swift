@@ -117,6 +117,8 @@ package struct Formatter {
             return renderer.formatFailingTest(group: group)
         case let group as FatalErrorCaptureGroup:
             return renderer.formatError(group: group)
+        case let group as AssertFatalErrorCaptureGroup:
+            return renderer.formatError(group: group)
         case let group as FileMissingErrorCaptureGroup:
             return renderer.formatFileMissingError(group: group)
         case let group as GenerateAssetSymbolsCaptureGroup:
