@@ -1804,6 +1804,29 @@ struct FatalErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
+struct FatalErrorWithFilePathCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    // Matches error lines emitted e.g. when a Swift assertion fail is triggered by a test.
+    // Example 1: "Target/File.swift:193: Fatal error: Assert message"
+    // Example 2: "Target/File.swift:193: Fatal error"
+    
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = reason
+    static let regex = XCRegex(pattern: #"^(.+?:\d+):\s*Fatal error(?::\s*(.*))?$"#)
+
+    let filePath: String
+    let reason: String?
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let filePath = groups[safe: 0] else { return nil }
+        self.filePath = filePath
+        self.reason = groups[safe: 1]
+    }
+}
+
 struct FileMissingErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 

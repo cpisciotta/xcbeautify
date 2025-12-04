@@ -42,6 +42,7 @@ protocol OutputRendering {
     func formatDuplicateLocalizedStringKey(group: DuplicateLocalizedStringKeyCaptureGroup) -> String
     func formatEmitSwiftModule(group: EmitSwiftModuleCaptureGroup) -> String?
     func formatError(group: any ErrorCaptureGroup) -> String
+    func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String
     func formatExecutedWithoutSkipped(group: ExecutedWithoutSkippedCaptureGroup) -> String
     func formatExecutedWithSkipped(group: ExecutedWithSkippedCaptureGroup) -> String
     func formatExplicitDependencyCaptureGroup(group: ExplicitDependencyCaptureGroup) -> String?
@@ -567,6 +568,12 @@ extension OutputRendering {
     func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
         return colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
+    }
+    
+    func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
+        let reason = group.reason ?? ""
+        let filePath = group.filePath
+        return colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
     }
 
     func formatSymLink(group: SymLinkCaptureGroup) -> String? {

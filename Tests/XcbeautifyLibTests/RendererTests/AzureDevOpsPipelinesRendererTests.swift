@@ -269,6 +269,18 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
 
         XCTAssertEqual(logFormatted(input), output)
     }
+    
+    func testAssertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "##vso[task.logissue type=error;sourcepath=Target/File.swift;linenumber=193]Assert message"
+        XCTAssertEqual(logFormatted(input), output)
+    }
+    
+    func testAssertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "##vso[task.logissue type=error;sourcepath=Target/File.swift;linenumber=193]"
+        XCTAssertEqual(logFormatted(input), output)
+    }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"

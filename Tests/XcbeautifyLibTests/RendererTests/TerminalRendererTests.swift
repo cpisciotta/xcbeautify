@@ -257,6 +257,18 @@ final class TerminalRendererTests: XCTestCase {
     }
 
     func testFailingTest() { }
+    
+    func testAssertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "[x] Target/File.swift:193: Assert message"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+    
+    func testAssertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "[x] Target/File.swift:193: "
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"

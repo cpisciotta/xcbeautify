@@ -260,6 +260,18 @@ final class TeamCityRendererTests: XCTestCase {
     }
 
     func testFailingTest() { }
+    
+    func testAssertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: Assert message\' status=\'ERROR\']\nFatal error"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
+    
+    func testAssertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: \' status=\'ERROR\']\nFatal error"
+        XCTAssertEqual(noColoredFormatted(input), output)
+    }
 
     func testFatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
