@@ -519,98 +519,6 @@ struct DetectedEncodingCaptureGroup: CaptureGroup {
     }
 }
 
-struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
-    static let outputType: OutputType = .result
-
-    /// Regular expression captured groups:
-    /// $1 = number of tests
-    /// $2 = number of failures
-    /// $3 = number of unexpected failures
-    /// $4 = wall clock time in seconds (e.g. 0.295)
-    static let regex = XCRegex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
-
-    let wholeResult: String
-    let numberOfTests: Int
-    let numberOfSkipped = 0
-    let numberOfFailures: Int
-    let numberOfUnexpectedFailures: Int
-    let wallClockTimeInSeconds: Double
-
-    init?(groups: [String]) {
-        assert(groups.count == 5)
-        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
-        guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
-        self.wholeResult = wholeResult
-        self.numberOfTests = numberOfTests
-        self.numberOfFailures = numberOfFailures
-        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
-        self.wallClockTimeInSeconds = wallClockTimeInSeconds
-    }
-}
-
-struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
-    static let outputType: OutputType = .result
-
-    /// Regular expression captured groups:
-    /// $1 = number of tests
-    /// $2 = number of skipped
-    /// $3 = number of failures
-    /// $4 = number of unexpected failures
-    /// $5 = wall clock time in seconds (e.g. 0.295)
-    static let regex = XCRegex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
-
-    let wholeResult: String
-    let numberOfTests: Int
-    let numberOfSkipped: Int
-    let numberOfFailures: Int
-    let numberOfUnexpectedFailures: Int
-    let wallClockTimeInSeconds: Double
-
-    init?(groups: [String]) {
-        assert(groups.count == 6)
-        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfSkipped = groups[safe: 2], let _numberOfFailures = groups[safe: 3], let _numberOfUnexpectedFailures = groups[safe: 4], let _wallClockTimeInSeconds = groups[safe: 5] else { return nil }
-        guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
-        self.wholeResult = wholeResult
-        self.numberOfTests = numberOfTests
-        self.numberOfSkipped = numberOfSkipped
-        self.numberOfFailures = numberOfFailures
-        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
-        self.wallClockTimeInSeconds = wallClockTimeInSeconds
-    }
-}
-
-struct ExplicitDependencyCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^[ \t]*➜ Explicit dependency on target '([^']+)' in project '([^']+)'$"#)
-
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 2)
-        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
-        self.target = target
-        self.project = project
-    }
-}
-
-struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^ExtractAppIntentsMetadata \(in target '(.+)' from project '(.+)'\)$"#)
-
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 2)
-        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
-        self.target = target
-        self.project = project
-    }
-}
-
 struct CompileWarningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -733,6 +641,28 @@ struct CompilationResultCaptureGroup: CaptureGroup {
     init?(groups: [String]) { }
 }
 
+struct DataModelCodegenCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = path
+    /// $2 = target
+    /// $3 = project
+    static let regex = XCRegex(pattern: #"^DataModelCodegen (.*\.xcdatamodeld) \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let path: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let path = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.path = path
+        self.target = target
+        self.project = project
+    }
+}
+
 struct EmitSwiftModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -751,23 +681,93 @@ struct EmitSwiftModuleCaptureGroup: CaptureGroup {
     }
 }
 
-struct DataModelCodegenCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
+struct ExecutedWithoutSkippedCaptureGroup: ExecutedCaptureGroup {
+    static let outputType: OutputType = .result
 
     /// Regular expression captured groups:
-    /// $1 = path
-    /// $2 = target
-    /// $3 = project
-    static let regex = XCRegex(pattern: #"^DataModelCodegen (.*\.xcdatamodeld) \(in target '(.*)' from project '(.*)'\)$"#)
+    /// $1 = number of tests
+    /// $2 = number of failures
+    /// $3 = number of unexpected failures
+    /// $4 = wall clock time in seconds (e.g. 0.295)
+    static let regex = XCRegex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
 
-    let path: String
+    let wholeResult: String
+    let numberOfTests: Int
+    let numberOfSkipped = 0
+    let numberOfFailures: Int
+    let numberOfUnexpectedFailures: Int
+    let wallClockTimeInSeconds: Double
+
+    init?(groups: [String]) {
+        assert(groups.count == 5)
+        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfFailures = groups[safe: 2], let _numberOfUnexpectedFailures = groups[safe: 3], let _wallClockTimeInSeconds = groups[safe: 4] else { return nil }
+        guard let numberOfTests = Int(_numberOfTests), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
+        self.wholeResult = wholeResult
+        self.numberOfTests = numberOfTests
+        self.numberOfFailures = numberOfFailures
+        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
+        self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    }
+}
+
+struct ExecutedWithSkippedCaptureGroup: ExecutedCaptureGroup {
+    static let outputType: OutputType = .result
+
+    /// Regular expression captured groups:
+    /// $1 = number of tests
+    /// $2 = number of skipped
+    /// $3 = number of failures
+    /// $4 = number of unexpected failures
+    /// $5 = wall clock time in seconds (e.g. 0.295)
+    static let regex = XCRegex(pattern: #"^\s*(Executed\s(\d+)\stest[s]?,\swith\s(\d+)\stest[s]?\sskipped\sand\s(\d+)\sfailure[s]?\s\((\d+)\sunexpected\)\sin\s\d+\.\d{3}\s\((\d+\.\d{3})\)\sseconds.*)$"#)
+
+    let wholeResult: String
+    let numberOfTests: Int
+    let numberOfSkipped: Int
+    let numberOfFailures: Int
+    let numberOfUnexpectedFailures: Int
+    let wallClockTimeInSeconds: Double
+
+    init?(groups: [String]) {
+        assert(groups.count == 6)
+        guard let wholeResult = groups[safe: 0], let _numberOfTests = groups[safe: 1], let _numberOfSkipped = groups[safe: 2], let _numberOfFailures = groups[safe: 3], let _numberOfUnexpectedFailures = groups[safe: 4], let _wallClockTimeInSeconds = groups[safe: 5] else { return nil }
+        guard let numberOfTests = Int(_numberOfTests), let numberOfSkipped = Int(_numberOfSkipped), let numberOfFailures = Int(_numberOfFailures), let numberOfUnexpectedFailures = Int(_numberOfUnexpectedFailures), let wallClockTimeInSeconds = Double(_wallClockTimeInSeconds) else { return nil }
+        self.wholeResult = wholeResult
+        self.numberOfTests = numberOfTests
+        self.numberOfSkipped = numberOfSkipped
+        self.numberOfFailures = numberOfFailures
+        self.numberOfUnexpectedFailures = numberOfUnexpectedFailures
+        self.wallClockTimeInSeconds = wallClockTimeInSeconds
+    }
+}
+
+struct ExplicitDependencyCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^[ \t]*➜ Explicit dependency on target '([^']+)' in project '([^']+)'$"#)
+
     let target: String
     let project: String
 
     init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let path = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.path = path
+        assert(groups.count == 2)
+        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
+        self.target = target
+        self.project = project
+    }
+}
+
+struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^ExtractAppIntentsMetadata \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 2)
+        guard let target = groups[safe: 0], let project = groups[safe: 1] else { return nil }
         self.target = target
         self.project = project
     }
