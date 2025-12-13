@@ -611,40 +611,6 @@ struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
     }
 }
 
-struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = file
-    /// $2 = test suite
-    /// $3 = test case
-    /// $4 = reason
-    #if os(Linux)
-    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#)
-    #else
-    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#)
-    #endif
-
-    let file: String
-    let testSuite: String
-    let testCase: String
-    let reason: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let file = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2], let reason = groups[safe: 3] else { return nil }
-        self.file = file
-        self.testSuite = testSuite
-        self.testCase = testCase
-        self.reason = reason
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: "\(file) - \(reason)"))
-        return .failingTest(testCase)
-    }
-}
-
 struct CompileWarningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -759,40 +725,6 @@ struct CursorCaptureGroup: CaptureGroup {
     }
 }
 
-struct FatalErrorCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = whole error.
-    /// it varies a lot, not sure if it makes sense to catch everything separately
-    static let regex = XCRegex(pattern: #"^(fatal error:.*)$"#)
-
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
-struct FileMissingErrorCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    static let regex = XCRegex(pattern: #"^<unknown>:0: error: no such file or directory: '(.+)'$"#)
-
-    let reason = "error: no such file or directory"
-    let filePath: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let filePath = groups[safe: 0] else { return nil }
-        self.filePath = filePath
-    }
-}
-
 struct CompilationResultCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -838,6 +770,74 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = file
+    /// $2 = test suite
+    /// $3 = test case
+    /// $4 = reason
+    #if os(Linux)
+    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#)
+    #else
+    static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s[\+\-]\[(.*?)\s(.*)\]\s:(?:\s'.*'\s\[FAILED\],)?\s(.*)"#)
+    #endif
+
+    let file: String
+    let testSuite: String
+    let testCase: String
+    let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let file = groups[safe: 0], let testSuite = groups[safe: 1], let testCase = groups[safe: 2], let reason = groups[safe: 3] else { return nil }
+        self.file = file
+        self.testSuite = testSuite
+        self.testCase = testCase
+        self.reason = reason
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: "\(file) - \(reason)"))
+        return .failingTest(testCase)
+    }
+}
+
+struct FatalErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = whole error.
+    /// it varies a lot, not sure if it makes sense to catch everything separately
+    static let regex = XCRegex(pattern: #"^(fatal error:.*)$"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
+struct FileMissingErrorCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    static let regex = XCRegex(pattern: #"^<unknown>:0: error: no such file or directory: '(.+)'$"#)
+
+    let reason = "error: no such file or directory"
+    let filePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let filePath = groups[safe: 0] else { return nil }
+        self.filePath = filePath
     }
 }
 
