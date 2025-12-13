@@ -1,8 +1,9 @@
+name: Release
+
 on:
   push:
     tags:
       - "*"
-name: Release
 
 env:
   # TODO: Load from `.swift-version` file
