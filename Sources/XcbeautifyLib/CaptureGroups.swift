@@ -645,73 +645,6 @@ struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
     }
 }
 
-struct GenerateAssetSymbolsCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^GenerateAssetSymbols (.+) \(in target '(.+)' from project '(.+)'\)$"#)
-
-    let filePath: String
-    let filename: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        filename = filePath.lastPathComponent
-        self.target = target
-        self.project = project
-    }
-}
-
-struct GenerateCoverageDataCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = coverage report file path
-    static let regex = XCRegex(pattern: #"^Generating\s+coverage\s+data\.*$"#)
-
-    private init() { }
-
-    init?(groups: [String]) {
-        assert(groups.count >= 0)
-        self.init()
-    }
-}
-
-struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-    static let regex = XCRegex(pattern: #"^Generated\s+coverage\s+report:\s+(.+)"#)
-
-    let coverageReportFilePath: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let coverageReportFilePath = groups[safe: 0] else { return nil }
-        self.coverageReportFilePath = coverageReportFilePath
-    }
-}
-
-struct GenerateDSYMCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = dsym
-    /// $2 = target
-    static let regex = XCRegex(pattern: #"^GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
-
-    let dsym: String
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let dsym = groups[safe: 0], let target = groups.last else { return nil }
-        self.dsym = dsym
-        self.target = target
-    }
-}
-
 struct CompileWarningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -731,22 +664,6 @@ struct CompileWarningCaptureGroup: CaptureGroup {
         self.filePath = filePath
         self.filename = filename
         self.reason = reason
-    }
-}
-
-struct GenericWarningCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .warning
-
-    /// Regular expression captured groups:
-    /// $1 = whole warning
-    static let regex = XCRegex(pattern: #"^warning:\s(.*)$"#)
-
-    let wholeWarning: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeWarning = groups[safe: 0] else { return nil }
-        self.wholeWarning = wholeWarning
     }
 }
 
@@ -921,6 +838,89 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct GenerateAssetSymbolsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^GenerateAssetSymbols (.+) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        filename = filePath.lastPathComponent
+        self.target = target
+        self.project = project
+    }
+}
+
+struct GenerateCoverageDataCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = coverage report file path
+    static let regex = XCRegex(pattern: #"^Generating\s+coverage\s+data\.*$"#)
+
+    private init() { }
+
+    init?(groups: [String]) {
+        assert(groups.count >= 0)
+        self.init()
+    }
+}
+
+struct GeneratedCoverageReportCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+    static let regex = XCRegex(pattern: #"^Generated\s+coverage\s+report:\s+(.+)"#)
+
+    let coverageReportFilePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let coverageReportFilePath = groups[safe: 0] else { return nil }
+        self.coverageReportFilePath = coverageReportFilePath
+    }
+}
+
+struct GenerateDSYMCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = dsym
+    /// $2 = target
+    static let regex = XCRegex(pattern: #"^GenerateDSYMFile \/.*\/(.*\.dSYM) \/.* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+
+    let dsym: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let dsym = groups[safe: 0], let target = groups.last else { return nil }
+        self.dsym = dsym
+        self.target = target
+    }
+}
+
+struct GenericWarningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
+    /// Regular expression captured groups:
+    /// $1 = whole warning
+    static let regex = XCRegex(pattern: #"^warning:\s(.*)$"#)
+
+    let wholeWarning: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeWarning = groups[safe: 0] else { return nil }
+        self.wholeWarning = wholeWarning
     }
 }
 
