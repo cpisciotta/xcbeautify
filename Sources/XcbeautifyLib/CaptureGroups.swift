@@ -49,6 +49,28 @@ protocol ExecutedCaptureGroup: CaptureGroup {
     var wallClockTimeInSeconds: Double { get }
 }
 
+struct AggregateTargetCaptureGroup: TargetCaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = target
+    /// $2 = project
+    /// $3 = configuration
+    static let regex = XCRegex(pattern: #"^=== BUILD AGGREGATE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
+
+    let target: String
+    let project: String
+    let configuration: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
+        self.target = target
+        self.project = project
+        self.configuration = configuration
+    }
+}
+
 struct AnalyzeCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -78,28 +100,6 @@ struct BuildTargetCaptureGroup: TargetCaptureGroup {
     /// $2 = project
     /// $3 = configuration
     static let regex = XCRegex(pattern: #"^=== BUILD TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
-
-    let target: String
-    let project: String
-    let configuration: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let target = groups[safe: 0], let project = groups[safe: 1], let configuration = groups[safe: 2] else { return nil }
-        self.target = target
-        self.project = project
-        self.configuration = configuration
-    }
-}
-
-struct AggregateTargetCaptureGroup: TargetCaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = target
-    /// $2 = project
-    /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== BUILD AGGREGATE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
 
     let target: String
     let project: String
