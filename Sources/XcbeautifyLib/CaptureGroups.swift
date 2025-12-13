@@ -92,14 +92,14 @@ struct AnalyzeCaptureGroup: CaptureGroup {
     }
 }
 
-struct BuildTargetCaptureGroup: TargetCaptureGroup {
+struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = project
     /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== BUILD TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
+    static let regex = XCRegex(pattern: #"^=== ANALYZE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
 
     let target: String
     let project: String
@@ -114,14 +114,14 @@ struct BuildTargetCaptureGroup: TargetCaptureGroup {
     }
 }
 
-struct AnalyzeTargetCaptureGroup: TargetCaptureGroup {
+struct BuildTargetCaptureGroup: TargetCaptureGroup {
     static let outputType: OutputType = .task
 
     /// Regular expression captured groups:
     /// $1 = target
     /// $2 = project
     /// $3 = configuration
-    static let regex = XCRegex(pattern: #"^=== ANALYZE TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
+    static let regex = XCRegex(pattern: #"^=== BUILD TARGET\s(.*)\sOF PROJECT\s(.*)\sWITH.*CONFIGURATION\s(.*)\s==="#)
 
     let target: String
     let project: String
