@@ -11,7 +11,7 @@ import Foundation
 import XcbeautifyLib
 import XCTest
 
-class OutputHandlerTests: XCTestCase {
+final class OutputHandlerTests: XCTestCase {
     override func setUpWithError() throws { }
 
     override func tearDownWithError() throws { }

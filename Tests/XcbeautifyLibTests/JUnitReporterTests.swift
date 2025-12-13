@@ -11,7 +11,7 @@ import Foundation
 import XcbeautifyLib
 import XCTest
 
-class JUnitReporterTests: XCTestCase {
+final class JUnitReporterTests: XCTestCase {
     private let expectedMacOsXml = """
     <testsuites name="All tests" tests="85" failures="3">
         <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
@@ -233,7 +233,7 @@ class JUnitReporterTests: XCTestCase {
             }
         }
         let data = try reporter.generateReport()
-        let xml = String(data: data, encoding: .utf8)!
+        let xml = try XCTUnwrap(String(data: data, encoding: .utf8))
         #if os(Linux)
         let expectedXml = expectedLinuxXml
         #else
@@ -297,7 +297,7 @@ class JUnitReporterTests: XCTestCase {
             }
         }
         let data = try reporter.generateReport()
-        let xml = String(data: data, encoding: .utf8)!
+        let xml = try XCTUnwrap(String(data: data, encoding: .utf8))
         let expectedXml = expectedParallelXml
         XCTAssertEqual(xml, expectedXml)
     }
@@ -803,7 +803,7 @@ class JUnitReporterTests: XCTestCase {
             }
         }
         let data = try reporter.generateReport()
-        let xml = String(data: data, encoding: .utf8)!
+        let xml = try XCTUnwrap(String(data: data, encoding: .utf8))
         let expectedXml = expectedSwiftTestingXML_macOS
         XCTAssertEqual(xml, expectedXml)
     }

@@ -1,10 +1,6 @@
 # SwiftFormat Configuration
 
---minversion 0.58.3
-
-# Excluded Files and Paths
-
---exclude **/XCTestManifests.swift
+--minversion 0.58.7
 
 # Rules
 
@@ -16,7 +12,11 @@
 --enable emptyExtensions
 --enable isEmpty
 --enable noForceTryInTests
+--enable noForceUnwrapInTests
 --enable noGuardInTests
+--enable preferFinalClasses
+--enable redundantAsync
+--enable redundantEquatable
 --enable redundantMemberwiseInit
 --enable redundantProperty
 --enable singlePropertyPerLine
