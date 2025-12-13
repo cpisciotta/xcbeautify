@@ -712,58 +712,6 @@ struct GenerateDSYMCaptureGroup: CaptureGroup {
     }
 }
 
-struct LibtoolCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = library
-    /// $2 = target
-    static let regex = XCRegex(pattern: #"^Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
-
-    let filename: String
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let filename = groups[safe: 0], let target = groups.last else { return nil }
-        self.filename = filename
-        self.target = target
-    }
-}
-
-struct LinkingCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    #if os(Linux)
-    /// Regular expression captured groups:
-    /// $1 = target
-    static let regex = XCRegex(pattern: #"^\[\d+\/\d+\]\sLinking\s([^ ]+)"#)
-    #else
-    /// Regular expression captured groups:
-    /// $1 = binary filename
-    /// $2 = target
-    static let regex = XCRegex(pattern: #"^Ld \/?.*\/(.*?) normal (?:.* )?\((?:in target: (.*)|in target '(.*)' from project '.*')\)"#)
-    #endif
-
-    #if !os(Linux)
-    let binaryFilename: String
-    #endif
-    let target: String
-
-    init?(groups: [String]) {
-        #if os(Linux)
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
-        #else
-        assert(groups.count == 2)
-        guard let binaryFileName = groups[safe: 0], let target = groups.last else { return nil }
-        binaryFilename = binaryFileName.lastPathComponent
-        self.target = target
-        #endif
-    }
-}
-
 struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
     static let outputType: OutputType = .testCase
 
@@ -1135,23 +1083,6 @@ struct CompileWarningCaptureGroup: CaptureGroup {
     }
 }
 
-struct LDWarningCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .warning
-
-    /// Regular expression captured groups:
-    /// $1 = warning message
-    static let regex = XCRegex(pattern: #"^ld: warning: (.*)"#)
-
-    let ldPrefix = "ld: "
-    let warningMessage: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let warningMessage = groups[safe: 0] else { return nil }
-        self.warningMessage = warningMessage
-    }
-}
-
 struct GenericWarningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -1310,71 +1241,6 @@ struct FileMissingErrorCaptureGroup: CaptureGroup {
     }
 }
 
-struct LDErrorCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(ld: (?!(?:warning)).*)"#)
-
-    // TODO: Capture error itself instead of entire line.
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
-struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = reason
-    static let regex = XCRegex(pattern: #"^(duplicate symbol .*):$"#)
-
-    let reason: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let reason = groups[safe: 0] else { return nil }
-        self.reason = reason
-    }
-}
-
-struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = symbol location
-    static let regex = XCRegex(pattern: #"^(.* in .*\.o)$"#)
-
-    let symbolLocation: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let symbolLocation = groups[safe: 0] else { return nil }
-        self.symbolLocation = symbolLocation
-    }
-}
-
-struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = reason
-    static let regex = XCRegex(pattern: #"^(Undefined symbols for architecture .*):$"#)
-
-    let reason: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let reason = groups[safe: 0] else { return nil }
-        self.reason = reason
-    }
-}
-
 struct PodsErrorCaptureGroup: ErrorCaptureGroup {
     static let outputType: OutputType = .error
 
@@ -1523,6 +1389,140 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct LDErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = whole error
+    static let regex = XCRegex(pattern: #"^(ld: (?!(?:warning)).*)"#)
+
+    // TODO: Capture error itself instead of entire line.
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
+struct LDWarningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
+    /// Regular expression captured groups:
+    /// $1 = warning message
+    static let regex = XCRegex(pattern: #"^ld: warning: (.*)"#)
+
+    let ldPrefix = "ld: "
+    let warningMessage: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let warningMessage = groups[safe: 0] else { return nil }
+        self.warningMessage = warningMessage
+    }
+}
+
+struct LibtoolCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = library
+    /// $2 = target
+    static let regex = XCRegex(pattern: #"^Libtool.*\/(.*) .* .* \((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+
+    let filename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let filename = groups[safe: 0], let target = groups.last else { return nil }
+        self.filename = filename
+        self.target = target
+    }
+}
+
+struct LinkerDuplicateSymbolsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = reason
+    static let regex = XCRegex(pattern: #"^(duplicate symbol .*):$"#)
+
+    let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let reason = groups[safe: 0] else { return nil }
+        self.reason = reason
+    }
+}
+
+struct LinkerUndefinedSymbolLocationCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = symbol location
+    static let regex = XCRegex(pattern: #"^(.* in .*\.o)$"#)
+
+    let symbolLocation: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let symbolLocation = groups[safe: 0] else { return nil }
+        self.symbolLocation = symbolLocation
+    }
+}
+
+struct LinkerUndefinedSymbolsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = reason
+    static let regex = XCRegex(pattern: #"^(Undefined symbols for architecture .*):$"#)
+
+    let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let reason = groups[safe: 0] else { return nil }
+        self.reason = reason
+    }
+}
+
+struct LinkingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    #if os(Linux)
+    /// Regular expression captured groups:
+    /// $1 = target
+    static let regex = XCRegex(pattern: #"^\[\d+\/\d+\]\sLinking\s([^ ]+)"#)
+    #else
+    /// Regular expression captured groups:
+    /// $1 = binary filename
+    /// $2 = target
+    static let regex = XCRegex(pattern: #"^Ld \/?.*\/(.*?) normal (?:.* )?\((?:in target: (.*)|in target '(.*)' from project '.*')\)"#)
+    #endif
+
+    #if !os(Linux)
+    let binaryFilename: String
+    #endif
+    let target: String
+
+    init?(groups: [String]) {
+        #if os(Linux)
+        assert(groups.count == 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
+        #else
+        assert(groups.count == 2)
+        guard let binaryFileName = groups[safe: 0], let target = groups.last else { return nil }
+        binaryFilename = binaryFileName.lastPathComponent
+        self.target = target
+        #endif
     }
 }
 
