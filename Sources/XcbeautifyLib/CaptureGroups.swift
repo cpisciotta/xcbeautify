@@ -1391,22 +1391,6 @@ struct PodsErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
-struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = error reason
-    static let regex = XCRegex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#)
-
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
 struct PackageFetchingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
     static let regex = XCRegex(pattern: #"^Fetching from (.*?)$"#)
@@ -1502,14 +1486,6 @@ struct CompilationResultCaptureGroup: CaptureGroup {
     init?(groups: [String]) { }
 }
 
-struct MkDirCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: "^MkDir.*")
-
-    init?(groups: [String]) { }
-}
-
 struct EmitSwiftModuleCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1547,6 +1523,30 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct MkDirCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: "^MkDir.*")
+
+    init?(groups: [String]) { }
+}
+
+struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = error reason
+    static let regex = XCRegex(pattern: #"^\<module-includes\>:.*?:.*?:\s(?:fatal\s)?(error:\s.*)$/"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
     }
 }
 
