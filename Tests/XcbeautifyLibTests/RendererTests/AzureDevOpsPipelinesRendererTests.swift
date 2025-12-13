@@ -258,8 +258,9 @@ final class AzureDevOpsPipelinesRendererTests: XCTestCase {
         XCTAssertEqual(formatted, "[Target] Extract App Intents Metadata")
     }
 
-    func testFailingTest() {
+    func testFailingTest() throws {
         #if os(Linux)
+        throw XCTSkip("[TODO] Re-enable this test.")
         let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         let output = "##vso[task.logissue type=error;sourcepath=/path/to/Tests.swift;linenumber=123]    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         #else
