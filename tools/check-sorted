@@ -4,7 +4,13 @@ import Foundation
 
 private func checkCaptureGroups() -> Bool {
     let fileURL = URL(fileURLWithPath: "./Sources/XcbeautifyLib/CaptureGroups.swift")
-    let content = try! String(contentsOf: fileURL, encoding: .utf8)
+    let content: String
+    do {
+        content = try String(contentsOf: fileURL, encoding: .utf8)
+    } catch {
+        print("Error: Failed to read \(fileURL.path): \(error)")
+        exit(EXIT_FAILURE)
+    }
 
     let lines = content
         .split(whereSeparator: \.isNewline)
@@ -19,13 +25,25 @@ private func checkCaptureGroups() -> Bool {
 
 private func checkParserRegistration() -> Bool {
     let fileURL = URL(fileURLWithPath: "./Sources/XcbeautifyLib/Parser.swift")
-    let content = try! String(contentsOf: fileURL, encoding: .utf8)
+    let content: String
+    do {
+        content = try String(contentsOf: fileURL, encoding: .utf8)
+    } catch {
+        print("Error: Failed to read \(fileURL.path): \(error)")
+        return false
+    }
 
     let lines = content
         .split(whereSeparator: \.isNewline)
 
-    let startIndex = lines.firstIndex { $0.contains("// START SORT") }!
-    let endIndex = lines.firstIndex { $0.contains("// END SORT") }!
+    guard let startIndex = lines.firstIndex(where: { $0.contains("// START SORT") }) else {
+        print("Error: '// START SORT' marker not found in Parser.swift.")
+        return false
+    }
+    guard let endIndex = lines.firstIndex(where: { $0.contains("// END SORT") }) else {
+        print("Error: '// END SORT' marker not found in Parser.swift.")
+        return false
+    }
 
     let filteredLines = Array(lines[(startIndex + 1)..<endIndex])
         .map { $0.lowercased() }
