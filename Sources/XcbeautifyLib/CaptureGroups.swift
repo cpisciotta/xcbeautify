@@ -2045,23 +2045,6 @@ struct PackageGraphResolvedItemCaptureGroup: CaptureGroup {
     }
 }
 
-struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(xcodebuild: error:.*)$"#)
-
-    // TODO: Capture error itself instead of entire line.
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
 struct CompilationResultCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -2593,5 +2576,22 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct XcodebuildErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = whole error
+    static let regex = XCRegex(pattern: #"^(xcodebuild: error:.*)$"#)
+
+    // TODO: Capture error itself instead of entire line.
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
     }
 }
