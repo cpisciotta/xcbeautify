@@ -12,6 +12,7 @@ import Foundation
 /// Maps raw `xcodebuild` output to a `CaptureGroup`.
 package final class Parser {
     private lazy var captureGroupTypes: [any CaptureGroup.Type] = [
+        // START SORT
         AggregateTargetCaptureGroup.self,
         AnalyzeCaptureGroup.self,
         AnalyzeTargetCaptureGroup.self,
@@ -141,6 +142,7 @@ package final class Parser {
         WriteAuxiliaryFileCaptureGroup.self,
         WriteFileCaptureGroup.self,
         XcodebuildErrorCaptureGroup.self,
+        // END SORT
     ]
 
     #if DEBUG
