@@ -16,6 +16,7 @@
 --enable noGuardInTests
 --enable preferFinalClasses
 --enable redundantAsync
+--enable redundantEquatable
 --enable redundantMemberwiseInit
 --enable redundantProperty
 --enable singlePropertyPerLine
