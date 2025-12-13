@@ -8,8 +8,8 @@
 //
 
 import Foundation
-import XcbeautifyLib
 import Testing
+import XcbeautifyLib
 
 @Suite struct JUnitReporterTests {
     private let expectedMacOsXml = """

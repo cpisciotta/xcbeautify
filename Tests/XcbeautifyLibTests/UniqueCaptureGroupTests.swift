@@ -27,7 +27,7 @@ import Testing
         }
 
         #expect(
-            duplicates.count == 0, 
+            duplicates.isEmpty,
             "Found the following duplicate CaptureGroup registration(s): \(ListFormatter.localizedString(byJoining: duplicates.map(String.init(describing:))))"
         )
     }
@@ -51,7 +51,7 @@ import Testing
             }
 
             #expect(
-                capturedTypes.count <= 1, 
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)
@@ -71,7 +71,7 @@ import Testing
         }
 
         #expect(
-            capturedTypes.count == 1, 
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -90,7 +90,7 @@ import Testing
         }
 
         #expect(
-            capturedTypes.count == 1, 
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -109,7 +109,7 @@ import Testing
         }
 
         #expect(
-            capturedTypes.count == 1, 
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -128,7 +128,7 @@ import Testing
         }
 
         #expect(
-            capturedTypes.count == 1, 
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -152,7 +152,7 @@ import Testing
             }
 
             #expect(
-                capturedTypes.count <= 1, 
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)
@@ -177,7 +177,7 @@ import Testing
             }
 
             #expect(
-                capturedTypes.count <= 1, 
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)
@@ -202,7 +202,7 @@ import Testing
             }
 
             #expect(
-                capturedTypes.count <= 1, 
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)

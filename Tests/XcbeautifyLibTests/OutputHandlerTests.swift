@@ -8,8 +8,8 @@
 //
 
 import Foundation
-import XcbeautifyLib
 import Testing
+import XcbeautifyLib
 
 @Suite struct OutputHandlerTests {
     @Test func earlyReturnIfEmptyString() throws {
