@@ -149,6 +149,39 @@ struct CheckDependenciesCaptureGroup: CaptureGroup {
     }
 }
 
+struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = whole error
+    static let regex = XCRegex(pattern: #"^(Code\s?Sign error:.*|Code signing is required for product type .* in SDK .*|No profile matching .* found:.*|Provisioning profile .* doesn't .*|Swift is unavailable on .*|.?Use Legacy Swift Language Version.*)$"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups.first else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
+struct ClangErrorCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .error
+
+    /// Regular expression captured groups:
+    /// $1 = whole error
+    static let regex = XCRegex(pattern: #"^(clang: error:.*)$"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
+
 struct CleanRemoveCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -218,6 +251,35 @@ struct CodesignFrameworkCaptureGroup: CaptureGroup {
     }
 }
 
+struct CompilationResultCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^\/\* com.apple.actool.compilation-results \*\/$"#)
+
+    init?(groups: [String]) { }
+}
+
+
+struct CompileAssetCatalogCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^CompileAssetCatalog (.+) \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        filename = filePath.lastPathComponent
+        self.target = target
+        self.project = project
+    }
+}
+
 struct CompileCaptureGroup: CompileFileCaptureGroup {
     static let outputType: OutputType = .task
 
@@ -256,26 +318,6 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
     }
 }
 
-struct CompileAssetCatalogCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^CompileAssetCatalog (.+) \(in target '(.*)' from project '(.*)'\)$"#)
-
-    let filePath: String
-    let filename: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        filename = filePath.lastPathComponent
-        self.target = target
-        self.project = project
-    }
-}
-
 struct CompileCommandCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -292,6 +334,78 @@ struct CompileCommandCaptureGroup: CaptureGroup {
         guard let compilerCommand = groups[safe: 0], let filePath = groups[safe: 1] else { return nil }
         self.compilerCommand = compilerCommand
         self.filePath = filePath
+    }
+}
+
+struct CompileErrorCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    // TODO: Improve this group's matching
+    // `(?:no such file or directory)` avoids collisions with `FileMissingErrorCaptureGroup`
+    //
+    // Includes `(?!\-)` to prevent capturing XCTest failure messages.
+    // Example: /Users/.../Tests.swift:13: error: -[Tests.Tests someTest] : XCTAssertEqual failed: ("Optional("...")") is not equal to ("Optional("....")")
+    //
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = is fatal error
+    /// $3 = reason
+    static let regex = XCRegex(pattern: #"^(?!(?:xcodebuild))(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!(?:\-)|(?:no such file or directory))(.*)$"#)
+
+    let filePath: String
+    let isFatalError: String
+    let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let isFatalError = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.isFatalError = isFatalError
+        self.reason = reason
+    }
+}
+
+struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = filename (e.g. Main.storyboard)
+    /// $3 = target
+    static let regex = XCRegex(pattern: #"^CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
+    }
+}
+
+struct CompileWarningCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = filename
+    /// $3 = reason
+    static let regex = XCRegex(pattern: #"^(?!(?:ld))(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#)
+
+    let filePath: String
+    let filename: String
+    let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.reason = reason
     }
 }
 
@@ -323,28 +437,6 @@ struct CompileXibCaptureGroup: CompileFileCaptureGroup {
     /// $2 = filename (e.g. MainMenu.xib)
     /// $3 = target
     static let regex = XCRegex(pattern: #"^CompileXIB\s(.*\/(.*\.xib))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
-
-    let filePath: String
-    let filename: String
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups.last else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
-    }
-}
-
-struct CompileStoryboardCaptureGroup: CompileFileCaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = filename (e.g. Main.storyboard)
-    /// $3 = target
-    static let regex = XCRegex(pattern: #"^CompileStoryboard\s(.*\/([^\/].*\.storyboard))\s.*\((in target: (.*)|in target '(.*)' from project '.*')\)"#)
 
     let filePath: String
     let filename: String
@@ -493,88 +585,6 @@ struct CreateUniversalBinaryCaptureGroup: CaptureGroup {
     }
 }
 
-struct CompileWarningCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .warning
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = filename
-    /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(?!(?:ld))(([^:]*):*\d*:*\d*):\swarning:\s(.*)$"#)
-
-    let filePath: String
-    let filename: String
-    let reason: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.reason = reason
-    }
-}
-
-struct ClangErrorCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(clang: error:.*)$"#)
-
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
-struct CheckDependenciesErrorsCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(Code\s?Sign error:.*|Code signing is required for product type .* in SDK .*|No profile matching .* found:.*|Provisioning profile .* doesn't .*|Swift is unavailable on .*|.?Use Legacy Swift Language Version.*)$"#)
-
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups.first else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
-struct CompileErrorCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    // TODO: Improve this group's matching
-    // `(?:no such file or directory)` avoids collisions with `FileMissingErrorCaptureGroup`
-    //
-    // Includes `(?!\-)` to prevent capturing XCTest failure messages.
-    // Example: /Users/.../Tests.swift:13: error: -[Tests.Tests someTest] : XCTAssertEqual failed: ("Optional("...")") is not equal to ("Optional("....")")
-    //
-    /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = is fatal error
-    /// $3 = reason
-    static let regex = XCRegex(pattern: #"^(?!(?:xcodebuild))(([^:]*):*\d*:*\d*):\s(?:fatal\s)?error:\s(?!(?:\-)|(?:no such file or directory))(.*)$"#)
-
-    let filePath: String
-    let isFatalError: String
-    let reason: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let isFatalError = groups[safe: 1], let reason = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.isFatalError = isFatalError
-        self.reason = reason
-    }
-}
-
 struct CursorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -589,14 +599,6 @@ struct CursorCaptureGroup: CaptureGroup {
         guard let cursor = groups[safe: 0] else { return nil }
         self.cursor = cursor
     }
-}
-
-struct CompilationResultCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^\/\* com.apple.actool.compilation-results \*\/$"#)
-
-    init?(groups: [String]) { }
 }
 
 struct DataModelCodegenCaptureGroup: CaptureGroup {
