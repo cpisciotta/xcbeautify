@@ -149,28 +149,6 @@ struct CheckDependenciesCaptureGroup: CaptureGroup {
     }
 }
 
-struct ShellCommandCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    // TODO: Improve this regex
-    // `(?:t =)` avoids collisions with `UIFailingTestCaptureGroup`
-    //
-    /// Regular expression captured groups:
-    /// $1 = command path
-    /// $2 = arguments
-    static let regex = XCRegex(pattern: #"^\s{4}(?!(?:t =))(cd|setenv|(?:[\w\/:\-.]+?\/)?[\w\-]+(?<!clang))\s(.*)$"#)
-
-    let commandPath: String
-    let arguments: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let commandPath = groups[safe: 0], let arguments = groups[safe: 1] else { return nil }
-        self.commandPath = commandPath
-        self.arguments = arguments
-    }
-}
-
 // FIXME: Refactor this type.
 // Added to temporarily capture unwanted clang output.
 // This type's regex conflicts with ShellCommandCaptureGroup and ProcessPchCommandCaptureGroup.
@@ -293,38 +271,6 @@ struct CompileCaptureGroup: CompileFileCaptureGroup {
         self.target = target
         #endif
     }
-}
-
-struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    /// $2 = target
-    /// $3 = project
-    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$"#)
-
-    let filePath: String
-    let filename: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        filename = filePath.lastPathComponent
-        self.target = target
-        self.project = project
-    }
-}
-
-struct SwiftCompilingCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ Compiling\\"#)
-
-    init?(groups: [String]) { }
 }
 
 struct CompileAssetCatalogCaptureGroup: CaptureGroup {
@@ -1234,42 +1180,6 @@ struct RegisterExecutionPolicyExceptionCaptureGroup: CaptureGroup {
     }
 }
 
-struct ScanDependenciesCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^ScanDependencies .* normal (arm64|arm64_32|armv7k|i386|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
-
-    let arch: Architecture
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.arch = arch
-        self.target = target
-        self.project = project
-    }
-}
-
-struct SymLinkCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^SymLink (.+) \(in target '(.*)' from project '(.*)'\)$"#)
-
-    let filePath: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.target = target
-        self.project = project
-    }
-}
-
 struct CompileWarningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -1564,25 +1474,6 @@ struct PodsErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
-struct SymbolReferencedFromCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    /// Regular expression captured groups:
-    /// $1 = wholeError
-    /// $2 = reference
-    static let regex = XCRegex(pattern: #"^(\s+\"(.*)\", referenced from:)$"#)
-
-    let wholeError: String
-    let reference: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let wholeError = groups[safe: 0], let reference = groups[safe: 1] else { return nil }
-        self.wholeError = wholeError
-        self.reference = reference
-    }
-}
-
 struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
     static let outputType: OutputType = .error
 
@@ -1694,14 +1585,6 @@ struct CompilationResultCaptureGroup: CaptureGroup {
     init?(groups: [String]) { }
 }
 
-struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
-
-    init?(groups: [String]) { }
-}
-
 /// This output is printed when running
 /// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
 struct TestingStartedCaptureGroup: CaptureGroup {
@@ -1720,6 +1603,112 @@ struct TestingStartedCaptureGroup: CaptureGroup {
     }
 }
 
+struct MkDirCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: "^MkDir.*")
+
+    init?(groups: [String]) { }
+}
+
+struct EmitSwiftModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^EmitSwiftModule normal (arm64|arm64_32|armv7k|i386|x86_64) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let arch: Architecture
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.arch = arch
+        self.target = target
+        self.project = project
+    }
+}
+
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
+struct NoteCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = note
+    static let regex = XCRegex(pattern: "^note: (.*)$")
+
+    let note: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let note = groups[safe: 0] else { return nil }
+        self.note = note
+    }
+}
+
+struct DataModelCodegenCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = path
+    /// $2 = target
+    /// $3 = project
+    static let regex = XCRegex(pattern: #"^DataModelCodegen (.*\.xcdatamodeld) \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let path: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let path = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.path = path
+        self.target = target
+        self.project = project
+    }
+}
+
+struct ScanDependenciesCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^ScanDependencies .* normal (arm64|arm64_32|armv7k|i386|x86_64) .* \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let arch: Architecture
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.arch = arch
+        self.target = target
+        self.project = project
+    }
+}
+
+struct ShellCommandCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    // TODO: Improve this regex
+    // `(?:t =)` avoids collisions with `UIFailingTestCaptureGroup`
+    //
+    /// Regular expression captured groups:
+    /// $1 = command path
+    /// $2 = arguments
+    static let regex = XCRegex(pattern: #"^\s{4}(?!(?:t =))(cd|setenv|(?:[\w\/:\-.]+?\/)?[\w\-]+(?<!clang))\s(.*)$"#)
+
+    let commandPath: String
+    let arguments: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let commandPath = groups[safe: 0], let arguments = groups[safe: 1] else { return nil }
+        self.commandPath = commandPath
+        self.arguments = arguments
+    }
+}
+
 struct SigningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1735,6 +1724,66 @@ struct SigningCaptureGroup: CaptureGroup {
         self.file = file
         self.target = target
         self.project = project
+    }
+}
+
+struct SwiftCompileCaptureGroup: CompileFileCaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    /// $2 = target
+    /// $3 = project
+    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ ((?:\S|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 3)
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        filename = filePath.lastPathComponent
+        self.target = target
+        self.project = project
+    }
+}
+
+struct SwiftCompilingCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftCompile \w+ \w+ Compiling\\"#)
+
+    init?(groups: [String]) { }
+}
+
+struct SwiftDriverCompilationRequirementsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
+    }
+}
+
+struct SwiftDriverCompilationTarget: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
     }
 }
 
@@ -1771,6 +1820,48 @@ struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     }
 }
 
+struct SwiftDriverJobDiscoveryEmittingModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery \w+ \w+ Emitting module for .* \(in target '.*' from project '.*'\)"#)
+
+    init?(groups: [String]) { }
+}
+
+struct SwiftDriverTargetCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftDriver (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let target = groups[safe: 0] else { return nil }
+        self.target = target
+    }
+}
+
+struct SwiftEmitModuleCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^SwiftEmitModule normal (arm64|arm64_32|armv7k|i386|x86_64) Emitting\\ module\\ for\\ (.+) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let arch: Architecture
+    let module: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 4)
+        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let module = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
+        self.arch = arch
+        self.module = module
+        self.target = target
+        self.project = project
+    }
+}
+
 struct SwiftMergeGeneratedHeadersCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1794,19 +1885,60 @@ struct SwiftMergeGeneratedHeadersCaptureGroup: CaptureGroup {
     }
 }
 
-struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .result
+struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
 
-    /// Regular expression to capture the start of a test run.
-    /// $1 = message
-    static let regex = XCRegex(pattern: #"^[^ ] +(Test run started\.)$"#)
+    /// Regular expression to capture the symbol, test description, and optional number of arguments.
+    /// $1 = test description
+    /// $2 = number of arguments (optional)
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?"#)
 
-    let message: String
+    let testDescription: String
+    let numberOfArguments: Int?
 
     init?(groups: [String]) {
         assert(groups.count >= 1)
-        guard let message = groups[safe: 0] else { return nil }
-        self.message = message
+        guard let testDescription = groups[safe: 0] else { return nil }
+
+        self.testDescription = testDescription
+        numberOfArguments = groups[safe: 1].flatMap(Int.init)
+    }
+}
+
+struct SwiftTestingIssueCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture the symbol, test description, and issue details.
+    /// $1 = test description
+    /// $2 = issue details
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue at (.*)$"#)
+
+    let testDescription: String
+    let issueDetails: String?
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let testDescription = groups[safe: 0] else { return nil }
+
+        self.testDescription = testDescription
+        issueDetails = groups[safe: 1]
+    }
+}
+
+struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture the symbol and number of arguments.
+    /// $1 = number of arguments
+    static let regex = XCRegex(pattern: #"^[^ ] +Passing (\d+) argument[s]?.*$"#)
+
+    let numberOfArguments: Int
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let numberOfArguments = groups[safe: 0].flatMap(Int.init) else { return nil }
+
+        self.numberOfArguments = numberOfArguments
     }
 }
 
@@ -1854,61 +1986,19 @@ struct SwiftTestingRunFailedCaptureGroup: CaptureGroup {
     }
 }
 
-struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .test
+struct SwiftTestingRunStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
 
-    /// Regular expression to capture the start of a test suite.
-    /// $1 = suite name
-    static let regex = XCRegex(pattern: #"^[^ ] +Suite (.*) started\.$"#)
+    /// Regular expression to capture the start of a test run.
+    /// $1 = message
+    static let regex = XCRegex(pattern: #"^[^ ] +(Test run started\.)$"#)
 
-    let suiteName: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let suiteName = groups[safe: 0] else { return nil }
-        self.suiteName = suiteName
-    }
-
-    func junitComponent() -> JUnitComponent {
-        .testSuiteStart(suiteName)
-    }
-}
-
-struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
-
-    /// Regular expression to capture the start of a test case.
-    /// $1 = test name
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run )(.*) started\.$"#)
-
-    let testName: String
-    let wholeMessage: String
+    let message: String
 
     init?(groups: [String]) {
         assert(groups.count >= 1)
-        guard let testName = groups[safe: 0] else { return nil }
-        self.testName = testName
-        wholeMessage = "Test \(testName) started."
-    }
-}
-
-struct SwiftTestingSuitePassedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .warning
-
-    /// Regular expression to capture the successful completion of a test suite.
-    /// $1 = suite name
-    /// $2 = total time taken in seconds
-    static let regex = XCRegex(pattern: #"^[^ ] +Suite (.*) passed after ([\d.]+) seconds\.$"#)
-
-    let suiteName: String
-    let timeTaken: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let suiteName = groups[safe: 0],
-              let timeTaken = groups[safe: 1] else { return nil }
-        self.suiteName = suiteName
-        self.timeTaken = timeTaken
+        guard let message = groups[safe: 0] else { return nil }
+        self.message = message
     }
 }
 
@@ -1933,6 +2023,46 @@ struct SwiftTestingSuiteFailedCaptureGroup: CaptureGroup {
         self.suiteName = suiteName
         self.timeTaken = timeTaken
         self.numberOfIssues = numberOfIssues
+    }
+}
+
+struct SwiftTestingSuitePassedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
+    /// Regular expression to capture the successful completion of a test suite.
+    /// $1 = suite name
+    /// $2 = total time taken in seconds
+    static let regex = XCRegex(pattern: #"^[^ ] +Suite (.*) passed after ([\d.]+) seconds\.$"#)
+
+    let suiteName: String
+    let timeTaken: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let suiteName = groups[safe: 0],
+              let timeTaken = groups[safe: 1] else { return nil }
+        self.suiteName = suiteName
+        self.timeTaken = timeTaken
+    }
+}
+
+struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup, JUnitParallelReportable {
+    static let outputType: OutputType = .test
+
+    /// Regular expression to capture the start of a test suite.
+    /// $1 = suite name
+    static let regex = XCRegex(pattern: #"^[^ ] +Suite (.*) started\.$"#)
+
+    let suiteName: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let suiteName = groups[safe: 0] else { return nil }
+        self.suiteName = suiteName
+    }
+
+    func junitComponent() -> JUnitComponent {
+        .testSuiteStart(suiteName)
     }
 }
 
@@ -2035,186 +2165,56 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelRep
     }
 }
 
-struct SwiftTestingIssueCaptureGroup: CaptureGroup {
+struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
-    /// Regular expression to capture the symbol, test description, and issue details.
-    /// $1 = test description
-    /// $2 = issue details
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue at (.*)$"#)
+    /// Regular expression to capture the start of a test case.
+    /// $1 = test name
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run )(.*) started\.$"#)
 
-    let testDescription: String
-    let issueDetails: String?
+    let testName: String
+    let wholeMessage: String
 
     init?(groups: [String]) {
         assert(groups.count >= 1)
-        guard let testDescription = groups[safe: 0] else { return nil }
-
-        self.testDescription = testDescription
-        issueDetails = groups[safe: 1]
+        guard let testName = groups[safe: 0] else { return nil }
+        self.testName = testName
+        wholeMessage = "Test \(testName) started."
     }
 }
 
-struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+struct SymbolReferencedFromCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
 
-    /// Regular expression to capture the symbol, test description, and optional number of arguments.
-    /// $1 = test description
-    /// $2 = number of arguments (optional)
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?"#)
+    /// Regular expression captured groups:
+    /// $1 = wholeError
+    /// $2 = reference
+    static let regex = XCRegex(pattern: #"^(\s+\"(.*)\", referenced from:)$"#)
 
-    let testDescription: String
-    let numberOfArguments: Int?
+    let wholeError: String
+    let reference: String
 
     init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let testDescription = groups[safe: 0] else { return nil }
-
-        self.testDescription = testDescription
-        numberOfArguments = groups[safe: 1].flatMap(Int.init)
+        assert(groups.count >= 2)
+        guard let wholeError = groups[safe: 0], let reference = groups[safe: 1] else { return nil }
+        self.wholeError = wholeError
+        self.reference = reference
     }
 }
 
-struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
-
-    /// Regular expression to capture the symbol and number of arguments.
-    /// $1 = number of arguments
-    static let regex = XCRegex(pattern: #"^[^ ] +Passing (\d+) argument[s]?.*$"#)
-
-    let numberOfArguments: Int
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let numberOfArguments = groups[safe: 0].flatMap(Int.init) else { return nil }
-
-        self.numberOfArguments = numberOfArguments
-    }
-}
-
-struct SwiftDriverTargetCaptureGroup: CaptureGroup {
+struct SymLinkCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    static let regex = XCRegex(pattern: #"^SwiftDriver (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
+    static let regex = XCRegex(pattern: #"^SymLink (.+) \(in target '(.*)' from project '(.*)'\)$"#)
 
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
-    }
-}
-
-struct SwiftDriverCompilationTarget: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
-
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
-    }
-}
-
-struct SwiftDriverCompilationRequirementsCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^SwiftDriver\\ Compilation\\ Requirements (.*) normal (?:arm64|arm64_32|armv7k|i386|x86_64) com\.apple\.xcode\.tools\.swift\.compiler"#)
-
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let target = groups[safe: 0] else { return nil }
-        self.target = target
-    }
-}
-
-struct MkDirCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: "^MkDir.*")
-
-    init?(groups: [String]) { }
-}
-
-struct SwiftEmitModuleCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^SwiftEmitModule normal (arm64|arm64_32|armv7k|i386|x86_64) Emitting\\ module\\ for\\ (.+) \(in target '(.+)' from project '(.+)'\)$"#)
-
-    let arch: Architecture
-    let module: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 4)
-        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let module = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
-        self.arch = arch
-        self.module = module
-        self.target = target
-        self.project = project
-    }
-}
-
-struct EmitSwiftModuleCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^EmitSwiftModule normal (arm64|arm64_32|armv7k|i386|x86_64) \(in target '(.+)' from project '(.+)'\)$"#)
-
-    let arch: Architecture
+    let filePath: String
     let target: String
     let project: String
 
     init?(groups: [String]) {
         assert(groups.count == 3)
-        guard let _arch = groups[safe: 0], let arch = Architecture(rawValue: _arch), let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.arch = arch
-        self.target = target
-        self.project = project
-    }
-}
-
-/// This output is printed when running
-/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
-struct NoteCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = note
-    static let regex = XCRegex(pattern: "^note: (.*)$")
-
-    let note: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let note = groups[safe: 0] else { return nil }
-        self.note = note
-    }
-}
-
-struct DataModelCodegenCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = path
-    /// $2 = target
-    /// $3 = project
-    static let regex = XCRegex(pattern: #"^DataModelCodegen (.*\.xcdatamodeld) \(in target '(.*)' from project '(.*)'\)$"#)
-
-    let path: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 3)
-        guard let path = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
-        self.path = path
+        guard let filePath = groups[safe: 0], let target = groups[safe: 1], let project = groups[safe: 2] else { return nil }
+        self.filePath = filePath
         self.target = target
         self.project = project
     }
