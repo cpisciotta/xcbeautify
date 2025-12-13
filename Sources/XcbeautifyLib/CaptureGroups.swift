@@ -662,36 +662,6 @@ struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
     }
 }
 
-struct RestartingTestCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .test
-
-    /// Regular expression captured groups:
-    /// $1 = whole message
-    /// $2 = test suite + test case
-    /// $3 = test suite
-    /// $4 = test case
-    static let regex = XCRegex(pattern: #"^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)"#)
-
-    let wholeMessage: String
-    let testSuiteAndTestCase: String
-    let testSuite: String
-    let testCase: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let wholeMessage = groups[safe: 0], let testSuiteAndTestCase = groups[safe: 1], let testSuite = groups[safe: 2], let testCase = groups[safe: 3] else { return nil }
-        self.wholeMessage = wholeMessage
-        self.testSuiteAndTestCase = testSuiteAndTestCase
-        self.testSuite = testSuite
-        self.testCase = testCase
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: wholeMessage))
-        return .failingTest(testCase)
-    }
-}
-
 struct GenerateAssetSymbolsCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1157,26 +1127,6 @@ struct ProcessInfoPlistCaptureGroup: CaptureGroup {
             self.filename = filename
             target = groups.last
         }
-    }
-}
-
-struct RegisterExecutionPolicyExceptionCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^RegisterExecutionPolicyException (.+\/(.+\..+)) \(in target '(.+)' from project '(.+)'\)$"#)
-
-    let filePath: String
-    let filename: String
-    let target: String
-    let project: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 4)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
-        self.project = project
     }
 }
 
@@ -1648,6 +1598,56 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct RegisterExecutionPolicyExceptionCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^RegisterExecutionPolicyException (.+\/(.+\..+)) \(in target '(.+)' from project '(.+)'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+    let project: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 4)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2], let project = groups[safe: 3] else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
+        self.project = project
+    }
+}
+
+struct RestartingTestCaptureGroup: CaptureGroup, JUnitReportable {
+    static let outputType: OutputType = .test
+
+    /// Regular expression captured groups:
+    /// $1 = whole message
+    /// $2 = test suite + test case
+    /// $3 = test suite
+    /// $4 = test case
+    static let regex = XCRegex(pattern: #"^(Restarting after unexpected exit, crash, or test timeout in (-\[(\w+)\s(\w+)\]|(\w+)\.(\w+)\(\));.*)"#)
+
+    let wholeMessage: String
+    let testSuiteAndTestCase: String
+    let testSuite: String
+    let testCase: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let wholeMessage = groups[safe: 0], let testSuiteAndTestCase = groups[safe: 1], let testSuite = groups[safe: 2], let testCase = groups[safe: 3] else { return nil }
+        self.wholeMessage = wholeMessage
+        self.testSuiteAndTestCase = testSuiteAndTestCase
+        self.testSuite = testSuite
+        self.testCase = testCase
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: testSuite, name: testCase, time: nil, failure: .init(message: wholeMessage))
+        return .failingTest(testCase)
     }
 }
 
