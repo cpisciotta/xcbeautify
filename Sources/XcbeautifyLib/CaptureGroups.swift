@@ -149,23 +149,6 @@ struct CheckDependenciesCaptureGroup: CaptureGroup {
     }
 }
 
-// FIXME: Refactor this type.
-// Added to temporarily capture unwanted clang output.
-// This type's regex conflicts with ShellCommandCaptureGroup and ProcessPchCommandCaptureGroup.
-struct NonPCHClangCommandCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^\s{0,4}(.*\/usr\/bin\/clang) (?:(?!(?:pch)).)*$"#)
-
-    let xcodePath: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let xcodePath = groups[safe: 0] else { return nil }
-        self.xcodePath = xcodePath
-    }
-}
-
 struct CleanRemoveCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1249,22 +1232,6 @@ struct ProvisioningProfileRequiredCaptureGroup: ErrorCaptureGroup {
     }
 }
 
-struct NoCertificateCaptureGroup: ErrorCaptureGroup {
-    static let outputType: OutputType = .warning
-
-    /// Regular expression captured groups:
-    /// $1 = whole error
-    static let regex = XCRegex(pattern: #"^(No certificate matching.*)$"#)
-
-    let wholeError: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeError = groups[safe: 0] else { return nil }
-        self.wholeError = wholeError
-    }
-}
-
 struct CompileErrorCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
@@ -1561,24 +1528,6 @@ struct EmitSwiftModuleCaptureGroup: CaptureGroup {
     }
 }
 
-/// This output is printed when running
-/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
-struct NoteCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = note
-    static let regex = XCRegex(pattern: "^note: (.*)$")
-
-    let note: String
-
-    init?(groups: [String]) {
-        assert(groups.count == 1)
-        guard let note = groups[safe: 0] else { return nil }
-        self.note = note
-    }
-}
-
 struct DataModelCodegenCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -1598,6 +1547,57 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct NoCertificateCaptureGroup: ErrorCaptureGroup {
+    static let outputType: OutputType = .warning
+
+    /// Regular expression captured groups:
+    /// $1 = whole error
+    static let regex = XCRegex(pattern: #"^(No certificate matching.*)$"#)
+
+    let wholeError: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeError = groups[safe: 0] else { return nil }
+        self.wholeError = wholeError
+    }
+}
+
+// FIXME: Refactor this type.
+// Added to temporarily capture unwanted clang output.
+// This type's regex conflicts with ShellCommandCaptureGroup and ProcessPchCommandCaptureGroup.
+struct NonPCHClangCommandCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^\s{0,4}(.*\/usr\/bin\/clang) (?:(?!(?:pch)).)*$"#)
+
+    let xcodePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let xcodePath = groups[safe: 0] else { return nil }
+        self.xcodePath = xcodePath
+    }
+}
+
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
+struct NoteCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = note
+    static let regex = XCRegex(pattern: "^note: (.*)$")
+
+    let note: String
+
+    init?(groups: [String]) {
+        assert(groups.count == 1)
+        guard let note = groups[safe: 0] else { return nil }
+        self.note = note
     }
 }
 
