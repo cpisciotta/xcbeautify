@@ -12,6 +12,7 @@
 --enable emptyExtensions
 --enable isEmpty
 --enable noForceTryInTests
+--enable noForceUnwrapInTests
 --enable noGuardInTests
 --enable redundantMemberwiseInit
 --enable redundantProperty

@@ -12,7 +12,7 @@ import XCTest
 
 final class ParsingTests: XCTestCase {
     func testCleanBuildXcode15_1() throws {
-        let url = Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt")!
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
 
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
@@ -42,7 +42,7 @@ final class ParsingTests: XCTestCase {
     }
 
     func testLargeXcodebuildLog() throws {
-        let url = Bundle.module.url(forResource: "large_xcodebuild_log", withExtension: "txt")!
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "large_xcodebuild_log", withExtension: "txt"))
 
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
@@ -72,7 +72,7 @@ final class ParsingTests: XCTestCase {
     }
 
     func testParsingSwiftTestingTestOutput() throws {
-        let url = Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt")!
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -100,7 +100,7 @@ final class ParsingTests: XCTestCase {
     }
 
     func testShortSPISwiftTestingOutput() throws {
-        let url = Bundle.module.url(forResource: "spi_swift_testing_short_log", withExtension: "txt")!
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "spi_swift_testing_short_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -127,7 +127,7 @@ final class ParsingTests: XCTestCase {
     }
 
     func testFullSPISwiftTestingOutput() throws {
-        let url = Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt")!
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -154,7 +154,7 @@ final class ParsingTests: XCTestCase {
     }
 
     func testDemoSwiftTestingOutput() throws {
-        let url = Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt")!
+        let url = try XCTUnwrap(Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
