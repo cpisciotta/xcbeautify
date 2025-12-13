@@ -181,7 +181,6 @@ struct ClangErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
-
 struct CleanRemoveCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -258,7 +257,6 @@ struct CompilationResultCaptureGroup: CaptureGroup {
 
     init?(groups: [String]) { }
 }
-
 
 struct CompileAssetCatalogCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
