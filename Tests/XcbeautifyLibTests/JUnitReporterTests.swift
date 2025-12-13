@@ -809,9 +809,9 @@ import XcbeautifyLib
     }
     #endif
 
-    @Test func mixedXCTestAndSwiftTestingJUnitReport() throws {
+    @Test(.disabled(if: .linux, "[TODO] Re-enable this test."))
+    func mixedXCTestAndSwiftTestingJUnitReport() throws {
         #if os(Linux)
-        throw XCTSkip("[TODO] Re-enable this test.")
         let inputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_Linux", withExtension: "txt"))
         let outputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_Expected_XML_Linux", withExtension: "txt"))
         #else

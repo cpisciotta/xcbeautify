@@ -244,9 +244,9 @@ import Testing
         #expect(formatted == "[Target] Extract App Intents Metadata")
     }
 
-    @Test func failingTest() throws {
+    @Test(.disabled(if: .linux, "[TODO] Re-enable this test."))
+    func failingTest() throws {
         #if os(Linux)
-        throw XCTSkip("[TODO] Re-enable this test.")
         let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         #else
