@@ -716,26 +716,6 @@ struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
     }
 }
 
-struct UIFailingTestCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .error
-
-    // // TODO: Is this actually a regex for a UI failing test error?
-    /// Regular expression captured groups:
-    /// $1 = file
-    /// $2 = reason
-    static let regex = XCRegex(pattern: #"^\s{4}t = \s+\d+\.\d+s\s+Assertion Failure: (.*:\d+): (.*)$"#)
-
-    let file: String
-    let reason: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 2)
-        guard let file = groups[safe: 0], let reason = groups[safe: 1] else { return nil }
-        self.file = file
-        self.reason = reason
-    }
-}
-
 struct RestartingTestCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .test
 
@@ -1847,27 +1827,6 @@ struct ModuleIncludesErrorCaptureGroup: ErrorCaptureGroup {
     }
 }
 
-struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .warning
-    /// Regular expression captured groups:
-    /// $1 = whole warning
-    /// $2 = target
-    /// $3 = filename
-    static let regex = XCRegex(pattern: #"^(.+ in (.+)\((.+)\.o\))$"#)
-
-    let wholeWarning: String
-    let target: String
-    let filename: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let wholeWarning = groups[safe: 0], let target = groups[safe: 1], let filename = groups[safe: 2] else { return nil }
-        self.wholeWarning = wholeWarning
-        self.target = target
-        self.filename = filename
-    }
-}
-
 struct PackageFetchingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
     static let regex = XCRegex(pattern: #"^Fetching from (.*?)$"#)
@@ -2486,6 +2445,47 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct UIFailingTestCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .error
+
+    // // TODO: Is this actually a regex for a UI failing test error?
+    /// Regular expression captured groups:
+    /// $1 = file
+    /// $2 = reason
+    static let regex = XCRegex(pattern: #"^\s{4}t = \s+\d+\.\d+s\s+Assertion Failure: (.*:\d+): (.*)$"#)
+
+    let file: String
+    let reason: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 2)
+        guard let file = groups[safe: 0], let reason = groups[safe: 1] else { return nil }
+        self.file = file
+        self.reason = reason
+    }
+}
+
+struct UndefinedSymbolLocationCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+    /// Regular expression captured groups:
+    /// $1 = whole warning
+    /// $2 = target
+    /// $3 = filename
+    static let regex = XCRegex(pattern: #"^(.+ in (.+)\((.+)\.o\))$"#)
+
+    let wholeWarning: String
+    let target: String
+    let filename: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let wholeWarning = groups[safe: 0], let target = groups[safe: 1], let filename = groups[safe: 2] else { return nil }
+        self.wholeWarning = wholeWarning
+        self.target = target
+        self.filename = filename
     }
 }
 
