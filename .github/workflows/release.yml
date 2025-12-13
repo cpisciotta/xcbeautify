@@ -7,13 +7,12 @@ name: Release
 env:
   # TODO: Load from `.swift-version` file
   SWIFT_VERSION: 6.1
+  TAG: ${{ github.ref_name }}
 
 jobs:
   create_release:
     name: Create Release
     runs-on: ubuntu-latest
-    outputs:
-      tag_name: ${{ steps.create_release.outputs.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -22,9 +21,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${GITHUB_REF##*/}"
-          gh release create "$TAG" --title "$TAG" --generate-notes
-          echo "tag_name=$TAG" >> "$GITHUB_OUTPUT"
+          gh release create "${{ env.TAG }}" --title "${{ env.TAG }}" --generate-notes
 
   macos:
     name: Release macOS
@@ -42,23 +39,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ needs.create_release.outputs.tag_name }}"
-          mv release/xcbeautify.zip "xcbeautify-${TAG}-universal-apple-macosx.zip"
-          gh release upload "$TAG" "xcbeautify-${TAG}-universal-apple-macosx.zip" --clobber
+          mv release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-universal-apple-macosx.zip"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-universal-apple-macosx.zip" --clobber
       - name: Upload Darwin x86_64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ needs.create_release.outputs.tag_name }}"
-          mv .build/x86_64-apple-macosx/release/xcbeautify.zip "xcbeautify-${TAG}-x86_64-apple-macosx.zip"
-          gh release upload "$TAG" "xcbeautify-${TAG}-x86_64-apple-macosx.zip" --clobber
+          mv .build/x86_64-apple-macosx/release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-x86_64-apple-macosx.zip"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-apple-macosx.zip" --clobber
       - name: Upload Darwin arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ needs.create_release.outputs.tag_name }}"
-          mv .build/arm64-apple-macosx/release/xcbeautify.zip "xcbeautify-${TAG}-arm64-apple-macosx.zip"
-          gh release upload "$TAG" "xcbeautify-${TAG}-arm64-apple-macosx.zip" --clobber
+          mv .build/arm64-apple-macosx/release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-arm64-apple-macosx.zip"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-arm64-apple-macosx.zip" --clobber
 
   ubuntu_x86_64:
     name: Release Linux x86_64
@@ -79,6 +73,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ needs.create_release.outputs.tag_name }}"
-          mv xcbeautify.tar.xz "xcbeautify-${TAG}-x86_64-unknown-linux-gnu.tar.xz"
-          gh release upload "$TAG" "xcbeautify-${TAG}-x86_64-unknown-linux-gnu.tar.xz" --clobber
+          mv xcbeautify.tar.xz "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz" --clobber
