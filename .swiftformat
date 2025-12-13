@@ -4,6 +4,7 @@
 
 # Rules
 
+--disable swiftTestingTestCaseNames
 --disable unusedArguments
 
 --enable acronyms
@@ -15,6 +16,7 @@
 --enable noForceUnwrapInTests
 --enable noGuardInTests
 --enable preferFinalClasses
+--enable preferSwiftTesting
 --enable redundantAsync
 --enable redundantEquatable
 --enable redundantMemberwiseInit
