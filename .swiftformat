@@ -2,10 +2,6 @@
 
 --minversion 0.58.7
 
-# Excluded Files and Paths
-
---exclude **/XCTestManifests.swift
-
 # Rules
 
 --disable unusedArguments
