@@ -36,19 +36,19 @@ jobs:
           swift-version: ${{ env.SWIFT_VERSION }}
       - name: Build & Package
         run: make package
-      - name: Upload Darwin Universal
+      - name: Upload Darwin Universal Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mv release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-universal-apple-macosx.zip"
           gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-universal-apple-macosx.zip" --clobber
-      - name: Upload Darwin x86_64
+      - name: Upload Darwin x86_64 Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mv .build/x86_64-apple-macosx/release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-x86_64-apple-macosx.zip"
           gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-apple-macosx.zip" --clobber
-      - name: Upload Darwin arm64
+      - name: Upload Darwin arm64 Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
