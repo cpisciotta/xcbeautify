@@ -7,11 +7,11 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-import XCTest
+import Testing
 @testable import XcbeautifyLib
 
-final class CaptureGroupTests: XCTestCase {
-    func testSwiftCompiling() {
+@Suite struct CaptureGroupTests {
+    @Test func swiftCompiling() {
         let inputs = [
             #"SwiftCompile normal x86_64 Compiling\ BackyardBirdsDataContainer.swift,\ ColorData.swift,\ DataGeneration.swift,\ DataGenerationOptions.swift /Backyard-Birds/BackyardBirdsData/General/BackyardBirdsDataContainer.swift /Backyard-Birds/BackyardBirdsData/General/ColorData.swift /Backyard-Birds/BackyardBirdsData/General/DataGeneration.swift /Backyard-Birds/BackyardBirdsData/General/DataGenerationOptions.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#,
             #"SwiftCompile normal x86_64 Compiling\ BackyardSnapshot.swift,\ BackyardSupplies.swift,\ BackyardTimeOfDay.swift,\ BackyardTimeOfDayColors.swift /Backyard-Birds/BackyardBirdsData/Backyards/BackyardSnapshot.swift /Backyard-Birds/BackyardBirdsData/Backyards/BackyardSupplies.swift /Backyard-Birds/BackyardBirdsData/Backyards/BackyardTimeOfDay.swift /Backyard-Birds/BackyardBirdsData/Backyards/BackyardTimeOfDayColors.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#,
@@ -20,292 +20,292 @@ final class CaptureGroupTests: XCTestCase {
         ]
 
         for input in inputs {
-            XCTAssertNotNil(SwiftCompilingCaptureGroup.regex.captureGroups(for: input))
+            #expect(SwiftCompilingCaptureGroup.regex.captureGroups(for: input) != nil)
         }
     }
 
-    func testMatchCompilationResults() {
+    @Test func matchCompilationResults() {
         let input = #"/* com.apple.actool.compilation-results */"#
-        XCTAssertNotNil(CompilationResultCaptureGroup.regex.captureGroups(for: input))
+        #expect(CompilationResultCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchAssetCatalog() throws {
+    @Test func matchAssetCatalog() throws {
         let input = #"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.bundle/Contents/Resources /Backyard-Birds/LayeredArtworkLibrary/Assets.xcassets (in target 'LayeredArtworkLibrary_LayeredArtworkLibrary' from project 'LayeredArtworkLibrary')"#
-        let groups = try XCTUnwrap(CompileAssetCatalogCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Products/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.bundle/Contents/Resources /Backyard-Birds/LayeredArtworkLibrary/Assets.xcassets")
-        XCTAssertEqual(groups[1], "LayeredArtworkLibrary_LayeredArtworkLibrary")
-        XCTAssertEqual(groups[2], "LayeredArtworkLibrary")
+        let groups = try #require(CompileAssetCatalogCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "/Backyard-Birds/Build/Products/Debug/LayeredArtworkLibrary_LayeredArtworkLibrary.bundle/Contents/Resources /Backyard-Birds/LayeredArtworkLibrary/Assets.xcassets")
+        #expect(groups[1] == "LayeredArtworkLibrary_LayeredArtworkLibrary")
+        #expect(groups[2] == "LayeredArtworkLibrary")
     }
 
-    func testMatchCompileXCStrings() throws {
+    @Test func matchCompileXCStrings() throws {
         let input = #"CompileXCStrings /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings (in target 'BackyardBirdsData_BackyardBirdsData' from project 'BackyardBirdsData')"#
-        let groups = try XCTUnwrap(CompileXCStringsCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings")
-        XCTAssertEqual(groups[1], "BackyardBirdsData_BackyardBirdsData")
-        XCTAssertEqual(groups[2], "BackyardBirdsData")
+        let groups = try #require(CompileXCStringsCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData_BackyardBirdsData.build/ /Backyard-Birds/BackyardBirdsData/Backyards/Backyards.xcstrings")
+        #expect(groups[1] == "BackyardBirdsData_BackyardBirdsData")
+        #expect(groups[2] == "BackyardBirdsData")
     }
 
-    func testMatchCreateBuildDirectory() throws {
+    @Test func matchCreateBuildDirectory() throws {
         let input = "CreateBuildDirectory /Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug"
-        let groups = try XCTUnwrap(CreateBuildDirectoryCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug")
+        let groups = try #require(CreateBuildDirectoryCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == "/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug")
     }
 
-    func testMatchCreateUniversalBinary() throws {
+    @Test func matchCreateUniversalBinary() throws {
         let input = #"CreateUniversalBinary /Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o normal arm64\ x86_64 (in target 'BackyardBirdsDataTarget' from project 'BackyardBirdsDataProject')"#
-        let groups = try XCTUnwrap(CreateUniversalBinaryCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o")
-        XCTAssertEqual(groups[1], "BackyardBirdsDataTarget")
-        XCTAssertEqual(groups[2], "BackyardBirdsDataProject")
+        let groups = try #require(CreateUniversalBinaryCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "/Backyard-Birds/Build/Products/Debug/BackyardBirdsData.o")
+        #expect(groups[1] == "BackyardBirdsDataTarget")
+        #expect(groups[2] == "BackyardBirdsDataProject")
     }
 
-    func testMatchDetectedEncoding() throws {
+    @Test func matchDetectedEncoding() throws {
         let input = #"/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings:35:45: note: detected encoding of input file as Unicode (UTF-8) (in target 'BackyardBirdsUI_BackyardBirdsUI' from project 'BackyardBirdsUI')"#
-        let groups = try XCTUnwrap(DetectedEncodingCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 6)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings")
-        XCTAssertEqual(groups[1], "35")
-        XCTAssertEqual(groups[2], "45")
-        XCTAssertEqual(groups[3], "Unicode (UTF-8)")
-        XCTAssertEqual(groups[4], "BackyardBirdsUI_BackyardBirdsUI")
-        XCTAssertEqual(groups[5], "BackyardBirdsUI")
+        let groups = try #require(DetectedEncodingCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 6)
+        #expect(groups[0] == "/Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsUI.build/Debug/BackyardBirdsUI_BackyardBirdsUI.build/ru.lproj/Localizable.strings")
+        #expect(groups[1] == "35")
+        #expect(groups[2] == "45")
+        #expect(groups[3] == "Unicode (UTF-8)")
+        #expect(groups[4] == "BackyardBirdsUI_BackyardBirdsUI")
+        #expect(groups[5] == "BackyardBirdsUI")
     }
 
-    func testMatchExtractAppIntentsMetadata() throws {
+    @Test func matchExtractAppIntentsMetadata() throws {
         let input = "ExtractAppIntentsMetadata (in target 'Target' from project 'Project')"
-        let groups = try XCTUnwrap(ExtractAppIntentsMetadataCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 2)
-        XCTAssertEqual(groups[0], "Target")
-        XCTAssertEqual(groups[1], "Project")
+        let groups = try #require(ExtractAppIntentsMetadataCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 2)
+        #expect(groups[0] == "Target")
+        #expect(groups[1] == "Project")
     }
 
-    func testMatchFileMissingError() throws {
+    @Test func matchFileMissingError() throws {
         let input = #"<unknown>:0: error: no such file or directory: '/path/file.swift'"#
-        let groups = try XCTUnwrap(FileMissingErrorCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], "/path/file.swift")
+        let groups = try #require(FileMissingErrorCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == "/path/file.swift")
     }
 
-    func testMatchGenerateAssetSymbols() throws {
+    @Test func matchGenerateAssetSymbols() throws {
         let input = #"GenerateAssetSymbols /Backyard-Birds/Widgets/Assets.xcassets (in target 'Widgets' from project 'Backyard Birds')"#
-        let groups = try XCTUnwrap(GenerateAssetSymbolsCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Widgets/Assets.xcassets")
-        XCTAssertEqual(groups[1], "Widgets")
-        XCTAssertEqual(groups[2], "Backyard Birds")
+        let groups = try #require(GenerateAssetSymbolsCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "/Backyard-Birds/Widgets/Assets.xcassets")
+        #expect(groups[1] == "Widgets")
+        #expect(groups[2] == "Backyard Birds")
     }
 
     #if os(macOS)
-    func testMatchLdCaptureGroup() throws {
+    @Test func matchLdCaptureGroup() throws {
         let input = #"Ld /path/to/output/DerivedData/Build/Products/Debug-iphonesimulator/output.o normal (in target 'Target' from project 'Project')"#
-        let groups = try XCTUnwrap(LinkingCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 2)
-        XCTAssertEqual(groups[0], "output.o")
-        XCTAssertEqual(groups[1], "Target")
+        let groups = try #require(LinkingCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 2)
+        #expect(groups[0] == "output.o")
+        #expect(groups[1] == "Target")
     }
     #endif
 
-    func testMatchLDWarningCaptureGroup() throws {
+    @Test func matchLDWarningCaptureGroup() throws {
         let input = #"ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"#
-        let groups = try XCTUnwrap(LDWarningCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], "embedded dylibs/frameworks only run on iOS 8 or later")
+        let groups = try #require(LDWarningCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == "embedded dylibs/frameworks only run on iOS 8 or later")
     }
 
-    func testMatchSwiftDriverJobDiscoveryEmittingModule() {
+    @Test func matchSwiftDriverJobDiscoveryEmittingModule() {
         let input = #"SwiftDriverJobDiscovery normal arm64 Emitting module for Widgets (in target 'Widgets' from project 'Backyard Birds')"#
-        XCTAssertNotNil(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftDriverJobDiscoveryEmittingModuleCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchSymLink() throws {
+    @Test func matchSymLink() throws {
         let input = "SymLink /Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Resources Versions/Current/Resources (in target 'Some Target_Value' from project 'LayeredArtworkLibrary')"
-        let groups = try XCTUnwrap(SymLinkCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "/Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Resources Versions/Current/Resources")
-        XCTAssertEqual(groups[1], "Some Target_Value")
-        XCTAssertEqual(groups[2], "LayeredArtworkLibrary")
+        let groups = try #require(SymLinkCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "/Backyard-Birds/Build/Products/Debug/PackageFrameworks/LayeredArtworkLibrary.framework/Resources Versions/Current/Resources")
+        #expect(groups[1] == "Some Target_Value")
+        #expect(groups[2] == "LayeredArtworkLibrary")
     }
 
-    func testMkDirCaptureGroup() throws {
+    @Test func mkDirCaptureGroup() throws {
         let input = "MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"
-        XCTAssertNotNil(MkDirCaptureGroup.regex.captureGroups(for: input))
+        #expect(MkDirCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testPrecompileModule() throws {
+    @Test func precompileModule() throws {
         let input = "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan"
-        let groups = try XCTUnwrap(PrecompileModuleCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")
+        let groups = try #require(PrecompileModuleCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")
     }
 
-    func testScanDependencies() throws {
+    @Test func scanDependencies() throws {
         let input = #"ScanDependencies /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-ABC123.o /Users/Some/Other-Random-Path/_To/A/Build/Intermediates.noindex/Some/Other.build/x86_64/file-DEF456.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler (in target 'SomeTarget' from project 'SomeProject')"#
-        let groups = try XCTUnwrap(ScanDependenciesCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "x86_64")
-        XCTAssertEqual(groups[1], "SomeTarget")
-        XCTAssertEqual(groups[2], "SomeProject")
+        let groups = try #require(ScanDependenciesCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "x86_64")
+        #expect(groups[1] == "SomeTarget")
+        #expect(groups[2] == "SomeProject")
     }
 
-    func testSigning() throws {
+    @Test func signing() throws {
         let input = "Signing Some+File.bundle (in target 'Target' from project 'Project')"
-        let groups = try XCTUnwrap(SigningCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "Some+File.bundle")
-        XCTAssertEqual(groups[1], "Target")
-        XCTAssertEqual(groups[2], "Project")
+        let groups = try #require(SigningCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "Some+File.bundle")
+        #expect(groups[1] == "Target")
+        #expect(groups[2] == "Project")
     }
 
-    func testSwiftMergeGeneratedHeadersCaptureGroupCaptureGroup() throws {
+    @Test func swiftMergeGeneratedHeadersCaptureGroupCaptureGroup() throws {
         let input = #"SwiftMergeGeneratedHeaders /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/DerivedSources/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/arm64/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds-Swift.h (in target 'Backyard Birds Target' from project 'Backyard Birds Project')"#
-        let groups = try XCTUnwrap(SwiftMergeGeneratedHeadersCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], #"/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/DerivedSources/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/arm64/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds-Swift.h"#)
-        XCTAssertEqual(groups[1], "Backyard Birds Target")
-        XCTAssertEqual(groups[2], "Backyard Birds Project")
+        let groups = try #require(SwiftMergeGeneratedHeadersCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == #"/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/DerivedSources/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/arm64/Backyard_Birds-Swift.h /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Backyard\ Birds.build/Objects-normal/x86_64/Backyard_Birds-Swift.h"#)
+        #expect(groups[1] == "Backyard Birds Target")
+        #expect(groups[2] == "Backyard Birds Project")
     }
 
-    func testUIFailingTestCaptureGroup() throws {
+    @Test func uIFailingTestCaptureGroup() throws {
         let input = "    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>"
-        let groups = try XCTUnwrap(UIFailingTestCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 2)
-        XCTAssertEqual(groups[0], "<unknown>:0")
-        XCTAssertEqual(groups[1], "App crashed in <external symbol>")
+        let groups = try #require(UIFailingTestCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 2)
+        #expect(groups[0] == "<unknown>:0")
+        #expect(groups[1] == "App crashed in <external symbol>")
     }
 
-    func testUnindentedShellCommand() throws {
+    @Test func unindentedShellCommand() throws {
         let input = #"/Applications/Xcode-16.0.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
-        let groups = try XCTUnwrap(NonPCHClangCommandCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], "/Applications/Xcode-16.0.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang")
+        let groups = try #require(NonPCHClangCommandCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == "/Applications/Xcode-16.0.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang")
     }
 
-    func testValidate() throws {
+    @Test func validate() throws {
         let input = "Validate /path/to/DerivedData/Build/Products/Debug-iphonesimulator/some.app (in target 'Target' from project 'Project')"
-        let groups = try XCTUnwrap(ValidateCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "/path/to/DerivedData/Build/Products/Debug-iphonesimulator/some.app")
-        XCTAssertEqual(groups[1], "Target")
-        XCTAssertEqual(groups[2], "Project")
+        let groups = try #require(ValidateCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "/path/to/DerivedData/Build/Products/Debug-iphonesimulator/some.app")
+        #expect(groups[1] == "Target")
+        #expect(groups[2] == "Project")
     }
 
-    func testValidateEmbeddedBinary() throws {
+    @Test func validateEmbeddedBinary() throws {
         let input = #"ValidateEmbeddedBinary /Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex (in target 'Backyard Birds Target' from project 'Backyard Birds Project')"#
-        let groups = try XCTUnwrap(ValidateEmbeddedBinaryCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], #"/Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex"#)
-        XCTAssertEqual(groups[1], "Backyard Birds Target")
-        XCTAssertEqual(groups[2], "Backyard Birds Project")
+        let groups = try #require(ValidateEmbeddedBinaryCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == #"/Backyard-Birds/Build/Products/Debug/Backyard\ Birds.app/Contents/PlugIns/Widgets.appex"#)
+        #expect(groups[1] == "Backyard Birds Target")
+        #expect(groups[2] == "Backyard Birds Project")
     }
 
-    func testXcodebuildError() throws {
+    @Test func xcodebuildError() throws {
         let input = #"xcodebuild: error: Existing file at -resultBundlePath "/output/file.xcresult""#
-        let groups = try XCTUnwrap(XcodebuildErrorCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], input)
+        let groups = try #require(XcodebuildErrorCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == input)
     }
 
-    func testIndentedShellCommand() throws {
+    @Test func indentedShellCommand() throws {
         let input = #"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
-        let groups = try XCTUnwrap(NonPCHClangCommandCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups[0], "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang")
+        let groups = try #require(NonPCHClangCommandCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 1)
+        #expect(groups[0] == "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang")
     }
 
-    func testRegisterExecutionPolicyException() throws {
+    @Test func registerExecutionPolicyException() throws {
         let input = #"RegisterExecutionPolicyException /path/to/output.o (in target 'Target' from project 'Project')"#
-        let groups = try XCTUnwrap(RegisterExecutionPolicyExceptionCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 4)
-        XCTAssertEqual(groups[0], "/path/to/output.o")
-        XCTAssertEqual(groups[1], "output.o")
-        XCTAssertEqual(groups[2], "Target")
-        XCTAssertEqual(groups[3], "Project")
+        let groups = try #require(RegisterExecutionPolicyExceptionCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 4)
+        #expect(groups[0] == "/path/to/output.o")
+        #expect(groups[1] == "output.o")
+        #expect(groups[2] == "Target")
+        #expect(groups[3] == "Project")
     }
 
-    func testSwiftEmitModule() throws {
+    @Test func swiftEmitModule() throws {
         let input = #"SwiftEmitModule normal i386 Emitting\ module\ for\ CasePaths (in target 'CasePathsTarget' from project 'swift-case-paths')"#
-        let groups = try XCTUnwrap(SwiftEmitModuleCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 4)
-        XCTAssertEqual(groups[0], "i386")
-        XCTAssertEqual(groups[1], "CasePaths")
-        XCTAssertEqual(groups[2], "CasePathsTarget")
-        XCTAssertEqual(groups[3], "swift-case-paths")
+        let groups = try #require(SwiftEmitModuleCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 4)
+        #expect(groups[0] == "i386")
+        #expect(groups[1] == "CasePaths")
+        #expect(groups[2] == "CasePathsTarget")
+        #expect(groups[3] == "swift-case-paths")
     }
 
-    func testEmitSwiftModule() throws {
+    @Test func emitSwiftModule() throws {
         let input = #"EmitSwiftModule normal arm64 (in target 'Target' from project 'Project')"#
-        let groups = try XCTUnwrap(EmitSwiftModuleCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertEqual(groups.count, 3)
-        XCTAssertEqual(groups[0], "arm64")
-        XCTAssertEqual(groups[1], "Target")
-        XCTAssertEqual(groups[2], "Project")
+        let groups = try #require(EmitSwiftModuleCaptureGroup.regex.captureGroups(for: input))
+        #expect(groups.count == 3)
+        #expect(groups[0] == "arm64")
+        #expect(groups[1] == "Target")
+        #expect(groups[2] == "Project")
     }
 
-    func testMatchTestFailure() {
+    @Test func matchTestFailure() {
         let input = #"/Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/XcbeautifyLibTests.swift:13: error: -[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")"#
-        XCTAssertNotNil(FailingTestCaptureGroup.regex.captureGroups(for: input))
+        #expect(FailingTestCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testNegativeMatchTestFailureAsCompileError() {
+    @Test func negativeMatchTestFailureAsCompileError() {
         let input = #"/Users/andres/Git/xcbeautify/Tests/XcbeautifyLibTests/XcbeautifyLibTests.swift:13: error: -[XcbeautifyLibTests.XcbeautifyLibTests testAggregateTarget] : XCTAssertEqual failed: ("Optional("Aggregate target Be Aggro of project AggregateExample with configuration Debug")") is not equal to ("Optional("failing Aggregate target Be Aggro of project AggregateExample with configuration Debug")")"#
-        XCTAssertNil(CompileErrorCaptureGroup.regex.captureGroups(for: input))
+        #expect(CompileErrorCaptureGroup.regex.captureGroups(for: input) == nil)
     }
 
-    func testMatchSwiftTestingTestRunStarted() {
+    @Test func matchSwiftTestingTestRunStarted() {
         let input = "􀟈  Test run started."
-        XCTAssertNil(SwiftTestingTestStartedCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingRunStartedCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingTestStartedCaptureGroup.regex.captureGroups(for: input) == nil)
+        #expect(SwiftTestingRunStartedCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchSwiftTestingTestStarted() {
+    @Test func matchSwiftTestingTestStarted() {
         let input = #"􀟈  Test "One Identifiable parameter" started."#
-        XCTAssertNotNil(SwiftTestingTestStartedCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNil(SwiftTestingRunStartedCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingTestStartedCaptureGroup.regex.captureGroups(for: input) != nil)
+        #expect(SwiftTestingRunStartedCaptureGroup.regex.captureGroups(for: input) == nil)
     }
 
-    func testMatchTestCaseWithRunInName() {
+    @Test func matchTestCaseWithRunInName() {
         let input = "􀟈  Test runnerStateScopedEventHandler() started."
-        XCTAssertNotNil(SwiftTestingTestStartedCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNil(SwiftTestingRunStartedCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingTestStartedCaptureGroup.regex.captureGroups(for: input) != nil)
+        #expect(SwiftTestingRunStartedCaptureGroup.regex.captureGroups(for: input) == nil)
     }
 
-    func testMatchSwitchTestingIssueCaptureGroup() {
+    @Test func matchSwitchTestingIssueCaptureGroup() {
         let input = #"􀢄  Test "Selected tests by ID" recorded an issue at PlanTests.swift:43:5: Expectation failed: !((plan.steps → [Testing.Runner.Plan.Step(test: Testing.Test(name: "SendableTests", displayName: nil, traits: [Testing.HiddenTrait()], sourceLocation: TestingTests/MiscellaneousTests.swift:62:2, containingTypeInfo: Optional(TestingTests.SendableTests), xcTestCompatibleSelector: nil, testCasesState: nil, parameters: nil, isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true))), Testing.Runner.Plan.Step(test: Testing.Test(name: "NestedSendableTests", displayName: nil, traits: [Testing.HiddenTrait(), Testing.HiddenTrait(), .namedConstant], sourceLocation: TestingTests/MiscellaneousTests.swift:81:4, containingTypeInfo: Optional(TestingTests.SendableTests.NestedSendableTests), xcTestCompatibleSelector: nil, testCasesState: nil, parameters: nil, isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true))), Testing.Runner.Plan.Step(test: Testing.Test(name: "succeeds()", displayName: nil, traits: [Testing.HiddenTrait(), Testing.HiddenTrait(), .namedConstant, Testing.HiddenTrait(), .anotherConstant], sourceLocation: TestingTests/MiscellaneousTests.swift:83:6, containingTypeInfo: Optional(TestingTests.SendableTests.NestedSendableTests), xcTestCompatibleSelector: nil, testCasesState: Optional(Testing.Test.(unknown context at $104958b84).TestCasesState.evaluated(Swift.AnySequence<Testing.Test.Case>(_box: Swift._SequenceBox<Testing.Test.Case.Generator<Swift.CollectionOfOne<()>>>))), parameters: Optional([]), isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true)))]).contains(where: { $0.test == outerTestType }) → true)"#
-        XCTAssertNotNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) != nil)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) == nil)
     }
 
-    func testMatchSwiftTestingIssueArgument1() {
+    @Test func matchSwiftTestingIssueArgument1() {
         let input = #"􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "@Test(arguments: []) func f(f: () -> String) {}", expectedTypeName → "(() -> String).self", otherCode → nil at TestDeclarationMacroTests.swift:363:7: Expectation failed: !((output → "func f(f: () -> String) {}"#
-        XCTAssertNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchSwiftTestingIssueArgument2() {
+    @Test func matchSwiftTestingIssueArgument2() {
         let input = #"􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {"#
-        XCTAssertNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchSwiftTestingIssueArgument3() {
+    @Test func matchSwiftTestingIssueArgument3() {
         let input = #"􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {"#
-        XCTAssertNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchSwiftTestingIssueArgument4() {
+    @Test func matchSwiftTestingIssueArgument4() {
         let input = #"􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "final class C_NAME {"#
-        XCTAssertNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    func testMatchSwiftTestingIssueArgument5() {
+    @Test func matchSwiftTestingIssueArgument5() {
         let input = #"􀢄  Test "Different kinds of functions are handled correctly" recorded an issue with 3 arguments input → "struct S_NAME {"#
-        XCTAssertNil(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input))
-        XCTAssertNotNil(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input))
+        #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 }

@@ -9,10 +9,10 @@
 
 import Foundation
 import XcbeautifyLib
-import XCTest
+import Testing
 
-final class OutputHandlerTests: XCTestCase {
-    func testEarlyReturnIfEmptyString() throws {
+@Suite struct OutputHandlerTests {
+    @Test func earlyReturnIfEmptyString() throws {
         var collector: [String] = []
         let sut = OutputHandler(quiet: false, quieter: false, isCI: false) { content in
             collector.append(content)
@@ -20,10 +20,10 @@ final class OutputHandlerTests: XCTestCase {
 
         sut.write(.error, nil)
 
-        XCTAssertEqual(collector, [])
+        #expect(collector == [])
     }
 
-    func testPrintAllOutputTypeByDefault() throws {
+    @Test func printAllOutputTypeByDefault() throws {
         var collector: [String] = []
         let sut = OutputHandler(quiet: false, quieter: false, isCI: false) { content in
             collector.append(content)
@@ -36,10 +36,10 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.result, "result")
         sut.write(.undefined, "undefined")
 
-        XCTAssertEqual(collector, ["task 1", "error", "task 2", "warning", "result", "undefined"])
+        #expect(collector == ["task 1", "error", "task 2", "warning", "result", "undefined"])
     }
 
-    func testPrintOnlyTasksWithWarningOrError() throws { // quiet
+    @Test func printOnlyTasksWithWarningOrError() throws { // quiet
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
             collector.append(content)
@@ -53,7 +53,7 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.undefined, "undefined")
 
         // NOTE: task 2 appear in result is because of "warning"
-        XCTAssertEqual(collector, ["error", "task 2", "warning", "result"])
+        #expect(collector == ["error", "task 2", "warning", "result"])
 
         collector.removeAll()
 
@@ -65,10 +65,10 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.undefined, "undefined")
 
         // NOTE: task 2 appear in result is because of "warning"
-        XCTAssertEqual(collector, ["task 2", "warning", "result", "error"])
+        #expect(collector == ["task 2", "warning", "result", "error"])
     }
 
-    func testPrintOnlyTasksWithError() throws { // quieter
+    @Test func printOnlyTasksWithError() throws { // quieter
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: true, isCI: false) { content in
             collector.append(content)
@@ -81,10 +81,10 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.warning, "warning")
         sut.write(.undefined, "undefined")
 
-        XCTAssertEqual(collector, ["result", "error"])
+        #expect(collector == ["result", "error"])
     }
 
-    func testPrintTestResultTooIfIsCIAndQuiet() throws { // on quiet/quiter , print test task too
+    @Test func printTestResultTooIfIsCIAndQuiet() throws { // on quiet/quiter , print test task too
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: false, isCI: true) { content in
             collector.append(content)
@@ -96,10 +96,10 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.test, "test completed")
         sut.write(.result, "result")
 
-        XCTAssertEqual(collector, ["warning", "test started", "test completed", "result"])
+        #expect(collector == ["warning", "test started", "test completed", "result"])
     }
 
-    func testPrintTestResultTooIfIsCIAndQuieter() throws { // on quiet/quiter , print test task too
+    @Test func printTestResultTooIfIsCIAndQuieter() throws { // on quiet/quiter , print test task too
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: true, isCI: true) { content in
             collector.append(content)
@@ -111,7 +111,7 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.test, "test completed")
         sut.write(.result, "result")
 
-        XCTAssertEqual(collector, ["error", "test started", "test completed", "result"])
+        #expect(collector == ["error", "test started", "test completed", "result"])
 
         collector.removeAll()
 
@@ -121,6 +121,6 @@ final class OutputHandlerTests: XCTestCase {
         sut.write(.test, "test completed")
         sut.write(.result, "result")
 
-        XCTAssertEqual(collector, ["test started", "error", "test completed", "result"])
+        #expect(collector == ["test started", "error", "test completed", "result"])
     }
 }
