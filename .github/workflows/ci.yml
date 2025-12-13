@@ -98,3 +98,12 @@ jobs:
           files: info.lcov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  check-sorted:
+    name: Check Sorted
+    if: github.event_name == 'pull_request'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: swift --version
+      - run: ./tools/check-sorted
