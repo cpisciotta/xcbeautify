@@ -11,20 +11,8 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class GitHubActionsRendererTests: XCTestCase {
-    private var parser: Parser!
-    private var formatter: XcbeautifyLib.Formatter!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        parser = Parser()
-        formatter = Formatter(colored: false, renderer: .gitHubActions, additionalLines: { nil })
-    }
-
-    override func tearDownWithError() throws {
-        parser = nil
-        formatter = nil
-        try super.tearDownWithError()
-    }
+    private let parser = Parser()
+    private let formatter = Formatter(colored: false, renderer: .gitHubActions, additionalLines: { nil })
 
     private func logFormatted(_ string: String) -> String? {
         guard let captureGroup = parser.parse(line: string) else { return nil }

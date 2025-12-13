@@ -12,10 +12,6 @@ import XcbeautifyLib
 import XCTest
 
 final class OutputHandlerTests: XCTestCase {
-    override func setUpWithError() throws { }
-
-    override func tearDownWithError() throws { }
-
     func testEarlyReturnIfEmptyString() throws {
         var collector: [String] = []
         let sut = OutputHandler(quiet: false, quieter: false, isCI: false) { content in

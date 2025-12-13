@@ -11,22 +11,8 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class AzureDevOpsPipelinesRendererTests: XCTestCase {
-    private var parser: Parser!
-    private var formatter: XcbeautifyLib.Formatter!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-
-        parser = Parser()
-        formatter = Formatter(colored: false, renderer: .azureDevOpsPipelines, additionalLines: { nil })
-    }
-
-    override func tearDownWithError() throws {
-        try super.tearDownWithError()
-
-        parser = nil
-        formatter = nil
-    }
+    private let parser = Parser()
+    private let formatter = Formatter(colored: false, renderer: .azureDevOpsPipelines, additionalLines: { nil })
 
     private func logFormatted(_ string: String) -> String? {
         guard let captureGroup = parser.parse(line: string) else { return nil }

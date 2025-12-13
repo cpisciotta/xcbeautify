@@ -11,17 +11,7 @@ import XCTest
 @testable import XcbeautifyLib
 
 final class ParserTests: XCTestCase {
-    private var parser: Parser!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        parser = Parser()
-    }
-
-    override func tearDownWithError() throws {
-        parser = nil
-        try super.tearDownWithError()
-    }
+    private let parser = Parser()
 
     func testMatchCompileAssetCatalog() throws {
         let input = #"CompileAssetCatalog /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents/Resources /Backyard-Birds/Widgets/Assets.xcassets (in target 'Widgets' from project 'Backyard Birds')"#
