@@ -7,14 +7,15 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-import XCTest
+import Foundation
+import Testing
 @testable import XcbeautifyLib
 
-final class UniqueCaptureGroupTests: XCTestCase {
+@Suite struct UniqueCaptureGroupTests {
     private let captureGroupTypes = Parser().__for_test__captureGroupTypes()
 
     #if os(macOS)
-    func testUniqueCaptureGroupRegistrations() {
+    @Test func uniqueCaptureGroupRegistrations() {
         var seen = [any CaptureGroup.Type]()
         var duplicates = [any CaptureGroup.Type]()
 
@@ -26,9 +27,8 @@ final class UniqueCaptureGroupTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(
-            duplicates.count,
-            0,
+        #expect(
+            duplicates.isEmpty,
             "Found the following duplicate CaptureGroup registration(s): \(ListFormatter.localizedString(byJoining: duplicates.map(String.init(describing:))))"
         )
     }
@@ -36,8 +36,8 @@ final class UniqueCaptureGroupTests: XCTestCase {
 
     // TODO: Drop this macOS platform gating
     #if os(macOS)
-    func testUniqueCaptureGroups() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
+    @Test func uniqueCaptureGroups() throws {
+        let url = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
 
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
@@ -47,13 +47,12 @@ final class UniqueCaptureGroupTests: XCTestCase {
 
             let capturedTypes = captureGroupTypes.filter { type in
                 guard let groups = type.regex.captureGroups(for: line) else { return false }
-                XCTAssertNotNil(type.init(groups: groups))
+                #expect(type.init(groups: groups) != nil)
                 return true
             }
 
-            XCTAssertLessThanOrEqual(
-                capturedTypes.count,
-                1,
+            #expect(
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)
@@ -63,18 +62,17 @@ final class UniqueCaptureGroupTests: XCTestCase {
         }
     }
 
-    func testUniqueFileMissingError() {
+    @Test func uniqueFileMissingError() {
         let line = "<unknown>:0: error: no such file or directory: '/path/file.swift'"
 
         let capturedTypes = captureGroupTypes.filter { type in
             guard let groups = type.regex.captureGroups(for: line) else { return false }
-            XCTAssertNotNil(type.init(groups: groups))
+            #expect(type.init(groups: groups) != nil)
             return true
         }
 
-        XCTAssertEqual(
-            capturedTypes.count,
-            1,
+        #expect(
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -83,18 +81,17 @@ final class UniqueCaptureGroupTests: XCTestCase {
         )
     }
 
-    func testUniqueLDWarning() {
+    @Test func uniqueLDWarning() {
         let line = "ld: warning: embedded dylibs/frameworks only run on iOS 8 or later"
 
         let capturedTypes = captureGroupTypes.filter { type in
             guard let groups = type.regex.captureGroups(for: line) else { return false }
-            XCTAssertNotNil(type.init(groups: groups))
+            #expect(type.init(groups: groups) != nil)
             return true
         }
 
-        XCTAssertEqual(
-            capturedTypes.count,
-            1,
+        #expect(
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -103,18 +100,17 @@ final class UniqueCaptureGroupTests: XCTestCase {
         )
     }
 
-    func testUniqueUIFailingTest() {
+    @Test func uniqueUIFailingTest() {
         let line = "    t =    10.13s Assertion Failure: <unknown>:0: App crashed in <external symbol>"
 
         let capturedTypes = captureGroupTypes.filter { type in
             guard let groups = type.regex.captureGroups(for: line) else { return false }
-            XCTAssertNotNil(type.init(groups: groups))
+            #expect(type.init(groups: groups) != nil)
             return true
         }
 
-        XCTAssertEqual(
-            capturedTypes.count,
-            1,
+        #expect(
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -123,18 +119,17 @@ final class UniqueCaptureGroupTests: XCTestCase {
         )
     }
 
-    func testUniqueXcodebuildError() {
+    @Test func uniqueXcodebuildError() {
         let line = #"xcodebuild: error: Existing file at -resultBundlePath "/output/file.xcresult""#
 
         let capturedTypes = captureGroupTypes.filter { type in
             guard let groups = type.regex.captureGroups(for: line) else { return false }
-            XCTAssertNotNil(type.init(groups: groups))
+            #expect(type.init(groups: groups) != nil)
             return true
         }
 
-        XCTAssertEqual(
-            capturedTypes.count,
-            1,
+        #expect(
+            capturedTypes.count == 1,
             """
             Failed to uniquely parse xcodebuild output.
             Line: \(line)
@@ -143,8 +138,8 @@ final class UniqueCaptureGroupTests: XCTestCase {
         )
     }
 
-    func testUniqueTestCaptureGroups() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
+    @Test func uniqueTestCaptureGroups() throws {
+        let url = try #require(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
 
@@ -153,13 +148,12 @@ final class UniqueCaptureGroupTests: XCTestCase {
 
             let capturedTypes = captureGroupTypes.filter { type in
                 guard let groups = type.regex.captureGroups(for: line) else { return false }
-                XCTAssertNotNil(type.init(groups: groups))
+                #expect(type.init(groups: groups) != nil)
                 return true
             }
 
-            XCTAssertLessThanOrEqual(
-                capturedTypes.count,
-                1,
+            #expect(
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)
@@ -169,8 +163,8 @@ final class UniqueCaptureGroupTests: XCTestCase {
         }
     }
 
-    func testUniqueSwiftTestingCaptureGroups() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
+    @Test func uniqueSwiftTestingCaptureGroups() throws {
+        let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
 
@@ -179,13 +173,12 @@ final class UniqueCaptureGroupTests: XCTestCase {
 
             let capturedTypes = captureGroupTypes.filter { type in
                 guard let groups = type.regex.captureGroups(for: line) else { return false }
-                XCTAssertNotNil(type.init(groups: groups))
+                #expect(type.init(groups: groups) != nil)
                 return true
             }
 
-            XCTAssertLessThanOrEqual(
-                capturedTypes.count,
-                1,
+            #expect(
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)
@@ -195,8 +188,8 @@ final class UniqueCaptureGroupTests: XCTestCase {
         }
     }
 
-    func testUniqueParallelTestCaptureGroups() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
+    @Test func uniqueParallelTestCaptureGroups() throws {
+        let url = try #require(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
 
@@ -205,13 +198,12 @@ final class UniqueCaptureGroupTests: XCTestCase {
 
             let capturedTypes = captureGroupTypes.filter { type in
                 guard let groups = type.regex.captureGroups(for: line) else { return false }
-                XCTAssertNotNil(type.init(groups: groups))
+                #expect(type.init(groups: groups) != nil)
                 return true
             }
 
-            XCTAssertLessThanOrEqual(
-                capturedTypes.count,
-                1,
+            #expect(
+                capturedTypes.count <= 1,
                 """
                 Failed to uniquely parse xcodebuild output.
                 Line: \(line)

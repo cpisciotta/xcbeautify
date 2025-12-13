@@ -7,12 +7,13 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-import XCTest
+import Foundation
+import Testing
 @testable import XcbeautifyLib
 
-final class ParsingTests: XCTestCase {
-    func testCleanBuildXcode15_1() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
+@Suite struct ParsingTests {
+    @Test func cleanBuildXcode15_1() throws {
+        let url = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
 
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
@@ -35,14 +36,14 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 45)
+        #expect(uncapturedOutput == 45)
         #else
-        XCTAssertEqual(uncapturedOutput, 61)
+        #expect(uncapturedOutput == 61)
         #endif
     }
 
-    func testLargeXcodebuildLog() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "large_xcodebuild_log", withExtension: "txt"))
+    @Test func largeXcodebuildLog() throws {
+        let url = try #require(Bundle.module.url(forResource: "large_xcodebuild_log", withExtension: "txt"))
 
         var buildLog: [String] = try String(contentsOf: url)
             .components(separatedBy: .newlines)
@@ -65,14 +66,14 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 1508)
+        #expect(uncapturedOutput == 1508)
         #else
-        XCTAssertEqual(uncapturedOutput, 2076)
+        #expect(uncapturedOutput == 2076)
         #endif
     }
 
-    func testParsingSwiftTestingTestOutput() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
+    @Test func parsingSwiftTestingTestOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -93,14 +94,14 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 162)
+        #expect(uncapturedOutput == 162)
         #else
-        XCTAssertEqual(uncapturedOutput, 271)
+        #expect(uncapturedOutput == 271)
         #endif
     }
 
-    func testShortSPISwiftTestingOutput() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "spi_swift_testing_short_log", withExtension: "txt"))
+    @Test func shortSPISwiftTestingOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "spi_swift_testing_short_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -120,14 +121,14 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 10)
+        #expect(uncapturedOutput == 10)
         #else
-        XCTAssertEqual(uncapturedOutput, 9)
+        #expect(uncapturedOutput == 9)
         #endif
     }
 
-    func testFullSPISwiftTestingOutput() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt"))
+    @Test func fullSPISwiftTestingOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -147,14 +148,14 @@ final class ParsingTests: XCTestCase {
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        XCTAssertEqual(uncapturedOutput, 2199)
+        #expect(uncapturedOutput == 2199)
         #else
-        XCTAssertEqual(uncapturedOutput, 2198)
+        #expect(uncapturedOutput == 2198)
         #endif
     }
 
-    func testDemoSwiftTestingOutput() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt"))
+    @Test func demoSwiftTestingOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -173,6 +174,6 @@ final class ParsingTests: XCTestCase {
         // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
-        XCTAssertEqual(uncapturedOutput, 2)
+        #expect(uncapturedOutput == 2)
     }
 }
