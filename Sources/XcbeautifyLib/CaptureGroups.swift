@@ -1585,24 +1585,6 @@ struct CompilationResultCaptureGroup: CaptureGroup {
     init?(groups: [String]) { }
 }
 
-/// This output is printed when running
-/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
-struct TestingStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .test
-
-    /// Regular expression captured groups:
-    /// $1 = whole message
-    static let regex = XCRegex(pattern: "^(Testing started.*)$")
-
-    let wholeMessage: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeMessage = groups[safe: 0] else { return nil }
-        self.wholeMessage = wholeMessage
-    }
-}
-
 struct MkDirCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
@@ -2333,6 +2315,24 @@ struct TestCaseStartedCaptureGroup: CaptureGroup {
         guard let suite = groups[safe: 0], let testCase = groups[safe: 1] else { return nil }
         self.suite = suite
         self.testCase = testCase
+    }
+}
+
+/// This output is printed when running
+/// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
+struct TestingStartedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .test
+
+    /// Regular expression captured groups:
+    /// $1 = whole message
+    static let regex = XCRegex(pattern: "^(Testing started.*)$")
+
+    let wholeMessage: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeMessage = groups[safe: 0] else { return nil }
+        self.wholeMessage = wholeMessage
     }
 }
 
