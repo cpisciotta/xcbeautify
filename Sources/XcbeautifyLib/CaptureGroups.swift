@@ -1558,40 +1558,6 @@ struct ValidateEmbeddedBinaryCaptureGroup: CaptureGroup {
     }
 }
 
-struct WriteFileCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    /// Regular expression captured groups:
-    /// $1 = file path
-    static let regex = XCRegex(pattern: #"^write-file\s(.*)"#)
-
-    let filePath: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let filePath = groups[safe: 0] else { return nil }
-        self.filePath = filePath
-    }
-}
-
-struct WriteAuxiliaryFileCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .task
-
-    static let regex = XCRegex(pattern: #"^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$"#)
-
-    let filePath: String
-    let filename: String
-    let target: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2] else { return nil }
-        self.filePath = filePath
-        self.filename = filename
-        self.target = target
-    }
-}
-
 struct CompileWarningCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .warning
 
@@ -1637,22 +1603,6 @@ struct GenericWarningCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = whole warning
     static let regex = XCRegex(pattern: #"^warning:\s(.*)$"#)
-
-    let wholeWarning: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 1)
-        guard let wholeWarning = groups[safe: 0] else { return nil }
-        self.wholeWarning = wholeWarning
-    }
-}
-
-struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .warning
-
-    /// Regular expression captured groups:
-    /// $1 = whole warning
-    static let regex = XCRegex(pattern: #"^(.* will not be code signed because .*)$"#)
 
     let wholeWarning: String
 
@@ -2576,6 +2526,56 @@ struct DataModelCodegenCaptureGroup: CaptureGroup {
         self.path = path
         self.target = target
         self.project = project
+    }
+}
+
+struct WillNotBeCodeSignedCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .warning
+
+    /// Regular expression captured groups:
+    /// $1 = whole warning
+    static let regex = XCRegex(pattern: #"^(.* will not be code signed because .*)$"#)
+
+    let wholeWarning: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let wholeWarning = groups[safe: 0] else { return nil }
+        self.wholeWarning = wholeWarning
+    }
+}
+
+struct WriteAuxiliaryFileCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    static let regex = XCRegex(pattern: #"^WriteAuxiliaryFile (.*\/(.*\..*)) \(in target '(.*)' from project '.*'\)$"#)
+
+    let filePath: String
+    let filename: String
+    let target: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let filePath = groups[safe: 0], let filename = groups[safe: 1], let target = groups[safe: 2] else { return nil }
+        self.filePath = filePath
+        self.filename = filename
+        self.target = target
+    }
+}
+
+struct WriteFileCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .task
+
+    /// Regular expression captured groups:
+    /// $1 = file path
+    static let regex = XCRegex(pattern: #"^write-file\s(.*)"#)
+
+    let filePath: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 1)
+        guard let filePath = groups[safe: 0] else { return nil }
+        self.filePath = filePath
     }
 }
 
