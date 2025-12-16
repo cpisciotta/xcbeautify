@@ -308,4 +308,29 @@ import Testing
         #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
         #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
+
+    // MARK: - Swift Testing OutputType Tests (Regression tests for issue #339)
+
+    @Test func swiftTestingTestFailedOutputTypeIsError() {
+        // Regression test: Swift Testing failures should use .error output type
+        // so they are shown even in quiet mode (issue #339)
+        #expect(SwiftTestingTestFailedCaptureGroup.outputType == .error)
+    }
+
+    @Test func swiftTestingIssueCaptureGroupOutputTypeIsError() {
+        // Regression test: Swift Testing issues should use .error output type
+        // so they are shown even in quiet mode (issue #339)
+        #expect(SwiftTestingIssueCaptureGroup.outputType == .error)
+    }
+
+    @Test func swiftTestingIssueArgumentCaptureGroupOutputTypeIsError() {
+        // Regression test: Swift Testing issue arguments should use .error output type
+        // so they are shown even in quiet mode (issue #339)
+        #expect(SwiftTestingIssueArgumentCaptureGroup.outputType == .error)
+    }
+
+    @Test func failingTestCaptureGroupOutputTypeIsError() {
+        // Verify XCTest failures also use .error (for consistency check)
+        #expect(FailingTestCaptureGroup.outputType == .error)
+    }
 }
