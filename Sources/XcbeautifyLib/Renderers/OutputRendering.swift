@@ -107,6 +107,7 @@ protocol OutputRendering {
     func formatWriteFile(group: WriteFileCaptureGroup) -> String?
     func formatSwiftDriverJobDiscoveryEmittingModule(group: SwiftDriverJobDiscoveryEmittingModuleCaptureGroup) -> String?
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String
+    func formatTestSessionResults(group: TestSessionResultsCaptureGroup) -> String
     func formatSwiftDriverJobDiscoveryCompiling(group: SwiftDriverJobDiscoveryCompilingCaptureGroup) -> String?
     func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String?
     func formatSwiftMergeGeneratedHeaders(group: SwiftMergeGeneratedHeadersCaptureGroup) -> String?
@@ -671,6 +672,11 @@ extension OutputRendering {
 
     func formatTestingStarted(group: TestingStartedCaptureGroup) -> String {
         colored ? group.wholeMessage.s.Bold.f.Cyan : group.wholeMessage
+    }
+
+    func formatTestSessionResults(group: TestSessionResultsCaptureGroup) -> String {
+        let path = additionalLines()?.trimmingCharacters(in: .whitespaces) ?? ""
+        return colored ? "\("Test session results:".s.Bold) \(path)" : "Test session results: \(path)"
     }
 
     func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String? {

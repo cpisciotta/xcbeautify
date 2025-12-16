@@ -483,4 +483,10 @@ import Testing
             #expect(parser.parse(line: input) == nil)
         }
     }
+
+    @Test func matchTestSessionResults() throws {
+        let input = "Test session results, code coverage, and logs:"
+        // TestSessionResultsCaptureGroup has no properties - just verify it matches
+        _ = try #require(parser.parse(line: input) as? TestSessionResultsCaptureGroup)
+    }
 }
