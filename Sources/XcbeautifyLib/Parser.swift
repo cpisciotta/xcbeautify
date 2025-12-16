@@ -127,6 +127,7 @@ package final class Parser {
         TestCasePassedCaptureGroup.self,
         TestCaseSkippedCaptureGroup.self,
         TestCaseStartedCaptureGroup.self,
+        TestSessionResultsCaptureGroup.self,
         TestingStartedCaptureGroup.self,
         TestsRunCompletionCaptureGroup.self,
         TestSuiteAllTestsFailedCaptureGroup.self,
