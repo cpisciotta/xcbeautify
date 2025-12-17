@@ -797,7 +797,7 @@ import XcbeautifyLib
         let parser = Parser()
         let reporter = JUnitReporter()
 
-        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+        for line in try String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
