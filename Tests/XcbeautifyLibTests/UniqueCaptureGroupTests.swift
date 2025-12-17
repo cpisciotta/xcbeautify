@@ -39,7 +39,7 @@ import Testing
     @Test func uniqueCaptureGroups() throws {
         let url = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
 
-        var buildLog: [String] = try String(contentsOf: url)
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
             .components(separatedBy: .newlines)
 
         while !buildLog.isEmpty {
@@ -140,7 +140,7 @@ import Testing
 
     @Test func uniqueTestCaptureGroups() throws {
         let url = try #require(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
-        var buildLog: [String] = try String(contentsOf: url)
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
             .components(separatedBy: .newlines)
 
         while !buildLog.isEmpty {
@@ -165,7 +165,7 @@ import Testing
 
     @Test func uniqueSwiftTestingCaptureGroups() throws {
         let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
-        var buildLog: [String] = try String(contentsOf: url)
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
             .components(separatedBy: .newlines)
 
         while !buildLog.isEmpty {
@@ -190,7 +190,7 @@ import Testing
 
     @Test func uniqueParallelTestCaptureGroups() throws {
         let url = try #require(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
-        var buildLog: [String] = try String(contentsOf: url)
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
             .components(separatedBy: .newlines)
 
         while !buildLog.isEmpty {
