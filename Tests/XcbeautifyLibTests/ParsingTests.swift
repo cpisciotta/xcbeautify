@@ -15,7 +15,7 @@ import Testing
     @Test func cleanBuildXcode15_1() throws {
         let url = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
 
-        var buildLog: [String] = try String(contentsOf: url)
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
             .components(separatedBy: .newlines)
 
         let parser = Parser()
@@ -45,7 +45,7 @@ import Testing
     @Test func largeXcodebuildLog() throws {
         let url = try #require(Bundle.module.url(forResource: "large_xcodebuild_log", withExtension: "txt"))
 
-        var buildLog: [String] = try String(contentsOf: url)
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
             .components(separatedBy: .newlines)
 
         let parser = Parser()
@@ -74,7 +74,7 @@ import Testing
 
     @Test func parsingSwiftTestingTestOutput() throws {
         let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
-        let logContent = try String(contentsOf: url)
+        let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
         var uncapturedOutput = 0
@@ -102,7 +102,7 @@ import Testing
 
     @Test func shortSPISwiftTestingOutput() throws {
         let url = try #require(Bundle.module.url(forResource: "spi_swift_testing_short_log", withExtension: "txt"))
-        let logContent = try String(contentsOf: url)
+        let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
         var uncapturedOutput = 0
@@ -129,7 +129,7 @@ import Testing
 
     @Test func fullSPISwiftTestingOutput() throws {
         let url = try #require(Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt"))
-        let logContent = try String(contentsOf: url)
+        let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
         var uncapturedOutput = 0
@@ -156,7 +156,7 @@ import Testing
 
     @Test func demoSwiftTestingOutput() throws {
         let url = try #require(Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt"))
-        let logContent = try String(contentsOf: url)
+        let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
         var uncapturedOutput = 0

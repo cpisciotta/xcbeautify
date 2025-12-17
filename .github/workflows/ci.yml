@@ -86,7 +86,7 @@ jobs:
         if: ${{ matrix.platform == 'ubuntu-22.04' }}
         run: echo "$GITHUB_WORKSPACE/swift-${{ matrix.swift_version }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
       - run: swift --version
-      - run: swift test --enable-code-coverage
+      - run: swift test --enable-code-coverage -Xswiftc -warnings-as-errors
       - name: Prepare Code Coverage
         if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
         run: ./tools/export_coverage
