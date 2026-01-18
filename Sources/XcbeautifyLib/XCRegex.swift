@@ -9,19 +9,17 @@
 
 import Foundation
 
-// `NSRegularExpression` is marked as `@unchecked Sendable`.
-// Match the definition here.
-package final class XCRegex: @unchecked Sendable {
-    private let pattern: String
+package struct XCRegex: Sendable {
+    private let regex: NSRegularExpression?
 
-    private lazy var regex: NSRegularExpression? = {
+    private static func makeRegex(pattern: String) -> NSRegularExpression? {
         let regex = try? NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
         assert(regex != nil)
         return regex
-    }()
+    }
 
     init(pattern: String) {
-        self.pattern = pattern
+        regex = Self.makeRegex(pattern: pattern)
     }
 
     func captureGroups(for line: String) -> [String]? {
