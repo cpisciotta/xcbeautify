@@ -12,7 +12,6 @@ import Testing
 @testable import XcbeautifyLib
 
 @Suite struct ParsingTests {
-
     // These test cases use magic numbers to represent the number of lines that aren't captured by the Parser.
     // Slowly, the values should decrease until they reach 0.
     // Test cases uses `==` instead of `<=` as a reminder.
@@ -21,7 +20,7 @@ import Testing
 
     private func uncapturedOutput(
         for resource: String,
-        withExtension `extension`: String = "txt"
+        withExtension extension: String = "txt"
     ) throws -> Int {
         let url = try #require(Bundle.module.url(forResource: resource, withExtension: `extension`))
 
@@ -43,7 +42,7 @@ import Testing
     }
 
     @Test func cleanBuildXcode15_1() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "clean_build_xcode_15_1_log")
+        let uncapturedOutput = try uncapturedOutput(for: "clean_build_xcode_15_1_log")
 
         #if os(macOS)
         #expect(uncapturedOutput == 45)
@@ -53,12 +52,12 @@ import Testing
     }
 
     @Test func demoSwiftTestingOutput() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "demo_swift_testing_log")
+        let uncapturedOutput = try uncapturedOutput(for: "demo_swift_testing_log")
         #expect(uncapturedOutput == 2)
     }
 
     @Test func largeXcodebuildLog() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "large_xcodebuild_log")
+        let uncapturedOutput = try uncapturedOutput(for: "large_xcodebuild_log")
 
         #if os(macOS)
         #expect(uncapturedOutput == 1508)
@@ -68,7 +67,7 @@ import Testing
     }
 
     @Test func mixedTestLog60Linux() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "MixedTestLog_6_0_Linux")
+        let uncapturedOutput = try uncapturedOutput(for: "MixedTestLog_6_0_Linux")
 
         #if os(macOS)
         #expect(uncapturedOutput == 10)
@@ -78,7 +77,7 @@ import Testing
     }
 
     @Test func mixedTestLog60MacOS() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "MixedTestLog_6_0_macOS")
+        let uncapturedOutput = try uncapturedOutput(for: "MixedTestLog_6_0_macOS")
 
         #if os(macOS)
         #expect(uncapturedOutput == 3)
@@ -88,12 +87,12 @@ import Testing
     }
 
     @Test func parallelTestLog() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "ParallelTestLog")
+        let uncapturedOutput = try uncapturedOutput(for: "ParallelTestLog")
         #expect(uncapturedOutput == 0)
     }
 
     @Test func fullSPISwiftTestingOutput() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "spi_swift_testing_full_log")
+        let uncapturedOutput = try uncapturedOutput(for: "spi_swift_testing_full_log")
 
         #if os(macOS)
         #expect(uncapturedOutput == 2199)
@@ -103,7 +102,7 @@ import Testing
     }
 
     @Test func shortSPISwiftTestingOutput() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "spi_swift_testing_short_log")
+        let uncapturedOutput = try uncapturedOutput(for: "spi_swift_testing_short_log")
 
         #if os(macOS)
         #expect(uncapturedOutput == 10)
@@ -113,7 +112,7 @@ import Testing
     }
 
     @Test func parsingSwiftTestingTestOutput() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "swift_test_log_macOS")
+        let uncapturedOutput = try uncapturedOutput(for: "swift_test_log_macOS")
 
         #if os(macOS)
         #expect(uncapturedOutput == 162)
@@ -123,7 +122,7 @@ import Testing
     }
 
     @Test func testLog() throws {
-        let uncapturedOutput = try self.uncapturedOutput(for: "TestLog")
+        let uncapturedOutput = try uncapturedOutput(for: "TestLog")
 
         #if os(macOS)
         #expect(uncapturedOutput == 3)
