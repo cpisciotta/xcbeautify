@@ -458,4 +458,42 @@ import Testing
         let expected = "⚠️ \(yellowStart)unused variable 'x'\(reset)"
         #expect(colored == expected)
     }
+
+    // MARK: - Additional Mid-String Formatting Coverage
+
+    @Test func multipleStyledSegmentsInOneLine() {
+        let formatted = "A B \("One".s.Bold.f.Cyan) B \("Two".f.Red)"
+        let expected = "A B \u{001B}[36;1mOne\u{001B}[0m B \u{001B}[31mTwo\u{001B}[0m"
+        #expect(formatted == expected)
+    }
+
+    @Test func adjacentStyledChunksResetBetween() {
+        let formatted = "X \("AA".s.Bold.f.Green)\("BB".f.Red) Y"
+        let expected = "X \u{001B}[32;1mAA\u{001B}[0m\u{001B}[31mBB\u{001B}[0m Y"
+        #expect(formatted == expected)
+    }
+
+    @Test func italicOnlyMidString() {
+        let formatted = "pre \("mid".s.Italic) post"
+        let expected = "pre \u{001B}[3mmid\u{001B}[0m post"
+        #expect(formatted == expected)
+    }
+
+    @Test func colorThenBoldWithSpacesInToken() {
+        let formatted = "Lead \("Bold Words".f.Cyan.s.Bold)"
+        let expected = "Lead \u{001B}[1;36mBold Words\u{001B}[0m"
+        #expect(formatted == expected)
+    }
+
+    @Test func styledTokenSurroundedByPunctuation() {
+        let formatted = "Start [\("Center".s.Bold.f.Yellow)] End"
+        let expected = "Start [\u{001B}[33;1mCenter\u{001B}[0m] End"
+        #expect(formatted == expected)
+    }
+
+    @Test func numbersInsideColoredToken() {
+        let formatted = "N \("v2.1.0".f.Red) Z"
+        let expected = "N \u{001B}[31mv2.1.0\u{001B}[0m Z"
+        #expect(formatted == expected)
+    }
 }
