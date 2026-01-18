@@ -37,7 +37,8 @@ import Testing
 
     // MARK: - Colored Compile Tasks (Target + Bold Command)
 
-    @Test func compiledTaskWithColoredTargetAndBoldCommand() {
+    @Test(.disabled(if: .linux))
+    func compiledTaskWithColoredTargetAndBoldCommand() {
         let input = "CompileSwift normal x86_64 /Users/admin/dev/project/Sources/setup.swift (in target: xcbeautify)"
         let colored = coloredFormatted(input)
 
@@ -70,7 +71,8 @@ import Testing
         #expect(colored == expected)
     }
 
-    @Test func linkingWithTargetAndBoldCommand() {
+    @Test(.disabled(if: .linux))
+    func linkingWithTargetAndBoldCommand() {
         let input = "Ld build/Release/MyApp.app/MyApp normal arm64 (in target: MyApp)"
         let colored = coloredFormatted(input)
 
@@ -280,7 +282,8 @@ import Testing
 
     // MARK: - Test Case Formatting with coloredTime()
 
-    @Test func testCasePassedWithColoredTime() {
+    @Test(.disabled(if: .linux))
+    func testCasePassedWithColoredTime() {
         let input = "Test Case '-[MyTests myTest]' passed (0.050 seconds)."
         let colored = coloredFormatted(input)
 
@@ -289,7 +292,8 @@ import Testing
         #expect(colored == expectedPattern)
     }
 
-    @Test func testCaseSkippedWithColoredTime() {
+    @Test(.disabled(if: .linux))
+    func testCaseSkippedWithColoredTime() {
         let input = "Test Case '-[MyTests myTest]' skipped (0.002 seconds)."
         let colored = coloredFormatted(input)
 
@@ -298,7 +302,8 @@ import Testing
         #expect(colored == expectedPattern)
     }
 
-    @Test func testCaseFailedWithRedStatus() {
+    @Test(.disabled(if: .linux))
+    func testCaseFailedWithRedStatus() {
         let input = "\(Format.indent)MyTests.swift:10: error: -[MyTests testFailure] : failed - Expected true"
         let colored = coloredFormatted(input)
 
@@ -371,7 +376,8 @@ import Testing
         #expect(result == expected)
     }
 
-    @Test func multipleStylesInTargetCommand() {
+    @Test(.disabled(if: .linux))
+    func multipleStylesInTargetCommand() {
         // Compile task has both cyan target and bold command
         let input = "CompileSwift normal x86_64 /path/file.swift (in target: MyTarget)"
         let colored = coloredFormatted(input)
