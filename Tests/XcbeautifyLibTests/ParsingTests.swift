@@ -32,7 +32,7 @@ import Testing
         // The following is a magic number.
         // It represents the number of lines that aren't captured by the Parser.
         // Slowly, this value should decrease until it reaches 0.
-        // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
+        // It uses `==` instead of `<=` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
@@ -40,6 +40,29 @@ import Testing
         #else
         #expect(uncapturedOutput == 61)
         #endif
+    }
+
+    @Test func demoSwiftTestingOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt"))
+        let logContent = try String(contentsOf: url, encoding: .utf8)
+        var buildLog = logContent.components(separatedBy: .newlines)
+        let parser = Parser()
+        var uncapturedOutput = 0
+
+        while !buildLog.isEmpty {
+            let line = buildLog.removeFirst()
+            if !line.isEmpty, parser.parse(line: line) == nil {
+                uncapturedOutput += 1
+            }
+        }
+
+        // The following is a magic number.
+        // It represents the number of lines that aren't captured by the Parser.
+        // Slowly, this value should decrease until it reaches 0.
+        // It uses `==` instead of `<=` as a reminder.
+        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
+        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+        #expect(uncapturedOutput == 2)
     }
 
     @Test func largeXcodebuildLog() throws {
@@ -62,7 +85,7 @@ import Testing
         // The following is a magic number.
         // It represents the number of lines that aren't captured by the Parser.
         // Slowly, this value should decrease until it reaches 0.
-        // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
+        // It uses `==` instead of `<=` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
@@ -72,8 +95,88 @@ import Testing
         #endif
     }
 
-    @Test func parsingSwiftTestingTestOutput() throws {
-        let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
+    @Test func mixedTestLog60Linux() throws {
+        let url = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_Linux", withExtension: "txt"))
+
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
+            .components(separatedBy: .newlines)
+
+        let parser = Parser()
+
+        var uncapturedOutput = 0
+
+        while !buildLog.isEmpty {
+            let line = buildLog.removeFirst()
+            if !line.isEmpty, parser.parse(line: line) == nil {
+                uncapturedOutput += 1
+            }
+        }
+
+        // The following is a magic number.
+        // It represents the number of lines that aren't captured by the Parser.
+        // Slowly, this value should decrease until it reaches 0.
+        // It uses `==` instead of `<=` as a reminder.
+        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
+        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+        #if os(macOS)
+        #expect(uncapturedOutput == 10)
+        #else
+        #expect(uncapturedOutput == 2)
+        #endif
+    }
+
+    @Test func mixedTestLog60MacOS() throws {
+        let url = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS", withExtension: "txt"))
+
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
+            .components(separatedBy: .newlines)
+
+        let parser = Parser()
+
+        var uncapturedOutput = 0
+
+        while !buildLog.isEmpty {
+            let line = buildLog.removeFirst()
+            if !line.isEmpty, parser.parse(line: line) == nil {
+                uncapturedOutput += 1
+            }
+        }
+
+        // The following is a magic number.
+        // It represents the number of lines that aren't captured by the Parser.
+        // Slowly, this value should decrease until it reaches 0.
+        // It uses `==` instead of `<=` as a reminder.
+        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
+        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+        #if os(macOS)
+        #expect(uncapturedOutput == 3)
+        #else
+        #expect(uncapturedOutput == 6)
+        #endif
+    }
+
+    @Test func parallelTestLog() throws {
+        let url = try #require(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
+
+        var buildLog: [String] = try String(contentsOf: url, encoding: .utf8)
+            .components(separatedBy: .newlines)
+
+        let parser = Parser()
+
+        var uncapturedOutput = 0
+
+        while !buildLog.isEmpty {
+            let line = buildLog.removeFirst()
+            if !line.isEmpty, parser.parse(line: line) == nil {
+                uncapturedOutput += 1
+            }
+        }
+
+        #expect(uncapturedOutput == 0)
+    }
+
+    @Test func fullSPISwiftTestingOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt"))
         let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -82,7 +185,6 @@ import Testing
         while !buildLog.isEmpty {
             let line = buildLog.removeFirst()
             if !line.isEmpty, parser.parse(line: line) == nil {
-                print(line)
                 uncapturedOutput += 1
             }
         }
@@ -90,13 +192,13 @@ import Testing
         // The following is a magic number.
         // It represents the number of lines that aren't captured by the Parser.
         // Slowly, this value should decrease until it reaches 0.
-        // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
+        // It uses `==` instead of `<=` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        #expect(uncapturedOutput == 162)
+        #expect(uncapturedOutput == 2199)
         #else
-        #expect(uncapturedOutput == 271)
+        #expect(uncapturedOutput == 2198)
         #endif
     }
 
@@ -117,7 +219,7 @@ import Testing
         // The following is a magic number.
         // It represents the number of lines that aren't captured by the Parser.
         // Slowly, this value should decrease until it reaches 0.
-        // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
+        // It uses `==` instead of `<=` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
@@ -127,8 +229,8 @@ import Testing
         #endif
     }
 
-    @Test func fullSPISwiftTestingOutput() throws {
-        let url = try #require(Bundle.module.url(forResource: "spi_swift_testing_full_log", withExtension: "txt"))
+    @Test func parsingSwiftTestingTestOutput() throws {
+        let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -144,18 +246,18 @@ import Testing
         // The following is a magic number.
         // It represents the number of lines that aren't captured by the Parser.
         // Slowly, this value should decrease until it reaches 0.
-        // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
+        // It uses `==` instead of `<=` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
-        #expect(uncapturedOutput == 2199)
+        #expect(uncapturedOutput == 162)
         #else
-        #expect(uncapturedOutput == 2198)
+        #expect(uncapturedOutput == 271)
         #endif
     }
 
-    @Test func demoSwiftTestingOutput() throws {
-        let url = try #require(Bundle.module.url(forResource: "demo_swift_testing_log", withExtension: "txt"))
+    @Test func testLog() throws {
+        let url = try #require(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
         let logContent = try String(contentsOf: url, encoding: .utf8)
         var buildLog = logContent.components(separatedBy: .newlines)
         let parser = Parser()
@@ -171,9 +273,13 @@ import Testing
         // The following is a magic number.
         // It represents the number of lines that aren't captured by the Parser.
         // Slowly, this value should decrease until it reaches 0.
-        // It uses `XCTAssertEqual` instead of `XCTAssertLessThanOrEqual` as a reminder.
+        // It uses `==` instead of `<=` as a reminder.
         // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
         // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
-        #expect(uncapturedOutput == 2)
+        #if os(macOS)
+        #expect(uncapturedOutput == 3)
+        #else
+        #expect(uncapturedOutput == 84)
+        #endif
     }
 }
