@@ -42,7 +42,7 @@ import Testing
     }
 
     @Test func cleanBuildXcode15_1() throws {
-        let uncapturedOutput = try uncapturedOutput(for: "clean_build_xcode_15_1_log")
+        let uncapturedOutput = try uncapturedOutput(for: "clean_build_xcode_15_1")
 
         #if os(macOS)
         #expect(uncapturedOutput == 45)
