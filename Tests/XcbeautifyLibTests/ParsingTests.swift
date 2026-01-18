@@ -13,6 +13,12 @@ import Testing
 
 @Suite struct ParsingTests {
 
+    // These test cases use magic numbers to represent the number of lines that aren't captured by the Parser.
+    // Slowly, the values should decrease until they reach 0.
+    // Test cases uses `==` instead of `<=` as a reminder.
+    // Update the magic numbers whenever `uncapturedOutput` is less than the current magic number.
+    // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
+
     private func uncapturedOutput(
         for resource: String,
         withExtension `extension`: String = "txt"
@@ -39,12 +45,6 @@ import Testing
     @Test func cleanBuildXcode15_1() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "clean_build_xcode_15_1_log")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 45)
         #else
@@ -54,25 +54,12 @@ import Testing
 
     @Test func demoSwiftTestingOutput() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "demo_swift_testing_log")
-
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #expect(uncapturedOutput == 2)
     }
 
     @Test func largeXcodebuildLog() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "large_xcodebuild_log")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 1508)
         #else
@@ -83,12 +70,6 @@ import Testing
     @Test func mixedTestLog60Linux() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "MixedTestLog_6_0_Linux")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 10)
         #else
@@ -99,12 +80,6 @@ import Testing
     @Test func mixedTestLog60MacOS() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "MixedTestLog_6_0_macOS")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 3)
         #else
@@ -120,12 +95,6 @@ import Testing
     @Test func fullSPISwiftTestingOutput() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "spi_swift_testing_full_log")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 2199)
         #else
@@ -136,12 +105,6 @@ import Testing
     @Test func shortSPISwiftTestingOutput() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "spi_swift_testing_short_log")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 10)
         #else
@@ -152,12 +115,6 @@ import Testing
     @Test func parsingSwiftTestingTestOutput() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "swift_test_log_macOS")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 162)
         #else
@@ -168,12 +125,6 @@ import Testing
     @Test func testLog() throws {
         let uncapturedOutput = try self.uncapturedOutput(for: "TestLog")
 
-        // The following is a magic number.
-        // It represents the number of lines that aren't captured by the Parser.
-        // Slowly, this value should decrease until it reaches 0.
-        // It uses `==` instead of `<=` as a reminder.
-        // Update this magic number whenever `uncapturedOutput` is less than the current magic number.
-        // There's a regression whenever `uncapturedOutput` is greater than the current magic number.
         #if os(macOS)
         #expect(uncapturedOutput == 3)
         #else
