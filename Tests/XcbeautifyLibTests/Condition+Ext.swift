@@ -25,7 +25,7 @@ enum Platform {
 extension Trait where Self == ConditionTrait {
     static func disabled(
         if platform: Platform,
-        _ comment: Comment?,
+        _ comment: Comment? = nil,
         sourceLocation: SourceLocation = #_sourceLocation
     ) -> ConditionTrait {
         .disabled(if: platform.isActive, comment)
