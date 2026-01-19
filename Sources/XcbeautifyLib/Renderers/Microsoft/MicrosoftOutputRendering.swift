@@ -228,6 +228,15 @@ extension MicrosoftOutputRendering {
         )
     }
 
+    func formatSwiftTestingParameterizedTestFailed(group: SwiftTestingParameterizedTestFailedCaptureGroup) -> String {
+        let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
+        let errorMessage = "\(group.testName)\(testCasesInfo) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        return makeOutputLog(
+            annotation: .error,
+            message: errorMessage
+        )
+    }
+
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String {
         var fileComponents: FileComponents?
         var detailMessage = group.issueDetails?.trimmingCharacters(in: .whitespacesAndNewlines)

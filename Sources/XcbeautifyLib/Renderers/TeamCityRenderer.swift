@@ -187,6 +187,13 @@ struct TeamCityRenderer: OutputRendering {
         return outputTeamCityError(text: "Test failed", details: outputString)
     }
 
+    func formatSwiftTestingParameterizedTestFailed(group: SwiftTestingParameterizedTestFailedCaptureGroup) -> String {
+        let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
+        let message = "\(group.testName)\(testCasesInfo) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        let outputString = colored ? message.f.Red : message
+        return outputTeamCityError(text: "Parameterized test failed", details: outputString)
+    }
+
     func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
         let testName = colored ? group.testName.f.Yellow : group.testName
         return outputTeamCityWarning(text: "Test skipped", details: testName)
