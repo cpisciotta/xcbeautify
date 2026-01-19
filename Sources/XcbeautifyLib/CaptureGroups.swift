@@ -1900,10 +1900,11 @@ struct SwiftTestingParameterizedIssueCaptureGroup: CaptureGroup {
 struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
-    /// Regular expression to capture the symbol, test description, and optional number of arguments.
+    /// Regular expression to capture the symbol, test description, and number of arguments.
+    /// Matches lines ending with "arguments." (no location details).
     /// $1 = test description
-    /// $2 = number of arguments (optional)
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?"#)
+    /// $2 = number of arguments
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?\.$"#)
 
     let testDescription: String
     let numberOfArguments: Int?
