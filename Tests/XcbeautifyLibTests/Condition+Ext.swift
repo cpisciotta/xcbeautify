@@ -1,7 +1,7 @@
 //
 // Condition+Ext.swift
 //
-// Copyright (c) 2025 Charles Pisciotta and other contributors
+// Copyright (c) 2026 Charles Pisciotta and other contributors
 // Licensed under MIT License
 //
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
@@ -25,7 +25,7 @@ enum Platform {
 extension Trait where Self == ConditionTrait {
     static func disabled(
         if platform: Platform,
-        _ comment: Comment?,
+        _ comment: Comment? = nil,
         sourceLocation: SourceLocation = #_sourceLocation
     ) -> ConditionTrait {
         .disabled(if: platform.isActive, comment)
