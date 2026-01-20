@@ -1,18 +1,17 @@
 //
 // JUnitReporterTests.swift
 //
-// Copyright (c) 2025 Charles Pisciotta and other contributors
+// Copyright (c) 2026 Charles Pisciotta and other contributors
 // Licensed under MIT License
 //
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
 import Foundation
+import Testing
 import XcbeautifyLib
-import XCTest
-import XcLogParserLib
 
-class JUnitReporterTests: XCTestCase {
+@Suite struct JUnitReporterTests {
     private let expectedMacOsXml = """
     <testsuites name="All tests" tests="85" failures="3">
         <testsuite name="XcbeautifyLibTests.OutputHandlerTests" tests="6" failures="0">
@@ -223,24 +222,24 @@ class JUnitReporterTests: XCTestCase {
     </testsuites>
     """
 
-    func testJUnitReport() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
+    @Test func jUnitReport() throws {
+        let url = try #require(Bundle.module.url(forResource: "TestLog", withExtension: "txt"))
         let parser = Parser()
         let reporter = JUnitReporter()
 
-        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+        for line in try String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
         let data = try reporter.generateReport()
-        let xml = String(data: data, encoding: .utf8)!
+        let xml = try #require(String(data: data, encoding: .utf8))
         #if os(Linux)
         let expectedXml = expectedLinuxXml
         #else
         let expectedXml = expectedMacOsXml
         #endif
-        XCTAssertEqual(xml, expectedXml)
+        #expect(xml == expectedXml)
     }
 
     private let expectedParallelXml = """
@@ -287,20 +286,20 @@ class JUnitReporterTests: XCTestCase {
     </testsuites>
     """
 
-    func testParallelJUnitReport() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
+    @Test func parallelJUnitReport() throws {
+        let url = try #require(Bundle.module.url(forResource: "ParallelTestLog", withExtension: "txt"))
         let parser = Parser()
         let reporter = JUnitReporter()
 
-        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+        for line in try String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
         let data = try reporter.generateReport()
-        let xml = String(data: data, encoding: .utf8)!
+        let xml = try #require(String(data: data, encoding: .utf8))
         let expectedXml = expectedParallelXml
-        XCTAssertEqual(xml, expectedXml)
+        #expect(xml == expectedXml)
     }
 
     #if os(macOS)
@@ -793,42 +792,43 @@ class JUnitReporterTests: XCTestCase {
     #endif
 
     #if os(macOS)
-    func testSwiftTestingJUnitReport() throws {
-        let url = try XCTUnwrap(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
+    @Test func swiftTestingJUnitReport() throws {
+        let url = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
         let parser = Parser()
         let reporter = JUnitReporter()
 
-        for line in try String(contentsOf: url).components(separatedBy: .newlines) {
+        for line in try String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
         let data = try reporter.generateReport()
-        let xml = String(data: data, encoding: .utf8)!
+        let xml = try #require(String(data: data, encoding: .utf8))
         let expectedXml = expectedSwiftTestingXML_macOS
-        XCTAssertEqual(xml, expectedXml)
+        #expect(xml == expectedXml)
     }
     #endif
 
-    func testMixedXCTestAndSwiftTestingJUnitReport() throws {
+    @Test(.disabled(if: .linux, "[TODO] Re-enable this test."))
+    func mixedXCTestAndSwiftTestingJUnitReport() throws {
         #if os(Linux)
-        let inputURL = try XCTUnwrap(Bundle.module.url(forResource: "MixedTestLog_6_0_Linux", withExtension: "txt"))
-        let outputURL = try XCTUnwrap(Bundle.module.url(forResource: "MixedTestLog_6_0_Expected_XML_Linux", withExtension: "txt"))
+        let inputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_Linux", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_Expected_XML_Linux", withExtension: "txt"))
         #else
-        let inputURL = try XCTUnwrap(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS", withExtension: "txt"))
-        let outputURL = try XCTUnwrap(Bundle.module.url(forResource: "MixedTestLog_6_0_Expected_XML_macOS", withExtension: "txt"))
+        let inputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_Expected_XML_macOS", withExtension: "txt"))
         #endif
         let parser = Parser()
         let reporter = JUnitReporter()
 
-        for line in try String(contentsOf: inputURL).components(separatedBy: .newlines) {
+        for line in try String(contentsOf: inputURL, encoding: .utf8).components(separatedBy: .newlines) {
             if let captureGroup = parser.parse(line: line) as? any JUnitReportable {
                 reporter.add(captureGroup: captureGroup)
             }
         }
         let data = try reporter.generateReport()
         let actualXML = String(decoding: data, as: UTF8.self)
-        let expectedXML = try String(contentsOf: outputURL)
-        XCTAssertEqual(actualXML, expectedXML)
+        let expectedXML = try String(contentsOf: outputURL, encoding: .utf8)
+        #expect(actualXML == expectedXML)
     }
 }

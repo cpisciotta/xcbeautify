@@ -18,34 +18,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: macos-14
-            swift_version: "5.9"
-            xcode_version: "15.2"
-          - platform: ubuntu-22.04
-            swift_version: "5.9"
-            xcode_version: "15.2"
-          - platform: macos-14
-            swift_version: "5.10"
-            xcode_version: "15.4"
-          - platform: ubuntu-22.04
-            swift_version: "5.10"
-            xcode_version: "15.4"
-          - platform: macos-15
-            swift_version: "6.0"
-            xcode_version: "16.0"
-          - platform: ubuntu-22.04
-            swift_version: "6.0"
-            xcode_version: "16.0"
           - platform: macos-15
             swift_version: "6.1"
-            xcode_version: "16.3"
+            xcode_version: "16.4"
           - platform: ubuntu-22.04
             swift_version: "6.1"
-            xcode_version: "16.3"
+            xcode_version: "16.4"
+          - platform: macos-26
+            swift_version: "6.2"
+            xcode_version: "26.1"
+          - platform: ubuntu-22.04
+            swift_version: "6.2"
+            xcode_version: "26.1"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Download Swift ${{ matrix.swift_version }}
         if: ${{ matrix.platform == 'ubuntu-22.04' }}
@@ -69,34 +57,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: macos-14
-            swift_version: "5.9"
-            xcode_version: "15.2"
-          - platform: ubuntu-22.04
-            swift_version: "5.9"
-            xcode_version: "15.2"
-          - platform: macos-14
-            swift_version: "5.10"
-            xcode_version: "15.4"
-          - platform: ubuntu-22.04
-            swift_version: "5.10"
-            xcode_version: "15.4"
-          - platform: macos-15
-            swift_version: "6.0"
-            xcode_version: "16.0"
-          - platform: ubuntu-22.04
-            swift_version: "6.0"
-            xcode_version: "16.0"
           - platform: macos-15
             swift_version: "6.1"
-            xcode_version: "16.3"
+            xcode_version: "16.4"
           - platform: ubuntu-22.04
             swift_version: "6.1"
-            xcode_version: "16.3"
+            xcode_version: "16.4"
+          - platform: macos-26
+            swift_version: "6.2"
+            xcode_version: "26.1"
+          - platform: ubuntu-22.04
+            swift_version: "6.2"
+            xcode_version: "26.1"
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Load Swift Version
         run: echo "SWIFT_VERSION=$(<.swift-version)" >> $GITHUB_ENV
 
@@ -110,7 +86,7 @@ jobs:
         if: ${{ matrix.platform == 'ubuntu-22.04' }}
         run: echo "$GITHUB_WORKSPACE/swift-${{ matrix.swift_version }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
       - run: swift --version
-      - run: swift test --enable-code-coverage
+      - run: swift test --enable-code-coverage -Xswiftc -warnings-as-errors
       - name: Prepare Code Coverage
         if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
         run: ./tools/export_coverage
@@ -122,3 +98,12 @@ jobs:
           files: info.lcov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  check-sorted:
+    name: Check Sorted
+    if: github.event_name == 'pull_request'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: swift --version
+      - run: ./tools/check-sorted

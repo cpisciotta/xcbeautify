@@ -1,71 +1,59 @@
+name: Release
+
 on:
   push:
     tags:
       - "*"
-name: Release
 
 env:
   # TODO: Load from `.swift-version` file
-  SWIFT_VERSION: 5.9
+  SWIFT_VERSION: 6.1
+  TAG: ${{ github.ref_name }}
 
 jobs:
   create_release:
     name: Create Release
     runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      tag_name: ${{ steps.get_version.outputs.version }}
     steps:
-      - name: Create Release
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Create release via gh
         id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-      - id: get_version
-        uses: battila7/get-version-action@v2
+        run: |
+          gh release create "${{ env.TAG }}" --title "${{ env.TAG }}" --generate-notes
 
   macos:
     name: Release macOS
-    runs-on: macos-14
+    runs-on: macos-latest
     needs: create_release
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ env.SWIFT_VERSION }}
       - name: Build & Package
         run: make package
-      - name: Darwin Universal
-        uses: actions/upload-release-asset@v1.0.2
+      - name: Upload Darwin Universal Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: release/xcbeautify.zip
-          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-universal-apple-macosx.zip
-          asset_content_type: application/zip
-      - name: Darwin x86_64
-        uses: actions/upload-release-asset@v1.0.2
+        run: |
+          mv release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-universal-apple-macosx.zip"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-universal-apple-macosx.zip" --clobber
+      - name: Upload Darwin x86_64 Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: .build/x86_64-apple-macosx/release/xcbeautify.zip
-          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-x86_64-apple-macosx.zip
-          asset_content_type: application/zip
-      - name: Darwin arm64
-        uses: actions/upload-release-asset@v1.0.2
+        run: |
+          mv .build/x86_64-apple-macosx/release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-x86_64-apple-macosx.zip"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-apple-macosx.zip" --clobber
+      - name: Upload Darwin arm64 Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: .build/arm64-apple-macosx/release/xcbeautify.zip
-          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-arm64-apple-macosx.zip
-          asset_content_type: application/zip
+        run: |
+          mv .build/arm64-apple-macosx/release/xcbeautify.zip "xcbeautify-${{ env.TAG }}-arm64-apple-macosx.zip"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-arm64-apple-macosx.zip" --clobber
 
   ubuntu_x86_64:
     name: Release Linux x86_64
@@ -73,7 +61,7 @@ jobs:
     needs: create_release
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Download Swift ${{ env.SWIFT_VERSION }}
         run: wget https://download.swift.org/swift-${{ env.SWIFT_VERSION }}-release/ubuntu2204/swift-${{ env.SWIFT_VERSION }}-RELEASE/swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04.tar.gz
       - name: Extract Swift ${{ env.SWIFT_VERSION }}
@@ -82,12 +70,9 @@ jobs:
         run: echo "$GITHUB_WORKSPACE/swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
       - name: Package Linux x86_64
         run: make package-linux-x86_64
-      - name: Upload Release Asset for Linux x86_64
-        uses: actions/upload-release-asset@v1.0.2
+      - name: Upload Linux x86_64 Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: xcbeautify.tar.xz
-          asset_name: xcbeautify-${{ needs.create_release.outputs.tag_name }}-x86_64-unknown-linux-gnu.tar.xz
-          asset_content_type: application/x-xz
+        run: |
+          mv xcbeautify.tar.xz "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz" --clobber

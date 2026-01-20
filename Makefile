@@ -70,7 +70,7 @@ package-linux-x86_64:
 	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(TARGET_TRIPLE))
 	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
 	docker run --rm --volume `pwd`:/workdir --workdir /workdir \
-		swift:5.9 swift build $(SWIFT_BUILD_FLAGS)
+		swift:6.1 swift build $(SWIFT_BUILD_FLAGS)
 	tar --directory "$(BUILD_DIRECTORY)" --create --xz --file \
 		"$(PRODUCT_NAME).tar.xz" "$(PRODUCT_NAME)"
 
@@ -123,6 +123,10 @@ format:
 .PHONY: lint
 lint:
 	tools/lint
+
+.PHONY: check-sorted
+check-sorted:
+	tools/check-sorted
 
 .PHONY: coverage
 export_coverage:

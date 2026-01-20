@@ -7,6 +7,8 @@ if [[ "$(uname -m)" == arm64 ]]; then
 fi
 
 if which swiftformat > /dev/null; then
+    swiftformat -version
+
     if [[ ${GITHUB_ACTIONS:-false} == true ]]; then
         echo "Detected GitHub Actions, using --reporter github-actions-log"
         swiftformat --lint --cache ignore --reporter github-actions-log .

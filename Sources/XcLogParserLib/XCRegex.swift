@@ -1,7 +1,7 @@
 //
 // XCRegex.swift
 //
-// Copyright (c) 2025 Charles Pisciotta and other contributors
+// Copyright (c) 2026 Charles Pisciotta and other contributors
 // Licensed under MIT License
 //
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
@@ -9,19 +9,17 @@
 
 import Foundation
 
-// `NSRegularExpression` is marked as `@unchecked Sendable`.
-// Match the definition here.
-public final class XCRegex: @unchecked Sendable {
-    private let pattern: String
+package struct XCRegex: Sendable {
+    private let regex: NSRegularExpression?
 
-    private lazy var regex: NSRegularExpression? = {
+    private static func makeRegex(pattern: String) -> NSRegularExpression? {
         let regex = try? NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines])
         assert(regex != nil)
         return regex
-    }()
+    }
 
-    public init(pattern: String) {
-        self.pattern = pattern
+    init(pattern: String) {
+        regex = Self.makeRegex(pattern: pattern)
     }
 
     public func captureGroups(for line: String) -> [String]? {

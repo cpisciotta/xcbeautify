@@ -1,13 +1,10 @@
 # SwiftFormat Configuration
 
---minversion 0.57.2
-
-# Excluded Files and Paths
-
---exclude **/XCTestManifests.swift
+--minversion 0.58.7
 
 # Rules
 
+--disable swiftTestingTestCaseNames
 --disable unusedArguments
 
 --enable acronyms
@@ -15,12 +12,17 @@
 --enable blockComments
 --enable emptyExtensions
 --enable isEmpty
+--enable noForceTryInTests
+--enable noForceUnwrapInTests
 --enable noGuardInTests
+--enable preferFinalClasses
+--enable preferSwiftTesting
+--enable redundantAsync
+--enable redundantEquatable
 --enable redundantMemberwiseInit
 --enable redundantProperty
 --enable singlePropertyPerLine
 --enable sortSwitchCases
---enable throwingTests
 --enable unusedPrivateDeclarations
 --enable wrapEnumCases
 --enable wrapMultilineFunctionChains
@@ -36,6 +38,7 @@
 --ranges no-space
 --redundanttype inferred
 --semicolons never
+--trailing-commas collections-only
 --wraparguments before-first
 --wrapcollections before-first
 --wrapparameters before-first

@@ -1,8 +1,11 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.1
 import PackageDescription
 
 let package = Package(
     name: "xcbeautify",
+    platforms: [
+        .macOS(.v14),
+    ],
     products: [
         .executable(name: "xcbeautify", targets: ["xcbeautify"]),
         .library(name: "XcbeautifyLib", targets: ["XcbeautifyLib"]),
@@ -18,7 +21,7 @@ let package = Package(
             from: "0.2.1"
         ),
         .package(
-            url: "https://github.com/MaxDesiatov/XMLCoder.git",
+            url: "https://github.com/CoreOffice/XMLCoder.git",
             from: "0.17.1"
         ),
     ],
@@ -55,27 +58,8 @@ for target in package.targets {
     var settings = target.swiftSettings ?? []
     settings.append(
         contentsOf: [
-            // TODO: Enable `complete` Strict Concurrency
-            // Currently, it's `targeted` since `XMLCoder` surfaces warnings.
-            .enableExperimentalFeature("StrictConcurrency=targeted"),
-            .enableUpcomingFeature("BareSlashRegexLiterals"),
-            .enableUpcomingFeature("ConciseMagicFile"),
-            .enableUpcomingFeature("DeprecateApplicationMain"),
-            .enableUpcomingFeature("DisableOutwardActorInference"),
-            .enableUpcomingFeature("DynamicActorIsolation"),
-            .enableUpcomingFeature("ExistentialAny"),
-            .enableUpcomingFeature("ForwardTrailingClosures"),
-            .enableUpcomingFeature("FullTypedThrows"),
-            .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
-            // TODO: Enable GlobalConcurrency
-            // Currently, it's disabled since `XMLCoder` surfaces warnings.
-            // .enableUpcomingFeature("GlobalConcurrency"),
-            .enableUpcomingFeature("ImplicitOpenExistentials"),
-            .enableUpcomingFeature("ImportObjcForwardDeclarations"),
-            .enableUpcomingFeature("InferSendableFromCaptures"),
+            .enableUpcomingFeature("StrictConcurrency"),
             .enableUpcomingFeature("InternalImportsByDefault"),
-            .enableUpcomingFeature("IsolatedDefaultValues"),
-            .enableUpcomingFeature("RegionBasedIsolation"),
         ]
     )
     target.swiftSettings = settings
