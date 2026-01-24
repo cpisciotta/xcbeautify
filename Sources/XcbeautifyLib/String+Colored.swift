@@ -14,12 +14,12 @@ import Foundation
 private let startOfCode = "\u{001B}["
 private let reset = "\u{001B}[0m"
 
-extension String {
-    fileprivate func color(_ color: Color) -> String {
+private extension String {
+    func color(_ color: Color) -> String {
         applyCode(color.rawValue)
     }
 
-    fileprivate func style(_ style: Style) -> String {
+    func style(_ style: Style) -> String {
         applyCode(style.rawValue)
     }
 
