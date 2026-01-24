@@ -136,6 +136,10 @@ export_coverage:
 measure:
 	tools/measure
 	
+.PHONY: deps
+deps:
+	brew bundle
+
 .PHONY: xcode
 xcode:
 	open Package.swift
