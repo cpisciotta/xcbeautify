@@ -14,53 +14,26 @@ import Foundation
 private let startOfCode = "\u{001B}["
 private let reset = "\u{001B}[0m"
 
-private extension String {
-    func color(_ color: Color) -> String {
-        colorize(code: color.rawValue)
+extension String {
+    fileprivate func color(_ color: Color) -> String {
+        applyCode(color.rawValue)
     }
 
-    func style(_ style: Style) -> String {
-        colorize(code: style.rawValue)
+    fileprivate func style(_ style: Style) -> String {
+        applyCode(style.rawValue)
     }
 
-    private func colorize(code: Int) -> String {
-        if contains(startOfCode) {
-            colorizeStringAndAddCodeSeparators(code: code)
-        } else {
-            colorizeStringWithoutPriorCode(code: code)
+    private func applyCode(_ code: Int) -> String {
+        guard
+            hasPrefix(startOfCode),
+            hasSuffix(reset),
+            let mIndex = dropFirst(startOfCode.count).firstIndex(of: "m")
+        else {
+            return "\(startOfCode)\(code)m\(self)\(reset)"
         }
-    }
 
-    private func colorizeStringWithoutPriorCode(code: Int) -> String {
-        "\(preparedColorCode(code))\(self)\(reset)"
-    }
-
-    private func colorizeStringAndAddCodeSeparators(code: Int) -> String {
-        // To refactor and use regex matching instead of replacing strings and using tricks
-        let stringByRemovingEnding = removeEndingCode()
-        let stringWithStart = "\(preparedColorCode(code))\(stringByRemovingEnding)"
-
-        let stringByAddingCodeSeparator = stringWithStart.addCommandSeparators()
-
-        return "\(stringByAddingCodeSeparator)\(reset)"
-    }
-
-    private func preparedColorCode(_ code: Int) -> String {
-        "\(startOfCode)\(code)m"
-    }
-
-    private func addCommandSeparators() -> String {
-        var rangeWithInset = index(after: startIndex)..<index(before: endIndex)
-        let newString = replacingOccurrences(of: startOfCode, with: ";", options: .literal, range: rangeWithInset)
-
-        rangeWithInset = newString.index(after: newString.startIndex)..<newString.index(before: newString.endIndex)
-        return newString.replacingOccurrences(of: "m;", with: ";", options: .literal, range: rangeWithInset)
-    }
-
-    private func removeEndingCode() -> String {
-        guard !isEmpty else { return self }
-        let rangeWithInset = index(after: startIndex)..<endIndex
-        return replacingOccurrences(of: reset, with: "", options: .literal, range: rangeWithInset)
+        let content = dropFirst(startOfCode.count).dropLast(reset.count)
+        return "\(startOfCode)\(code);\(content[..<mIndex])m\(content[content.index(after: mIndex)...])\(reset)"
     }
 }
 
