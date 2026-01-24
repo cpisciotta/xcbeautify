@@ -7,6 +7,7 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
+import Foundation
 import Testing
 @testable import XcbeautifyLib
 
@@ -25,14 +26,84 @@ import Testing
     private let boldStart = "\u{001B}[1m"
     private let reset = "\u{001B}[0m"
 
-    private let coloredFormatter = Formatter(colored: true, renderer: .terminal, additionalLines: { nil })
+    private let formatter = Formatter(colored: true, renderer: .terminal, additionalLines: { nil })
     private let parser = Parser()
 
     // MARK: - Helper Methods
 
     private func coloredFormatted(_ string: String) -> String? {
         guard let captureGroup = parser.parse(line: string) else { return nil }
-        return coloredFormatter.format(captureGroup: captureGroup)
+        return formatter.format(captureGroup: captureGroup)
+    }
+
+    private func logContents(
+        of fileURL: URL
+    ) throws -> [String] {
+        try String(contentsOf: fileURL, encoding: .utf8)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: .newlines)
+    }
+
+    private func formatFile(
+        withURL fileURL: URL
+    ) throws -> [String] {
+        var buildLog: [String] = try logContents(of: fileURL)
+
+        let beautifier = XCBeautifier(
+            colored: true,
+            renderer: .terminal,
+            preserveUnbeautifiedLines: false,
+            additionalLines: {
+                buildLog.removeFirst()
+            }
+        )
+
+        var actualOutput = [String]()
+
+        // TODO: Should use whatever `xcbeautify` executable uses too.
+        while !buildLog.isEmpty {
+            let _line = buildLog.removeFirst()
+            let line = _line.trimmingCharacters(in: .whitespaces)
+            if !line.isEmpty, let formatted = beautifier.format(line: line) {
+                actualOutput.append(formatted)
+            }
+        }
+
+        return actualOutput
+    }
+
+    // MARK: - Files
+
+    func cleanBuildXcode15_1Colored() throws {
+        let inputURL = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1_colored", withExtension: "txt"))
+
+        let actualOutput = try formatFile(withURL: inputURL)
+        let expectedOutput = try logContents(of: outputURL)
+
+        #expect(actualOutput == expectedOutput)
+    }
+
+    @Test(.disabled(if: .linux))
+    func mixedTestLog_6_0_macOS() throws {
+        let inputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS_colored", withExtension: "txt"))
+
+        let actualOutput = try formatFile(withURL: inputURL)
+        let expectedOutput = try logContents(of: outputURL)
+
+        #expect(actualOutput == expectedOutput)
+    }
+
+    @Test(.disabled(if: .linux))
+    func swiftTestLogMacOS() throws {
+        let inputURL = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "swift_test_log_macOS_colored", withExtension: "txt"))
+
+        let actualOutput = try formatFile(withURL: inputURL)
+        let expectedOutput = try logContents(of: outputURL)
+
+        #expect(actualOutput == expectedOutput)
     }
 
     // MARK: - Direct Formatting (No Parser)
@@ -495,5 +566,90 @@ import Testing
         let formatted = "N \("v2.1.0".f.Red) Z"
         let expected = "N \u{001B}[31mv2.1.0\u{001B}[0m Z"
         #expect(formatted == expected)
+    }
+
+    @Test func fileMissingErrorColored() {
+        let input = "<unknown>:0: error: no such file or directory: '/path/missing.swift'"
+        let colored = coloredFormatted(input)
+
+        let expected = "❌ /path/missing.swift: \u{001B}[31merror: no such file or directory\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func linkerUndefinedSymbolsColored() {
+        let input = "Undefined symbols for architecture x86_64:"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31mUndefined symbols for architecture x86_64\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func linkerDuplicateSymbolsColored() {
+        let input = "duplicate symbol _Symbol in:"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31mduplicate symbol _Symbol in\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func errorGenericColored() {
+        let input = "error: failed to provision profile"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31merror: failed to provision profile\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func symbolReferencedFromColored() {
+        let input = "  \"Some.symbol()\", referenced from:"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31m  \"Some.symbol()\", referenced from:\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    func summaryBoldGreen() {
+        let input = "Build Succeeded"
+        let formatted = coloredFormatted(input)
+        let expected = "\u{001B}[1;32mBuild Succeeded\u{001B}[0m"
+        #expect(formatted == expected)
+    }
+
+    @Test func testingStartedBoldCyan() {
+        let input = "Testing started on 'iPhone X'"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[36;1mTesting started on 'iPhone X'\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func parallelTestingFailedBoldRed() {
+        let input = "Testing failed on 'iPhone X'"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[31;1mTesting failed on 'iPhone X'\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageCheckingOutBoldPackageGreenVersion() {
+        let input = "Checking out 1.2.3 of package MyLibrary"
+        let colored = coloredFormatted(input)
+        let expected = "Checking out \u{001B}[1mMyLibrary\u{001B}[0m @ \u{001B}[32m1.2.3\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageResolvedBoldGreen() {
+        let input = "Resolved source packages:"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[32;1mResolved source packages\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageStartResolveBoldCyan() {
+        let input = "Resolve Package Graph"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[36;1mResolving Package Graph\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageItemRowBoldCyanNameBoldURLGreenVersion() {
+        let input = "  MyPkg: https://github.com/org/pkg @ 1.2.3"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[36;1mMyPkg\u{001B}[0m - \u{001B}[1mhttps://github.com/org/pkg\u{001B}[0m @ \u{001B}[32m1.2.3\u{001B}[0m"
+        #expect(colored == expected)
     }
 }

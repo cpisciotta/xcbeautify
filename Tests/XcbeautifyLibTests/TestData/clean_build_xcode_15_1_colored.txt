@@ -1,0 +1,509 @@
+[36;1mResolving Package Graph[0m
+[32;1mResolved source packages[0m
+[36;1mnote: [0mUsing codesigning identity override:
+[32;1mClean Succeeded[0m
+[36;1mnote: [0mUsing codesigning identity override:
+[36;1mnote: [0mBuilding targets in dependency order
+[36;1mnote: [0mTarget dependency graph (11 targets)
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.modulemap
+[[36mLayeredArtworkLibrary_LayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist
+[[36mLayeredArtworkLibrary_LayeredArtworkLibrary[0m] [1mCompile Asset Catalog[0m Assets.xcassets
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mWrite Auxiliary File[0m empty-BackyardBirdsUI_BackyardBirdsUI.plist
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCompile Asset Catalog[0m Assets.xcassets
+[[36mBackyardBirdsData[0m] [1mCopy[0m BackyardBirdsData.modulemap -> BackyardBirdsData.modulemap
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mWrite Auxiliary File[0m empty-BackyardBirdsData_BackyardBirdsData.plist
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCompile XCStrings[0m BirdFood.xcstrings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCompile XCStrings[0m PlantSpecies.xcstrings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCompile XCStrings[0m Birds.xcstrings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCompile XCStrings[0m Localizable.xcstrings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCompile XCStrings[0m Backyards.xcstrings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCompile Asset Catalog[0m Assets.xcassets
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData_const_extract_protocols.json
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.SwiftFileList
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData-OutputFileMap.json
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData_const_extract_protocols.json
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.SwiftFileList
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData-OutputFileMap.json
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m resource_bundle_accessor.swift
+[[36mBackyardBirdsData[0m] [1mGenerate Asset Symbols[0m Assets.xcassets
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mCopying[0m Localizable.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m PlantSpecies.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Backyards.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m Birds.strings
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mCopying[0m BirdFood.strings
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mProcessing[0m empty-BackyardBirdsUI_BackyardBirdsUI.plist
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mRegisterExecutionPolicyException[0m BackyardBirdsUI_BackyardBirdsUI.bundle
+[[36mBackyardBirdsUI_BackyardBirdsUI[0m] [1mTouching[0m BackyardBirdsUI_BackyardBirdsUI.bundle
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mProcessing[0m empty-BackyardBirdsData_BackyardBirdsData.plist
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mRegisterExecutionPolicyException[0m BackyardBirdsData_BackyardBirdsData.bundle
+[[36mBackyardBirdsData_BackyardBirdsData[0m] [1mTouching[0m BackyardBirdsData_BackyardBirdsData.bundle
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.LinkFileList
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.LinkFileList
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdEatFoodResult.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdFood+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdFood.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m FountainVariant.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Interpolation.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m ModelPreview.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m SeededRandomGenerator.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m TimeInterval+Extensions.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Plant+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Plant.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantPart.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantSpecies+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSpecies+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSpecies.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSpeciesInfo.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdVisitStatus.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdPalette+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdPalette.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdPart.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSortCriteria.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardVisitorEvent+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardVisitorEvent.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Bird+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Bird.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardBirdsDataContainer.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m ColorData.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m DataGenerationOptions.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardSnapshot.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardSupplies.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardTimeOfDay.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardTimeOfDayColors.swift
+[[36mLayeredArtworkLibrary_LayeredArtworkLibrary[0m] [1mProcessing[0m empty-LayeredArtworkLibrary_LayeredArtworkLibrary.plist
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantSpecies.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantSpeciesInfo.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PassIdentifiers.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardBirdsDataContainer.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m ColorData.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m DataGenerationOptions.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdPalette+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdPalette.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdPart.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSortCriteria.swift
+[[36mBackyardBirdsData[0m] [1mCopy[0m arm64-apple-macos.swiftmodule -> BackyardBirdsData.swiftmodule
+[[36mBackyardBirdsData[0m] [1mCopy[0m arm64-apple-macos.swiftdoc -> BackyardBirdsData.swiftdoc
+[[36mBackyardBirdsData[0m] [1mCopy[0m arm64-apple-macos.abi.json -> BackyardBirdsData.abi.json
+[[36mBackyardBirdsData[0m] [1mCopy[0m arm64-apple-macos.swiftsourceinfo -> BackyardBirdsData.swiftsourceinfo
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdEatFoodResult.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdFood+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdFood.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m FountainVariant.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Interpolation.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m ModelPreview.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m SeededRandomGenerator.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m TimeInterval+Extensions.swift
+[[36mBackyardBirdsData[0m] [1mCopy[0m x86_64-apple-macos.swiftmodule -> BackyardBirdsData.swiftmodule
+[[36mBackyardBirdsData[0m] [1mCopy[0m x86_64-apple-macos.swiftdoc -> BackyardBirdsData.swiftdoc
+[[36mBackyardBirdsData[0m] [1mCopy[0m x86_64-apple-macos.abi.json -> BackyardBirdsData.abi.json
+[[36mBackyardBirdsData[0m] [1mCopy[0m x86_64-apple-macos.swiftsourceinfo -> BackyardBirdsData.swiftsourceinfo
+[[36mBackyardBirdsData[0m] [1mCompiling[0m resource_bundle_accessor.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Account+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Account.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Backyard+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Backyard.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardSnapshot.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardSupplies.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardTimeOfDay.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardTimeOfDayColors.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m resource_bundle_accessor.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Account+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Account.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Backyard+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Backyard.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSpecies+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSpecies.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdSpeciesInfo.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BirdVisitStatus.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Plant+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Plant.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantPart.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantSpecies+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardVisitorEvent+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m BackyardVisitorEvent.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Bird+DataGeneration.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m Bird.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantSpecies.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PlantSpeciesInfo.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m PassIdentifiers.swift
+[[36mBackyardBirdsData[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.modulemap
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m LayeredArtworkLibrary.modulemap -> LayeredArtworkLibrary.modulemap
+[[36mLayeredArtworkLibrary_LayeredArtworkLibrary[0m] [1mRegisterExecutionPolicyException[0m LayeredArtworkLibrary_LayeredArtworkLibrary.bundle
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary_const_extract_protocols.json
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.SwiftFileList
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary-OutputFileMap.json
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary_const_extract_protocols.json
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.SwiftFileList
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary-OutputFileMap.json
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m resource_bundle_accessor.swift
+[[36mLayeredArtworkLibrary[0m] [1mGenerate Asset Symbols[0m Assets.xcassets
+[[36mLayeredArtworkLibrary_LayeredArtworkLibrary[0m] [1mTouching[0m LayeredArtworkLibrary_LayeredArtworkLibrary.bundle
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m SilhouetteArtwork.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m Images.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m FountainArtwork.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m resource_bundle_accessor.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m FloorArtwork.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m FountainArtwork.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m ComposedBird.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m ComposedPlant.swift
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m x86_64-apple-macos.swiftmodule -> LayeredArtworkLibrary.swiftmodule
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m x86_64-apple-macos.swiftdoc -> LayeredArtworkLibrary.swiftdoc
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m x86_64-apple-macos.abi.json -> LayeredArtworkLibrary.abi.json
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m x86_64-apple-macos.swiftsourceinfo -> LayeredArtworkLibrary.swiftsourceinfo
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m ComposedBird.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m ComposedPlant.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m FloorArtwork.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m Images.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m VibrantBird.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m SilhouetteArtwork.swift
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m resource_bundle_accessor.swift
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m arm64-apple-macos.swiftmodule -> LayeredArtworkLibrary.swiftmodule
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m arm64-apple-macos.swiftdoc -> LayeredArtworkLibrary.swiftdoc
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m arm64-apple-macos.abi.json -> LayeredArtworkLibrary.abi.json
+[[36mLayeredArtworkLibrary[0m] [1mCopy[0m arm64-apple-macos.swiftsourceinfo -> LayeredArtworkLibrary.swiftsourceinfo
+[[36mLayeredArtworkLibrary[0m] [1mCompiling[0m VibrantBird.swift
+[[36mBackyardBirdsData[0m] [1mLinking[0m BackyardBirdsData.o
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.modulemap
+[[36mBackyardBirdsUI[0m] [1mCopy[0m BackyardBirdsUI.modulemap -> BackyardBirdsUI.modulemap
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI-OutputFileMap.json
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.SwiftFileList
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI_const_extract_protocols.json
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI_const_extract_protocols.json
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.SwiftFileList
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI-OutputFileMap.json
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m resource_bundle_accessor.swift
+[[36mBackyardBirdsUI[0m] [1mGenerate Asset Symbols[0m Assets.xcassets
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BirdIcon.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m RecentBackyardVisitorsView.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardViewport.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardViewportLayout.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m PlantView.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m CoreGraphics+Math.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m Images.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m CoreGraphics+Math.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m Images.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m Styles.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m resource_bundle_accessor.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardList.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardSkyView.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardSupplyGauge.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardViewport.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardViewportLayout.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardBirdsPassOfferCard.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m RecentBackyardVisitorsView.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m resource_bundle_accessor.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardList.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BirdIcon.swift
+[[36mBackyardBirdsUI[0m] [1mCopy[0m arm64-apple-macos.swiftmodule -> BackyardBirdsUI.swiftmodule
+[[36mBackyardBirdsUI[0m] [1mCopy[0m arm64-apple-macos.swiftdoc -> BackyardBirdsUI.swiftdoc
+[[36mBackyardBirdsUI[0m] [1mCopy[0m arm64-apple-macos.abi.json -> BackyardBirdsUI.abi.json
+[[36mBackyardBirdsUI[0m] [1mCopy[0m arm64-apple-macos.swiftsourceinfo -> BackyardBirdsUI.swiftsourceinfo
+[[36mBackyardBirdsUI[0m] [1mCopy[0m x86_64-apple-macos.swiftmodule -> BackyardBirdsUI.swiftmodule
+[[36mBackyardBirdsUI[0m] [1mCopy[0m x86_64-apple-macos.swiftdoc -> BackyardBirdsUI.swiftdoc
+[[36mBackyardBirdsUI[0m] [1mCopy[0m x86_64-apple-macos.abi.json -> BackyardBirdsUI.abi.json
+[[36mBackyardBirdsUI[0m] [1mCopy[0m x86_64-apple-macos.swiftsourceinfo -> BackyardBirdsUI.swiftsourceinfo
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardBirdsPassOfferCard.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m PlantView.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m Styles.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardSkyView.swift
+[[36mBackyardBirdsUI[0m] [1mCompiling[0m BackyardSupplyGauge.swift
+[[36mBackyardBirdsData[0m] [1mLinking[0m BackyardBirdsData.o
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m all-product-headers.yaml
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets.hmap
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-project-headers.hmap
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-own-target-headers.hmap
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-generated-files.hmap
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-all-target-headers.hmap
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-all-non-framework-target-headers.hmap
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets_const_extract_protocols.json
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets.SwiftFileList
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-OutputFileMap.json
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets_const_extract_protocols.json
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets.SwiftFileList
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets-OutputFileMap.json
+[[36mWidgets[0m] [1mGenerate Asset Symbols[0m Assets.xcassets
+[[36mWidgets[0m] [1mCompile Asset Catalog[0m Assets.xcassets
+[[36mBackyardBirdsData[0m] [1mCreate Universal Binary[0m BackyardBirdsData.o
+[[36mBackyardBirdsData[0m] [1mRegisterExecutionPolicyException[0m BackyardBirdsData.o
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.LinkFileList
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m empty-BackyardBirdsData.plist
+[[36mBackyardBirdsData[0m] [1mWrite Auxiliary File[0m BackyardBirdsData.LinkFileList
+[[36mBackyardBirdsData[0m] [1mLinking[0m BackyardBirdsData
+[[36mBackyardBirdsData[0m] [1mLinking[0m BackyardBirdsData
+[[36mBackyardBirdsData[0m] [1mProcessing[0m empty-BackyardBirdsData.plist
+[[36mWidgets[0m] [1mCompiling[0m BackyardWidget.swift
+[[36mWidgets[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mWidgets[0m] [1mCompiling[0m ResupplyBackyardIntent.swift
+[[36mWidgets[0m] [1mCompiling[0m WidgetsBundle.swift
+[[36mWidgets[0m] [1mCompiling[0m BackyardSnapshotTimelineProvider.swift
+[[36mWidgets[0m] [1mCompiling[0m ResupplyBackyardIntent.swift
+[[36mWidgets[0m] [1mCompiling[0m BackyardSnapshotTimelineProvider.swift
+[[36mBackyardBirdsData[0m] [1mCreate Universal Binary[0m BackyardBirdsData
+[[36mWidgets[0m] [1mCompiling[0m BackyardWidgetIntent.swift
+[[36mWidgets[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mWidgets[0m] [1mCompiling[0m BackyardWidget.swift
+[[36mWidgets[0m] [1mCopy[0m arm64-apple-macos.swiftmodule -> Widgets.swiftmodule
+[[36mWidgets[0m] [1mCopy[0m arm64-apple-macos.swiftdoc -> Widgets.swiftdoc
+[[36mWidgets[0m] [1mCopy[0m arm64-apple-macos.abi.json -> Widgets.abi.json
+[[36mWidgets[0m] [1mCopy[0m x86_64-apple-macos.swiftmodule -> Widgets.swiftmodule
+[[36mWidgets[0m] [1mCopy[0m x86_64-apple-macos.swiftdoc -> Widgets.swiftdoc
+[[36mWidgets[0m] [1mCopy[0m x86_64-apple-macos.abi.json -> Widgets.abi.json
+[[36mWidgets[0m] [1mCopy[0m arm64-apple-macos.swiftsourceinfo -> Widgets.swiftsourceinfo
+[[36mWidgets[0m] [1mCopy[0m x86_64-apple-macos.swiftsourceinfo -> Widgets.swiftsourceinfo
+[[36mWidgets[0m] [1mCompiling[0m WidgetsBundle.swift
+[[36mWidgets[0m] [1mCompiling[0m BackyardWidgetIntent.swift
+[[36mWidgets[0m] [1mCompiling[0m BackyardWidgetView.swift
+[[36mWidgets[0m] [1mCompiling[0m BackyardWidgetView.swift
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m all-product-headers.yaml
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds.hmap
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-project-headers.hmap
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-own-target-headers.hmap
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-generated-files.hmap
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-all-target-headers.hmap
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-all-non-framework-target-headers.hmap
+[[36mBackyardBirdsData[0m] [1mRegisterExecutionPolicyException[0m BackyardBirdsData.framework
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds.SwiftFileList
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds_const_extract_protocols.json
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-OutputFileMap.json
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds.SwiftFileList
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds_const_extract_protocols.json
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds-OutputFileMap.json
+[[36mBackyard Birds[0m] [1mGenerate Asset Symbols[0m Assets.xcassets
+[[36mBackyard Birds[0m] [1mCompile Asset Catalog[0m Assets.xcassets
+[[36mBackyardBirdsData[0m] [1mTouching[0m BackyardBirdsData.framework
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.LinkFileList
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.LinkFileList
+[[36mLayeredArtworkLibrary[0m] [1mLinking[0m LayeredArtworkLibrary.o
+[[36mLayeredArtworkLibrary[0m] [1mLinking[0m LayeredArtworkLibrary.o
+[[36mLayeredArtworkLibrary[0m] [1mCreate Universal Binary[0m LayeredArtworkLibrary.o
+[[36mBackyard Birds[0m] [1mCompiling[0m AppScreen.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PrefersTabNavigationEnvironmentKey.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantsSearchResults.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdBrain.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodShop.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodShopShelf.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m EditAccountForm.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardGridItem.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodPickerSheet.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdsSearchSuggestions.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdsSearchResults.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodHappinessIndicator.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AppSidebarList.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantsNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantSummaryRow.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardSupplyIndicator.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AccountNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardDetailView.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardBirdsShopViewModifier.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m NewBirdIndicatorCard.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodProductIcon.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m ContentView.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AppTabView.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodHappinessIndicator.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AppSidebarList.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantsNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantSummaryRow.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardSupplyIndicator.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AccountNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardDetailView.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardBirdsShopViewModifier.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m NewBirdIndicatorCard.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PassStatus.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BestBirdFoodValueBadge.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardSearchSuggestion.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AppDetailColumn.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PassStatus.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BestBirdFoodValueBadge.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardSearchSuggestion.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AppDetailColumn.swift
+[[36mBackyard Birds[0m] [1mCopy[0m arm64-apple-macos.swiftmodule -> Backyard_Birds.swiftmodule
+[[36mBackyard Birds[0m] [1mCopy[0m arm64-apple-macos.swiftdoc -> Backyard_Birds.swiftdoc
+[[36mBackyard Birds[0m] [1mCopy[0m arm64-apple-macos.abi.json -> Backyard_Birds.abi.json
+[[36mBackyard Birds[0m] [1mCopy[0m arm64-apple-macos.swiftsourceinfo -> Backyard_Birds.swiftsourceinfo
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantsSearchSuggestions.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m StoreMetrics.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardBirdsApp.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodQuantityBadge.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantsSearchSuggestions.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m StoreMetrics.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardBirdsApp.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodQuantityBadge.swift
+[[36mBackyard Birds[0m] [1mCopy[0m x86_64-apple-macos.swiftmodule -> Backyard_Birds.swiftmodule
+[[36mBackyard Birds[0m] [1mCopy[0m x86_64-apple-macos.swiftdoc -> Backyard_Birds.swiftdoc
+[[36mBackyard Birds[0m] [1mCopy[0m x86_64-apple-macos.abi.json -> Backyard_Birds.abi.json
+[[36mBackyard Birds[0m] [1mCopy[0m x86_64-apple-macos.swiftsourceinfo -> Backyard_Birds.swiftsourceinfo
+[[36mBackyard Birds[0m] [1mCompiling[0m AppScreen.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PrefersTabNavigationEnvironmentKey.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m PlantsSearchResults.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m GeneratedAssetSymbols.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardsSearchSuggestions.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardBirdsPassShop.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardGrid.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdGridItem.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdsNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardsSearchResults.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m RestorePurchasesButton.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m NewBirdIndicator.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdBrain.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodShop.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodShopShelf.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m EditAccountForm.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardGridItem.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodPickerSheet.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdsSearchSuggestions.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdsSearchResults.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardsSearchSuggestions.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardBirdsPassShop.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardGrid.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdGridItem.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdsNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardsSearchResults.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m RestorePurchasesButton.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m NewBirdIndicator.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BirdFoodProductIcon.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m BackyardNavigationStack.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m ContentView.swift
+[[36mBackyard Birds[0m] [1mCompiling[0m AppTabView.swift
+[[36mLayeredArtworkLibrary[0m] [1mRegisterExecutionPolicyException[0m LayeredArtworkLibrary.o
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m empty-LayeredArtworkLibrary.plist
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.LinkFileList
+[[36mLayeredArtworkLibrary[0m] [1mWrite Auxiliary File[0m LayeredArtworkLibrary.LinkFileList
+[[36mLayeredArtworkLibrary[0m] [1mLinking[0m LayeredArtworkLibrary
+[[36mLayeredArtworkLibrary[0m] [1mLinking[0m LayeredArtworkLibrary
+[[36mLayeredArtworkLibrary[0m] [1mProcessing[0m empty-LayeredArtworkLibrary.plist
+[[36mLayeredArtworkLibrary[0m] [1mCreate Universal Binary[0m LayeredArtworkLibrary
+[[36mLayeredArtworkLibrary[0m] [1mRegisterExecutionPolicyException[0m LayeredArtworkLibrary.framework
+[[36mLayeredArtworkLibrary[0m] [1mTouching[0m LayeredArtworkLibrary.framework
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.LinkFileList
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.LinkFileList
+[[36mBackyardBirdsUI[0m] [1mLinking[0m BackyardBirdsUI.o
+[[36mBackyardBirdsUI[0m] [1mLinking[0m BackyardBirdsUI.o
+[[36mBackyardBirdsUI[0m] [1mCreate Universal Binary[0m BackyardBirdsUI.o
+[[36mBackyardBirdsUI[0m] [1mRegisterExecutionPolicyException[0m BackyardBirdsUI.o
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m empty-BackyardBirdsUI.plist
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.LinkFileList
+[[36mBackyardBirdsUI[0m] [1mWrite Auxiliary File[0m BackyardBirdsUI.LinkFileList
+[[36mBackyardBirdsUI[0m] [1mLinking[0m BackyardBirdsUI
+[[36mBackyardBirdsUI[0m] [1mLinking[0m BackyardBirdsUI
+[[36mBackyardBirdsUI[0m] [1mProcessing[0m empty-BackyardBirdsUI.plist
+[[36mBackyardBirdsUI[0m] [1mCreate Universal Binary[0m BackyardBirdsUI
+[[36mBackyardBirdsUI[0m] [1mRegisterExecutionPolicyException[0m BackyardBirdsUI.framework
+[[36mBackyardBirdsUI[0m] [1mTouching[0m BackyardBirdsUI.framework
+[[36mWidgets[0m] [1mCopy[0m LayeredArtworkLibrary_LayeredArtworkLibrary.bundle -> LayeredArtworkLibrary_LayeredArtworkLibrary.bundle
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets.LinkFileList
+[[36mWidgets[0m] [1mWrite Auxiliary File[0m Widgets.LinkFileList
+[[36mWidgets[0m] [1mCopy[0m BackyardBirdsUI_BackyardBirdsUI.bundle -> BackyardBirdsUI_BackyardBirdsUI.bundle
+[[36mWidgets[0m] [1mCopy[0m BackyardBirdsData_BackyardBirdsData.bundle -> BackyardBirdsData_BackyardBirdsData.bundle
+[[36mWidgets[0m] [1mCompile XCStrings[0m Localizable.xcstrings
+[[36mWidgets[0m] [1mLinking[0m Widgets
+[[36mWidgets[0m] [1mLinking[0m Widgets
+[[36mWidgets[0m] [1mCompile XCStrings[0m InfoPlist.xcstrings
+[[36mWidgets[0m] [1mProcessing[0m Info.plist
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCopying[0m Localizable.strings
+[[36mWidgets[0m] [1mCopying[0m InfoPlist.strings
+[[36mWidgets[0m] [1mCreate Universal Binary[0m Widgets
+[[36mWidgets[0m] [1mCopy[0m LayeredArtworkLibrary.framework -> LayeredArtworkLibrary.framework
+[[36mWidgets[0m] [1mCopy[0m BackyardBirdsUI.framework -> BackyardBirdsUI.framework
+[[36mWidgets[0m] [1mCopy[0m BackyardBirdsData.framework -> BackyardBirdsData.framework
+[[36mWidgets[0m] [1mExtract App Intents Metadata[0m
+[[36mWidgets[0m] [1mRegisterExecutionPolicyException[0m Widgets.appex
+[[36mWidgets[0m] [1mTouching[0m Widgets.appex
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds.LinkFileList
+[[36mBackyard Birds[0m] [1mWrite Auxiliary File[0m Backyard\ Birds.LinkFileList
+[[36mBackyard Birds[0m] [1mCopy[0m LayeredArtworkLibrary_LayeredArtworkLibrary.bundle -> LayeredArtworkLibrary_LayeredArtworkLibrary.bundle
+[[36mBackyard Birds[0m] [1mCopy[0m BackyardBirdsData_BackyardBirdsData.bundle -> BackyardBirdsData_BackyardBirdsData.bundle
+[[36mBackyard Birds[0m] [1mCopy[0m BackyardBirdsUI_BackyardBirdsUI.bundle -> BackyardBirdsUI_BackyardBirdsUI.bundle
+[[36mBackyard Birds[0m] [1mCompile XCStrings[0m Localizable.xcstrings
+[[36mBackyard Birds[0m] [1mCompile XCStrings[0m InfoPlist.xcstrings
+[[36mBackyard Birds[0m] [1mLinking[0m Backyard\ Birds
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m InfoPlist.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mCopying[0m Localizable.strings
+[[36mBackyard Birds[0m] [1mLinking[0m Backyard\ Birds
+[[36mBackyard Birds[0m] [1mCreate Universal Binary[0m Backyard\ Birds
+[[36mBackyard Birds[0m] [1mCopy[0m Widgets.appex -> Widgets.appex
+[[36mBackyard Birds[0m] [1mCopy[0m BackyardBirdsUI.framework -> BackyardBirdsUI.framework
+[[36mBackyard Birds[0m] [1mCopy[0m LayeredArtworkLibrary.framework -> LayeredArtworkLibrary.framework
+[[36mBackyard Birds[0m] [1mCopy[0m BackyardBirdsData.framework -> BackyardBirdsData.framework
+[[36mBackyard Birds[0m] [1mProcessing[0m Backyard-Birds-Info.plist
+[[36mBackyard Birds[0m] [1mExtract App Intents Metadata[0m
+[36;1mnote: [0mMetadata extraction skipped. No AppIntents.framework dependency found. (in target 'Backyard Birds' from project 'Backyard Birds')
+[[36mBackyard Birds[0m] [1mValidate Embedded Binary[0m Widgets.appex
+[[36mBackyard Birds[0m] [1mRegisterExecutionPolicyException[0m Backyard\ Birds.app
+[[36mBackyard Birds[0m] [1mValidate[0m Backyard\ Birds.app
+[[36mBackyard Birds[0m] [1mTouching[0m Backyard\ Birds.app
+⚠️ [33mWidgets isn't code signed but requires entitlements. It is not possible to add entitlements to a binary without signing it. (in target 'Widgets' from project 'Backyard Birds')[0m
+⚠️ [33mBackyard Birds isn't code signed but requires entitlements. It is not possible to add entitlements to a binary without signing it. (in target 'Backyard Birds' from project 'Backyard Birds')[0m
+[32;1mBuild Succeeded[0m

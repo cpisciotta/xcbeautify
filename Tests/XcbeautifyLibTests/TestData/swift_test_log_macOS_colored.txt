@@ -1,0 +1,610 @@
+Test Suite 'All tests' started at 2024-10-09 16:48:58.587.
+Test Suite 'swift-testingPackageTests.xctest' started at 2024-10-09 16:48:58.588.
+Test Suite 'IssueTests' started at 2024-10-09 16:48:58.588.
+    [32m✔[0m testCastAsAnyProtocol (0.004 seconds)
+    [32m✔[0m testCEnumDescription (0.002 seconds)
+    [32m✔[0m testCollectionDifferenceSkippedForRanges (0.001 seconds)
+    [32m✔[0m testCollectionDifferenceSkippedForStrings (0.001 seconds)
+    [32m✔[0m testCollectionDifference (0.001 seconds)
+    [32m✔[0m testCustomTestStringConvertible (0.001 seconds)
+    [32m✔[0m testDescriptionProperties (0.000 seconds)
+    [32m✔[0m testEnumDescription (0.001 seconds)
+    [32m✔[0m testEnumWithCustomDescription (0.001 seconds)
+    [32m✔[0m testErrorCheckingWithExpect_mismatchedErrorDescription_nonVoid (0.001 seconds)
+    [32m✔[0m testErrorCheckingWithExpect_mismatchedErrorDescription (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithExpect_Mismatching (0.003 seconds)
+    [32m✔[0m testErrorCheckingWithExpect_ThrowingFromErrorMatcher (0.001 seconds)
+    [32m✔[0m testErrorCheckingWithExpectAsync_mismatchedErrorDescription_nonVoid (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithExpectAsync_mismatchedErrorDescription (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithExpectAsync_Mismatching (0.001 seconds)
+    [32m✔[0m testErrorCheckingWithExpectAsync_ThrowingFromErrorMatcher (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithExpectAsync (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithExpect (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithRequire_ThrowingFromErrorMatcher (0.000 seconds)
+    [32m✔[0m testErrorCheckingWithRequireAsync_ThrowingFromErrorMatcher (0.000 seconds)
+    [32m✔[0m testErrorPropertyNilForOtherIssueKinds (0.000 seconds)
+    [32m✔[0m testErrorPropertyValidForThrownErrors (0.000 seconds)
+    [32m✔[0m testErrorThrownFromExpect (0.001 seconds)
+    [32m✔[0m testExpectationValueLazyStringification (0.000 seconds)
+    [32m✔[0m testExpect (0.000 seconds)
+    [32m✔[0m testExpressionLiterals (0.001 seconds)
+    [32m✔[0m testExpressionRuntimeValueCapture (0.001 seconds)
+    [32m✔[0m testExpressionRuntimeValueChildren (0.001 seconds)
+    [32m✔[0m testFailBecauseOfError (0.000 seconds)
+    [32m✔[0m testFail (0.000 seconds)
+    [32m✔[0m testFailWithoutCurrentTest (0.000 seconds)
+    [32m✔[0m testGetSourceLocationProperty (0.000 seconds)
+    [32m✔[0m testIsAndAsComparisons (0.001 seconds)
+    [32m✔[0m testLazyExpectDoesNotEvaluateRightHandValue (0.000 seconds)
+    [32m✔[0m testLazyExpectEvaluatesRightHandValueWhenNeeded (0.000 seconds)
+    [32m✔[0m testMemberFunctionCall (0.001 seconds)
+    [32m✔[0m testMemberFunctionCallWithFunctionArgument (0.001 seconds)
+    [32m✔[0m testMemberFunctionCallWithInoutArgument (0.000 seconds)
+    [32m✔[0m testMemberFunctionCallWithLabel (0.000 seconds)
+    [32m✔[0m testNegatedExpressionsExpandToCaptureNegatedExpression (0.000 seconds)
+    [32m✔[0m testNegatedExpressionsHaveCorrectCapturedExpressions (0.000 seconds)
+    [32m✔[0m testNegatedExpressions (0.000 seconds)
+    [32m✔[0m testNilOptionalCallResult (0.000 seconds)
+    [32m✔[0m testNilOptionalOperand (0.000 seconds)
+    [32m✔[0m testOptionalOperand (0.000 seconds)
+    [32m✔[0m testOptionalUnwrappingMemberFunctionCall (0.000 seconds)
+    [32m✔[0m testOptionalUnwrappingWithCoalescing_Failure (0.000 seconds)
+    [32m✔[0m testOptionalUnwrappingWithCoalescing (0.000 seconds)
+    [32m✔[0m testOptionalUnwrapping (0.000 seconds)
+    [32m✔[0m testRequireOptionalMemberAccessEvaluatesToNil (0.000 seconds)
+    [32m✔[0m testRequire (0.000 seconds)
+    [32m✔[0m testSetSourceLocationProperty (0.000 seconds)
+    [32m✔[0m testThrowingMemberFunctionCall (0.000 seconds)
+Executed 54 tests, with 0 failures (0 unexpected) in 0.032 (0.033) seconds
+Test Suite 'KnownIssueTests' started at 2024-10-09 16:48:58.621.
+    [32m✔[0m testAsyncKnownIssueThatDoesNotAlwaysOccur (0.001 seconds)
+    [32m✔[0m testAsyncKnownIssueWithExpectCallAndCondition (0.001 seconds)
+    [32m✔[0m testAsyncKnownIssueWithExpectCall (0.001 seconds)
+    [32m✔[0m testAsyncKnownIssueWithFalsePrecondition (0.000 seconds)
+    [32m✔[0m testIssueIsKnownPropertyIsSetCorrectly (0.001 seconds)
+    [32m✔[0m testIssueIsKnownPropertyIsSetCorrectlyWithCustomIssueMatcher (0.001 seconds)
+    [32m✔[0m testKnownIssueOnDetachedTask (0.000 seconds)
+    [32m✔[0m testKnownIssueThatDoesNotAlwaysOccur (0.001 seconds)
+    [32m✔[0m testKnownIssueWithComment (0.000 seconds)
+    [32m✔[0m testKnownIssueWithExpectCallAndCondition (0.000 seconds)
+    [32m✔[0m testKnownIssueWithExpectCall (0.000 seconds)
+    [32m✔[0m testKnownIssueWithFalsePrecondition (0.000 seconds)
+    [32m✔[0m testUnexpectedErrorRecordsTwoIssues (0.001 seconds)
+Executed 13 tests, with 0 failures (0 unexpected) in 0.006 (0.006) seconds
+Test Suite 'ObjCClassTests' started at 2024-10-09 16:48:58.628.
+    [32m✔[0m testAsynchronousThrowing (0.000 seconds)
+    [32m✔[0m testAsynchronous (0.000 seconds)
+    [32m✔[0m testExplicitName (0.000 seconds)
+    [32m✔[0m testExplicitNameAsyncThrows (0.000 seconds)
+    [32m✔[0m testExplicitNameThrowsFunError: (0.000 seconds)
+    [32m✔[0m testExplicitNameWithBackticks (0.000 seconds)
+    [32m✔[0m testExplicitName (0.000 seconds)
+    [32m✔[0m testImplicitName (0.000 seconds)
+    [32m✔[0m testImplicitNameWithBackticks (0.000 seconds)
+    [32m✔[0m testThrowing (0.000 seconds)
+Executed 10 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'RunnerTests' started at 2024-10-09 16:48:58.629.
+    [32m✔[0m testAvailableWithDefinedAvailability ([33m0.068[0m seconds)
+    [32m✔[0m testAvailableWithSwiftVersion ([33m0.043[0m seconds)
+    [32m✔[0m testConditionTraitIsConstant (0.000 seconds)
+    [32m✔[0m testConditionTraitsAreEvaluatedOutermostToInnermost (0.010 seconds)
+    [32m✔[0m testDefaultInit ([33m0.043[0m seconds)
+    [32m✔[0m testDeprecated ([33m0.043[0m seconds)
+    [32m✔[0m testErrorThrownFromTest (0.001 seconds)
+    [32m✔[0m testErrorThrownWhileEvaluatingArguments ([33m0.043[0m seconds)
+    [32m✔[0m testExpectationCheckedEventHandlingWhenDisabled (0.000 seconds)
+    [32m✔[0m testExpectationCheckedEventHandlingWhenEnabled (0.000 seconds)
+    [32m✔[0m testFreeFunction (0.000 seconds)
+    [32m✔[0m testGeneratedPlan ([33m0.038[0m seconds)
+    [32m✔[0m testHardCodedPlan (0.013 seconds)
+    [32m✔[0m testInitialTaskLocalState (0.000 seconds)
+    [32m✔[0m testNoasyncTestsAreCallable ([33m0.043[0m seconds)
+    [32m✔[0m testObsoletedTestFunctions ([33m0.038[0m seconds)
+    [32m✔[0m testParameterizedTestWithNoCasesIsSkipped (0.000 seconds)
+    [32m✔[0m testPlanExcludesHiddenTests ([33m0.078[0m seconds)
+    [32m✔[0m testPoundIfFalseElseIfTestFunctionRuns ([33m0.042[0m seconds)
+    [32m✔[0m testPoundIfFalseElseTestFunctionRuns ([33m0.044[0m seconds)
+    [32m✔[0m testPoundIfFalseTestFunctionDoesNotRun ([33m0.047[0m seconds)
+    [32m✔[0m testPoundIfTrueTestFunctionRuns ([33m0.045[0m seconds)
+    [32m✔[0m testSerializedSortOrder ([33m0.044[0m seconds)
+    [32m✔[0m testSynchronousTestFunctionRunsInDefaultIsolationContext ([33m0.087[0m seconds)
+    [32m✔[0m testSynchronousTestFunctionRunsOnMainActorWhenEnforced ([33m0.087[0m seconds)
+    [32m✔[0m testTestActionIsRecordIssueDueToErrorThrownByConditionTrait (0.000 seconds)
+    [32m✔[0m testTestIsNotSkippedWithPassingConditionTraits (0.001 seconds)
+    [32m✔[0m testTestIsSkippedWhenDisabledWithComment (0.000 seconds)
+    [32m✔[0m testTestIsSkippedWhenDisabled (0.000 seconds)
+    [32m✔[0m testTestIsSkippedWithBlockingEnabledIfTrait (0.001 seconds)
+    [32m✔[0m testTestsProperty (0.000 seconds)
+    [32m✔[0m testUnavailableTestMessageIsCaptured ([33m0.038[0m seconds)
+    [32m✔[0m testUnavailableTestsAreSkipped ([33m0.043[0m seconds)
+    [32m✔[0m testYieldingError (0.000 seconds)
+    [32m✔[0m testYieldsIssueWhenErrorThrownFromParallelizedTest ([33m0.043[0m seconds)
+    [32m✔[0m testYieldsIssueWhenErrorThrownFromTestCase ([33m0.044[0m seconds)
+Executed 36 tests, with 0 failures (0 unexpected) in 1.030 (1.031) seconds
+Test Suite 'swift-testingPackageTests.xctest' passed at 2024-10-09 16:48:59.660.
+Executed 113 tests, with 0 failures (0 unexpected) in 1.069 (1.072) seconds
+Test Suite 'All tests' passed at 2024-10-09 16:48:59.660.
+Executed 113 tests, with 0 failures (0 unexpected) in 1.069 (1.073) seconds
+[1mTest run started.[0m
+Suite "Backtrace Tests" started
+Suite "Type Name Conflict Tests" started
+Suite "Test.Case.Argument.ID Tests" started
+Suite "Test.Snapshot tests" started
+Suite "TestDeclarationMacro Tests" started
+Suite "Unique Identifier Tests" started
+Suite "CError Tests" started
+Suite "TagMacro Tests" started
+Suite "Non-Copyable Tests" started
+Suite "Comment Tests" started
+Suite "ConditionMacro Tests" started
+Suite "SourceLocation Tests" started
+Suite "Test.Case.Argument Tests" started
+Suite "Bug Tests" started
+Suite "SkipInfo Tests" started
+Suite "Parallelization Trait Tests" started
+Suite NonXCTestCaseClassTests started
+Suite "Graph<K, V> Tests" started
+Suite "Cartesian Product Tests" started
+Suite "Issue Codable Conformance Tests" started
+Suite "Clock API Tests" started
+Suite "Test.Case Selection Tests" started
+Suite FoundationTests started
+Suite "zip Tests" started
+Suite "Event Tests" started
+Suite "Swift Package Manager Integration Tests" started
+Suite "Miscellaneous tests" started
+Suite "TimeLimitTrait Tests" started
+Suite IndependentlyRunnableTests started
+Suite "Expression.Value Tests" started
+Suite "Objective-C/XCTest Interop Tests" started
+Suite "Confirmation Tests" started
+Suite "Runner.Plan Tests" started
+Suite "Hidden Trait Tests" started
+Suite "TypeInfo Tests" started
+Suite "Runner.Plan-dumping Tests" started
+Suite "Runner.Plan.Snapshot tests" started
+Suite "CustomExecutionTrait Tests" started
+Suite "Runner.RuntimeState Tests" started
+Suite "Test.ID.Selection Tests" started
+Suite "Environment Tests" started
+Suite "CustomTestStringConvertible Tests" started
+Suite "Exit test tests" started
+Suite "Locked Tests" started
+Suite "FileHandle Tests" started
+Suite EventRecorderTests started
+Suite "ABI entry point tests" started
+Suite "Configuration.RepetitionPolicy Tests" started
+Suite "Tag/Tag List Tests" started
+Suite A started
+    [33m⊘[0m "Repeated calls to #expect() run in reasonable time" skipped (time-sensitive)
+    [33m⊘[0m "Dumping a Runner.Plan" skipped
+    [33m⚠️[0m  Test "Different kinds of functions are handled correctly" recorded an issue with 3 argument(s)
+    [33m⚠️[0m  Test "Different kinds of functions are handled correctly" recorded an issue with 3 argument(s)
+    [33m⚠️[0m  Test "Different kinds of functions are handled correctly" recorded an issue with 3 argument(s)
+    [33m⚠️[0m  Test "Different kinds of functions are handled correctly" recorded an issue with 3 argument(s)
+    [33m⚠️[0m  Test "Different kinds of functions are handled correctly" recorded an issue with 3 argument(s)
+    [32m✔[0m variadicCStringArguments() ([31m1.285[0m seconds)
+    [32m✔[0m "Test function does not conflict with local type names" ([31m1.285[0m seconds)
+    [32m✔[0m "Backtrace.current() is populated" ([31m1.285[0m seconds)
+    [32m✔[0m "Test function does not conflict with local type names" ([31m1.286[0m seconds)
+    [32m✔[0m parameterizedTestWithTrailingComment(value:) ([31m1.286[0m seconds)
+    [32m✔[0m "One Identifiable parameter" ([31m1.286[0m seconds)
+    [32m✔[0m "An unthrown error has no backtrace" ([31m1.286[0m seconds)
+    [32m✔[0m "Codable" ([31m1.286[0m seconds)
+    [32m✔[0m "Nil display name" ([31m1.286[0m seconds)
+    [32m✔[0m "Invalid tag expressions are detected" ([31m1.286[0m seconds)
+    [32m✔[0m "Invalid bug URLs are detected" ([31m1.286[0m seconds)
+    [32m✔[0m "comments property" ([31m1.286[0m seconds)
+    [32m✔[0m "tags property" ([31m1.286[0m seconds)
+    [32m✔[0m "associatedBugs property" ([31m1.286[0m seconds)
+    [32m✔[0m "Error diagnostics emitted on API misuse" ([31m1.286[0m seconds)
+    [32m✔[0m "Error diagnostics which include fix-its emitted on API misuse" ([31m1.287[0m seconds)
+    [32m✔[0m "Encoding/decoding" ([31m1.287[0m seconds)
+    [32m✔[0m "One Codable parameter" ([31m1.287[0m seconds)
+    [31m✖[0m [31m"Different kinds of functions are handled correctly" (1.288 seconds) 5 issue(s)[0m
+    [32m✔[0m "Warning diagnostics emitted on API misuse" ([31m1.287[0m seconds)
+    [32m✔[0m "Valid bug identifiers are allowed" ([31m1.288[0m seconds)
+    [32m✔[0m "One RawRepresentable parameter" ([31m1.288[0m seconds)
+    [32m✔[0m "Self. in @Test attribute is removed" ([31m1.288[0m seconds)
+    [32m✔[0m "Thrown NSError has a different backtrace than we generated" ([31m1.287[0m seconds)
+    [32m✔[0m "One CustomTestArgumentEncodable parameter" ([31m1.288[0m seconds)
+    [32m✔[0m "Error diagnostics emitted on API misuse" ([31m1.287[0m seconds)
+    [32m✔[0m "Availability attributes are captured" ([31m1.288[0m seconds)
+    [32m✔[0m mutateMe() ([31m1.287[0m seconds)
+    [32m✔[0m "Display name is preserved" ([31m1.288[0m seconds)
+    [32m✔[0m "@Tag macro" ([31m1.287[0m seconds)
+    [32m✔[0m "Thunk identifiers do not contain backticks" ([31m1.288[0m seconds)
+    [32m✔[0m "Valid tag expressions are allowed" ([31m1.288[0m seconds)
+    [32m✔[0m "CError.description property" ([31m1.288[0m seconds)
+    [32m✔[0m "Effects influence generated identifiers" ([31m1.287[0m seconds)
+    [32m✔[0m "Thunk identifiers do not contain arbitrary Unicode" ([31m1.288[0m seconds)
+    [32m✔[0m "Argument types influence generated identifiers" ([31m1.288[0m seconds)
+    [32m✔[0m consumeMe() ([31m1.288[0m seconds)
+    [32m✔[0m staticMe() ([31m1.287[0m seconds)
+    [32m✔[0m "Symbolication" ([31m1.288[0m seconds)
+    [32m✔[0m mangledTypeName() ([31m1.288[0m seconds)
+    [32m✔[0m "Body does not influence generated identifiers" ([31m1.288[0m seconds)
+    [32m✔[0m borrowMe() ([31m1.288[0m seconds)
+    [32m✔[0m "#require(as Bool?) suppresses its diagnostic" ([31m1.287[0m seconds)
+    [32m✔[0m "SourceLocation comparisons" ([31m1.287[0m seconds)
+    [32m✔[0m "#expect(false) and #require(false) warn they always fail" ([31m1.288[0m seconds)
+    [32m✔[0m "SourceLocation.line and .column properties" ([31m1.287[0m seconds)
+    [32m✔[0m "as! warns when used with #require()" ([31m1.288[0m seconds)
+    [32m✔[0m "as! warning is suppressed for explicit Bool and Optional casts" ([31m1.287[0m seconds)
+    [32m✔[0m testNotAnXCTestCaseMethod() ([31m1.288[0m seconds)
+    [32m✔[0m "SourceLocation.moduleName property" ([31m1.287[0m seconds)
+    [32m✔[0m "Bool(false) suppresses the warning about always failing" ([31m1.287[0m seconds)
+    [32m✔[0m "#require(Bool?) produces a diagnostic" ([31m1.288[0m seconds)
+    [32m✔[0m "SourceLocation.fileID property ignores middle components" ([31m1.287[0m seconds)
+    [32m✔[0m "#require() macro" ([31m1.288[0m seconds)
+    [32m✔[0m "#expect() macro" ([31m1.288[0m seconds)
+    [32m✔[0m "SourceLocation._filePath property" ([31m1.290[0m seconds)
+    [32m✔[0m "Unicode characters influence generated identifiers" ([31m1.292[0m seconds)
+    [32m✔[0m typeComparison() ([31m1.293[0m seconds)
+    [32m✔[0m "SourceLocation.description property" ([31m1.292[0m seconds)
+    [32m✔[0m "SourceLocation.fileID property" ([31m1.291[0m seconds)
+    [32m✔[0m "Explicitly nil comment" ([31m1.291[0m seconds)
+    [32m✔[0m "Test.associatedBugs property" ([31m1.291[0m seconds)
+    [32m✔[0m ".bug() with String" ([31m1.291[0m seconds)
+    [32m✔[0m ".bug() with UnsignedInteger" ([31m1.291[0m seconds)
+    [32m✔[0m "Bug hashing" ([31m1.291[0m seconds)
+    [32m✔[0m "comment property" ([31m1.292[0m seconds)
+    [32m✔[0m ".bug() with SignedInteger" ([31m1.292[0m seconds)
+    [32m✔[0m "#require(throws: Never.self) produces a diagnostic" ([31m1.293[0m seconds)
+    [32m✔[0m "Methods on non-XCTestCase subclasses are supported" ([31m1.293[0m seconds)
+    [32m✔[0m "sourceLocation property" ([31m1.293[0m seconds)
+    [32m✔[0m ".bug() with URL string" ([31m1.293[0m seconds)
+    [32m✔[0m "removeValue(at:keepingChildren:) function (removing root, sparse)" ([31m1.293[0m seconds)
+    [32m✔[0m "#expect(true) and #require(true) note they always pass" ([31m1.296[0m seconds)
+    [32m✔[0m "Encoding/decoding" ([31m1.296[0m seconds)
+    [32m✔[0m "updateValue(_:at:) function (no existing value)" ([31m1.295[0m seconds)
+    [32m✔[0m ".comment() factory method" ([31m1.295[0m seconds)
+    [32m✔[0m "insertValue(_:at:) function (no existing value)" ([31m1.295[0m seconds)
+    [32m✔[0m "init() (sparse)" ([31m1.296[0m seconds)
+    [32m✔[0m "updateValue(_:at:) function" ([31m1.296[0m seconds)
+    [32m✔[0m "compactMap(_:) function" ([31m1.296[0m seconds)
+    [32m✔[0m "SourceLocation.fileName property" ([31m1.296[0m seconds)
+    [32m✔[0m "subscript([K]) operator" ([31m1.296[0m seconds)
+    [32m✔[0m "insertValue(_:at:) function" ([31m1.296[0m seconds)
+    [32m✔[0m "flatMap(_:) function (async)" ([31m1.296[0m seconds)
+    [32m✔[0m "forEach(_:) function" ([31m1.296[0m seconds)
+    [32m✔[0m "removeValue(at:keepingChildren:) function (no value at key path)" ([31m1.296[0m seconds)
+    [32m✔[0m ".bug() is not recursively applied" ([31m1.296[0m seconds)
+    [32m✔[0m "insertValue(_:at:) function (no existing value, sparse)" ([31m1.295[0m seconds)
+    [32m✔[0m "mapValues(_:) function (async, recursively applied)" ([31m1.296[0m seconds)
+    [32m✔[0m "mapValues(_:) function (recursively applied)" ([31m1.295[0m seconds)
+    [32m✔[0m "mapValues(_:) function" ([31m1.296[0m seconds)
+    [32m✔[0m "compactMapValues(_:) function (async, recursively applied)" ([31m1.295[0m seconds)
+    [32m✔[0m "flatMap(_:) function" ([31m1.295[0m seconds)
+    [32m✔[0m "compactMapValues(_:) function" ([31m1.295[0m seconds)
+    [32m✔[0m "Cartesian product with empty first input is empty" ([31m1.296[0m seconds)
+    [32m✔[0m "subscript([K]) operator (sparse, mutating)" ([31m1.297[0m seconds)
+    [32m✔[0m "First element is correct" ([31m1.296[0m seconds)
+    [32m✔[0m "init(value:)" ([31m1.297[0m seconds)
+    [32m✔[0m "compactMapValues(_:) function (async)" ([31m1.297[0m seconds)
+    [32m✔[0m "CartesianProduct.underestimatedCount is clamped at .max" ([31m1.296[0m seconds)
+    [32m✔[0m "Comparing Bug instances" ([31m1.298[0m seconds)
+    [32m✔[0m "Cartesian product with empty second input is empty" ([31m1.296[0m seconds)
+    [32m✔[0m "mapValues(_:) function (async)" ([31m1.297[0m seconds)
+    [32m✔[0m "underestimatedCount and count properties" ([31m1.297[0m seconds)
+    [32m✔[0m sourceLocationPropertyGetter() ([31m1.297[0m seconds)
+    [32m✔[0m "removeValue(at:keepingChildren:) function (removing children)" ([31m1.297[0m seconds)
+    [32m✔[0m "takeValues(at:) function" ([31m1.297[0m seconds)
+    [32m✔[0m "removeValue(at:keepingChildren:) function (removing root, should have no effect)" ([31m1.297[0m seconds)
+    [32m✔[0m errorSnapshot() ([31m1.297[0m seconds)
+    [32m✔[0m "subscript([K]) operator (sparse)" ([31m1.297[0m seconds)
+    [32m✔[0m "#require(non-optional value) produces a diagnostic" ([31m1.299[0m seconds)
+    [32m✔[0m "Codable" ([31m1.297[0m seconds)
+    [32m✔[0m "Clock.minimumResolution property" ([31m1.297[0m seconds)
+    [32m✔[0m "Codable" ([31m1.297[0m seconds)
+    [32m✔[0m "Clock.Instant.nanoseconds(until:) method" ([31m1.297[0m seconds)
+    [32m✔[0m "Custom descriptions are the same" ([31m1.297[0m seconds)
+    [32m✔[0m "Casting Test.Clock.Instant to Date" ([31m1.296[0m seconds)
+    [32m✔[0m "init(value:children:)" ([31m1.296[0m seconds)
+    [32m✔[0m ".hidden trait" ([31m1.296[0m seconds)
+    [32m✔[0m "Capturing comments above #expect()/#require()" ([31m1.300[0m seconds)
+    [32m✔[0m "Event's and Event.Kinds's Codable Conformances" ([31m1.296[0m seconds)
+    [32m✔[0m "subgraph(at:)" ([31m1.297[0m seconds)
+    [32m✔[0m "map(_:) function" ([31m1.297[0m seconds)
+    [32m✔[0m sourceLocationPropertySetter() ([31m1.298[0m seconds)
+    [32m✔[0m "removeValue(at:keepingChildren:) function" ([31m1.299[0m seconds)
+    [32m✔[0m "--symbolicate-backtraces argument" ([31m1.300[0m seconds)
+    [32m✔[0m "forEach(_:) function (async)" ([31m1.300[0m seconds)
+    [32m✔[0m "--xunit-output argument (bad path)" ([31m1.301[0m seconds)
+    [32m✔[0m "--xunit-output argument (missing path)" ([31m1.300[0m seconds)
+    [32m✔[0m "--verbosity argument" ([31m1.300[0m seconds)
+    [32m✔[0m "EXIT_NO_TESTS_FOUND is unique" ([31m1.301[0m seconds)
+    [32m✔[0m "--parallel/--no-parallel argument" ([31m1.301[0m seconds)
+    [32m✔[0m "Clock.Instant.advanced(by:) and .duration(to:) methods" ([31m1.301[0m seconds)
+    [32m✔[0m "All elements of two ranges are equal" ([31m1.301[0m seconds)
+    [32m✔[0m "--verbose, --very-verbose, and --quiet arguments" ([31m1.301[0m seconds)
+    [32m✔[0m "Event.Contexts's Codable Conformances" ([31m1.302[0m seconds)
+    [32m✔[0m "--repeat-until pass argument (alone)" ([31m1.301[0m seconds)
+    [32m✔[0m "--repetitions and --repeat-until arguments" ([31m1.301[0m seconds)
+    [32m✔[0m "Unwrapping #require() macro" ([31m1.305[0m seconds)
+    [32m✔[0m "Multiple --filter arguments" ([31m1.301[0m seconds)
+    [32m✔[0m "--xunit-output argument (writes to file)" ([31m1.301[0m seconds)
+    [32m✔[0m "--configuration-path argument" ([31m1.302[0m seconds)
+    [32m✔[0m "--filter/--skip arguments and .hidden trait" ([31m1.304[0m seconds)
+    [32m✔[0m "Test.ID.parent property" ([31m1.304[0m seconds)
+    [32m✔[0m "--repeat-until fail argument (alone)" ([31m1.305[0m seconds)
+    [32m✔[0m "--filter or --skip argument with bad regex" ([31m1.305[0m seconds)
+    [32m✔[0m "--repeat-until argument with garbage value (alone)" ([31m1.306[0m seconds)
+    [32m✔[0m "Test.id property" ([31m1.301[0m seconds)
+    [32m✔[0m "--repetitions argument (alone)" ([31m1.306[0m seconds)
+    [32m✔[0m "Properties related to parameterization" ([31m1.307[0m seconds)
+    [32m✔[0m "failureBreakpoint() call" ([31m1.308[0m seconds)
+    [32m✔[0m "Test.ID.init() with no arguments" ([31m1.308[0m seconds)
+    [32m✔[0m "Test.sourceLocation.column is used when sorting" ([31m1.308[0m seconds)
+    [32m✔[0m "No --filter or --skip argument" ([31m1.302[0m seconds)
+    [32m✔[0m "Command line arguments are available" ([31m1.312[0m seconds)
+    [32m✔[0m "--filter argument" ([31m1.315[0m seconds)
+    [32m✔[0m "--skip argument" ([31m1.314[0m seconds)
+    [32m✔[0m "Test.all deduping" ([31m1.318[0m seconds)
+    [32m✔[0m "Issue.Kind.timeLimitExceeded.description property" ([31m1.318[0m seconds)
+    [32m✔[0m "Configuration.maximumTestTimeLimit property" ([31m1.318[0m seconds)
+    [32m✔[0m "Value reflecting an object with a reference to another object which has a cyclic back-reference the first" ([31m1.318[0m seconds)
+    [32m✔[0m "Value reflecting an object with multiple cyclic references" ([31m1.318[0m seconds)
+    [32m✔[0m "TimeoutError.description property" ([31m1.319[0m seconds)
+    [32m✔[0m "Configuration.defaultTestTimeLimit property set higher than maximum" ([31m1.319[0m seconds)
+    [32m✔[0m "Configuration.defaultTestTimeLimit property" ([31m1.321[0m seconds)
+    [32m✔[0m "Value reflecting a simple struct with one property" ([31m1.321[0m seconds)
+    [32m✔[0m "adjustedTimeLimit(configuration:) function" ([31m1.325[0m seconds)
+    [32m✔[0m "Summing values is consistent" ([31m1.329[0m seconds)
+    [32m✔[0m "Value reflecting an object with multiple non-cyclic references" ([31m1.326[0m seconds)
+    [32m✔[0m isImportedFromC() ([31m1.326[0m seconds)
+    [32m✔[0m "--event-stream-output-path argument (writes to a stream and can be read back)" ([31m1.329[0m seconds)
+    [32m✔[0m "Value reflecting an object with a cyclic reference to itself" ([31m1.327[0m seconds)
+    [32m✔[0m initWithType(type:expectedTypeInfo:) ([31m1.328[0m seconds)
+    [32m✔[0m isSwiftEnumeration() ([31m1.330[0m seconds)
+Suite "Runner.Plan-dumping Tests" passed after 1.341 seconds
+    [32m✔[0m "Count of cartesian product" ([31m1.340[0m seconds)
+    [32m✔[0m typeNameOfFunctionIsMungedCorrectly() ([31m1.337[0m seconds)
+    [32m✔[0m ".hidden trait" ([31m1.337[0m seconds)
+    [32m✔[0m eventPostingInTaskGroup() ([31m1.337[0m seconds)
+    [32m✔[0m ".timeLimit() factory method" ([31m1.337[0m seconds)
+    [32m✔[0m typeNameInExtensionIsMungedCorrectly() ([31m1.338[0m seconds)
+    [32m✔[0m mangledTypeName() ([31m1.338[0m seconds)
+    [32m✔[0m "One-element key path before two-element key path" ([31m1.337[0m seconds)
+    [32m✔[0m "Single-element key path" ([31m1.337[0m seconds)
+    [32m✔[0m "Long key path, then short key path, then medium key path" ([31m1.338[0m seconds)
+    [32m✔[0m "Short key path before long key path" ([31m1.338[0m seconds)
+    [32m✔[0m "Two-element key path before one-element key path" ([31m1.338[0m seconds)
+    [32m✔[0m "Inverted lookup" ([31m1.338[0m seconds)
+    [32m✔[0m "Long key path before short key path" ([31m1.339[0m seconds)
+    [32m✔[0m "Two peer key paths" ([31m1.338[0m seconds)
+    [32m✔[0m strings() ([31m0.473[0m seconds)
+    [32m✔[0m types() ([31m0.474[0m seconds)
+    [32m✔[0m "Cartesian products compare equal" ([31m1.343[0m seconds)
+    [32m✔[0m "Exit condition matching operators (==, !=, ===, !==)" ([31m0.468[0m seconds)
+    [32m✔[0m optionals() ([31m0.473[0m seconds)
+    [32m✔[0m "Mutating a value within withLock(_:)" ([31m0.437[0m seconds)
+    [32m✔[0m otherProtocols() ([31m0.474[0m seconds)
+    [32m✔[0m ranges() ([31m0.473[0m seconds)
+    [32m✔[0m "Can recognize opened pipe" ([31m0.152[0m seconds)
+    [32m✔[0m enumerations() ([31m0.474[0m seconds)
+    [32m✔[0m "Can get stdout" ([31m0.150[0m seconds)
+    [32m✔[0m "Can get stderr" ([31m0.153[0m seconds)
+    [32m✔[0m "Cannot write string to a read-only file" ([31m0.150[0m seconds)
+    [32m✔[0m "close() function" ([31m0.149[0m seconds)
+    [32m✔[0m "Cannot write bytes to a read-only file" ([31m0.150[0m seconds)
+    [32m✔[0m "Can recognize opened TTY" ([31m0.152[0m seconds)
+    [32m✔[0m "Can write to a file" ([31m0.148[0m seconds)
+    [32m✔[0m "/dev/null is not a TTY or pipe" ([31m0.148[0m seconds)
+    [32m✔[0m "fmemopen()'ed file is not a TTY or pipe" ([31m0.148[0m seconds)
+    [32m✔[0m "Init from invalid file descriptor" ([31m0.149[0m seconds)
+    [32m✔[0m "Can get file descriptor" ([31m0.152[0m seconds)
+    [32m✔[0m "Can close ends of a pipe" ([31m0.151[0m seconds)
+    [32m✔[0m "Get whole environment block" ([31m0.126[0m seconds)
+    [32m✔[0m "JUnitXMLRecorder counts issues without associated tests" ([31m0.126[0m seconds)
+    [32m✔[0m "JUnit XML omits time for skipped tests" ([31m0.127[0m seconds)
+    [32m✔[0m "HumanReadableOutputRecorder counts issues without associated tests" ([31m0.127[0m seconds)
+    [32m✔[0m "Can read from a file" ([31m0.155[0m seconds)
+    [32m✔[0m "Macro expansion is performed within a test function" ([31m1.371[0m seconds)
+    [32m✔[0m "Main actor isolation" ([31m1.679[0m seconds)
+    [32m✔[0m decodeEmptyConfiguration() ([31m0.436[0m seconds)
+    [32m✔[0m "Invalid tag color decoding" ([31m0.483[0m seconds)
+    [32m✔[0m "Tags as codable dictionary keys" ([31m0.484[0m seconds)
+    [32m✔[0m "Colors are read from disk" ([31m0.485[0m seconds)
+    [32m✔[0m "Tag.description property" ([31m0.485[0m seconds)
+    [32m✔[0m "Tag.List.description property" ([31m0.485[0m seconds)
+    [32m✔[0m "Tags can be parsed from user-provided strings" ([31m0.486[0m seconds)
+    [32m✔[0m "Encoding/decoding tags" ([31m0.486[0m seconds)
+    [32m✔[0m "No colors are read from a bad path" ([31m0.486[0m seconds)
+    [32m✔[0m ".tags() factory method with one tag" ([31m0.486[0m seconds)
+    [32m✔[0m "Tag color sorting" ([31m0.487[0m seconds)
+    [32m✔[0m ".tags() factory method with two tags" ([31m0.487[0m seconds)
+    [32m✔[0m "Test.tags property" ([31m0.487[0m seconds)
+    [32m✔[0m "Tag.List comparisons" ([31m0.487[0m seconds)
+    [32m✔[0m "Tag colors are converted to 16-color correctly" ([31m0.487[0m seconds)
+Suite "Type Name Conflict Tests" passed after 1.775 seconds
+    [32m✔[0m ".tags() factory method with colors" ([31m0.488[0m seconds)
+Suite "Test.Case.Argument.ID Tests" passed after 1.777 seconds
+Suite "TestDeclarationMacro Tests" failed after 1.778 seconds with 5 issue(s)
+Suite "TagMacro Tests" passed after 1.780 seconds
+Suite "Non-Copyable Tests" passed after 1.780 seconds
+Suite "CError Tests" passed after 1.781 seconds
+Suite "Unique Identifier Tests" passed after 1.781 seconds
+Suite "Bug Tests" passed after 1.783 seconds
+Suite "SkipInfo Tests" passed after 1.784 seconds
+Suite NonXCTestCaseClassTests passed after 1.998 seconds
+Suite "Graph<K, V> Tests" passed after 1.998 seconds
+Suite "Issue Codable Conformance Tests" passed after 2.340 seconds
+Suite FoundationTests passed after 2.341 seconds
+Suite "Event Tests" passed after 2.341 seconds
+    [32m✔[0m "Free function's name" ([31m2.336[0m seconds)
+    [32m✔[0m "Test suite type's name" ([31m2.337[0m seconds)
+    [32m✔[0m "list subcommand" ([31m2.338[0m seconds)
+    [32m✔[0m "list --verbose subcommand" ([31m2.337[0m seconds)
+    [32m✔[0m "Concurrent access (summing ten times) is consistent" ([31m2.340[0m seconds)
+    [32m✔[0m "Free function has custom display name" ([31m2.338[0m seconds)
+    [32m✔[0m "Cancelled tests can exit early (cancellation checking works)" ([31m2.338[0m seconds)
+Suite "Expression.Value Tests" passed after 2.347 seconds
+    [32m✔[0m "Member function has custom display name" ([31m2.343[0m seconds)
+    [32m✔[0m ".serialized trait is recursively applied" ([31m2.362[0m seconds)
+Suite "TypeInfo Tests" passed after 2.444 seconds
+    [32m✔[0m "Test.comments property" ([31m2.447[0m seconds)
+Suite "Hidden Trait Tests" passed after 2.454 seconds
+Suite "Test.ID.Selection Tests" passed after 2.457 seconds
+Suite "Locked Tests" passed after 2.461 seconds
+Suite "CustomTestStringConvertible Tests" passed after 2.460 seconds
+    [32m✔[0m "Static functions are nested at the same level as instance functions" ([31m2.456[0m seconds)
+    [32m✔[0m "Objective-C selectors are discovered" ([31m2.456[0m seconds)
+    [32m✔[0m "Unfiltered tests" ([31m2.456[0m seconds)
+    [32m✔[0m "Clock.Instant.durationSince1970 property" ([31m2.464[0m seconds)
+    [32m✔[0m "Clock.Instant basics" ([31m2.464[0m seconds)
+    [32m✔[0m "Creating a SuspendingClock.Instant from Test.Clock.Instant" ([31m2.465[0m seconds)
+    [32m✔[0m "Clock.Instant.timeComponentsSince1970 property" ([31m2.472[0m seconds)
+    [32m✔[0m "Clock.now property" ([31m2.474[0m seconds)
+    [32m✔[0m "Clock.sleep(until:tolerance:) method" ([31m2.473[0m seconds)
+Suite "ConditionMacro Tests" passed after 2.482 seconds
+    [32m✔[0m "timeLimit property" ([31m2.523[0m seconds)
+    [32m✔[0m "Exit test reports > 8 bits of the exit code" ([31m1.645[0m seconds)
+    [32m✔[0m "Writing requires contiguous storage" ([31m1.328[0m seconds)
+    [32m✔[0m "isParameterized property" ([31m2.537[0m seconds)
+Suite "Cartesian Product Tests" passed after 2.542 seconds
+    [32m✔[0m "isSuite property" ([31m2.543[0m seconds)
+    [32m✔[0m "v0 entry point listing tests only" ([31m1.275[0m seconds)
+Suite "Comment Tests" passed after 2.559 seconds
+    [32m✔[0m "Recursive trait application" ([31m2.551[0m seconds)
+    [32m✔[0m "SourceLocation.fileID property must be well-formed" ([31m2.557[0m seconds)
+Suite "Clock API Tests" passed after 2.566 seconds
+Suite A passed after 2.605 seconds
+Suite "Test.Snapshot tests" passed after 2.611 seconds
+    [32m✔[0m "Exit test can be main-actor-isolated" ([31m1.730[0m seconds)
+    [32m✔[0m "SourceLocation.line and column properties must be positive" ([31m2.608[0m seconds)
+Suite "FileHandle Tests" passed after 2.611 seconds
+    [32m✔[0m "Iteration count must be positive" ([31m1.365[0m seconds)
+    [32m✔[0m "Confirmation requires positive count" ([31m2.636[0m seconds)
+Suite IndependentlyRunnableTests passed after 2.662 seconds
+    [32m✔[0m "Read environment variable" ([31m0.105[0m seconds)
+    [32m✔[0m "Tags are recursively applied" ([31m1.459[0m seconds)
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+    [32m✔[0m "Custom execution trait throws an error" ([31m2.765[0m seconds)
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+⚠️ [33mthe Swift runtime was unable to demangle the type of field 'type'. the mangled type name is 'ypRi_s_XPXp': unknown error. this field will show up as an empty tuple in Mirrors[0m
+    [32m✔[0m "Test.parameters property" ([31m2.772[0m seconds)
+    [33m⚠️[0m  Test "Selected tests by ID" recorded an issue at PlanTests.swift:43:5: Expectation failed: !((plan.steps → [Testing.Runner.Plan.Step(test: Testing.Test(name: "SendableTests", displayName: nil, traits: [Testing.HiddenTrait()], sourceLocation: TestingTests/MiscellaneousTests.swift:62:2, containingTypeInfo: Optional(TestingTests.SendableTests), xcTestCompatibleSelector: nil, testCasesState: nil, parameters: nil, isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true))), Testing.Runner.Plan.Step(test: Testing.Test(name: "NestedSendableTests", displayName: nil, traits: [Testing.HiddenTrait(), Testing.HiddenTrait(), .namedConstant], sourceLocation: TestingTests/MiscellaneousTests.swift:81:4, containingTypeInfo: Optional(TestingTests.SendableTests.NestedSendableTests), xcTestCompatibleSelector: nil, testCasesState: nil, parameters: nil, isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true))), Testing.Runner.Plan.Step(test: Testing.Test(name: "succeeds()", displayName: nil, traits: [Testing.HiddenTrait(), Testing.HiddenTrait(), .namedConstant, Testing.HiddenTrait(), .anotherConstant], sourceLocation: TestingTests/MiscellaneousTests.swift:83:6, containingTypeInfo: Optional(TestingTests.SendableTests.NestedSendableTests), xcTestCompatibleSelector: nil, testCasesState: Optional(Testing.Test.(unknown context at $104958b84).TestCasesState.evaluated(Swift.AnySequence<Testing.Test.Case>(_box: Swift._SequenceBox<Testing.Test.Case.Generator<Swift.CollectionOfOne<()>>>))), parameters: Optional([]), isSynthesized: false), action: Testing.Runner.Plan.Action.run(options: Testing.Runner.Plan.Action.RunOptions(isParallelizationEnabled: true)))]).contains(where: { $0.test == outerTestType }) → true)
+    [32m✔[0m "Codable" ([31m2.772[0m seconds)
+    [32m✔[0m "Relative order of recursively applied traits" ([31m2.777[0m seconds)
+    [32m✔[0m "Combining test filter by ID with .unfiltered (rhs)" ([31m2.778[0m seconds)
+    [32m✔[0m "Excluded tests by ID" ([31m2.779[0m seconds)
+    [32m✔[0m "Multiple selected tests by ID" ([31m2.798[0m seconds)
+    [32m✔[0m "Combining test filter by ID with by tag" ([31m2.798[0m seconds)
+    [32m✔[0m "Combining test filter by ID with .unfiltered (lhs)" ([31m2.798[0m seconds)
+    [32m✔[0m "Typed thrown error captures backtrace" ([31m2.808[0m seconds)
+    [32m✔[0m "Thrown error captures backtrace" ([31m2.809[0m seconds)
+    [32m✔[0m "Thrown NSError captures backtrace" ([31m2.808[0m seconds)
+    [32m✔[0m "Custom source location argument to #expect()" ([31m2.808[0m seconds)
+    [31m✖[0m [31m"Selected tests by ID" (2.802 seconds) 1 issue(s)[0m
+Suite "Tag/Tag List Tests" passed after 2.820 seconds
+    [32m✔[0m "Multiple arguments conforming to CustomTestArgumentEncodable, passed to one parameter, selecting one case" ([31m2.815[0m seconds)
+    [32m✔[0m "Multiple arguments passed to one parameter, selecting one case" ([31m2.815[0m seconds)
+    [32m✔[0m "Multiple arguments conforming to RawRepresentable, passed to one parameter, selecting one case" ([31m2.816[0m seconds)
+    [32m✔[0m "Two collections, each with multiple arguments, passed to two parameters, selecting one case" ([31m2.815[0m seconds)
+    [32m✔[0m "Zipped collections are not combinatoric" ([31m2.815[0m seconds)
+    [32m✔[0m "Multiple arguments conforming to Identifiable, passed to one parameter, selecting one case" ([31m2.816[0m seconds)
+    [32m✔[0m "Multiple arguments passed to one parameter, selecting a subset of cases" ([31m2.816[0m seconds)
+    [32m✔[0m "Parameterizing over a collection with a poor underestimatedCount property" ([31m2.815[0m seconds)
+    [32m✔[0m "Parameterized cases are all executed (1 argument)" ([31m2.818[0m seconds)
+    [32m✔[0m "Execute code before and after a non-parameterized test." ([31m2.819[0m seconds)
+    [32m✔[0m "Execute code before and after a parameterized test." ([31m2.820[0m seconds)
+    [32m✔[0m runnerStateScopedEventHandler() ([31m2.820[0m seconds)
+    [32m✔[0m "Exit test without configured exit test handler" ([31m1.946[0m seconds)
+    [32m✔[0m "Issue counts are omitted on a successful test" ([31m1.605[0m seconds)
+Suite "Runner.Plan.Snapshot tests" passed after 2.832 seconds
+    [32m✔[0m "withKnownIssue {} with main actor isolation" ([31m2.834[0m seconds)
+    [32m✔[0m "Selected tests by any tag" ([31m2.825[0m seconds)
+    [32m✔[0m "One iteration (default behavior)" ([31m1.560[0m seconds)
+    [32m✔[0m "Mixed included and excluded tests by ID" ([31m2.830[0m seconds)
+Suite "Backtrace Tests" passed after 2.840 seconds
+    [32m✔[0m "Excluded tests by any tag" ([31m2.832[0m seconds)
+Suite "SourceLocation Tests" passed after 2.843 seconds
+    [32m✔[0m "Excluded tests by all tags" ([31m2.834[0m seconds)
+    [32m✔[0m "Selected tests by all tags" ([31m2.834[0m seconds)
+    [32m✔[0m "Combining test filters with .or" ([31m2.835[0m seconds)
+Suite "zip Tests" passed after 2.845 seconds
+Suite "Test.Case Selection Tests" passed after 2.845 seconds
+Suite "Runner.RuntimeState Tests" passed after 2.849 seconds
+    [32m✔[0m "Exit test forwards issues" ([31m1.972[0m seconds)
+    [32m✔[0m "Time limit exceeded event includes its associated Test" ([31m2.846[0m seconds)
+    [32m✔[0m "Test times out when overrunning .timeLimit() trait" ([31m2.846[0m seconds)
+    [32m✔[0m "Test times out when overrunning maximum time limit" ([31m2.846[0m seconds)
+    [32m✔[0m "Test times out when overrunning default time limit" ([31m2.846[0m seconds)
+    [32m✔[0m "Test does not block until end of time limit" ([31m2.847[0m seconds)
+    [32m✔[0m "Test suite types are runnable" ([31m2.849[0m seconds)
+    [32m✔[0m "One Dictionary element tuple (key, value) parameter" ([31m2.854[0m seconds)
+    [32m✔[0m "One parameter" ([31m2.853[0m seconds)
+    [32m✔[0m "One 2-tuple parameter" ([31m2.854[0m seconds)
+    [32m✔[0m "One 1-tuple parameter" ([31m2.855[0m seconds)
+    [32m✔[0m "Two parameters" ([31m2.856[0m seconds)
+    [32m✔[0m "--filter with no matches" ([31m2.852[0m seconds)
+    [32m✔[0m "Teardown occurs after child tests run" ([31m2.850[0m seconds)
+    [32m✔[0m "Successful confirmations" ([31m2.850[0m seconds)
+    [32m✔[0m "Two Dictionary element (key, value) parameters" ([31m2.856[0m seconds)
+    [32m✔[0m "Test cases of a disabled test are not evaluated" ([31m2.851[0m seconds)
+    [32m✔[0m "Unsuccessful confirmations" ([31m2.852[0m seconds)
+    [32m✔[0m "Verbose output" ([31m1.635[0m seconds)
+    [32m✔[0m "JUnitXMLRecorder outputs valid XML" ([31m1.636[0m seconds)
+    [32m✔[0m "XCTest test methods are currently unsupported" ([31m2.853[0m seconds)
+    [32m✔[0m "Titles of messages ('Test' vs. 'Suite') are determined correctly" ([31m1.637[0m seconds)
+    [32m✔[0m "Issue counts are summed correctly on run end" ([31m1.636[0m seconds)
+Suite "Test.Case.Argument Tests" passed after 2.863 seconds
+Suite "CustomExecutionTrait Tests" passed after 2.863 seconds
+Suite "Confirmation Tests" passed after 2.864 seconds
+    [32m✔[0m "Test times out when overrunning .timeLimit() trait (inherited)" ([31m2.855[0m seconds)
+Suite "Objective-C/XCTest Interop Tests" passed after 2.865 seconds
+Suite "Runner.Plan Tests" failed after 2.863 seconds with 1 issue(s)
+Suite "Swift Package Manager Integration Tests" passed after 2.864 seconds
+Suite "TimeLimitTrait Tests" passed after 2.865 seconds
+    [32m✔[0m v0() ([31m1.585[0m seconds)
+    [32m✔[0m v0_experimental() ([31m1.586[0m seconds)
+    [32m✔[0m "Quiet output" ([31m1.641[0m seconds)
+    [32m✔[0m "Issue counts are summed correctly on test end" ([31m1.642[0m seconds)
+    [32m✔[0m "Writing events" ([31m1.641[0m seconds)
+    [32m✔[0m "Free functions are runnable" ([31m2.862[0m seconds)
+    [32m✔[0m "Parameterized free functions are runnable" ([31m2.862[0m seconds)
+Suite EventRecorderTests passed after 2.870 seconds
+    [32m✔[0m "Read true environment flags" ([33m0.040[0m seconds)
+    [32m✔[0m "Iteration while issue recorded" ([31m1.593[0m seconds)
+    [32m✔[0m "Iteration until issue recorded" ([31m1.593[0m seconds)
+    [32m✔[0m "Parameterized cases are all executed (2 arguments)" ([31m2.863[0m seconds)
+    [32m✔[0m "Mock exit test handlers (failing)" ([31m1.990[0m seconds)
+    [32m✔[0m "Unconditional iteration" ([31m1.593[0m seconds)
+    [32m✔[0m "Mock exit test handlers (passing)" ([31m1.991[0m seconds)
+Suite "Configuration.RepetitionPolicy Tests" passed after 2.872 seconds
+    [32m✔[0m "Read false environment flags" (0.002 seconds)
+Suite "Environment Tests" passed after 2.874 seconds
+    [32m✔[0m "Instance methods are runnable" ([31m2.944[0m seconds)
+    [32m✔[0m "Exit tests (passing)" ([31m2.071[0m seconds)
+    [32m✔[0m "Parameterized member functions are runnable" ([31m3.098[0m seconds)
+Suite "Miscellaneous tests" passed after 3.107 seconds
+    [32m✔[0m "Exit tests (failing)" ([31m2.287[0m seconds)
+Suite "Exit test tests" passed after 3.170 seconds
+    [32m✔[0m ".serialized trait serializes parameterized test" ([31m3.434[0m seconds)
+Suite "Parallelization Trait Tests" passed after 3.440 seconds
+    [32m✔[0m "v0 experimental entry point with a large number of filter arguments" ([31m2.497[0m seconds)
+    [32m✔[0m "v0 entry point with a large number of filter arguments" ([31m2.505[0m seconds)
+Suite "ABI entry point tests" passed after 3.785 seconds
+Test run with 351 tests failed after 3.787 seconds with 6 issue(s)
