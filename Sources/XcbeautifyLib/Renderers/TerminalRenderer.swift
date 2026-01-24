@@ -7,7 +7,6 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-import Colorizer
 import Foundation
 
 struct TerminalRenderer: OutputRendering {
