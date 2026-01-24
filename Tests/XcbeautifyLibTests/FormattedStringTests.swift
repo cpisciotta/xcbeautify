@@ -74,6 +74,7 @@ import Testing
 
     // MARK: - Files
 
+    @Test(.disabled(if: .linux))
     func cleanBuildXcode15_1Colored() throws {
         let inputURL = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
         let outputURL = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1_colored", withExtension: "txt"))
