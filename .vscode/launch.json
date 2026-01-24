@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "name": "Debug xcbeautify",
+            "target": "xcbeautify",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug xcbeautify"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "name": "Release xcbeautify",
+            "target": "xcbeautify",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release xcbeautify"
+        }
+    ]
+}
