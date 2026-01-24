@@ -16,10 +16,6 @@ let package = Package(
             from: "1.5.0"
         ),
         .package(
-            url: "https://github.com/getGuaka/Colorizer.git",
-            from: "0.2.1"
-        ),
-        .package(
             url: "https://github.com/CoreOffice/XMLCoder.git",
             from: "0.17.1"
         ),
@@ -35,7 +31,6 @@ let package = Package(
         .target(
             name: "XcbeautifyLib",
             dependencies: [
-                "Colorizer",
                 "XMLCoder",
             ]
         ),
