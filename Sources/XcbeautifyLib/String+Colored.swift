@@ -54,7 +54,6 @@ private enum Style: Int {
 // MARK: - String Extensions
 
 extension String {
-
     // MARK: - Colors
 
     func red(if enabled: Bool = true) -> String {
@@ -88,7 +87,6 @@ extension String {
         guard enabled else { return self }
         return style(.italic)
     }
-
 }
 
 // MARK: - Colored Time and Deviation
