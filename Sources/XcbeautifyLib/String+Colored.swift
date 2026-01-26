@@ -54,53 +54,35 @@ private enum Style: Int {
 // MARK: - String Extensions
 
 extension String {
-    struct StringForegroundColorizer {
-        let string: String
 
-        var Red: String {
-            string.color(.red)
-        }
+    // MARK: - Colors
 
-        var Yellow: String {
-            string.color(.yellow)
-        }
-
-        var Green: String {
-            string.color(.green)
-        }
-
-        var Cyan: String {
-            string.color(.cyan)
-        }
+    func red() -> String {
+        color(.red)
     }
 
-    struct StringStyleColorizer {
-        let string: String
-
-        var Bold: String {
-            string.style(.bold)
-        }
-
-        var Italic: String {
-            string.style(.italic)
-        }
+    func yellow() -> String {
+        color(.yellow)
     }
 
-    var foreground: StringForegroundColorizer {
-        StringForegroundColorizer(string: self)
+    func green() -> String {
+        color(.green)
     }
 
-    var f: StringForegroundColorizer {
-        foreground
+    func cyan() -> String {
+        color(.cyan)
     }
 
-    var style: StringStyleColorizer {
-        StringStyleColorizer(string: self)
+    // MARK: - Styles
+
+    func bold() -> String {
+        style(.bold)
     }
 
-    var s: StringStyleColorizer {
-        style
+    func italic() -> String {
+        style(.italic)
     }
+
 }
 
 // MARK: - Colored Time and Deviation
@@ -109,14 +91,14 @@ extension String {
     func coloredTime() -> String {
         guard let time = Double(self) else { return self }
         if time < 0.025 { return self }
-        if time < 0.100 { return f.Yellow }
-        return f.Red
+        if time < 0.100 { return yellow() }
+        return red()
     }
 
     func coloredDeviation() -> String {
         guard let deviation = Double(self) else { return self }
         if deviation < 1 { return self }
-        if deviation < 10 { return f.Yellow }
-        return f.Red
+        if deviation < 10 { return yellow() }
+        return red()
     }
 }
