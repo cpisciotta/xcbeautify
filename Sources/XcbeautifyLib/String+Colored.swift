@@ -57,30 +57,36 @@ extension String {
 
     // MARK: - Colors
 
-    func red() -> String {
-        color(.red)
+    func red(if enabled: Bool = true) -> String {
+        guard enabled else { return self }
+        return color(.red)
     }
 
-    func yellow() -> String {
-        color(.yellow)
+    func yellow(if enabled: Bool = true) -> String {
+        guard enabled else { return self }
+        return color(.yellow)
     }
 
-    func green() -> String {
-        color(.green)
+    func green(if enabled: Bool = true) -> String {
+        guard enabled else { return self }
+        return color(.green)
     }
 
-    func cyan() -> String {
-        color(.cyan)
+    func cyan(if enabled: Bool = true) -> String {
+        guard enabled else { return self }
+        return color(.cyan)
     }
 
     // MARK: - Styles
 
-    func bold() -> String {
-        style(.bold)
+    func bold(if enabled: Bool = true) -> String {
+        guard enabled else { return self }
+        return style(.bold)
     }
 
-    func italic() -> String {
-        style(.italic)
+    func italic(if enabled: Bool = true) -> String {
+        guard enabled else { return self }
+        return style(.italic)
     }
 
 }
