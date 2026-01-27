@@ -133,39 +133,39 @@ extension OutputRendering {
     func formatAnalyze(group: AnalyzeCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Analyzing".bold()) \(filename)" : "[\(target)] Analyzing \(filename)"
+        return "[\(target.cyan(if: colored))] \("Analyzing".bold(if: colored)) \(filename)"
     }
 
     func formatCheckDependencies() -> String {
-        colored ? "Check dependencies".bold() : "Check dependencies"
+        "Check dependencies".bold(if: colored)
     }
 
     func formatCleanRemove(group: CleanRemoveCaptureGroup) -> String {
         let directory = group.directory
-        return colored ? "\("Cleaning".bold()) \(directory)" : "Cleaning \(directory)"
+        return "\("Cleaning".bold(if: colored)) \(directory)"
     }
 
     func formatCodeSign(group: CodesignCaptureGroup) -> String {
         let command = "Signing"
         let sourceFile = group.file
-        return colored ? command.bold() + " " + sourceFile.lastPathComponent : command + " " + sourceFile.lastPathComponent
+        return command.bold(if: colored) + " " + sourceFile.lastPathComponent
     }
 
     func formatCodeSignFramework(group: CodesignFrameworkCaptureGroup) -> String {
         let frameworkPath = group.frameworkPath
-        return colored ? "\("Signing".bold()) \(frameworkPath)" : "Signing \(frameworkPath)"
+        return "\("Signing".bold(if: colored)) \(frameworkPath)"
     }
 
     func formatCompile(group: any CompileFileCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Compiling".bold()) \(filename)" : "[\(target)] Compiling \(filename)"
+        return "[\(target.cyan(if: colored))] \("Compiling".bold(if: colored)) \(filename)"
     }
 
     func formatCompileAssetCatalog(group: CompileAssetCatalogCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Compile Asset Catalog".bold()) \(filename)" : "[\(target)] Compile Asset Catalog \(filename)"
+        return "[\(target.cyan(if: colored))] \("Compile Asset Catalog".bold(if: colored)) \(filename)"
     }
 
     func formatCompileCommand(group: CompileCommandCaptureGroup) -> String? {
@@ -175,7 +175,7 @@ extension OutputRendering {
     func formatCompileXCStrings(group: CompileXCStringsCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Compile XCStrings".bold()) \(filename)" : "[\(target)] Compile XCStrings \(filename)"
+        return "[\(target.cyan(if: colored))] \("Compile XCStrings".bold(if: colored)) \(filename)"
     }
 
     func formatCompilationResult(group: CompilationResultCaptureGroup) -> String? {
@@ -189,14 +189,14 @@ extension OutputRendering {
     func formatCopy(group: any CopyCaptureGroup) -> String {
         let filename = group.file
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Copying".bold()) \(filename)" : "[\(target)] Copying \(filename)"
+        return "[\(target.cyan(if: colored))] \("Copying".bold(if: colored)) \(filename)"
     }
 
     func formatCopyFiles(group: CopyFilesCaptureGroup) -> String {
         let target = group.target
         let firstFilename = group.firstFilename
         let secondFilename = group.secondFilename
-        return colored ? "[\(target.cyan())] \("Copy".bold()) \(firstFilename) -> \(secondFilename)" : "[\(target)] Copy \(firstFilename) -> \(secondFilename)"
+        return "[\(target.cyan(if: colored))] \("Copy".bold(if: colored)) \(firstFilename) -> \(secondFilename)"
     }
 
     func formatCreateBuildDirectory(group: CreateBuildDirectoryCaptureGroup) -> String? {
@@ -206,7 +206,7 @@ extension OutputRendering {
     func formatCreateUniversalBinary(group: CreateUniversalBinaryCaptureGroup) -> String {
         let target = group.target
         let filename = group.filename
-        return colored ? "[\(target.cyan())] \("Create Universal Binary".bold()) \(filename)" : "[\(target)] Create Universal Binary \(filename)"
+        return "[\(target.cyan(if: colored))] \("Create Universal Binary".bold(if: colored)) \(filename)"
     }
 
     func formatCursor(group: CursorCaptureGroup) -> String? {
@@ -230,12 +230,12 @@ extension OutputRendering {
     }
 
     func formatGenerateCoverageData(group: GenerateCoverageDataCaptureGroup) -> String {
-        colored ? "\("Generating".bold()) code coverage data..." : "Generating code coverage data..."
+        "\("Generating".bold(if: colored)) code coverage data..."
     }
 
     func formatCoverageReport(group: GeneratedCoverageReportCaptureGroup) -> String {
         let filePath = group.coverageReportFilePath
-        return colored ? "\("Generated".bold()) code coverage report: \(filePath.italic())" : "Generated code coverage report: \(filePath)"
+        return "\("Generated".bold(if: colored)) code coverage report: \(filePath.italic(if: colored))"
     }
 
     func formatDetectedEncoding(group: DetectedEncodingCaptureGroup) -> String? {
@@ -244,25 +244,25 @@ extension OutputRendering {
 
     func formatExtractAppIntents(group: ExtractAppIntentsMetadataCaptureGroup) -> String {
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Extract App Intents Metadata".bold())" : "[\(target)] Extract App Intents Metadata"
+        return "[\(target.cyan(if: colored))] \("Extract App Intents Metadata".bold(if: colored))"
     }
 
     func formatGenerateAssetSymbols(group: GenerateAssetSymbolsCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Generate Asset Symbols".bold()) \(filename)" : "[\(target)] Generate Asset Symbols \(filename)"
+        return "[\(target.cyan(if: colored))] \("Generate Asset Symbols".bold(if: colored)) \(filename)"
     }
 
     func formatGenerateDsym(group: GenerateDSYMCaptureGroup) -> String {
         let dsym = group.dsym
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Generating".bold()) \(dsym)" : "[\(target)] Generating \(dsym)"
+        return "[\(target.cyan(if: colored))] \("Generating".bold(if: colored)) \(dsym)"
     }
 
     func formatLibtool(group: LibtoolCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Building library".bold()) \(filename)" : "[\(target)] Building library \(filename)"
+        return "[\(target.cyan(if: colored))] \("Building library".bold(if: colored)) \(filename)"
     }
 
     func formatLinkerUndefinedSymbolLocation(group: LinkerUndefinedSymbolLocationCaptureGroup) -> String? {
@@ -272,10 +272,10 @@ extension OutputRendering {
     func formatLinking(group: LinkingCaptureGroup) -> String {
         let target = group.target
         #if os(Linux)
-        return colored ? "[\(target.cyan())] \("Linking".bold())" : "[\(target)] Linking"
+        return "[\(target.cyan(if: colored))] \("Linking".bold(if: colored))"
         #else
         let filename = group.binaryFilename
-        return colored ? "[\(target.cyan())] \("Linking".bold()) \(filename)" : "[\(target)] Linking \(filename)"
+        return "[\(target.cyan(if: colored))] \("Linking".bold(if: colored)) \(filename)"
         #endif
     }
 
@@ -286,11 +286,11 @@ extension OutputRendering {
     func formatPackageCheckingOut(group: PackageCheckingOutCaptureGroup) -> String {
         let version = group.version
         let package = group.package
-        return colored ? "Checking out " + package.bold() + " @ " + version.green() : "Checking out \(package) @ \(version)"
+        return "Checking out " + package.bold(if: colored) + " @ " + version.green(if: colored)
     }
 
     func formatPackageEnd() -> String {
-        colored ? "Resolved source packages".bold().green() : "Resolved source packages"
+        "Resolved source packages".bold(if: colored).green(if: colored)
     }
 
     func formatPackageFetching(group: PackageFetchingCaptureGroup) -> String {
@@ -302,11 +302,11 @@ extension OutputRendering {
         let name = group.packageName
         let url = group.packageURL
         let version = group.packageVersion
-        return colored ? name.bold().cyan() + " - " + url.bold() + " @ " + version.green() : "\(name) - \(url) @ \(version)"
+        return name.bold().cyan(if: colored) + " - " + url.bold(if: colored) + " @ " + version.green(if: colored)
     }
 
     func formatPackageStart() -> String {
-        colored ? "Resolving Package Graph".bold().cyan() : "Resolving Package Graph"
+        "Resolving Package Graph".bold(if: colored).cyan(if: colored)
     }
 
     func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String {
@@ -315,18 +315,18 @@ extension OutputRendering {
     }
 
     func formatParallelTestingPassed(group: ParallelTestingPassedCaptureGroup) -> String {
-        colored ? group.wholeMessage.bold().green() : group.wholeMessage
+        group.wholeMessage.bold(if: colored).green(if: colored)
     }
 
     func formatParallelTestSuiteStarted(group: ParallelTestSuiteStartedCaptureGroup) -> String {
         let testSuite = group.suite
         let deviceDescription = " on '\(group.device)'"
         let heading = "Test Suite \(testSuite) started\(deviceDescription)"
-        return colored ? heading.bold().cyan() : heading
+        return heading.bold(if: colored).cyan(if: colored)
     }
 
     func formatParallelTestingStarted(group: ParallelTestingStartedCaptureGroup) -> String {
-        colored ? group.wholeMessage.bold().cyan() : group.wholeMessage
+        group.wholeMessage.bold(if: colored).cyan(if: colored)
     }
 
     func formatPhaseScriptExecution(group: PhaseScriptExecutionCaptureGroup) -> String {
@@ -334,12 +334,12 @@ extension OutputRendering {
         let target = group.target
         // Strip backslashed added by xcodebuild before spaces in the build phase name
         let strippedPhaseName = phaseName.replacingOccurrences(of: "\\ ", with: " ")
-        return colored ? "[\(target.cyan())] \("Running script".bold()) \(strippedPhaseName)" : "[\(target)] Running script \(strippedPhaseName)"
+        return "[\(target.cyan(if: colored))] \("Running script".bold(if: colored)) \(strippedPhaseName)"
     }
 
     func formatPhaseSuccess(group: PhaseSuccessCaptureGroup) -> String {
         let phase = group.phase.capitalized
-        return colored ? "\(phase) Succeeded".bold().green() : "\(phase) Succeeded"
+        return"\(phase) Succeeded".bold(if: colored).green(if: colored)
     }
 
     func formatPrecompileModule(group: PrecompileModuleCaptureGroup) -> String? {
@@ -349,7 +349,7 @@ extension OutputRendering {
     func formatPreprocess(group: PreprocessCaptureGroup) -> String {
         let target = group.target
         let file = group.file
-        return colored ? "[\(target.cyan())] \("Preprocess".bold()) \(file)" : "[\(target)] Preprocess \(file)"
+        return "[\(target.cyan(if: colored))] \("Preprocess".bold(if: colored)) \(file)"
     }
 
     func formatProcessInfoPlist(group: ProcessInfoPlistCaptureGroup) -> String {
@@ -357,28 +357,28 @@ extension OutputRendering {
 
         if let target = group.target {
             // Xcode 10+ output
-            return colored ? "[\(target.cyan())] \("Processing".bold()) \(plist)" : "[\(target)] \("Processing") \(plist)"
+            return "[\(target.cyan(if: colored))] \("Processing".bold(if: colored)) \(plist)"
         } else {
             // Xcode 9 output
-            return colored ? "Processing".bold() + " " + plist : "Processing" + " " + plist
+            return "Processing".bold(if: colored) + " " + plist
         }
     }
 
     func formatProcessPch(group: ProcessPchCaptureGroup) -> String {
         let filename = group.file
         let target = group.buildTarget
-        return colored ? "[\(target.cyan())] \("Processing".bold()) \(filename)" : "[\(target)] Processing \(filename)"
+        return "[\(target.cyan(if: colored))] \("Processing".bold(if: colored)) \(filename)"
     }
 
     func formatProcessPchCommand(group: ProcessPchCommandCaptureGroup) -> String {
         let filePath = group.filePath
-        return colored ? "\("Preprocessing".bold()) \(filePath)" : "Preprocessing \(filePath)"
+        return "\("Preprocessing".bold(if: colored)) \(filePath)"
     }
 
     func formatRegisterExecutionPolicyException(group: RegisterExecutionPolicyExceptionCaptureGroup) -> String {
         let target = group.target
         let filename = group.filename
-        return colored ? "[\(target.cyan())] \("RegisterExecutionPolicyException".bold()) \(filename)" : "[\(target)] RegisterExecutionPolicyException \(filename)"
+        return "[\(target.cyan(if: colored))] \("RegisterExecutionPolicyException".bold(if: colored)) \(filename)"
     }
 
     func formatScanDependencies(group: ScanDependenciesCaptureGroup) -> String? {
@@ -392,14 +392,14 @@ extension OutputRendering {
     func formatSigning(group: SigningCaptureGroup) -> String {
         let target = group.target
         let file = group.file
-        return colored ? "[\(target.cyan())] \("Signing".bold()) \(file)" : "[\(target)] Signing \(file)"
+        return "[\(target.cyan(if: colored))] \("Signing".bold(if: colored)) \(file)"
     }
 
     func formatTargetCommand(command: String, group: any TargetCaptureGroup) -> String {
         let target = group.target
         let project = group.project
         let configuration = group.configuration
-        return colored ? "\(command) target \(target) of project \(project) with configuration \(configuration)".bold().cyan() : "\(command) target \(target) of project \(project) with configuration \(configuration)"
+        return "\(command) target \(target) of project \(project) with configuration \(configuration)".bold(if: colored).cyan(if: colored)
     }
 
     func formatTestCasesStarted(group: TestCaseStartedCaptureGroup) -> String? {
@@ -429,25 +429,25 @@ extension OutputRendering {
     func formatTouch(group: TouchCaptureGroup) -> String {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Touching".bold()) \(filename)" : "[\(target)] Touching \(filename)"
+        return "[\(target.cyan(if: colored))] \("Touching".bold(if: colored)) \(filename)"
     }
 
     func formatValidate(group: ValidateCaptureGroup) -> String {
         let target = group.target
         let filename = group.filename
-        return colored ? "[\(target.cyan())] \("Validate".bold()) \(filename)" : "[\(target)] Validate \(filename)"
+        return "[\(target.cyan(if: colored))] \("Validate".bold(if: colored)) \(filename)"
     }
 
     func formatValidateEmbeddedBinary(group: ValidateEmbeddedBinaryCaptureGroup) -> String {
         let target = group.target
         let filename = group.filename
-        return colored ? "[\(target.cyan())] \("Validate Embedded Binary".bold()) \(filename)" : "[\(target)] Validate Embedded Binary \(filename)"
+        return "[\(target.cyan(if: colored))] \("Validate Embedded Binary".bold(if: colored)) \(filename)"
     }
 
     func formatWriteAuxiliaryFile(group: WriteAuxiliaryFileCaptureGroup) -> String? {
         let filename = group.filename
         let target = group.target
-        return colored ? "[\(target.cyan())] \("Write Auxiliary File".bold()) \(filename)" : "[\(target)] Write Auxiliary File \(filename)"
+        return "[\(target.cyan(if: colored))] \("Write Auxiliary File".bold(if: colored)) \(filename)"
     }
 
     func formatWriteFile(group: WriteFileCaptureGroup) -> String? {
@@ -682,7 +682,7 @@ extension OutputRendering {
     }
 
     func formatSwiftTestingRunStarted(group: SwiftTestingRunStartedCaptureGroup) -> String {
-        colored ? group.message.bold() : group.message
+        group.message.bold(if: colored)
     }
 
     func formatSwiftTestingRunCompletion(group: SwiftTestingRunCompletionCaptureGroup) -> String {
@@ -765,10 +765,10 @@ extension OutputRendering {
     }
 
     func formatNote(group: NoteCaptureGroup) -> String {
-        colored ? "note: ".bold().cyan() + group.note : "note: " + group.note
+        "note: ".bold(if: colored).cyan(if: colored) + group.note
     }
 
     func formatDataModelCodegen(group: DataModelCodegenCaptureGroup) -> String {
-        colored ? "[\(group.target.cyan())] \("DataModelCodegen".bold()) \(group.path)" : "[\(group.target)] DataModelCodegen \(group.path)"
+        "[\(group.target.cyan(if: colored))] \("DataModelCodegen".bold(if: colored)) \(group.path)"
     }
 }
