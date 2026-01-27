@@ -110,19 +110,19 @@ import Testing
     // MARK: - Direct Formatting (No Parser)
 
     @Test func boldAndGreenInMiddleNotAtStart() {
-        let formatted = "Prefix: \("Middle".s.Bold.f.Green) :Suffix"
+        let formatted = "Prefix: \("Middle".bold().green()) :Suffix"
         let expected = "Prefix: \u{001B}[32;1mMiddle\u{001B}[0m :Suffix"
         #expect(formatted == expected)
     }
 
     @Test func boldAndCyanInMiddleNotAtStart() {
-        let formatted = "Note: \("Important".s.Bold.f.Cyan) details"
+        let formatted = "Note: \("Important".bold().cyan()) details"
         let expected = "Note: \u{001B}[36;1mImportant\u{001B}[0m details"
         #expect(formatted == expected)
     }
 
     @Test func boldAndYellowSegmentWithResetBeforeSuffix() {
-        let formatted = "Warning -> \("Segment".s.Bold.f.Yellow) continues"
+        let formatted = "Warning -> \("Segment".bold().yellow()) continues"
         let expected = "Warning -> \u{001B}[33;1mSegment\u{001B}[0m continues"
         #expect(formatted == expected)
     }
@@ -130,19 +130,19 @@ import Testing
     // MARK: - Interpolation: Color + Italic, Color mid-string, Style mid-string
 
     @Test func coloredItalicSegmentInMiddle() {
-        let formatted = "Begin \("Core".s.Italic.f.Cyan) End"
+        let formatted = "Begin \("Core".italic().cyan()) End"
         let expected = "Begin \u{001B}[36;3mCore\u{001B}[0m End"
         #expect(formatted == expected)
     }
 
     @Test func colorsMidStringOnly() {
-        let formatted = "Alpha \("Beta".f.Red) Gamma"
+        let formatted = "Alpha \("Beta".red()) Gamma"
         let expected = "Alpha \u{001B}[31mBeta\u{001B}[0m Gamma"
         #expect(formatted == expected)
     }
 
     @Test func stylesMidStringBoldOnly() {
-        let formatted = "Foo \("Bar".s.Bold) Baz"
+        let formatted = "Foo \("Bar".bold()) Baz"
         let expected = "Foo \u{001B}[1mBar\u{001B}[0m Baz"
         #expect(formatted == expected)
     }
@@ -150,13 +150,13 @@ import Testing
     // MARK: - Color then Style (order reversed)
 
     @Test func colorThenBoldMidString() {
-        let formatted = "Start \("Middle".f.Red.s.Bold) End"
+        let formatted = "Start \("Middle".red().bold()) End"
         let expected = "Start \u{001B}[1;31mMiddle\u{001B}[0m End"
         #expect(formatted == expected)
     }
 
     @Test func colorThenItalicMidString() {
-        let formatted = "Begin \("Core".f.Cyan.s.Italic) Finish"
+        let formatted = "Begin \("Core".cyan().italic()) Finish"
         let expected = "Begin \u{001B}[3;36mCore\u{001B}[0m Finish"
         #expect(formatted == expected)
     }
@@ -534,37 +534,37 @@ import Testing
     // MARK: - Additional Mid-String Formatting Coverage
 
     @Test func multipleStyledSegmentsInOneLine() {
-        let formatted = "A B \("One".s.Bold.f.Cyan) B \("Two".f.Red)"
+        let formatted = "A B \("One".bold().cyan()) B \("Two".red())"
         let expected = "A B \u{001B}[36;1mOne\u{001B}[0m B \u{001B}[31mTwo\u{001B}[0m"
         #expect(formatted == expected)
     }
 
     @Test func adjacentStyledChunksResetBetween() {
-        let formatted = "X \("AA".s.Bold.f.Green)\("BB".f.Red) Y"
+        let formatted = "X \("AA".bold().green())\("BB".red()) Y"
         let expected = "X \u{001B}[32;1mAA\u{001B}[0m\u{001B}[31mBB\u{001B}[0m Y"
         #expect(formatted == expected)
     }
 
     @Test func italicOnlyMidString() {
-        let formatted = "pre \("mid".s.Italic) post"
+        let formatted = "pre \("mid".italic()) post"
         let expected = "pre \u{001B}[3mmid\u{001B}[0m post"
         #expect(formatted == expected)
     }
 
     @Test func colorThenBoldWithSpacesInToken() {
-        let formatted = "Lead \("Bold Words".f.Cyan.s.Bold)"
+        let formatted = "Lead \("Bold Words".cyan().bold())"
         let expected = "Lead \u{001B}[1;36mBold Words\u{001B}[0m"
         #expect(formatted == expected)
     }
 
     @Test func styledTokenSurroundedByPunctuation() {
-        let formatted = "Start [\("Center".s.Bold.f.Yellow)] End"
+        let formatted = "Start [\("Center".bold().yellow())] End"
         let expected = "Start [\u{001B}[33;1mCenter\u{001B}[0m] End"
         #expect(formatted == expected)
     }
 
     @Test func numbersInsideColoredToken() {
-        let formatted = "N \("v2.1.0".f.Red) Z"
+        let formatted = "N \("v2.1.0".red()) Z"
         let expected = "N \u{001B}[31mv2.1.0\u{001B}[0m Z"
         #expect(formatted == expected)
     }
