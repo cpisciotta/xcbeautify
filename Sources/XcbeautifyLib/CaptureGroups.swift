@@ -1868,7 +1868,7 @@ struct SwiftMergeGeneratedHeadersCaptureGroup: CaptureGroup {
 }
 
 struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .error
 
     /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
@@ -1888,7 +1888,7 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
 }
 
 struct SwiftTestingIssueCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .error
 
     /// Regular expression to capture the symbol, test description, and issue details.
     /// $1 = test description
@@ -2049,7 +2049,7 @@ struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup, JUnitParallelReportab
 }
 
 struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .error
 
     /// Regular expression to capture the failure of a test case.
     /// $1 = test name

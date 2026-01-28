@@ -123,4 +123,45 @@ import XcbeautifyLib
 
         #expect(collector == ["test started", "error", "test completed", "result"])
     }
+
+    @Test func testCaseFilteredInQuietMode() throws {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
+            collector.append(content)
+        }
+
+        sut.write(.testCase, "test case passed")
+        sut.write(.testCase, "test case failed")
+        sut.write(.result, "result")
+
+        // In quiet mode without CI, .testCase is filtered out
+        #expect(collector == ["result"])
+    }
+
+    @Test func testCaseShownInQuietModeOnCI() throws {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: true) { content in
+            collector.append(content)
+        }
+
+        sut.write(.testCase, "test case passed")
+        sut.write(.testCase, "test case failed")
+        sut.write(.result, "result")
+
+        // In quiet mode with CI, .testCase is shown
+        #expect(collector == ["test case passed", "test case failed", "result"])
+    }
+
+    @Test func errorAlwaysShownInQuietMode() throws {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
+            collector.append(content)
+        }
+
+        sut.write(.error, "failed test error")
+        sut.write(.result, "result")
+
+        // .error is always shown, even in quiet mode without CI
+        #expect(collector == ["failed test error", "result"])
+    }
 }
