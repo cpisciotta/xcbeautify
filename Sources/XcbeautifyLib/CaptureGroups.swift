@@ -1870,11 +1870,10 @@ struct SwiftMergeGeneratedHeadersCaptureGroup: CaptureGroup {
 struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
-    /// Regular expression to capture the symbol, test description, and number of arguments.
-    /// Matches lines ending with "arguments." (no location details).
+    /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
     /// $2 = number of arguments
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?\.$"#)
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?(?!.* at \S+\.\w+:\d+:\d+)"#)
 
     let testDescription: String
     let numberOfArguments: Int?
