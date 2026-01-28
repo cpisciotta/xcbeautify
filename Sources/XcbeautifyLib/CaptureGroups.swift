@@ -1907,6 +1907,68 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
     }
 }
 
+struct SwiftTestingParameterizedTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture parameterized test failure.
+    /// $1 = test name
+    /// $2 = number of test cases
+    /// $3 = time taken in seconds
+    /// $4 = number of issues
+    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (?!run\s)(.*) with (\d+) test cases? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+
+    let testName: String
+    let numberOfTestCases: Int
+    let timeTaken: String
+    let numberOfIssues: Int
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let testName = groups[safe: 0],
+              let numberOfTestCases = groups[safe: 1].flatMap(Int.init),
+              let timeTaken = groups[safe: 2],
+              let numberOfIssues = groups[safe: 3].flatMap(Int.init) else { return nil }
+        self.testName = testName
+        self.numberOfTestCases = numberOfTestCases
+        self.timeTaken = timeTaken
+        self.numberOfIssues = numberOfIssues
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken, failure: .init(message: "Swift testing test failed"))
+        return .failingTest(testCase)
+    }
+}
+
+struct SwiftTestingParameterizedTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture parameterized test success.
+    /// $1 = test name
+    /// $2 = number of test cases
+    /// $3 = time taken in seconds
+    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (?!run\s)(.*) with (\d+) test cases? passed after ([\d.]+) seconds\.$"#)
+
+    let testName: String
+    let numberOfTestCases: Int
+    let timeTaken: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let testName = groups[safe: 0],
+              let numberOfTestCases = groups[safe: 1].flatMap(Int.init),
+              let timeTaken = groups[safe: 2] else { return nil }
+        self.testName = testName
+        self.numberOfTestCases = numberOfTestCases
+        self.timeTaken = timeTaken
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken)
+        return .testCasePassed(testCase)
+    }
+}
+
 struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
@@ -2162,68 +2224,6 @@ struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
         guard let testName = groups[safe: 0] else { return nil }
         self.testName = testName
         wholeMessage = "Test \(testName) started."
-    }
-}
-
-struct SwiftTestingParameterizedTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
-
-    /// Regular expression to capture parameterized test success.
-    /// $1 = test name
-    /// $2 = number of test cases
-    /// $3 = time taken in seconds
-    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (?!run\s)(.*) with (\d+) test cases? passed after ([\d.]+) seconds\.$"#)
-
-    let testName: String
-    let numberOfTestCases: Int
-    let timeTaken: String
-
-    init?(groups: [String]) {
-        assert(groups.count >= 3)
-        guard let testName = groups[safe: 0],
-              let numberOfTestCases = groups[safe: 1].flatMap(Int.init),
-              let timeTaken = groups[safe: 2] else { return nil }
-        self.testName = testName
-        self.numberOfTestCases = numberOfTestCases
-        self.timeTaken = timeTaken
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken)
-        return .testCasePassed(testCase)
-    }
-}
-
-struct SwiftTestingParameterizedTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
-
-    /// Regular expression to capture parameterized test failure.
-    /// $1 = test name
-    /// $2 = number of test cases
-    /// $3 = time taken in seconds
-    /// $4 = number of issues
-    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (?!run\s)(.*) with (\d+) test cases? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
-
-    let testName: String
-    let numberOfTestCases: Int
-    let timeTaken: String
-    let numberOfIssues: Int
-
-    init?(groups: [String]) {
-        assert(groups.count >= 4)
-        guard let testName = groups[safe: 0],
-              let numberOfTestCases = groups[safe: 1].flatMap(Int.init),
-              let timeTaken = groups[safe: 2],
-              let numberOfIssues = groups[safe: 3].flatMap(Int.init) else { return nil }
-        self.testName = testName
-        self.numberOfTestCases = numberOfTestCases
-        self.timeTaken = timeTaken
-        self.numberOfIssues = numberOfIssues
-    }
-
-    func junitComponent() -> JUnitComponent {
-        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken, failure: .init(message: "Swift testing test failed"))
-        return .failingTest(testCase)
     }
 }
 
