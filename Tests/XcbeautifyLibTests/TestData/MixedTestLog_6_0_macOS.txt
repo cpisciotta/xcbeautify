@@ -24,5 +24,7 @@ Test Suite 'All tests' failed at 2025-08-10 01:38:41.939.
 ✔ Test testTrueIsTrue() passed after 0.001 seconds.
 ✘ Test testFailTrueIsFalse() recorded an issue at Test.swift:17:9: Expectation failed: true == false
 ✘ Test testFailTrueIsFalse() failed after 0.001 seconds with 1 issue.
+✔ Test parameterizedPassingTest(value:) with 3 test cases passed after 0.002 seconds.
+✘ Test parameterizedFailingTest(value:) with 3 test cases failed after 0.001 seconds with 3 issues.
 ✘ Suite SwiftTestingGroup failed after 0.001 seconds with 1 issue.
 ✘ Test run with 2 tests failed after 0.001 seconds with 1 issue.
