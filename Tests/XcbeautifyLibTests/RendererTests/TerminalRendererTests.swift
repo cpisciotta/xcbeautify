@@ -754,6 +754,18 @@ import Testing
         #expect(noColoredFormatted(input) == output)
     }
 
+    @Test func swiftTestingParameterizedTestPassed() {
+        let input = "✔ Test parameterizedPassingTest(value:) with 3 test cases passed after 0.002 seconds."
+        let output = "    ✔ parameterizedPassingTest(value:) with 3 test cases (0.002 seconds)"
+        #expect(noColoredFormatted(input) == output)
+    }
+
+    @Test func swiftTestingParameterizedTestFailed() {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let output = "    ✖ \"Named Parameterized Failing\" with 1 test case (0.001 seconds) 1 issue(s)"
+        #expect(noColoredFormatted(input) == output)
+    }
+
     @Test func swiftTestingTestSkipped() {
         let input = #"􀙟 Test "myTest" skipped."#
         let output = "    ⊘ \"myTest\" skipped"

@@ -727,6 +727,13 @@ import Testing
         #expect(formatted == expectedOutput)
     }
 
+    @Test func swiftTestingParameterizedTestFailed() {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::\"Named Parameterized Failing\" with 1 test case (0.001 seconds) 1 issue(s)"
+        #expect(formatted == expectedOutput)
+    }
+
     @Test func swiftTestingTestSkipped() {
         let input = #"􀙟 Test myTest() skipped."#
         let formatted = logFormatted(input)

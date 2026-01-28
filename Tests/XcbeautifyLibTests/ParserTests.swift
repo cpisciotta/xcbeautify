@@ -275,6 +275,23 @@ import Testing
         #expect(captureGroup.timeTaken == "3.0")
     }
 
+    @Test func matchSwiftTestingParameterizedTestFailed() throws {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingParameterizedTestFailedCaptureGroup)
+        #expect(captureGroup.testName == "\"Named Parameterized Failing\"")
+        #expect(captureGroup.timeTaken == "0.001")
+        #expect(captureGroup.numberOfIssues == 1)
+        #expect(captureGroup.numberOfTestCases == 1)
+    }
+
+    @Test func matchSwiftTestingParameterizedTestPassed() throws {
+        let input = "✔ Test parameterizedPassingTest(value:) with 3 test cases passed after 0.002 seconds."
+        let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingParameterizedTestPassedCaptureGroup)
+        #expect(captureGroup.testName == "parameterizedPassingTest(value:)")
+        #expect(captureGroup.timeTaken == "0.002")
+        #expect(captureGroup.numberOfTestCases == 3)
+    }
+
     @Test func matchSwiftTestingTestSkipped() throws {
         let input = #"􀙟 Test "SkippedTest" skipped."#
         let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingTestSkippedCaptureGroup)
