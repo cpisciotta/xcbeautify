@@ -295,6 +295,24 @@ import Testing
         #expect(captureGroup.issueDetails == "PlanTests.swift:43:5: Expectation failed")
     }
 
+    @Test func matchSwiftTestingParameterizedIssue() throws {
+        let input = #"✘ Test parameterizedFailingTest(value:) recorded an issue with 1 argument value → 1 at InfrastructureTests.swift:41:5: Expectation failed: (value → 1) > 10"#
+        let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingParameterizedIssueCaptureGroup)
+        #expect(captureGroup.testName == "parameterizedFailingTest(value:)")
+        #expect(captureGroup.numberOfArguments == 1)
+        #expect(captureGroup.argumentDetails == "value → 1")
+        #expect(captureGroup.issueDetails == "InfrastructureTests.swift:41:5: Expectation failed: (value → 1) > 10")
+    }
+
+    @Test func matchSwiftTestingParameterizedIssueWithNamedTest() throws {
+        let input = #"✘ Test "Named Parameterized Failing" recorded an issue with 1 argument name → "alpha" at InfrastructureTests.swift:54:5: Expectation failed: (name.count → 5) > 10"#
+        let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingParameterizedIssueCaptureGroup)
+        #expect(captureGroup.testName == "\"Named Parameterized Failing\"")
+        #expect(captureGroup.numberOfArguments == 1)
+        #expect(captureGroup.argumentDetails == "name → \"alpha\"")
+        #expect(captureGroup.issueDetails == "InfrastructureTests.swift:54:5: Expectation failed: (name.count → 5) > 10")
+    }
+
     @Test func matchSwiftTestingPassingArgument() throws {
         let input = #"􀟈 Passing 2 arguments input → "argument1, argument2""#
         let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingPassingArgumentCaptureGroup)

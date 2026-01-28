@@ -1872,8 +1872,8 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
 
     /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
-    /// $2 = number of arguments (optional)
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?"#)
+    /// $2 = number of arguments
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (.*?) recorded an issue with (\d+) arguments?(?!.* at \S+\.\w+:\d+:\d+)"#)
 
     let testDescription: String
     let numberOfArguments: Int?
@@ -1904,6 +1904,36 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
 
         self.testDescription = testDescription
         issueDetails = groups[safe: 1]
+    }
+}
+
+/// Captures parameterized test issue with arguments and location details.
+/// Example: `✘ Test parameterizedFailingTest(value:) recorded an issue with 1 argument value → 1 at File.swift:41:5: Expectation failed`
+struct SwiftTestingParameterizedIssueCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture parameterized test issue with arguments and location.
+    /// $1 = test name
+    /// $2 = number of arguments
+    /// $3 = argument details (e.g., "value → 1")
+    /// $4 = file location and message (e.g., "File.swift:41:5: Expectation failed")
+    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (.*?) recorded an issue with (\d+) arguments? (.*?) at (.+)$"#)
+
+    let testName: String
+    let numberOfArguments: Int
+    let argumentDetails: String
+    let issueDetails: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let testName = groups[safe: 0],
+              let numberOfArguments = groups[safe: 1].flatMap(Int.init),
+              let argumentDetails = groups[safe: 2],
+              let issueDetails = groups[safe: 3] else { return nil }
+        self.testName = testName
+        self.numberOfArguments = numberOfArguments
+        self.argumentDetails = argumentDetails
+        self.issueDetails = issueDetails
     }
 }
 
