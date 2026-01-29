@@ -2318,6 +2318,17 @@ struct TestCaseStartedCaptureGroup: CaptureGroup {
     }
 }
 
+/// Matches the "Test session results, code coverage, and logs:" line.
+/// The path to the .xcresult file is on the following line (retrieved via `additionalLines()`).
+struct TestSessionResultsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+    static let regex = XCRegex(pattern: #"^Test session results, code coverage, and logs:$"#)
+
+    init?(groups: [String]) {
+        // No capture groups - just matches the line
+    }
+}
+
 /// This output is printed when running
 /// `xcodebuild test -scheme xcbeautify-Package -destination 'platform=macOS,arch=arm64'`.
 struct TestingStartedCaptureGroup: CaptureGroup {
