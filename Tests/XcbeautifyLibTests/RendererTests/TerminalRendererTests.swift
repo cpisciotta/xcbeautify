@@ -778,6 +778,12 @@ import Testing
         #expect(noColoredFormatted(input) == output)
     }
 
+    @Test func swiftTestingParameterizedIssue() {
+        let input = #"✘ Test parameterizedFailingTest(value:) recorded an issue with 1 argument value → 1 at InfrastructureTests.swift:41:5: Expectation failed: (value → 1) > 10"#
+        let output = #"    [!]  Test parameterizedFailingTest(value:) recorded an issue with 1 argument(s) value → 1 at InfrastructureTests.swift:41:5: Expectation failed: (value → 1) > 10"#
+        #expect(noColoredFormatted(input) == output)
+    }
+
     @Test func swiftDriverTarget() throws {
         let input = #"SwiftDriver BackyardBirdsData normal arm64 com.apple.xcode.tools.swift.compiler (in target \'BackyardBirdsData\' from project \'BackyardBirdsData\')"#
         #expect(noColoredFormatted(input) == nil)

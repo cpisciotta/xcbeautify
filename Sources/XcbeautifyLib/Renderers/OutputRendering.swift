@@ -123,6 +123,7 @@ protocol OutputRendering {
     func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
     func formatSwiftTestingIssueArguments(group: SwiftTestingIssueArgumentCaptureGroup) -> String
+    func formatSwiftTestingParameterizedIssue(group: SwiftTestingParameterizedIssueCaptureGroup) -> String
     func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String?
     func formatSwiftDriverCompilationTarget(group: SwiftDriverCompilationTarget) -> String?
     func formatMkDirCaptureGroup(group: MkDirCaptureGroup) -> String?
@@ -742,6 +743,11 @@ extension OutputRendering {
         let argumentsInfo = group.numberOfArguments.map { " with \($0) argument(s)" } ?? ""
         let message = " Test \(group.testDescription) recorded an issue\(argumentsInfo)"
         return colored ? Format.indent + Symbol.warning.yellow() + " " + message : Format.indent + Symbol.asciiWarning + " " + message
+    }
+
+    func formatSwiftTestingParameterizedIssue(group: SwiftTestingParameterizedIssueCaptureGroup) -> String {
+        let message = " Test \(group.testName) recorded an issue with \(group.numberOfArguments) argument(s) \(group.argumentDetails) at \(group.issueDetails)"
+        return colored ? Format.indent + Symbol.warning.f.Yellow + " " + message : Format.indent + Symbol.asciiWarning + " " + message
     }
 
     func formatSwiftTestingPassingArgument(group: SwiftTestingPassingArgumentCaptureGroup) -> String? {

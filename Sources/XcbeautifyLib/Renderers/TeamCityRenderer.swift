@@ -207,6 +207,11 @@ struct TeamCityRenderer: OutputRendering {
         let arguments = group.numberOfArguments.map { "(\($0) argument(s))" } ?? ""
         return outputTeamCityWarning(text: "Recorded an issue", details: arguments)
     }
+
+    func formatSwiftTestingParameterizedIssue(group: SwiftTestingParameterizedIssueCaptureGroup) -> String {
+        let details = "(\(group.numberOfArguments) argument(s) \(group.argumentDetails) at \(group.issueDetails))"
+        return outputTeamCityWarning(text: "Recorded an issue", details: details)
+    }
 }
 
 private extension String {
