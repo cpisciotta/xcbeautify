@@ -7,7 +7,6 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
-import Colorizer
 import Foundation
 
 struct TeamCityRenderer: OutputRendering {
@@ -49,7 +48,7 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatError(group: any ErrorCaptureGroup) -> String {
         let errorMessage = group.wholeError
-        let outputString = colored ? Symbol.error + " " + errorMessage.f.Red : Symbol.asciiError + " " + errorMessage
+        let outputString = colored ? Symbol.error + " " + errorMessage.red() : Symbol.asciiError + " " + errorMessage
 
         return outputTeamCityError(text: "Build error", details: outputString)
     }
@@ -63,9 +62,9 @@ struct TeamCityRenderer: OutputRendering {
         let cursor: String = additionalLines() ?? ""
         let outputString = colored ?
             """
-            \(Symbol.error) \(filePath): \(reason.f.Red)
+            \(Symbol.error) \(filePath): \(reason.red())
             \(line)
-            \(cursor.f.Cyan)
+            \(cursor.cyan())
             """
             :
             """
@@ -82,7 +81,7 @@ struct TeamCityRenderer: OutputRendering {
         let filePath = group.filePath
         return outputTeamCityError(
             text: "File missing error",
-            details: colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
+            details: colored ? "\(Symbol.error) \(filePath): \(reason.red())" : "\(Symbol.asciiError) \(filePath): \(reason)"
         )
     }
 
@@ -90,14 +89,14 @@ struct TeamCityRenderer: OutputRendering {
         let warningMessage = group.wholeWarning
         return outputTeamCityWarning(
             text: "Xcodebuild warning",
-            details: colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
+            details: colored ? Symbol.warning + " " + warningMessage.yellow() : Symbol.asciiWarning + " " + warningMessage
         )
     }
 
     func formatUndefinedSymbolLocation(group: UndefinedSymbolLocationCaptureGroup) -> String {
         outputTeamCityWarning(
             text: "Undefined symbol location",
-            details: colored ? Symbol.warning + " " + group.wholeWarning.f.Yellow : Symbol.asciiWarning + " " + group.wholeWarning
+            details: colored ? Symbol.warning + " " + group.wholeWarning.yellow() : Symbol.asciiWarning + " " + group.wholeWarning
         )
     }
 
@@ -110,9 +109,9 @@ struct TeamCityRenderer: OutputRendering {
         let cursor: String = additionalLines() ?? ""
         let outputString = colored ?
             """
-            \(Symbol.warning)  \(filePath): \(reason.f.Yellow)
+            \(Symbol.warning)  \(filePath): \(reason.yellow())
             \(line)
-            \(cursor.f.Green)
+            \(cursor.green())
             """
             :
             """
@@ -129,7 +128,7 @@ struct TeamCityRenderer: OutputRendering {
         let message = group.warningMessage
         return outputTeamCityWarning(
             text: "Linker warning",
-            details: colored ? "\(Symbol.warning) \(prefix.f.Yellow)\(message.f.Yellow)" : "\(Symbol.asciiWarning) \(prefix)\(message)"
+            details: colored ? "\(Symbol.warning) \(prefix.yellow())\(message.yellow())" : "\(Symbol.asciiWarning) \(prefix)\(message)"
         )
     }
 
@@ -137,7 +136,7 @@ struct TeamCityRenderer: OutputRendering {
         let reason = group.reason
         return outputTeamCityWarning(
             text: "Linker error. Undefined symbols error",
-            details: colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
+            details: colored ? "\(Symbol.error) \(reason.red())" : "\(Symbol.asciiError) \(reason)"
         )
     }
 
@@ -146,7 +145,7 @@ struct TeamCityRenderer: OutputRendering {
         let reason = group.reason
         return outputTeamCityError(
             text: "Linker error. Duplicated symbols",
-            details: colored ? "\(Symbol.error) \(reason.f.Red)" : "\(Symbol.asciiError) \(reason)"
+            details: colored ? "\(Symbol.error) \(reason.red())" : "\(Symbol.asciiError) \(reason)"
         )
     }
 
@@ -154,7 +153,7 @@ struct TeamCityRenderer: OutputRendering {
         let warningMessage = group.wholeWarning
         return outputTeamCityWarning(
             text: "Codesign error",
-            details: colored ? Symbol.warning + " " + warningMessage.f.Yellow : Symbol.asciiWarning + " " + warningMessage
+            details: colored ? Symbol.warning + " " + warningMessage.yellow() : Symbol.asciiWarning + " " + warningMessage
         )
     }
 
@@ -162,7 +161,7 @@ struct TeamCityRenderer: OutputRendering {
         let message = group.warningMessage
         return outputTeamCityWarning(
             text: "Duplicated localized string key",
-            details: colored ? Symbol.warning + " " + message.f.Yellow : Symbol.asciiWarning + " " + message
+            details: colored ? Symbol.warning + " " + message.yellow() : Symbol.asciiWarning + " " + message
         )
     }
 
@@ -183,7 +182,7 @@ struct TeamCityRenderer: OutputRendering {
 
     func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String {
         let message = "\(group.testName) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
-        let outputString = colored ? message.f.Red : message
+        let outputString = colored ? message.red() : message
         return outputTeamCityError(text: "Test failed", details: outputString)
     }
 
@@ -195,12 +194,12 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {
-        let testName = colored ? group.testName.f.Yellow : group.testName
+        let testName = colored ? group.testName.yellow() : group.testName
         return outputTeamCityWarning(text: "Test skipped", details: testName)
     }
 
     func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String {
-        let testName = colored ? group.testName.f.Yellow : group.testName
+        let testName = colored ? group.testName.yellow() : group.testName
         let reason = group.reason.map { " (\($0))" } ?? ""
         let outputString = "\(testName)\(reason)"
         return outputTeamCityWarning(text: "Test skipped", details: outputString)

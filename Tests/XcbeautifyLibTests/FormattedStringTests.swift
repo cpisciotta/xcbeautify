@@ -7,6 +7,7 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
+import Foundation
 import Testing
 @testable import XcbeautifyLib
 
@@ -25,32 +26,103 @@ import Testing
     private let boldStart = "\u{001B}[1m"
     private let reset = "\u{001B}[0m"
 
-    private let coloredFormatter = Formatter(colored: true, renderer: .terminal, additionalLines: { nil })
+    private let formatter = Formatter(colored: true, renderer: .terminal, additionalLines: { nil })
     private let parser = Parser()
 
     // MARK: - Helper Methods
 
     private func coloredFormatted(_ string: String) -> String? {
         guard let captureGroup = parser.parse(line: string) else { return nil }
-        return coloredFormatter.format(captureGroup: captureGroup)
+        return formatter.format(captureGroup: captureGroup)
+    }
+
+    private func logContents(
+        of fileURL: URL
+    ) throws -> [String] {
+        try String(contentsOf: fileURL, encoding: .utf8)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: .newlines)
+    }
+
+    private func formatFile(
+        withURL fileURL: URL
+    ) throws -> [String] {
+        var buildLog: [String] = try logContents(of: fileURL)
+
+        let beautifier = XCBeautifier(
+            colored: true,
+            renderer: .terminal,
+            preserveUnbeautifiedLines: false,
+            additionalLines: {
+                buildLog.removeFirst()
+            }
+        )
+
+        var actualOutput = [String]()
+
+        // TODO: Should use whatever `xcbeautify` executable uses too.
+        while !buildLog.isEmpty {
+            let _line = buildLog.removeFirst()
+            let line = _line.trimmingCharacters(in: .whitespaces)
+            if !line.isEmpty, let formatted = beautifier.format(line: line) {
+                actualOutput.append(formatted)
+            }
+        }
+
+        return actualOutput
+    }
+
+    // MARK: - Files
+
+    @Test(.disabled(if: .linux))
+    func cleanBuildXcode15_1Colored() throws {
+        let inputURL = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "clean_build_xcode_15_1_colored", withExtension: "txt"))
+
+        let actualOutput = try formatFile(withURL: inputURL)
+        let expectedOutput = try logContents(of: outputURL)
+
+        #expect(actualOutput == expectedOutput)
+    }
+
+    @Test(.disabled(if: .linux))
+    func mixedTestLog_6_0_macOS() throws {
+        let inputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "MixedTestLog_6_0_macOS_colored", withExtension: "txt"))
+
+        let actualOutput = try formatFile(withURL: inputURL)
+        let expectedOutput = try logContents(of: outputURL)
+
+        #expect(actualOutput == expectedOutput)
+    }
+
+    @Test(.disabled(if: .linux))
+    func swiftTestLogMacOS() throws {
+        let inputURL = try #require(Bundle.module.url(forResource: "swift_test_log_macOS", withExtension: "txt"))
+        let outputURL = try #require(Bundle.module.url(forResource: "swift_test_log_macOS_colored", withExtension: "txt"))
+
+        let actualOutput = try formatFile(withURL: inputURL)
+        let expectedOutput = try logContents(of: outputURL)
+
+        #expect(actualOutput == expectedOutput)
     }
 
     // MARK: - Direct Formatting (No Parser)
 
     @Test func boldAndGreenInMiddleNotAtStart() {
-        let formatted = "Prefix: \("Middle".s.Bold.f.Green) :Suffix"
+        let formatted = "Prefix: \("Middle".bold().green()) :Suffix"
         let expected = "Prefix: \u{001B}[32;1mMiddle\u{001B}[0m :Suffix"
         #expect(formatted == expected)
     }
 
     @Test func boldAndCyanInMiddleNotAtStart() {
-        let formatted = "Note: \("Important".s.Bold.f.Cyan) details"
+        let formatted = "Note: \("Important".bold().cyan()) details"
         let expected = "Note: \u{001B}[36;1mImportant\u{001B}[0m details"
         #expect(formatted == expected)
     }
 
     @Test func boldAndYellowSegmentWithResetBeforeSuffix() {
-        let formatted = "Warning -> \("Segment".s.Bold.f.Yellow) continues"
+        let formatted = "Warning -> \("Segment".bold().yellow()) continues"
         let expected = "Warning -> \u{001B}[33;1mSegment\u{001B}[0m continues"
         #expect(formatted == expected)
     }
@@ -58,19 +130,19 @@ import Testing
     // MARK: - Interpolation: Color + Italic, Color mid-string, Style mid-string
 
     @Test func coloredItalicSegmentInMiddle() {
-        let formatted = "Begin \("Core".s.Italic.f.Cyan) End"
+        let formatted = "Begin \("Core".italic().cyan()) End"
         let expected = "Begin \u{001B}[36;3mCore\u{001B}[0m End"
         #expect(formatted == expected)
     }
 
     @Test func colorsMidStringOnly() {
-        let formatted = "Alpha \("Beta".f.Red) Gamma"
+        let formatted = "Alpha \("Beta".red()) Gamma"
         let expected = "Alpha \u{001B}[31mBeta\u{001B}[0m Gamma"
         #expect(formatted == expected)
     }
 
     @Test func stylesMidStringBoldOnly() {
-        let formatted = "Foo \("Bar".s.Bold) Baz"
+        let formatted = "Foo \("Bar".bold()) Baz"
         let expected = "Foo \u{001B}[1mBar\u{001B}[0m Baz"
         #expect(formatted == expected)
     }
@@ -78,13 +150,13 @@ import Testing
     // MARK: - Color then Style (order reversed)
 
     @Test func colorThenBoldMidString() {
-        let formatted = "Start \("Middle".f.Red.s.Bold) End"
+        let formatted = "Start \("Middle".red().bold()) End"
         let expected = "Start \u{001B}[1;31mMiddle\u{001B}[0m End"
         #expect(formatted == expected)
     }
 
     @Test func colorThenItalicMidString() {
-        let formatted = "Begin \("Core".f.Cyan.s.Italic) Finish"
+        let formatted = "Begin \("Core".cyan().italic()) Finish"
         let expected = "Begin \u{001B}[3;36mCore\u{001B}[0m Finish"
         #expect(formatted == expected)
     }
@@ -462,38 +534,123 @@ import Testing
     // MARK: - Additional Mid-String Formatting Coverage
 
     @Test func multipleStyledSegmentsInOneLine() {
-        let formatted = "A B \("One".s.Bold.f.Cyan) B \("Two".f.Red)"
+        let formatted = "A B \("One".bold().cyan()) B \("Two".red())"
         let expected = "A B \u{001B}[36;1mOne\u{001B}[0m B \u{001B}[31mTwo\u{001B}[0m"
         #expect(formatted == expected)
     }
 
     @Test func adjacentStyledChunksResetBetween() {
-        let formatted = "X \("AA".s.Bold.f.Green)\("BB".f.Red) Y"
+        let formatted = "X \("AA".bold().green())\("BB".red()) Y"
         let expected = "X \u{001B}[32;1mAA\u{001B}[0m\u{001B}[31mBB\u{001B}[0m Y"
         #expect(formatted == expected)
     }
 
     @Test func italicOnlyMidString() {
-        let formatted = "pre \("mid".s.Italic) post"
+        let formatted = "pre \("mid".italic()) post"
         let expected = "pre \u{001B}[3mmid\u{001B}[0m post"
         #expect(formatted == expected)
     }
 
     @Test func colorThenBoldWithSpacesInToken() {
-        let formatted = "Lead \("Bold Words".f.Cyan.s.Bold)"
+        let formatted = "Lead \("Bold Words".cyan().bold())"
         let expected = "Lead \u{001B}[1;36mBold Words\u{001B}[0m"
         #expect(formatted == expected)
     }
 
     @Test func styledTokenSurroundedByPunctuation() {
-        let formatted = "Start [\("Center".s.Bold.f.Yellow)] End"
+        let formatted = "Start [\("Center".bold().yellow())] End"
         let expected = "Start [\u{001B}[33;1mCenter\u{001B}[0m] End"
         #expect(formatted == expected)
     }
 
     @Test func numbersInsideColoredToken() {
-        let formatted = "N \("v2.1.0".f.Red) Z"
+        let formatted = "N \("v2.1.0".red()) Z"
         let expected = "N \u{001B}[31mv2.1.0\u{001B}[0m Z"
         #expect(formatted == expected)
+    }
+
+    @Test func fileMissingErrorColored() {
+        let input = "<unknown>:0: error: no such file or directory: '/path/missing.swift'"
+        let colored = coloredFormatted(input)
+
+        let expected = "❌ /path/missing.swift: \u{001B}[31merror: no such file or directory\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func linkerUndefinedSymbolsColored() {
+        let input = "Undefined symbols for architecture x86_64:"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31mUndefined symbols for architecture x86_64\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func linkerDuplicateSymbolsColored() {
+        let input = "duplicate symbol _Symbol in:"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31mduplicate symbol _Symbol in\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func errorGenericColored() {
+        let input = "error: failed to provision profile"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31merror: failed to provision profile\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func symbolReferencedFromColored() {
+        let input = "  \"Some.symbol()\", referenced from:"
+        let colored = coloredFormatted(input)
+        let expected = "❌ \u{001B}[31m  \"Some.symbol()\", referenced from:\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    func summaryBoldGreen() {
+        let input = "Build Succeeded"
+        let formatted = coloredFormatted(input)
+        let expected = "\u{001B}[1;32mBuild Succeeded\u{001B}[0m"
+        #expect(formatted == expected)
+    }
+
+    @Test func testingStartedBoldCyan() {
+        let input = "Testing started on 'iPhone X'"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[36;1mTesting started on 'iPhone X'\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func parallelTestingFailedBoldRed() {
+        let input = "Testing failed on 'iPhone X'"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[31;1mTesting failed on 'iPhone X'\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageCheckingOutBoldPackageGreenVersion() {
+        let input = "Checking out 1.2.3 of package MyLibrary"
+        let colored = coloredFormatted(input)
+        let expected = "Checking out \u{001B}[1mMyLibrary\u{001B}[0m @ \u{001B}[32m1.2.3\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageResolvedBoldGreen() {
+        let input = "Resolved source packages:"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[32;1mResolved source packages\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageStartResolveBoldCyan() {
+        let input = "Resolve Package Graph"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[36;1mResolving Package Graph\u{001B}[0m"
+        #expect(colored == expected)
+    }
+
+    @Test func packageItemRowBoldCyanNameBoldURLGreenVersion() {
+        let input = "  MyPkg: https://github.com/org/pkg @ 1.2.3"
+        let colored = coloredFormatted(input)
+        let expected = "\u{001B}[36;1mMyPkg\u{001B}[0m - \u{001B}[1mhttps://github.com/org/pkg\u{001B}[0m @ \u{001B}[32m1.2.3\u{001B}[0m"
+        #expect(colored == expected)
     }
 }

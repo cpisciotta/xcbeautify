@@ -1,15 +1,6 @@
 {
-  "originHash" : "f227ab50c47f6984542511fcdc3641eb844756adb01e3e1f3ca2ca93fbd79fb1",
+  "originHash" : "f1067b9bf38476e86b942c7d5118ece0657d952a4029b58dd7139dddde7a115d",
   "pins" : [
-    {
-      "identity" : "colorizer",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/getGuaka/Colorizer.git",
-      "state" : {
-        "revision" : "2ccc99bf1715e73c4139e8d40b6e6b30be975586",
-        "version" : "0.2.1"
-      }
-    },
     {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
