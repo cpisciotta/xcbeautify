@@ -653,4 +653,29 @@ import Testing
         let expected = "\u{001B}[36;1mMyPkg\u{001B}[0m - \u{001B}[1mhttps://github.com/org/pkg\u{001B}[0m @ \u{001B}[32m1.2.3\u{001B}[0m"
         #expect(colored == expected)
     }
+
+    @Test func nestedColorWithinBoldSegmentAndItalicTail() {
+        // Bold applies to the whole first clause, while color applies only to words inside that clause.
+        // Italic applies only to the trailing clause.
+        let greenWord = "green".f.Green
+        let redWord = "red".f.Red
+        let boldClause = "is a \(greenWord) and \(redWord) bold string".s.Bold
+        let italicClause = "this is italic.".s.Italic
+        let formatted = "This \(boldClause), but \(italicClause)"
+
+        let expected = "This \u{001B}[1mis a \u{001B}[32;1mgreen\u{001B}[0m\u{001B}[1m and \u{001B}[31;1mred\u{001B}[0m\u{001B}[1m bold string\u{001B}[0m, but \u{001B}[3mthis is italic.\u{001B}[0m"
+        #expect(formatted == expected)
+        print(formatted)
+    }
+
+    @Test func nestedBoldAndItalicWithinColoredSegment() {
+        // Color wraps the larger segment; inner substrings add bold and italic while preserving the outer color.
+        let boldWord = "bold".s.Bold
+        let italicWord = "italic".s.Italic
+        let coloredClause = "is a \(boldWord) and \(italicWord) colored".f.Green
+        let formatted = "This \(coloredClause) string"
+
+        let expected = "This \u{001B}[32mis a \u{001B}[1;32mbold\u{001B}[0m\u{001B}[32m and \u{001B}[3;32mitalic\u{001B}[0m\u{001B}[32m colored\u{001B}[0m string"
+        #expect(formatted == expected)
+    }
 }
