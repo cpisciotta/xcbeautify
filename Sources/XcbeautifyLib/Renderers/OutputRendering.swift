@@ -727,13 +727,13 @@ extension OutputRendering {
         let testName = group.testName
         let timeTaken = group.timeTaken
         let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
-        return colored ? Format.indent + TestStatus.pass.foreground.Green + " " + testName + testCasesInfo + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + testCasesInfo + " (\(timeTaken) seconds)"
+        return colored ? Format.indent + TestStatus.pass.green() + " " + testName + testCasesInfo + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + testCasesInfo + " (\(timeTaken) seconds)"
     }
 
     func formatSwiftTestingParameterizedTestFailed(group: SwiftTestingParameterizedTestFailedCaptureGroup) -> String {
         let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
         let message = "\(group.testName)\(testCasesInfo) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
-        let wholeMessage = colored ? TestStatus.fail.foreground.Red + " " + message.f.Red : TestStatus.fail + " " + message
+        let wholeMessage = colored ? TestStatus.fail.red() + " " + message.red() : TestStatus.fail + " " + message
         return Format.indent + wholeMessage
     }
 

@@ -189,7 +189,7 @@ struct TeamCityRenderer: OutputRendering {
     func formatSwiftTestingParameterizedTestFailed(group: SwiftTestingParameterizedTestFailedCaptureGroup) -> String {
         let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
         let message = "\(group.testName)\(testCasesInfo) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
-        let outputString = colored ? message.f.Red : message
+        let outputString = colored ? message.red() : message
         return outputTeamCityError(text: "Parameterized test failed", details: outputString)
     }
 
