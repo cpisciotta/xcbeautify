@@ -119,6 +119,8 @@ protocol OutputRendering {
     func formatSwiftTestingSuiteFailed(group: SwiftTestingSuiteFailedCaptureGroup) -> String
     func formatSwiftTestingTestFailed(group: SwiftTestingTestFailedCaptureGroup) -> String
     func formatSwiftTestingTestPassed(group: SwiftTestingTestPassedCaptureGroup) -> String
+    func formatSwiftTestingParameterizedTestPassed(group: SwiftTestingParameterizedTestPassedCaptureGroup) -> String
+    func formatSwiftTestingParameterizedTestFailed(group: SwiftTestingParameterizedTestFailedCaptureGroup) -> String
     func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String
     func formatSwiftTestingTestSkippedReason(group: SwiftTestingTestSkippedReasonCaptureGroup) -> String
     func formatSwiftTestingIssue(group: SwiftTestingIssueCaptureGroup) -> String
@@ -719,6 +721,20 @@ extension OutputRendering {
         let testName = group.testName
         let timeTaken = group.timeTaken
         return colored ? Format.indent + TestStatus.pass.green() + " " + testName + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + " (\(timeTaken) seconds)"
+    }
+
+    func formatSwiftTestingParameterizedTestPassed(group: SwiftTestingParameterizedTestPassedCaptureGroup) -> String {
+        let testName = group.testName
+        let timeTaken = group.timeTaken
+        let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
+        return colored ? Format.indent + TestStatus.pass.green() + " " + testName + testCasesInfo + " (\(timeTaken.coloredTime()) seconds)" : Format.indent + TestStatus.pass + " " + testName + testCasesInfo + " (\(timeTaken) seconds)"
+    }
+
+    func formatSwiftTestingParameterizedTestFailed(group: SwiftTestingParameterizedTestFailedCaptureGroup) -> String {
+        let testCasesInfo = " with \(group.numberOfTestCases) test case\(group.numberOfTestCases == 1 ? "" : "s")"
+        let message = "\(group.testName)\(testCasesInfo) (\(group.timeTaken) seconds) \(group.numberOfIssues) issue(s)"
+        let wholeMessage = colored ? TestStatus.fail.red() + " " + message.red() : TestStatus.fail + " " + message
+        return Format.indent + wholeMessage
     }
 
     func formatSwiftTestingTestSkipped(group: SwiftTestingTestSkippedCaptureGroup) -> String {

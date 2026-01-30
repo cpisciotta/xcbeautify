@@ -735,6 +735,12 @@ import Testing
         #expect(formatted == "##teamcity[message text=\'Test failed\' errorDetails=\'\"myTest\" (1.234 seconds) 1 issue(s)\' status=\'ERROR\']\nTest failed")
     }
 
+    @Test func swiftTestingParameterizedTestFailed() {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let formatted = noColoredFormatted(input)
+        #expect(formatted == "##teamcity[message text=\'Parameterized test failed\' errorDetails=\'\"Named Parameterized Failing\" with 1 test case (0.001 seconds) 1 issue(s)\' status=\'ERROR\']\nParameterized test failed")
+    }
+
     @Test func swiftTestingTestSkipped() {
         let input = #"􀙟 Test "myTest" skipped."#
         let formatted = noColoredFormatted(input)

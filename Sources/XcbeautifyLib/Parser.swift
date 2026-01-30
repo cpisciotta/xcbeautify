@@ -109,6 +109,8 @@ package final class Parser {
         SwiftMergeGeneratedHeadersCaptureGroup.self,
         SwiftTestingIssueArgumentCaptureGroup.self,
         SwiftTestingIssueCaptureGroup.self,
+        SwiftTestingParameterizedTestFailedCaptureGroup.self,
+        SwiftTestingParameterizedTestPassedCaptureGroup.self,
         SwiftTestingPassingArgumentCaptureGroup.self,
         SwiftTestingRunCompletionCaptureGroup.self,
         SwiftTestingRunFailedCaptureGroup.self,

@@ -273,6 +273,10 @@ package struct Formatter {
             return renderer.formatSwiftTestingTestPassed(group: group)
         case let group as SwiftTestingTestFailedCaptureGroup:
             return renderer.formatSwiftTestingTestFailed(group: group)
+        case let group as SwiftTestingParameterizedTestPassedCaptureGroup:
+            return renderer.formatSwiftTestingParameterizedTestPassed(group: group)
+        case let group as SwiftTestingParameterizedTestFailedCaptureGroup:
+            return renderer.formatSwiftTestingParameterizedTestFailed(group: group)
         case let group as SwiftTestingTestSkippedCaptureGroup:
             return renderer.formatSwiftTestingTestSkipped(group: group)
         case let group as SwiftTestingTestSkippedReasonCaptureGroup:

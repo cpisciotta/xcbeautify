@@ -15,5 +15,7 @@ Suite SwiftTestingGroup started
     [32m✔[0m testTrueIsTrue() (0.001 seconds)
     [33m⚠️[0m  Test testFailTrueIsFalse() recorded an issue at Test.swift:17:9: Expectation failed: true == false
     [31m✖[0m [31mtestFailTrueIsFalse() (0.001 seconds) 1 issue(s)[0m
+    [32m✔[0m parameterizedPassingTest(value:) with 3 test cases (0.002 seconds)
+    [31m✖[0m [31mparameterizedFailingTest(value:) with 3 test cases (0.001 seconds) 3 issue(s)[0m
 Suite SwiftTestingGroup failed after 0.001 seconds with 1 issue(s)
 Test run with 2 tests failed after 0.001 seconds with 1 issue(s)
