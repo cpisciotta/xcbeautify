@@ -201,7 +201,7 @@ import Testing
         #expect(formatted == nil)
     }
 
-    @Test func executed() throws {
+    @Test func executed() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
         #expect(input1 == formatted1)
@@ -245,7 +245,7 @@ import Testing
     }
 
     @Test(.disabled(if: .linux, "[TODO] Re-enable this test."))
-    func failingTest() throws {
+    func failingTest() {
         #if os(Linux)
         let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
@@ -724,6 +724,13 @@ import Testing
         let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
         let formatted = logFormatted(input)
         let expectedOutput = "::error ::\"myTest\" (1.234 seconds) 1 issue(s)"
+        #expect(formatted == expectedOutput)
+    }
+
+    @Test func swiftTestingParameterizedTestFailed() {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let formatted = logFormatted(input)
+        let expectedOutput = "::error ::\"Named Parameterized Failing\" with 1 test case (0.001 seconds) 1 issue(s)"
         #expect(formatted == expectedOutput)
     }
 

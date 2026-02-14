@@ -203,7 +203,7 @@ import Testing
         #expect(formatted == nil)
     }
 
-    @Test func executedWithoutSkipped() throws {
+    @Test func executedWithoutSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = noColoredFormatted(input1)
         #expect(input1 == formatted1)
@@ -733,6 +733,12 @@ import Testing
         let input = #"􀢄 Test "myTest" failed after 1.234 seconds with 1 issue."#
         let formatted = noColoredFormatted(input)
         #expect(formatted == "##teamcity[message text=\'Test failed\' errorDetails=\'\"myTest\" (1.234 seconds) 1 issue(s)\' status=\'ERROR\']\nTest failed")
+    }
+
+    @Test func swiftTestingParameterizedTestFailed() {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let formatted = noColoredFormatted(input)
+        #expect(formatted == "##teamcity[message text=\'Parameterized test failed\' errorDetails=\'\"Named Parameterized Failing\" with 1 test case (0.001 seconds) 1 issue(s)\' status=\'ERROR\']\nParameterized test failed")
     }
 
     @Test func swiftTestingTestSkipped() {

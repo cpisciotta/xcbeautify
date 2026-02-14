@@ -1,4 +1,4 @@
-<testsuites name="All tests" tests="6" failures="2">
+<testsuites name="All tests" tests="8" failures="3">
     <testsuite name="XcbeautifyLibTests.CaptureGroupTests" tests="4" failures="1">
         <testcase classname="XcbeautifyLibTests.CaptureGroupTests" name="testForceFailure">
             <failure message="/Users/runner/work/xcbeautify/xcbeautify/Tests/XcbeautifyLibTests/CaptureGroupTests.swift:34 - XCTAssertTrue failed - True is never false." />
@@ -7,9 +7,13 @@
         <testcase classname="XcbeautifyLibTests.CaptureGroupTests" name="testMatchSwiftTestingIssueArgument2" time="0.000" />
         <testcase classname="XcbeautifyLibTests.CaptureGroupTests" name="testMatchSwiftTestingIssueArgument3" time="0.000" />
     </testsuite>
-    <testsuite name="SwiftTesting" tests="2" failures="1">
+    <testsuite name="SwiftTesting" tests="4" failures="2">
         <testcase classname="SwiftTesting" name="testTrueIsTrue()" time="0.001" />
         <testcase classname="SwiftTesting" name="testFailTrueIsFalse()" time="0.001">
+            <failure message="Swift testing test failed" />
+        </testcase>
+        <testcase classname="SwiftTesting" name="parameterizedPassingTest(value:)" time="0.002" />
+        <testcase classname="SwiftTesting" name="parameterizedFailingTest(value:)" time="0.001">
             <failure message="Swift testing test failed" />
         </testcase>
     </testsuite>

@@ -18,7 +18,9 @@ package protocol CaptureGroup {
 }
 
 package extension CaptureGroup {
-    var outputType: OutputType { Self.outputType }
+    var outputType: OutputType {
+        Self.outputType
+    }
 }
 
 protocol ErrorCaptureGroup: CaptureGroup {
@@ -776,11 +778,11 @@ struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
 struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .error
 
-    /// Regular expression captured groups:
-    /// $1 = file
-    /// $2 = test suite
-    /// $3 = test case
-    /// $4 = reason
+    // Regular expression captured groups:
+    // $1 = file
+    // $2 = test suite
+    // $3 = test case
+    // $4 = reason
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^\s*(.+:\d+):\serror:\s(.*)\.(.*)\s:(?:\s'.*'\s\[failed\],)?\s(.*)"#)
     #else
@@ -1772,17 +1774,17 @@ struct SwiftDriverCompilationTarget: CaptureGroup {
 struct SwiftDriverJobDiscoveryCompilingCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .task
 
-    // Examples:
-    //  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardBirdsPassOfferCard.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
-    //  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardSkyView.swift, BackyardSupplyGauge.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
-    //  - SwiftDriverJobDiscovery normal x86_64 Compiling resource_bundle_accessor.swift, Account+DataGeneration.swift, Backyard.swift (in target 'SomeTarget' from project 'SomeProject')
-    //
-    // Regular expression captured groups:
-    // $1 = state
-    // $2 = architecture
-    // $3 = filenames
-    // $4 = target
-    // $5 = project
+    /// Examples:
+    ///  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardBirdsPassOfferCard.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
+    ///  - SwiftDriverJobDiscovery normal arm64 Compiling BackyardSkyView.swift, BackyardSupplyGauge.swift (in target 'BackyardBirdsUI' from project 'BackyardBirdsUI')
+    ///  - SwiftDriverJobDiscovery normal x86_64 Compiling resource_bundle_accessor.swift, Account+DataGeneration.swift, Backyard.swift (in target 'SomeTarget' from project 'SomeProject')
+    ///
+    /// Regular expression captured groups:
+    /// $1 = state
+    /// $2 = architecture
+    /// $3 = filenames
+    /// $4 = target
+    /// $5 = project
     static let regex = XCRegex(pattern: #"^SwiftDriverJobDiscovery (\S+) (arm64|arm64_32|armv7k|i386|x86_64) Compiling ((?:\S|(?>, )|(?<=\\) )+) \(in target '(.*)' from project '(.*)'\)"#)
 
     let state: String // Currently, the only expected/known value is `normal`
@@ -1904,6 +1906,68 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
 
         self.testDescription = testDescription
         issueDetails = groups[safe: 1]
+    }
+}
+
+struct SwiftTestingParameterizedTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture parameterized test failure.
+    /// $1 = test name
+    /// $2 = number of test cases
+    /// $3 = time taken in seconds
+    /// $4 = number of issues
+    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (?!run\s)(.*) with (\d+) test cases? failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+
+    let testName: String
+    let numberOfTestCases: Int
+    let timeTaken: String
+    let numberOfIssues: Int
+
+    init?(groups: [String]) {
+        assert(groups.count >= 4)
+        guard let testName = groups[safe: 0],
+              let numberOfTestCases = groups[safe: 1].flatMap(Int.init),
+              let timeTaken = groups[safe: 2],
+              let numberOfIssues = groups[safe: 3].flatMap(Int.init) else { return nil }
+        self.testName = testName
+        self.numberOfTestCases = numberOfTestCases
+        self.timeTaken = timeTaken
+        self.numberOfIssues = numberOfIssues
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken, failure: .init(message: "Swift testing test failed"))
+        return .failingTest(testCase)
+    }
+}
+
+struct SwiftTestingParameterizedTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
+    static let outputType: OutputType = .testCase
+
+    /// Regular expression to capture parameterized test success.
+    /// $1 = test name
+    /// $2 = number of test cases
+    /// $3 = time taken in seconds
+    static let regex = XCRegex(pattern: #"^[^ ]+ +Test (?!run\s)(.*) with (\d+) test cases? passed after ([\d.]+) seconds\.$"#)
+
+    let testName: String
+    let numberOfTestCases: Int
+    let timeTaken: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let testName = groups[safe: 0],
+              let numberOfTestCases = groups[safe: 1].flatMap(Int.init),
+              let timeTaken = groups[safe: 2] else { return nil }
+        self.testName = testName
+        self.numberOfTestCases = numberOfTestCases
+        self.timeTaken = timeTaken
+    }
+
+    func junitComponent() -> JUnitComponent {
+        let testCase = TestCase(classname: swiftTestingSuiteName, name: testName, time: timeTaken)
+        return .testCasePassed(testCase)
     }
 }
 
@@ -2055,7 +2119,7 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable
     /// $1 = test name
     /// $2 = time taken in seconds
     /// $3 = number of issues
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(?!.* with \d+ test cases? failed)(.*) failed after ([\d.]+) seconds with (\d+) issue[s]?\.$"#)
 
     let testName: String
     let timeTaken: String
@@ -2083,7 +2147,7 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable
     /// Regular expression to capture the successful completion of a test case.
     /// $1 = test name
     /// $2 = time taken in seconds
-    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(.*) passed after ([\d.]+) seconds\.$"#)
+    static let regex = XCRegex(pattern: #"^[^ ] +Test (?!run\s)(?!.* with \d+ test cases? passed)(.*) passed after ([\d.]+) seconds\.$"#)
 
     let testName: String
     let timeTaken: String
@@ -2205,9 +2269,9 @@ struct SymLinkCaptureGroup: CaptureGroup {
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
-    /// $1 = suite
-    /// $2 = test case
-    /// $3 = time
+    // $1 = suite
+    // $2 = test case
+    // $3 = time
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^[^:]*:[^:]*:\sTest Case\s'(.*?)\.(.*)'\smeasured\s\[([^,]*),\s([^\]]*)\]\saverage:\s(\d*\.\d{3}), relative standard deviation: (\d*\.\d{3})"#)
     #else
@@ -2236,10 +2300,10 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
 struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .testCase
 
-    /// Regular expression captured groups:
-    /// $1 = suite
-    /// $2 = test case
-    /// $3 = time
+    // Regular expression captured groups:
+    // $1 = suite
+    // $2 = test case
+    // $3 = time
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\spassed\s\((\d*\.\d{1,3})\sseconds\)"#)
     #else
@@ -2267,10 +2331,10 @@ struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
 struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
     static let outputType: OutputType = .testCase
 
-    /// Regular expression captured groups:
-    /// $1 = suite
-    /// $2 = test case
-    /// $3 = time
+    // Regular expression captured groups:
+    // $1 = suite
+    // $2 = test case
+    // $3 = time
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^\s*Test Case\s'(.*)\.(.*)'\sskipped\s\((\d*\.\d{1,3})\sseconds\)"#)
     #else
@@ -2298,9 +2362,9 @@ struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
 struct TestCaseStartedCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .testCase
 
-    /// Regular expression captured groups:
-    /// $1 = suite
-    /// $2 = test case
+    // Regular expression captured groups:
+    // $1 = suite
+    // $2 = test case
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^Test Case '(.*)\.(.*)' started at"#)
     #else
@@ -2339,10 +2403,10 @@ struct TestingStartedCaptureGroup: CaptureGroup {
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
-    /// Regular expression captured groups:
-    /// $1 = suite
-    /// $2 = result
-    /// $3 = time
+    // Regular expression captured groups:
+    // $1 = suite
+    // $2 = result
+    // $3 = time
     #if os(Linux)
     static let regex = XCRegex(pattern: #"^\s*(Test Suite '(.*)' (finished|passed|failed) at (.*).*)"#)
     #else
@@ -2451,7 +2515,7 @@ struct TouchCaptureGroup: CaptureGroup {
 struct UIFailingTestCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .error
 
-    // // TODO: Is this actually a regex for a UI failing test error?
+    /// // TODO: Is this actually a regex for a UI failing test error?
     /// Regular expression captured groups:
     /// $1 = file
     /// $2 = reason

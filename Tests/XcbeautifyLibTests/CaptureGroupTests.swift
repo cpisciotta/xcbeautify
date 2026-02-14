@@ -130,7 +130,7 @@ import Testing
         #expect(groups[2] == "LayeredArtworkLibrary")
     }
 
-    @Test func mkDirCaptureGroup() throws {
+    @Test func mkDirCaptureGroup() {
         let input = "MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"
         #expect(MkDirCaptureGroup.regex.captureGroups(for: input) != nil)
     }

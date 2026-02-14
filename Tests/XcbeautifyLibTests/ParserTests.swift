@@ -127,17 +127,17 @@ import Testing
         #expect(captureGroup.xcodePath == "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang")
     }
 
-    @Test func unindentedClangDoesNotMatchShellCommand() throws {
+    @Test func unindentedClangDoesNotMatchShellCommand() {
         let input = #"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
         #expect(parser.parse(line: input) as? ShellCommandCaptureGroup == nil)
     }
 
-    @Test func indentedClangDoesNotMatchShellCommand() throws {
+    @Test func indentedClangDoesNotMatchShellCommand() {
         let input = #"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos14.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -O0 -L/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Backyard-Birds/Build/Products/Debug -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F/Backyard-Birds/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Backyard-Birds/Build/Products/Debug/PackageFrameworks -F/Backyard-Birds/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData.LinkFileList -install_name @rpath/BackyardBirdsData.framework/Versions/A/BackyardBirdsData -Xlinker -rpath -Xlinker /Backyard-Birds/Build/Products/Debug/PackageFrameworks -Xlinker -object_path_lto -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Wl,-no_warn_duplicate_libraries -Xlinker -dependency_info -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/BackyardBirdsData_dependency_info.dat -o /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData\ product.build/Objects-normal/arm64/Binary/BackyardBirdsData -Xlinker -add_ast_path -Xlinker /Backyard-Birds/Build/Intermediates.noindex/BackyardBirdsData.build/Debug/BackyardBirdsData.build/Objects-normal/arm64/BackyardBirdsData.swiftmodule"#
         #expect(parser.parse(line: input) as? ShellCommandCaptureGroup == nil)
     }
 
-    @Test func swiftTaskExecutionDoesMatchesShellCommand() throws {
+    @Test func swiftTaskExecutionDoesMatchesShellCommand() {
         let input = #"    builtin-swiftTaskExecution -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /Backyard-Birds/Widgets/Backyard/BackyardWidgetIntent.swift /Backyard-Birds/Widgets/Backyard/BackyardWidget.swift -primary-file /Backyard-Birds/Widgets/Backyard/ResupplyBackyardIntent.swift /Backyard-Birds/Widgets/WidgetsBundle.swift /Backyard-Birds/Widgets/Backyard/BackyardSnapshotTimelineProvider.swift /Backyard-Birds/Widgets/Backyard/BackyardWidgetView.swift /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/DerivedSources/GeneratedAssetSymbols.swift -emit-dependencies-path /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/ResupplyBackyardIntent.d -emit-const-values-path /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/ResupplyBackyardIntent.swiftconstvalues -emit-reference-dependencies-path /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/ResupplyBackyardIntent.swiftdeps -serialize-diagnostics-path /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/ResupplyBackyardIntent.dia -emit-localized-strings -emit-localized-strings-path /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64 -target arm64-apple-macos14.2 -Xllvm -aarch64-use-tbi -enable-objc-interop -stack-check -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -I /Backyard-Birds/Build/Products/Debug -F /Backyard-Birds/Build/Products/Debug/PackageFrameworks -F /Backyard-Birds/Build/Products/Debug/PackageFrameworks -F /Backyard-Birds/Build/Products/Debug/PackageFrameworks -F /Backyard-Birds/Build/Products/Debug -no-color-diagnostics -application-extension -enable-testing -g -module-cache-path /Backyard-Birds/ModuleCache.noindex -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/Widgets_const_extract_protocols.json -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Backyard-Birds/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Backyard-Birds -resource-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift -enable-anonymous-context-mangled-names -Xcc -ivfsstatcache -Xcc /Backyard-Birds/SDKStatCaches.noindex/macosx14.2-23C53-df0db8920d7ae99241a1bc0f08d2dced.sdkstatcache -Xcc -I/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/swift-overrides.hmap -Xcc -iquote -Xcc /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Widgets-generated-files.hmap -Xcc -I/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Widgets-own-target-headers.hmap -Xcc -I/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Widgets-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/all-product-headers.yaml -Xcc -iquote -Xcc /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Widgets-project-headers.hmap -Xcc -I/Backyard-Birds/Build/Products/Debug/include -Xcc -I/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/DerivedSources-normal/arm64 -Xcc -I/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/DerivedSources/arm64 -Xcc -I/Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/DerivedSources -Xcc -DDEBUG\=1 -module-name Widgets -frontend-parseable-output -disable-clang-spi -target-sdk-version 14.2 -target-sdk-name macosx14.2 -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/swift/host/plugins\#\/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/local/lib/swift/host/plugins\#\/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/swift/host/plugins\#\/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/local/lib/swift/host/plugins\#\/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/lib/swift/host/plugins -o /Backyard-Birds/Build/Intermediates.noindex/Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/ResupplyBackyardIntent.o -index-unit-output-path /Backyard\ Birds.build/Debug/Widgets.build/Objects-normal/arm64/ResupplyBackyardIntent.o -index-store-path /Backyard-Birds/Index.noindex/DataStore -index-system-modules"#
         #expect(parser.parse(line: input) as? ShellCommandCaptureGroup != nil)
     }
@@ -199,7 +199,7 @@ import Testing
         #expect(captureGroup.wholeMessage == "Testing started")
     }
 
-    @Test func notMatchTestingStarted() throws {
+    @Test func notMatchTestingStarted() {
         let input = #"2024-08-18 18:17:52.619 xcodebuild[9799:394817] [MT] IDETestOperationsObserverDebug: 21.975 elapsed -- Testing started completed."#
         #expect(parser.parse(line: input) == nil)
     }
@@ -273,6 +273,23 @@ import Testing
         let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingTestPassedCaptureGroup)
         #expect(captureGroup.testName == "SampleTest")
         #expect(captureGroup.timeTaken == "3.0")
+    }
+
+    @Test func matchSwiftTestingParameterizedTestFailed() throws {
+        let input = #"✘ Test "Named Parameterized Failing" with 1 test case failed after 0.001 seconds with 1 issue."#
+        let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingParameterizedTestFailedCaptureGroup)
+        #expect(captureGroup.testName == "\"Named Parameterized Failing\"")
+        #expect(captureGroup.timeTaken == "0.001")
+        #expect(captureGroup.numberOfIssues == 1)
+        #expect(captureGroup.numberOfTestCases == 1)
+    }
+
+    @Test func matchSwiftTestingParameterizedTestPassed() throws {
+        let input = "✔ Test parameterizedPassingTest(value:) with 3 test cases passed after 0.002 seconds."
+        let captureGroup = try #require(parser.parse(line: input) as? SwiftTestingParameterizedTestPassedCaptureGroup)
+        #expect(captureGroup.testName == "parameterizedPassingTest(value:)")
+        #expect(captureGroup.timeTaken == "0.002")
+        #expect(captureGroup.numberOfTestCases == 3)
     }
 
     @Test func matchSwiftTestingTestSkipped() throws {
@@ -385,7 +402,7 @@ import Testing
         }
     }
 
-    // Note Output expects a lowercase n.
+    /// Note Output expects a lowercase n.
     @Test func negativeMatchNote() {
         let inputs = [
             #"Note: Building targets in dependency order"#,
@@ -401,7 +418,7 @@ import Testing
         )
     }
 
-    @Test func notMatchNote() throws {
+    @Test func notMatchNote() {
         let inputs = [
             "in the note middle",
             "in the note: middle",
@@ -470,7 +487,7 @@ import Testing
         }
     }
 
-    @Test func notDataModelCodegen() throws {
+    @Test func notDataModelCodegen() {
         let inputs = [
             "DataModelCodegen /pathxcdatamodeld (in target 'target' from project 'project')",
             "datamodelcodegen /path.xcdatamodeld (in target 'target' from project 'project')",
