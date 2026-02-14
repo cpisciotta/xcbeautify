@@ -12,7 +12,7 @@ import Testing
 import XcbeautifyLib
 
 @Suite struct OutputHandlerTests {
-    @Test func earlyReturnIfEmptyString() throws {
+    @Test func earlyReturnIfEmptyString() {
         var collector: [String] = []
         let sut = OutputHandler(quiet: false, quieter: false, isCI: false) { content in
             collector.append(content)
@@ -23,7 +23,7 @@ import XcbeautifyLib
         #expect(collector == [])
     }
 
-    @Test func printAllOutputTypeByDefault() throws {
+    @Test func printAllOutputTypeByDefault() {
         var collector: [String] = []
         let sut = OutputHandler(quiet: false, quieter: false, isCI: false) { content in
             collector.append(content)
@@ -39,7 +39,7 @@ import XcbeautifyLib
         #expect(collector == ["task 1", "error", "task 2", "warning", "result", "undefined"])
     }
 
-    @Test func printOnlyTasksWithWarningOrError() throws { // quiet
+    @Test func printOnlyTasksWithWarningOrError() { // quiet
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
             collector.append(content)
@@ -68,7 +68,7 @@ import XcbeautifyLib
         #expect(collector == ["task 2", "warning", "result", "error"])
     }
 
-    @Test func printOnlyTasksWithError() throws { // quieter
+    @Test func printOnlyTasksWithError() { // quieter
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: true, isCI: false) { content in
             collector.append(content)
@@ -84,7 +84,7 @@ import XcbeautifyLib
         #expect(collector == ["result", "error"])
     }
 
-    @Test func printTestResultTooIfIsCIAndQuiet() throws { // on quiet/quiter , print test task too
+    @Test func printTestResultTooIfIsCIAndQuiet() { // on quiet/quiter , print test task too
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: false, isCI: true) { content in
             collector.append(content)
@@ -99,7 +99,7 @@ import XcbeautifyLib
         #expect(collector == ["warning", "test started", "test completed", "result"])
     }
 
-    @Test func printTestResultTooIfIsCIAndQuieter() throws { // on quiet/quiter , print test task too
+    @Test func printTestResultTooIfIsCIAndQuieter() { // on quiet/quiter , print test task too
         var collector: [String] = []
         let sut = OutputHandler(quiet: true, quieter: true, isCI: true) { content in
             collector.append(content)

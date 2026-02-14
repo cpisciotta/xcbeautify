@@ -201,7 +201,7 @@ import Testing
         #expect(formatted == nil)
     }
 
-    @Test func executed() throws {
+    @Test func executed() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = logFormatted(input1)
         #expect(input1 == formatted1)
@@ -245,7 +245,7 @@ import Testing
     }
 
     @Test(.disabled(if: .linux, "[TODO] Re-enable this test."))
-    func failingTest() throws {
+    func failingTest() {
         #if os(Linux)
         let input = "/path/to/Tests.swift:123: error: Suite.testCase : XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"
         let output = "::error file=/path/to/Tests.swift,line=123::    testCase, XCTAssertEqual failed: (\"1\") is not equal to (\"2\") -"

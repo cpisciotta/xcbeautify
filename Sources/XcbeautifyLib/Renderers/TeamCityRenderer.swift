@@ -13,11 +13,6 @@ struct TeamCityRenderer: OutputRendering {
     let colored: Bool
     let additionalLines: () -> String?
 
-    init(colored: Bool, additionalLines: @escaping () -> String?) {
-        self.colored = colored
-        self.additionalLines = additionalLines
-    }
-
     private func outputTeamCityNormal(text: String, details: String) -> String {
         """
         ##teamcity[message text='\(text)' errorDetails='\(details.teamCityEscaped())' status='NORMAL']

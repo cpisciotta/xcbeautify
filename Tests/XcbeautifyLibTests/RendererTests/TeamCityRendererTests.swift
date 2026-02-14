@@ -203,7 +203,7 @@ import Testing
         #expect(formatted == nil)
     }
 
-    @Test func executedWithoutSkipped() throws {
+    @Test func executedWithoutSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = noColoredFormatted(input1)
         #expect(input1 == formatted1)

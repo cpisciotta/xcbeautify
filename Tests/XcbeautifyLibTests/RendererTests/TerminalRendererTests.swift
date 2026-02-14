@@ -201,7 +201,7 @@ import Testing
         #expect(formatted == nil)
     }
 
-    @Test func executedWithoutSkipped() throws {
+    @Test func executedWithoutSkipped() {
         let input1 = "Test Suite 'All tests' failed at 2022-01-15 21:31:49.073."
         let formatted1 = noColoredFormatted(input1)
         #expect(input1 == formatted1)
@@ -790,22 +790,22 @@ import Testing
         #expect(noColoredFormatted(input) == output)
     }
 
-    @Test func swiftDriverTarget() throws {
+    @Test func swiftDriverTarget() {
         let input = #"SwiftDriver BackyardBirdsData normal arm64 com.apple.xcode.tools.swift.compiler (in target \'BackyardBirdsData\' from project \'BackyardBirdsData\')"#
         #expect(noColoredFormatted(input) == nil)
     }
 
-    @Test func swiftDriverCompilationTarget() throws {
+    @Test func swiftDriverCompilationTarget() {
         let input = #"SwiftDriver\ Compilation SomeTarget normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Target' from project 'Project')"#
         #expect(noColoredFormatted(input) == nil)
     }
 
-    @Test func swiftDriverCompilationRequirements() throws {
+    @Test func swiftDriverCompilationRequirements() {
         let input = #"SwiftDriver\ Compilation\ Requirements Backyard\ Birds normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Backyard Birds' from project 'Backyard Birds')"#
         #expect(noColoredFormatted(input) == nil)
     }
 
-    @Test func mkDirCaptureGroup() throws {
+    @Test func mkDirCaptureGroup() {
         let input = #"MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"#
         #expect(noColoredFormatted(input) == nil)
     }
