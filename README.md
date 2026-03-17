@@ -7,7 +7,7 @@
 
 ![Example Screenshot](.readme-images/example.png)
 
-**`xcbeautify` is a little beautifier tool for `xcodebuild`.**
+**`xcbeautify` is a little beautifier tool for `xcodebuild` and `swift` output.**
 
 A faster alternative to `xcpretty` written in Swift.
 
@@ -46,6 +46,12 @@ mint install cpisciotta/xcbeautify
 git clone https://github.com/cpisciotta/xcbeautify.git
 cd xcbeautify
 make install
+```
+
+If you prefer not to install globally:
+
+```bash
+swift build -c release --disable-sandbox --product xcbeautify
 ```
 
 ## Usage
@@ -150,6 +156,8 @@ Supported renderer values:
 - `teamcity` ([service messages](https://www.jetbrains.com/help/teamcity/service-messages.html))
 - `azure-devops-pipelines` ([logging commands](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands))
 
+#### GitHub Actions
+
 | ![GitHub Actions Summary](.readme-images/gh-summary.png) |
 |:--:|
 | *GitHub Actions Summary* |
@@ -158,42 +166,44 @@ Supported renderer values:
 |:--:|
 | *GitHub Actions Comment* |
 
-`xcbeautify` features an integrated GitHub Actions renderer that harnesses [workflow commands](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions) to highlight warnings, errors, and results directly within the GitHub user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer github-actions` flag during execution:
-
-```
+```bash
 set -o pipefail && xcodebuild [flags] | xcbeautify --renderer github-actions
 ```
 
-### TeamCity
+#### TeamCity
 
-`xcbeautify` features an integrated TeamCity renderer that harnesses [service messages](https://www.jetbrains.com/help/teamcity/service-messages.html) to highlight warnings, errors, and results directly within the TeamCity user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer teamcity` flag during execution:
-
-```
+```bash
 set -o pipefail && xcodebuild [flags] | xcbeautify --renderer teamcity
 ```
 
-### Azure DevOps Pipeline
+#### Azure DevOps Pipeline
 
-`xcbeautify` features an integrated Azure DevOps Pipeline renderer that harnesses [logging commands](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands) to highlight warnings, errors and results directly within the Azure DevOps Pipeline user interface. To utilize this function, simply run `xcbeautify` and add the `--renderer azure-devops-pipelines` flag during execution:
-
-```
+```bash
 set -o pipefail && xcodebuild [flags] | xcbeautify --renderer azure-devops-pipelines
 ```
 
 ## Development
 
-Generate Xcode project:
+Open in Xcode:
 
 ```sh
 make xcode
 ```
 
-Release a new version, e.g. `x.y.z`:
+Common local commands:
 
 ```bash
-make release version=x.y.z
+swift build -c debug --disable-sandbox --product xcbeautify
+swift test
+./tools/lint
+./tools/format
 ```
+
+## New contributors
+
+- Start with [CONTRIBUTING.md](CONTRIBUTING.md) for setup, workflow, and validation.
+- Release steps are maintainer-focused and documented in [docs/RELEASING.md](docs/RELEASING.md).
 
 ## Contributing
 
-Please send a PR!
+Contributions are welcome. Open an issue for discussion, then submit a PR.
