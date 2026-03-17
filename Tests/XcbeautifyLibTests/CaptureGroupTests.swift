@@ -10,7 +10,7 @@
 import Testing
 @testable import XcbeautifyLib
 
-@Suite struct CaptureGroupTests {
+struct CaptureGroupTests {
     @Test func swiftCompiling() {
         let inputs = [
             #"SwiftCompile normal x86_64 Compiling\ BackyardBirdsDataContainer.swift,\ ColorData.swift,\ DataGeneration.swift,\ DataGenerationOptions.swift /Backyard-Birds/BackyardBirdsData/General/BackyardBirdsDataContainer.swift /Backyard-Birds/BackyardBirdsData/General/ColorData.swift /Backyard-Birds/BackyardBirdsData/General/DataGeneration.swift /Backyard-Birds/BackyardBirdsData/General/DataGenerationOptions.swift (in target 'BackyardBirdsData' from project 'BackyardBirdsData')"#,
@@ -130,7 +130,7 @@ import Testing
         #expect(groups[2] == "LayeredArtworkLibrary")
     }
 
-    @Test func mkDirCaptureGroup() throws {
+    @Test func mkDirCaptureGroup() {
         let input = "MkDir /Backyard-Birds/Build/Products/Debug/Widgets.appex/Contents (in target \'Widgets\' from project \'Backyard Birds\')"
         #expect(MkDirCaptureGroup.regex.captureGroups(for: input) != nil)
     }
