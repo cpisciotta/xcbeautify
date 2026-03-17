@@ -23,9 +23,9 @@ package protocol JUnitParallelReportable: JUnitReportable { }
 
 package final class JUnitReporter {
     private var components: [JUnitComponent] = []
-    // Parallel output does not guarantee order - so it is _very_ hard
-    // to match to the parent suite. We can still capture test success/failure
-    // and output a generic result file.
+    /// Parallel output does not guarantee order - so it is _very_ hard
+    /// to match to the parent suite. We can still capture test success/failure
+    /// and output a generic result file.
     private var parallelComponents: [JUnitComponent] = []
 
     package init() { }
