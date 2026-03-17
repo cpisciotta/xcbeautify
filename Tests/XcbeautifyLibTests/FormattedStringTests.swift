@@ -11,7 +11,7 @@ import Foundation
 import Testing
 @testable import XcbeautifyLib
 
-@Suite struct FormattedStringTests {
+struct FormattedStringTests {
     // MARK: - Escape Sequence Constants
 
     // Based on Colorizer library: https://github.com/getGuaka/Colorizer

@@ -9,7 +9,7 @@
 
 import Foundation
 
-package struct XCRegex: Sendable {
+package struct XCRegex {
     private let regex: NSRegularExpression?
 
     private static func makeRegex(pattern: String) -> NSRegularExpression? {

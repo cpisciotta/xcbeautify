@@ -11,7 +11,7 @@ import Foundation
 import Testing
 @testable import XcbeautifyLib
 
-@Suite struct ParsingTests {
+struct ParsingTests {
     // These test cases use magic numbers to represent the number of lines that aren't captured by the Parser.
     // Slowly, the values should decrease until they reach 0.
     // Test cases uses `==` instead of `<=` as a reminder.

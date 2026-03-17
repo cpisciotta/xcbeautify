@@ -11,7 +11,7 @@ import Foundation
 import Testing
 @testable import XcbeautifyLib
 
-@Suite struct UniqueCaptureGroupTests {
+struct UniqueCaptureGroupTests {
     private let captureGroupTypes = Parser().__for_test__captureGroupTypes()
 
     #if os(macOS)
