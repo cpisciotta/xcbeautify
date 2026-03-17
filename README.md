@@ -19,9 +19,7 @@ A faster alternative to `xcpretty` written in Swift.
 - [x] Supports formatting Swift Package Manager output.
 - [x] Supports generating JUnit reports.
 - [x] Supports macOS & Linux.
-- [x] Written in Swift: `xcbeautify` compiles to a static binary which you can
-  bring anywhere. This also means less Ruby-dependent in your development
-  environment and CI.
+- [x] Written in Swift and distributed as a native CLI binary (no Ruby runtime).
 
 ## Requirements
 
@@ -93,6 +91,7 @@ Commonly used options are grouped below by behavior.
 **Output style**
 
 - `--disable-colored-output`: disable ANSI colors.
+  - Colors are also disabled when `NO_COLOR` is set.
 - `--disable-logging`: suppress the startup info table (including version).
 
 **Renderer selection**
@@ -114,6 +113,12 @@ provided:
 - `--report-path <path>`: set the report output directory.
 - `--junit-report-filename <name>`: set the JUnit XML file name.
 
+### Behavior notes
+
+- Input is processed as a stream, line by line.
+- Empty/whitespace-only lines are skipped.
+- Unrecognized lines are omitted by default; use `--preserve-unbeautified` to keep them.
+
 ### JUnit report output
 
 Generate a JUnit report:
@@ -131,7 +136,19 @@ set -o pipefail && xcodebuild [flags] | xcbeautify \
   --junit-report-filename junit.xml
 ```
 
-### GitHub Actions
+### CI renderers
+
+Use a specific renderer when you want CI-native annotations:
+
+```bash
+set -o pipefail && xcodebuild [flags] | xcbeautify --renderer <renderer>
+```
+
+Supported renderer values:
+
+- `github-actions` ([workflow commands](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions))
+- `teamcity` ([service messages](https://www.jetbrains.com/help/teamcity/service-messages.html))
+- `azure-devops-pipelines` ([logging commands](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands))
 
 | ![GitHub Actions Summary](.readme-images/gh-summary.png) |
 |:--:|
