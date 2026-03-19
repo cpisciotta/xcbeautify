@@ -124,6 +124,10 @@ format:
 lint:
 	tools/lint
 
+.PHONY: check-sorted
+check-sorted:
+	tools/check-sorted
+
 .PHONY: coverage
 export_coverage:
 	tools/export_coverage
@@ -132,6 +136,10 @@ export_coverage:
 measure:
 	tools/measure
 	
+.PHONY: deps
+deps:
+	brew bundle
+
 .PHONY: xcode
 xcode:
 	open Package.swift

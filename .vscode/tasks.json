@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "swift: Build Debug xcbeautify",
+            "type": "shell",
+            "command": "swift",
+            "args": ["build", "-c", "debug", "--disable-sandbox", "--product", "xcbeautify"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$swiftc"
+        },
+        {
+            "label": "swift: Build Release xcbeautify",
+            "type": "shell",
+            "command": "swift",
+            "args": ["build", "-c", "release", "--disable-sandbox", "--product", "xcbeautify"],
+            "group": "build",
+            "problemMatcher": "$swiftc"
+        },
+        {
+            "label": "swift: Test",
+            "type": "shell",
+            "command": "swift",
+            "args": ["test"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": "$swiftc"
+        },
+        {
+            "label": "swift: Clean",
+            "type": "shell",
+            "command": "swift",
+            "args": ["package", "clean"],
+            "problemMatcher": []
+        },
+        {
+            "label": "swift: Format",
+            "type": "shell",
+            "command": "./tools/format",
+            "problemMatcher": []
+        },
+        {
+            "label": "swift: Lint",
+            "type": "shell",
+            "command": "./tools/lint",
+            "problemMatcher": []
+        }
+    ]
+}

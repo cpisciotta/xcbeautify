@@ -1,22 +1,13 @@
 {
-  "originHash" : "f227ab50c47f6984542511fcdc3641eb844756adb01e3e1f3ca2ca93fbd79fb1",
+  "originHash" : "f1067b9bf38476e86b942c7d5118ece0657d952a4029b58dd7139dddde7a115d",
   "pins" : [
-    {
-      "identity" : "colorizer",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/getGuaka/Colorizer.git",
-      "state" : {
-        "revision" : "2ccc99bf1715e73c4139e8d40b6e6b30be975586",
-        "version" : "0.2.1"
-      }
-    },
     {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "cdd0ef3755280949551dc26dee5de9ddeda89f54",
-        "version" : "1.6.2"
+        "revision" : "c5d11a805e765f52ba34ec7284bd4fcd6ba68615",
+        "version" : "1.7.0"
       }
     },
     {
@@ -24,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CoreOffice/XMLCoder.git",
       "state" : {
-        "revision" : "b1e944cbd0ef33787b13f639a5418d55b3bed501",
-        "version" : "0.17.1"
+        "revision" : "5e1ada828d2618ecb79c974e03f79c8f4df90b71",
+        "version" : "0.18.0"
       }
     }
   ],
