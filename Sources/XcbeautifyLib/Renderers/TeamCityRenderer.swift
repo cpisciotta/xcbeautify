@@ -53,7 +53,7 @@ struct TeamCityRenderer: OutputRendering {
         let filePath = group.filePath
         return outputTeamCityError(
             text: "Fatal error",
-            details: colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
+            details: colored ? "\(Symbol.error) \(filePath): \(reason.red())" : "\(Symbol.asciiError) \(filePath): \(reason)"
         )
     }
 

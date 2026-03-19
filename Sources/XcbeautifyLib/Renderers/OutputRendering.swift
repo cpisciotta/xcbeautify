@@ -573,7 +573,7 @@ extension OutputRendering {
     func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
         let reason = group.reason ?? ""
         let filePath = group.filePath
-        return colored ? "\(Symbol.error) \(filePath): \(reason.f.Red)" : "\(Symbol.asciiError) \(filePath): \(reason)"
+        return colored ? "\(Symbol.error) \(filePath): \(reason.red())" : "\(Symbol.asciiError) \(filePath): \(reason)"
     }
 
     func formatSymLink(group: SymLinkCaptureGroup) -> String? {
