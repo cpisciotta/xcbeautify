@@ -66,6 +66,16 @@ package-darwin-universal:
 
 .PHONY: package-linux-x86_64
 package-linux-x86_64:
+	$(eval TARGET_TRIPLE := x86_64-unknown-linux-gnu)
+	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(TARGET_TRIPLE))
+	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
+	docker run --rm --volume `pwd`:/workdir --workdir /workdir \
+		swift:6.1 swift build $(SWIFT_BUILD_FLAGS)
+	tar --directory "$(BUILD_DIRECTORY)" --create --xz --file \
+		"$(PRODUCT_NAME).tar.xz" "$(PRODUCT_NAME)"
+
+.PHONY: package-linux-x86_64-static
+package-linux-x86_64-static:
 	$(eval SWIFT_SDK := x86_64-swift-linux-musl)
 	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --product $(PRODUCT_NAME) --swift-sdk $(SWIFT_SDK))
 	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))

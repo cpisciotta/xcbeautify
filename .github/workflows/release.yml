@@ -80,3 +80,11 @@ jobs:
         run: |
           mv xcbeautify.tar.xz "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz"
           gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz" --clobber
+      - name: Package Linux x86_64 Static
+        run: make package-linux-x86_64-static
+      - name: Upload Linux x86_64 Static Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mv xcbeautify.tar.xz "xcbeautify-${{ env.TAG }}-x86_64-linux-static.tar.xz"
+          gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-linux-static.tar.xz" --clobber
