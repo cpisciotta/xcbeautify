@@ -92,7 +92,7 @@ jobs:
         run: ./tools/export_coverage
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.swift_version == env.SWIFT_VERSION}}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           fail_ci_if_error: true
           files: info.lcov
