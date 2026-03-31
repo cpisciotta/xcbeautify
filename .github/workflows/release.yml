@@ -70,8 +70,6 @@ jobs:
         run: tar xzf swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04.tar.gz
       - name: Add Swift toolchain to PATH
         run: echo "$GITHUB_WORKSPACE/swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
-      - name: Install Swift Static Linux SDK
-        run: swift sdk install "${{ env.SWIFT_STATIC_SDK_URL }}" --checksum "${{ env.SWIFT_STATIC_SDK_CHECKSUM }}"
       - name: Package Linux x86_64
         run: make package-linux-x86_64
       - name: Upload Linux x86_64 Asset
@@ -80,6 +78,22 @@ jobs:
         run: |
           mv xcbeautify.tar.xz "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz"
           gh release upload "${{ env.TAG }}" "xcbeautify-${{ env.TAG }}-x86_64-unknown-linux-gnu.tar.xz" --clobber
+
+  ubuntu_x86_64_static:
+    name: Release Linux x86_64 Static
+    runs-on: ubuntu-22.04
+    needs: create_release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Download Swift ${{ env.SWIFT_VERSION }}
+        run: wget https://download.swift.org/swift-${{ env.SWIFT_VERSION }}-release/ubuntu2204/swift-${{ env.SWIFT_VERSION }}-RELEASE/swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04.tar.gz
+      - name: Extract Swift ${{ env.SWIFT_VERSION }}
+        run: tar xzf swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04.tar.gz
+      - name: Add Swift toolchain to PATH
+        run: echo "$GITHUB_WORKSPACE/swift-${{ env.SWIFT_VERSION }}-RELEASE-ubuntu22.04/usr/bin" >> $GITHUB_PATH
+      - name: Install Swift Static Linux SDK
+        run: swift sdk install "${{ env.SWIFT_STATIC_SDK_URL }}" --checksum "${{ env.SWIFT_STATIC_SDK_CHECKSUM }}"
       - name: Package Linux x86_64 Static
         run: make package-linux-x86_64-static
       - name: Upload Linux x86_64 Static Asset
