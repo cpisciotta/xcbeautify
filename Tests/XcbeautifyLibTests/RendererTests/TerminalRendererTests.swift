@@ -246,16 +246,16 @@ struct TerminalRendererTests {
 
     @Test func assertErrorWithMessage() {
         let input = "Target/File.swift:193: Fatal error: Assert message"
-        let output = "[x] Target/File.swift:193: Assert message"
+        let output = "[x] Fatal error Target/File.swift:193: Assert message"
         #expect(noColoredFormatted(input) == output)
     }
-    
+
     @Test func assertErrorWithoutMessage() {
         let input = "Target/File.swift:193: Fatal error"
-        let output = "[x] Target/File.swift:193: "
+        let output = "[x] Fatal error Target/File.swift:193: "
         #expect(noColoredFormatted(input) == output)
     }
-    
+
     @Test func failingTest() { }
 
     @Test func fatalError() {

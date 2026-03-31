@@ -15,12 +15,17 @@ struct AzureDevOpsPipelinesRenderer: MicrosoftOutputRendering {
 
     func makeOutputLog(
         annotation: Annotation,
+        prefix: String?,
         fileComponents: FileComponents?,
         message: String
     ) -> String {
         assert(annotation.platforms.contains(.azureDevOps))
         let formattedFileComponents = fileComponents?.formatted ?? ""
-        return "##vso[task.logissue type=\(annotation.value)\(formattedFileComponents)]\(message)"
+        if let prefix {
+            return "##vso[task.logissue \(prefix) type=\(annotation.value)\(formattedFileComponents)]\(message)"
+        } else {
+            return "##vso[task.logissue type=\(annotation.value)\(formattedFileComponents)]\(message)"
+        }
     }
 }
 

@@ -47,7 +47,7 @@ struct TeamCityRenderer: OutputRendering {
 
         return outputTeamCityError(text: "Build error", details: outputString)
     }
-    
+
     func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
         let reason = group.reason ?? ""
         let filePath = group.filePath

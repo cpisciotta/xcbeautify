@@ -569,11 +569,11 @@ extension OutputRendering {
         let errorMessage = group.wholeError
         return colored ? Symbol.error + " " + errorMessage.red() : Symbol.asciiError + " " + errorMessage
     }
-    
+
     func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
         let reason = group.reason ?? ""
         let filePath = group.filePath
-        return colored ? "\(Symbol.error) \(filePath): \(reason.red())" : "\(Symbol.asciiError) \(filePath): \(reason)"
+        return colored ? "\(Symbol.error) Fatal error \(filePath): \(reason.red())" : "\(Symbol.asciiError) Fatal error \(filePath): \(reason)"
     }
 
     func formatSymLink(group: SymLinkCaptureGroup) -> String? {

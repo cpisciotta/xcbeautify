@@ -245,13 +245,13 @@ struct TeamCityRendererTests {
         let formatted = noColoredFormatted("ExtractAppIntentsMetadata (in target 'Target' from project 'Project')")
         #expect(formatted == "[Target] Extract App Intents Metadata")
     }
-    
+
     @Test func assertErrorWithMessage() {
         let input = "Target/File.swift:193: Fatal error: Assert message"
         let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: Assert message\' status=\'ERROR\']\nFatal error"
         #expect(noColoredFormatted(input) == output)
     }
-    
+
     @Test func assertErrorWithoutMessage() {
         let input = "Target/File.swift:193: Fatal error"
         let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: \' status=\'ERROR\']\nFatal error"
