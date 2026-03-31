@@ -9,7 +9,7 @@ GIT=/usr/bin/git
 MKDIR=/bin/mkdir -p
 RM=/bin/rm -rf
 SED=/usr/bin/sed
-SWIFT=/usr/bin/swift
+SWIFT?=swift
 ZIP=/usr/bin/zip -r
 
 SHARED_SWIFT_BUILD_FLAGS = --configuration release --disable-sandbox
@@ -33,7 +33,7 @@ build:
 package-darwin-x86_64:
 	$(eval TARGET_TRIPLE := x86_64-apple-macosx)
 	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(TARGET_TRIPLE))
-	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
+	$(eval BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(SWIFT_BUILD_FLAGS)))
 	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 	$(CD) "$(BUILD_DIRECTORY)" && $(ZIP) "$(PRODUCT_NAME).zip" "$(PRODUCT_NAME)"
 
@@ -41,7 +41,7 @@ package-darwin-x86_64:
 package-darwin-arm64:
 	$(eval TARGET_TRIPLE := arm64-apple-macosx)
 	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(TARGET_TRIPLE))
-	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
+	$(eval BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(SWIFT_BUILD_FLAGS)))
 	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 	$(CD) "$(BUILD_DIRECTORY)" && $(ZIP) "$(PRODUCT_NAME).zip" "$(PRODUCT_NAME)"
 
@@ -49,12 +49,12 @@ package-darwin-arm64:
 package-darwin-universal:
 	$(eval X86_64_TARGET_TRIPLE := x86_64-apple-macosx)
 	$(eval X86_64_SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(X86_64_TARGET_TRIPLE))
-	$(eval X86_64_BUILD_DIRECTORY := $(shell swift build --show-bin-path $(X86_64_SWIFT_BUILD_FLAGS)))
+	$(eval X86_64_BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(X86_64_SWIFT_BUILD_FLAGS)))
 	$(SWIFT) build $(X86_64_SWIFT_BUILD_FLAGS)
 
 	$(eval ARM64_TARGET_TRIPLE := arm64-apple-macosx)
 	$(eval ARM64_SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(ARM64_TARGET_TRIPLE))
-	$(eval ARM64_BUILD_DIRECTORY := $(shell swift build --show-bin-path $(ARM64_SWIFT_BUILD_FLAGS)))
+	$(eval ARM64_BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(ARM64_SWIFT_BUILD_FLAGS)))
 	$(SWIFT) build $(ARM64_SWIFT_BUILD_FLAGS)
 
 	$(eval RELEASE_DIR := release)
@@ -68,9 +68,18 @@ package-darwin-universal:
 package-linux-x86_64:
 	$(eval TARGET_TRIPLE := x86_64-unknown-linux-gnu)
 	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(TARGET_TRIPLE))
-	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
+	$(eval BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(SWIFT_BUILD_FLAGS)))
 	docker run --rm --volume `pwd`:/workdir --workdir /workdir \
 		swift:6.1 swift build $(SWIFT_BUILD_FLAGS)
+	tar --directory "$(BUILD_DIRECTORY)" --create --xz --file \
+		"$(PRODUCT_NAME).tar.xz" "$(PRODUCT_NAME)"
+
+.PHONY: package-linux-x86_64-static
+package-linux-x86_64-static:
+	$(eval SWIFT_SDK := x86_64-swift-linux-musl)
+	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --product $(PRODUCT_NAME) --swift-sdk $(SWIFT_SDK))
+	$(eval BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(SWIFT_BUILD_FLAGS)))
+	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 	tar --directory "$(BUILD_DIRECTORY)" --create --xz --file \
 		"$(PRODUCT_NAME).tar.xz" "$(PRODUCT_NAME)"
 
@@ -84,15 +93,15 @@ install-swift:
 package-linux-arm64: install-swift
 	$(eval TARGET_TRIPLE := aarch64-unknown-linux-gnu)
 	$(eval SWIFT_BUILD_FLAGS := $(SHARED_SWIFT_BUILD_FLAGS) --triple $(TARGET_TRIPLE))
-	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SWIFT_BUILD_FLAGS)))
-	swift build $(SWIFT_BUILD_FLAGS)
+	$(eval BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(SWIFT_BUILD_FLAGS)))
+	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 	tar --directory "$(BUILD_DIRECTORY)" --create --xz --file \
 		"$(PRODUCT_NAME).tar.xz" "$(PRODUCT_NAME)"
 
 .PHONY: install
 install: build
 	$(eval BINARY_DIRECTORY := $(PREFIX)/bin)
-	$(eval BUILD_DIRECTORY := $(shell swift build --show-bin-path $(SHARED_SWIFT_BUILD_FLAGS)))
+	$(eval BUILD_DIRECTORY := $(shell $(SWIFT) build --show-bin-path $(SHARED_SWIFT_BUILD_FLAGS)))
 	$(MKDIR) $(BINARY_DIRECTORY)
 	$(CP) "$(BUILD_DIRECTORY)/$(PRODUCT_NAME)" "$(BINARY_DIRECTORY)"
 
