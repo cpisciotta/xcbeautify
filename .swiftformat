@@ -8,22 +8,17 @@
 --disable unusedArguments
 
 --enable acronyms
---enable blankLinesBetweenImports
 --enable blockComments
---enable emptyExtensions
 --enable isEmpty
---enable noForceTryInTests
---enable noForceUnwrapInTests
+--enable noExplicitOwnership
 --enable noGuardInTests
 --enable preferFinalClasses
 --enable preferSwiftTesting
---enable redundantAsync
---enable redundantEquatable
---enable redundantMemberwiseInit
---enable redundantProperty
 --enable singlePropertyPerLine
 --enable sortSwitchCases
+--enable testSuiteAccessControl
 --enable unusedPrivateDeclarations
+--enable validateTestCases
 --enable wrapEnumCases
 --enable wrapMultilineFunctionChains
 
