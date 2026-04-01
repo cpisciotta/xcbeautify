@@ -342,7 +342,7 @@ struct ParserTests {
         #expect(resultFailed.testCase == "exampleFalse")
     }
 
-    func tesPrecompileModule() throws {
+    @Test func precompileModule() throws {
         let input = try #require(parser.parse(line: "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan") as? PrecompileModuleCaptureGroup)
         #expect(input.path == "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")
     }
