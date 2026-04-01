@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+permissions:
+  contents: write
+
 env:
   # TODO: Load from `.swift-version` file
   SWIFT_VERSION: 6.1
