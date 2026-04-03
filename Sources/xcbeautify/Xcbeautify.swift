@@ -29,6 +29,9 @@ struct Xcbeautify: ParsableCommand {
     @Flag(name: [.long, .customLong("qq", withSingleDash: true)], help: "Only print tasks that have errors.")
     var quieter = false
 
+    @Flag(name: [.customShort("Q"), .long], help: "Switch to quieter mode after the first error is encountered.")
+    var quieterAfterError = false
+
     @Flag(name: [.long], help: "Preserves unbeautified output lines.")
     var preserveUnbeautified = false
 
@@ -89,7 +92,7 @@ struct Xcbeautify: ParsableCommand {
             )
         }
 
-        let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCI) { print($0) }
+        let output = OutputHandler(quiet: quiet, quieter: quieter, quieterAfterError: quieterAfterError, isCI: isCI) { print($0) }
         let junitReporter = JUnitReporter()
 
         let parser = Parser()
