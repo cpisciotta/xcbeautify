@@ -799,4 +799,21 @@ struct AzureDevOpsPipelinesRendererTests {
         let formatted = logFormatted("DataModelCodegen /path/to/data/model/something.xcdatamodeld (in target 'Target' from project 'Project')")
         #expect(formatted == "[Target] DataModelCodegen /path/to/data/model/something.xcdatamodeld")
     }
+
+    @Test func testSessionResults() {
+        let formatted = logFormatted("Test session results, code coverage, and logs:")
+        #expect(formatted == "Test session results: ")
+    }
+
+    @Test func testSessionResultsWithPath() throws {
+        let parser = Parser()
+        let formatter = Formatter(
+            colored: false,
+            renderer: .azureDevOpsPipelines,
+            additionalLines: { "  /path/to/result.xcresult" }
+        )
+        let captureGroup = try #require(parser.parse(line: "Test session results, code coverage, and logs:"))
+        let formatted = formatter.format(captureGroup: captureGroup)
+        #expect(formatted == "Test session results: /path/to/result.xcresult")
+    }
 }

@@ -676,7 +676,7 @@ extension OutputRendering {
 
     func formatTestSessionResults(group: TestSessionResultsCaptureGroup) -> String {
         let path = additionalLines()?.trimmingCharacters(in: .whitespaces) ?? ""
-        return colored ? "\("Test session results:".s.Bold) \(path)" : "Test session results: \(path)"
+        return colored ? "\("Test session results:".bold()) \(path)" : "Test session results: \(path)"
     }
 
     func formatSwiftEmitModule(group: SwiftEmitModuleCaptureGroup) -> String? {
