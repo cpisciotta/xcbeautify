@@ -1306,7 +1306,7 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup, JUnitParallelReportable
 }
 
 struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .testCaseSkip
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -2105,7 +2105,7 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable
 }
 
 struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .testCaseSkip
 
     /// Regular expression to capture a skipped test case.
     /// $1 = test name
@@ -2126,7 +2126,7 @@ struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup, JUnitParallelReportabl
 }
 
 struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .testCaseSkip
 
     /// Regular expression to capture a skipped test case with a reason.
     /// $1 = test name
@@ -2267,7 +2267,7 @@ struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
 }
 
 struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .testCaseSkip
 
     // Regular expression captured groups:
     // $1 = suite
