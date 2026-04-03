@@ -30,12 +30,12 @@ struct Annotation {
 }
 
 protocol MicrosoftOutputRendering: OutputRendering {
-    func makeOutputLog(annotation: Annotation, prefix: String?, fileComponents: FileComponents?, message: String) -> String
+    func makeOutputLog(annotation: Annotation, fileComponents: FileComponents?, message: String) -> String
 }
 
 extension MicrosoftOutputRendering {
     func makeOutputLog(annotation: Annotation, message: String) -> String {
-        makeOutputLog(annotation: annotation, prefix: nil, fileComponents: nil, message: message)
+        makeOutputLog(annotation: annotation, fileComponents: nil, message: message)
     }
 
     func formatCompileError(group: CompileErrorCaptureGroup) -> String {
@@ -55,7 +55,6 @@ extension MicrosoftOutputRendering {
 
         return makeOutputLog(
             annotation: .error,
-            prefix: nil,
             fileComponents: fileComponents,
             message: message
         )
@@ -78,7 +77,6 @@ extension MicrosoftOutputRendering {
 
         return makeOutputLog(
             annotation: .warning,
-            prefix: nil,
             fileComponents: fileComponents,
             message: message
         )
@@ -111,9 +109,8 @@ extension MicrosoftOutputRendering {
     func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
         makeOutputLog(
             annotation: .error,
-            prefix: "Fatal error",
             fileComponents: group.filePath.asFileComponents(),
-            message: group.reason ?? ""
+            message: group.reason
         )
     }
 
@@ -125,7 +122,6 @@ extension MicrosoftOutputRendering {
         let message = Format.indent + testCase + ", " + failingReason
         return makeOutputLog(
             annotation: .error,
-            prefix: nil,
             fileComponents: fileComponents,
             message: message
         )
@@ -137,7 +133,6 @@ extension MicrosoftOutputRendering {
         let fileComponents = filePath.asFileComponents()
         return makeOutputLog(
             annotation: .error,
-            prefix: nil,
             fileComponents: fileComponents,
             message: reason
         )
@@ -148,7 +143,6 @@ extension MicrosoftOutputRendering {
         let warningMessage = group.warningMessage
         return makeOutputLog(
             annotation: .warning,
-            prefix: nil,
             fileComponents: nil,
             message: "\(prefix)\(warningMessage)"
         )
@@ -197,7 +191,6 @@ extension MicrosoftOutputRendering {
         let message = Format.indent + failingReason
         return makeOutputLog(
             annotation: .error,
-            prefix: nil,
             fileComponents: fileComponents,
             message: message
         )
@@ -272,7 +265,6 @@ extension MicrosoftOutputRendering {
             }
         return makeOutputLog(
             annotation: .error,
-            prefix: nil,
             fileComponents: fileComponents,
             message: message
         )

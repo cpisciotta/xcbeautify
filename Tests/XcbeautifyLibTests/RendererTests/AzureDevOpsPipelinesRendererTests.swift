@@ -259,13 +259,13 @@ struct AzureDevOpsPipelinesRendererTests {
 
     @Test func assertErrorWithMessage() {
         let input = "Target/File.swift:193: Fatal error: Assert message"
-        let output = "##vso[task.logissue Fatal error type=error;sourcepath=Target/File.swift;linenumber=193]Assert message"
+        let output = "##vso[task.logissue type=error;sourcepath=Target/File.swift;linenumber=193]Fatal error: Assert message"
         #expect(logFormatted(input) == output)
     }
 
     @Test func assertErrorWithoutMessage() {
         let input = "Target/File.swift:193: Fatal error"
-        let output = "##vso[task.logissue Fatal error type=error;sourcepath=Target/File.swift;linenumber=193]"
+        let output = "##vso[task.logissue type=error;sourcepath=Target/File.swift;linenumber=193]Fatal error"
         #expect(logFormatted(input) == output)
     }
 

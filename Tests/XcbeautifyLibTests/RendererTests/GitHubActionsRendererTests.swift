@@ -268,13 +268,13 @@ struct GitHubActionsRendererTests {
 
     @Test func assertErrorWithMessage() {
         let input = "Target/File.swift:193: Fatal error: Assert message"
-        let output = "::error Fatal error file=Target/File.swift,line=193::Assert message"
+        let output = "::error file=Target/File.swift,line=193::Fatal error: Assert message"
         #expect(logFormatted(input) == output)
     }
 
     @Test func assertErrorWithoutMessage() {
         let input = "Target/File.swift:193: Fatal error"
-        let output = "::error Fatal error file=Target/File.swift,line=193::"
+        let output = "::error file=Target/File.swift,line=193::Fatal error"
         #expect(logFormatted(input) == output)
     }
 

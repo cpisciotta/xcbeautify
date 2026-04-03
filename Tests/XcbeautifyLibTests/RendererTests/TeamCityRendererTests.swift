@@ -248,13 +248,13 @@ struct TeamCityRendererTests {
 
     @Test func assertErrorWithMessage() {
         let input = "Target/File.swift:193: Fatal error: Assert message"
-        let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: Assert message\' status=\'ERROR\']\nFatal error"
+        let output = "##teamcity[message text=\'Fatal error: Assert message\' errorDetails=\'|[x|] Target/File.swift:193: Fatal error: Assert message\' status=\'ERROR\']\nFatal error: Assert message"
         #expect(noColoredFormatted(input) == output)
     }
 
     @Test func assertErrorWithoutMessage() {
         let input = "Target/File.swift:193: Fatal error"
-        let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: \' status=\'ERROR\']\nFatal error"
+        let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: Fatal error\' status=\'ERROR\']\nFatal error"
         #expect(noColoredFormatted(input) == output)
     }
 

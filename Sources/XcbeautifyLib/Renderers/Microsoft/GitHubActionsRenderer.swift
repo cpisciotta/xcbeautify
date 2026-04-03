@@ -15,17 +15,12 @@ struct GitHubActionsRenderer: MicrosoftOutputRendering {
 
     func makeOutputLog(
         annotation: Annotation,
-        prefix: String? = nil,
         fileComponents: FileComponents? = nil,
         message: String
     ) -> String {
         assert(annotation.platforms.contains(.githubAction))
         let formattedFileComponents = fileComponents?.formatted ?? ""
-        if let prefix {
-            return "::\(annotation.value) \(prefix) \(formattedFileComponents)::\(message)"
-        } else {
-            return "::\(annotation.value) \(formattedFileComponents)::\(message)"
-        }
+        return "::\(annotation.value) \(formattedFileComponents)::\(message)"
     }
 
     func formatParallelTestCaseSkipped(group: ParallelTestCaseSkippedCaptureGroup) -> String {

@@ -49,10 +49,10 @@ struct TeamCityRenderer: OutputRendering {
     }
 
     func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
-        let reason = group.reason ?? ""
+        let reason = group.reason
         let filePath = group.filePath
         return outputTeamCityError(
-            text: "Fatal error",
+            text: reason,
             details: colored ? "\(Symbol.error) \(filePath): \(reason.red())" : "\(Symbol.asciiError) \(filePath): \(reason)"
         )
     }
