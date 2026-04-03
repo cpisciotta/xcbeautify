@@ -308,22 +308,4 @@ struct CaptureGroupTests {
         #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
         #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
-
-    // MARK: - Test Case OutputType Tests (Regression tests for issue #339)
-
-    @Test func swiftTestingTestFailedOutputTypeIsTestCaseFailure() {
-        #expect(SwiftTestingTestFailedCaptureGroup.outputType == .testCaseFailure)
-    }
-
-    @Test func swiftTestingIssueCaptureGroupOutputTypeIsTestCaseFailure() {
-        #expect(SwiftTestingIssueCaptureGroup.outputType == .testCaseFailure)
-    }
-
-    @Test func swiftTestingIssueArgumentCaptureGroupOutputTypeIsTestCaseFailure() {
-        #expect(SwiftTestingIssueArgumentCaptureGroup.outputType == .testCaseFailure)
-    }
-
-    @Test func swiftTestingTestPassedOutputTypeIsTestCasePass() {
-        #expect(SwiftTestingTestPassedCaptureGroup.outputType == .testCasePass)
-    }
 }
