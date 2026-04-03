@@ -255,6 +255,8 @@ package struct Formatter {
             return renderer.formatSwiftMergeGeneratedHeaders(group: group)
         case let group as TestingStartedCaptureGroup:
             return renderer.formatTestingStarted(group: group)
+        case let group as TestSessionResultsCaptureGroup:
+            return renderer.formatTestSessionResults(group: group)
         case let group as SwiftTestingRunStartedCaptureGroup:
             return renderer.formatSwiftTestingRunStarted(group: group)
         case let group as SwiftTestingRunCompletionCaptureGroup:

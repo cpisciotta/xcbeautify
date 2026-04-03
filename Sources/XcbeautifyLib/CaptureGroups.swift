@@ -2338,6 +2338,17 @@ struct TestingStartedCaptureGroup: CaptureGroup {
     }
 }
 
+/// Matches the "Test session results, code coverage, and logs:" line.
+/// The path to the .xcresult file is on the following line (retrieved via `additionalLines()`).
+struct TestSessionResultsCaptureGroup: CaptureGroup {
+    static let outputType: OutputType = .result
+    static let regex = XCRegex(pattern: #"^Test session results, code coverage, and logs:$"#)
+
+    init?(groups: [String]) {
+        // No capture groups - just matches the line
+    }
+}
+
 struct TestsRunCompletionCaptureGroup: CaptureGroup {
     static let outputType: OutputType = .test
 
