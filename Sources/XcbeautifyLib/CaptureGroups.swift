@@ -776,7 +776,7 @@ struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
 }
 
 struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .error
+    static let outputType: OutputType = .testCaseFailure
 
     // Regular expression captured groups:
     // $1 = file
@@ -1246,7 +1246,7 @@ struct PackageUpdatingCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCasePass
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -1268,7 +1268,7 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestCaseFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .error
+    static let outputType: OutputType = .testCaseFailure
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -1299,7 +1299,7 @@ struct ParallelTestCaseFailedCaptureGroup: CaptureGroup, JUnitParallelReportable
 }
 
 struct ParallelTestCasePassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCasePass
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -1329,7 +1329,7 @@ struct ParallelTestCasePassedCaptureGroup: CaptureGroup, JUnitParallelReportable
 }
 
 struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseSkip
 
     /// Regular expression captured groups:
     /// $1 = suite
@@ -1893,7 +1893,7 @@ struct SwiftMergeGeneratedHeadersCaptureGroup: CaptureGroup {
 }
 
 struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseFailure
 
     /// Regular expression to capture the symbol, test description, and optional number of arguments.
     /// $1 = test description
@@ -1913,7 +1913,7 @@ struct SwiftTestingIssueArgumentCaptureGroup: CaptureGroup {
 }
 
 struct SwiftTestingIssueCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseFailure
 
     /// Regular expression to capture the symbol, test description, and issue details.
     /// $1 = test description
@@ -1933,7 +1933,7 @@ struct SwiftTestingIssueCaptureGroup: CaptureGroup {
 }
 
 struct SwiftTestingPassingArgumentCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCasePass
 
     /// Regular expression to capture the symbol and number of arguments.
     /// $1 = number of arguments
@@ -2074,7 +2074,7 @@ struct SwiftTestingSuiteStartedCaptureGroup: CaptureGroup, JUnitParallelReportab
 }
 
 struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseFailure
 
     /// Regular expression to capture the failure of a test case.
     /// $1 = test name
@@ -2103,7 +2103,7 @@ struct SwiftTestingTestFailedCaptureGroup: CaptureGroup, JUnitParallelReportable
 }
 
 struct SwiftTestingTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCasePass
 
     /// Regular expression to capture the successful completion of a test case.
     /// $1 = test name
@@ -2128,7 +2128,7 @@ struct SwiftTestingTestPassedCaptureGroup: CaptureGroup, JUnitParallelReportable
 }
 
 struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseSkip
 
     /// Regular expression to capture a skipped test case.
     /// $1 = test name
@@ -2149,7 +2149,7 @@ struct SwiftTestingTestSkippedCaptureGroup: CaptureGroup, JUnitParallelReportabl
 }
 
 struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseSkip
 
     /// Regular expression to capture a skipped test case with a reason.
     /// $1 = test name
@@ -2173,7 +2173,7 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelRep
 }
 
 struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .test
 
     /// Regular expression to capture the start of a test case.
     /// $1 = test name
@@ -2228,7 +2228,7 @@ struct SymLinkCaptureGroup: CaptureGroup {
 }
 
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .test
 
     // $1 = suite
     // $2 = test case
@@ -2259,7 +2259,7 @@ struct TestCaseMeasuredCaptureGroup: CaptureGroup {
 }
 
 struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCasePass
 
     // Regular expression captured groups:
     // $1 = suite
@@ -2290,7 +2290,7 @@ struct TestCasePassedCaptureGroup: CaptureGroup, JUnitReportable {
 }
 
 struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .testCaseSkip
 
     // Regular expression captured groups:
     // $1 = suite
@@ -2321,7 +2321,7 @@ struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
 }
 
 struct TestCaseStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCase
+    static let outputType: OutputType = .test
 
     // Regular expression captured groups:
     // $1 = suite

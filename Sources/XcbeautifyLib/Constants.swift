@@ -42,7 +42,9 @@ package enum OutputType {
     case undefined
     case task
     case test
-    case testCase
+    case testCaseFailure
+    case testCasePass
+    case testCaseSkip
     case nonContextualError
     case warning
     case error

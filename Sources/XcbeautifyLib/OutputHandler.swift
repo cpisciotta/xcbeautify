@@ -55,7 +55,13 @@ package final class OutputHandler {
             writer(content)
         case OutputType.result:
             writer(content)
-        case OutputType.testCase:
+        case OutputType.testCaseFailure:
+            if let last = lastFormatted {
+                writer(last)
+                lastFormatted = nil
+            }
+            writer(content)
+        case OutputType.testCasePass, OutputType.testCaseSkip:
             if isCI {
                 writer(content)
             }

@@ -123,4 +123,57 @@ struct OutputHandlerTests {
 
         #expect(collector == ["test started", "error", "test completed", "result"])
     }
+
+    @Test func testCasePassFilteredInQuietMode() {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
+            collector.append(content)
+        }
+
+        sut.write(.testCasePass, "test case passed")
+        sut.write(.result, "result")
+
+        // In quiet mode without CI, .testCasePass is filtered out
+        #expect(collector == ["result"])
+    }
+
+    @Test func testCasePassShownInQuietModeOnCI() {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: true) { content in
+            collector.append(content)
+        }
+
+        sut.write(.testCasePass, "test case passed")
+        sut.write(.result, "result")
+
+        // In quiet mode with CI, .testCasePass is shown
+        #expect(collector == ["test case passed", "result"])
+    }
+
+    @Test func testCaseFailureAlwaysShownInQuietMode() {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
+            collector.append(content)
+        }
+
+        sut.write(.testCaseFailure, "test case failed")
+        sut.write(.result, "result")
+
+        // .testCaseFailure is always shown, even in quiet mode without CI
+        #expect(collector == ["test case failed", "result"])
+    }
+
+    @Test func testCaseFailureShowsBannerInQuietMode() {
+        var collector: [String] = []
+        let sut = OutputHandler(quiet: true, quieter: false, isCI: false) { content in
+            collector.append(content)
+        }
+
+        sut.write(.task, "Building target")
+        sut.write(.testCaseFailure, "test case failed")
+        sut.write(.result, "result")
+
+        // .testCaseFailure prints the preceding banner, like .error does
+        #expect(collector == ["Building target", "test case failed", "result"])
+    }
 }
