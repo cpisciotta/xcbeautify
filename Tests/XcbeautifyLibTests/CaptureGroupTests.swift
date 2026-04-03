@@ -309,28 +309,21 @@ struct CaptureGroupTests {
         #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
 
-    // MARK: - Swift Testing OutputType Tests (Regression tests for issue #339)
+    // MARK: - Test Case OutputType Tests (Regression tests for issue #339)
 
-    @Test func swiftTestingTestFailedOutputTypeIsError() {
-        // Regression test: Swift Testing failures should use .error output type
-        // so they are shown even in quiet mode (issue #339)
-        #expect(SwiftTestingTestFailedCaptureGroup.outputType == .error)
+    @Test func swiftTestingTestFailedOutputTypeIsTestCaseFailure() {
+        #expect(SwiftTestingTestFailedCaptureGroup.outputType == .testCaseFailure)
     }
 
-    @Test func swiftTestingIssueCaptureGroupOutputTypeIsError() {
-        // Regression test: Swift Testing issues should use .error output type
-        // so they are shown even in quiet mode (issue #339)
-        #expect(SwiftTestingIssueCaptureGroup.outputType == .error)
+    @Test func swiftTestingIssueCaptureGroupOutputTypeIsTestCaseFailure() {
+        #expect(SwiftTestingIssueCaptureGroup.outputType == .testCaseFailure)
     }
 
-    @Test func swiftTestingIssueArgumentCaptureGroupOutputTypeIsError() {
-        // Regression test: Swift Testing issue arguments should use .error output type
-        // so they are shown even in quiet mode (issue #339)
-        #expect(SwiftTestingIssueArgumentCaptureGroup.outputType == .error)
+    @Test func swiftTestingIssueArgumentCaptureGroupOutputTypeIsTestCaseFailure() {
+        #expect(SwiftTestingIssueArgumentCaptureGroup.outputType == .testCaseFailure)
     }
 
-    @Test func failingTestCaptureGroupOutputTypeIsError() {
-        // Verify XCTest failures also use .error (for consistency check)
-        #expect(FailingTestCaptureGroup.outputType == .error)
+    @Test func swiftTestingTestPassedOutputTypeIsTestCasePass() {
+        #expect(SwiftTestingTestPassedCaptureGroup.outputType == .testCasePass)
     }
 }
