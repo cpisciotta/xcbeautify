@@ -836,7 +836,7 @@ struct FatalErrorWithFilePathCaptureGroup: CaptureGroup {
     /// Regular expression captured groups:
     /// $1 = file path
     /// $2 = reason
-    static let regex = XCRegex(pattern: #"^(.+?:\d+):\s*(Fatal error(?::\s*.*)?)$"#)
+    static let regex = XCRegex(pattern: #"^(.+?:\d+):\s*(Fatal error(?::\s+.*)?)$"#)
 
     let filePath: String
     let reason: String
