@@ -776,7 +776,7 @@ struct ExtractAppIntentsMetadataCaptureGroup: CaptureGroup {
 }
 
 struct FailingTestCaptureGroup: CaptureGroup, JUnitReportable {
-    static let outputType: OutputType = .error
+    static let outputType: OutputType = .testCaseFailure
 
     // Regular expression captured groups:
     // $1 = file
@@ -1245,7 +1245,7 @@ struct ParallelTestCaseAppKitPassedCaptureGroup: CaptureGroup {
 }
 
 struct ParallelTestCaseFailedCaptureGroup: CaptureGroup, JUnitParallelReportable {
-    static let outputType: OutputType = .error
+    static let outputType: OutputType = .testCaseFailure
 
     /// Regular expression captured groups:
     /// $1 = suite
