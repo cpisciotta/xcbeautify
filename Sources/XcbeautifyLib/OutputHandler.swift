@@ -61,7 +61,7 @@ package final class OutputHandler {
                 lastFormatted = nil
             }
             writer(content)
-        case OutputType.testCasePass:
+        case OutputType.testCasePass, OutputType.testCaseSkip:
             if isCI {
                 writer(content)
             }
