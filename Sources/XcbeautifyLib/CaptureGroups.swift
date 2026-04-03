@@ -2150,7 +2150,7 @@ struct SwiftTestingTestSkippedReasonCaptureGroup: CaptureGroup, JUnitParallelRep
 }
 
 struct SwiftTestingTestStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .test
 
     /// Regular expression to capture the start of a test case.
     /// $1 = test name
@@ -2205,7 +2205,7 @@ struct SymLinkCaptureGroup: CaptureGroup {
 }
 
 struct TestCaseMeasuredCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .test
 
     // $1 = suite
     // $2 = test case
@@ -2298,7 +2298,7 @@ struct TestCaseSkippedCaptureGroup: CaptureGroup, JUnitReportable {
 }
 
 struct TestCaseStartedCaptureGroup: CaptureGroup {
-    static let outputType: OutputType = .testCasePass
+    static let outputType: OutputType = .test
 
     // Regular expression captured groups:
     // $1 = suite
