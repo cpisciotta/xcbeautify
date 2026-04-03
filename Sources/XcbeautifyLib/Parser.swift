@@ -51,6 +51,7 @@ package final class Parser {
         ExtractAppIntentsMetadataCaptureGroup.self,
         FailingTestCaptureGroup.self,
         FatalErrorCaptureGroup.self,
+        FatalErrorWithFilePathCaptureGroup.self,
         FileMissingErrorCaptureGroup.self,
         GenerateAssetSymbolsCaptureGroup.self,
         GenerateCoverageDataCaptureGroup.self,

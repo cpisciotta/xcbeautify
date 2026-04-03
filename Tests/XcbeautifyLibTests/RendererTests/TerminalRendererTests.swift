@@ -244,6 +244,18 @@ struct TerminalRendererTests {
         #expect(formatted == "[Target] Extract App Intents Metadata")
     }
 
+    @Test func assertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "[x] Target/File.swift:193: Fatal error: Assert message"
+        #expect(noColoredFormatted(input) == output)
+    }
+
+    @Test func assertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "[x] Target/File.swift:193: Fatal error"
+        #expect(noColoredFormatted(input) == output)
+    }
+
     @Test func failingTest() { }
 
     @Test func fatalError() {

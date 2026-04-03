@@ -48,6 +48,15 @@ struct TeamCityRenderer: OutputRendering {
         return outputTeamCityError(text: "Build error", details: outputString)
     }
 
+    func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
+        let reason = group.reason
+        let filePath = group.filePath
+        return outputTeamCityError(
+            text: reason,
+            details: colored ? "\(Symbol.error) \(filePath): \(reason.red())" : "\(Symbol.asciiError) \(filePath): \(reason)"
+        )
+    }
+
     func formatCompileError(group: CompileErrorCaptureGroup) -> String {
         let filePath = group.filePath
         let reason = group.reason

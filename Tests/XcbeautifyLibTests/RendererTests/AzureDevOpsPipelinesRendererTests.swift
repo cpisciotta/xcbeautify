@@ -257,6 +257,18 @@ struct AzureDevOpsPipelinesRendererTests {
         #expect(logFormatted(input) == output)
     }
 
+    @Test func assertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "##vso[task.logissue type=error;sourcepath=Target/File.swift;linenumber=193]Fatal error: Assert message"
+        #expect(logFormatted(input) == output)
+    }
+
+    @Test func assertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "##vso[task.logissue type=error;sourcepath=Target/File.swift;linenumber=193]Fatal error"
+        #expect(logFormatted(input) == output)
+    }
+
     @Test func fatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
         let output = "##vso[task.logissue type=error]fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"

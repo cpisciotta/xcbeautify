@@ -106,6 +106,14 @@ extension MicrosoftOutputRendering {
         )
     }
 
+    func formatFatalErrorWithFilePath(group: FatalErrorWithFilePathCaptureGroup) -> String {
+        makeOutputLog(
+            annotation: .error,
+            fileComponents: group.filePath.asFileComponents(),
+            message: group.reason
+        )
+    }
+
     func formatFailingTest(group: FailingTestCaptureGroup) -> String {
         let file = group.file
         let fileComponents = file.asFileComponents()

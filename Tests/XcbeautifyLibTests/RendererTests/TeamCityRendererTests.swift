@@ -246,7 +246,17 @@ struct TeamCityRendererTests {
         #expect(formatted == "[Target] Extract App Intents Metadata")
     }
 
-    @Test func failingTest() { }
+    @Test func assertErrorWithMessage() {
+        let input = "Target/File.swift:193: Fatal error: Assert message"
+        let output = "##teamcity[message text=\'Fatal error: Assert message\' errorDetails=\'|[x|] Target/File.swift:193: Fatal error: Assert message\' status=\'ERROR\']\nFatal error: Assert message"
+        #expect(noColoredFormatted(input) == output)
+    }
+
+    @Test func assertErrorWithoutMessage() {
+        let input = "Target/File.swift:193: Fatal error"
+        let output = "##teamcity[message text=\'Fatal error\' errorDetails=\'|[x|] Target/File.swift:193: Fatal error\' status=\'ERROR\']\nFatal error"
+        #expect(noColoredFormatted(input) == output)
+    }
 
     @Test func fatalError() {
         let input = "fatal error: malformed or corrupted AST file: 'could not find file '/path/file.h' referenced by AST file' note: after modifying system headers, please delete the module cache at '/path/DerivedData/ModuleCache/M5WJ0FYE7N06'"
