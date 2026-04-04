@@ -51,6 +51,9 @@ protocol ExecutedCaptureGroup: CaptureGroup {
     var wallClockTimeInSeconds: Double { get }
 }
 
+// TODO: Conform to JUnitReportable
+protocol TestCaseCaptureGroup: CaptureGroup { }
+
 struct AggregateTargetCaptureGroup: TargetCaptureGroup {
     static let outputType: OutputType = .task
 
