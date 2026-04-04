@@ -9,7 +9,7 @@
 
 import Foundation
 import Testing
-import XcbeautifyLib
+@testable import XcbeautifyLib
 
 struct JUnitReporterTests {
     private let expectedMacOsXml = """
@@ -830,5 +830,19 @@ struct JUnitReporterTests {
         let actualXML = String(decoding: data, as: UTF8.self)
         let expectedXML = try String(contentsOf: outputURL, encoding: .utf8)
         #expect(actualXML == expectedXML)
+    }
+
+    @Test func parallelTestCaseSkippedJUnitComponent() throws {
+        let group = try #require(ParallelTestCaseSkippedCaptureGroup(groups: ["MySuite", "testMySkippedTest", "iPhone X", "0.001"]))
+        let component = group.junitComponent()
+        guard case let .skippedTest(testCase) = component else {
+            Issue.record("Expected .skippedTest but got \(component)")
+            return
+        }
+        #expect(testCase.classname == "MySuite")
+        #expect(testCase.name == "testMySkippedTest")
+        #expect(testCase.time == "0.001")
+        #expect(testCase.skipped != nil)
+        #expect(testCase.failure == nil)
     }
 }
