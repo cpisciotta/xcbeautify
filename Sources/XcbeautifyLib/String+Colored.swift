@@ -24,16 +24,55 @@ private extension String {
     }
 
     private func applyCode(_ code: Int) -> String {
-        guard
-            hasPrefix(startOfCode),
-            hasSuffix(reset),
-            let mIndex = dropFirst(startOfCode.count).firstIndex(of: "m")
-        else {
+        // Case 1: No ANSI codes present → simple wrap
+        guard contains(startOfCode) else {
             return "\(startOfCode)\(code)m\(self)\(reset)"
         }
 
-        let content = dropFirst(startOfCode.count).dropLast(reset.count)
-        return "\(startOfCode)\(code);\(content[..<mIndex])m\(content[content.index(after: mIndex)...])\(reset)"
+        // Case 2: Single-wrapped ANSI string (e.g. "\u{001B}[Xm...\u{001B}[0m") → merge codes
+        if hasPrefix(startOfCode),
+           hasSuffix(reset),
+           let mIndex = dropFirst(startOfCode.count).firstIndex(of: "m") {
+            let afterPrefix = dropFirst(startOfCode.count)
+            let content = afterPrefix.dropLast(reset.count)
+            let innerContent = content[content.index(after: mIndex)...]
+            if !innerContent.contains(startOfCode) {
+                return "\(startOfCode)\(code);\(content[..<mIndex])m\(innerContent)\(reset)"
+            }
+        }
+
+        // Case 3: String contains embedded ANSI codes → inject outer code and handle nesting.
+        // Each nested opening code gets the outer code appended, and each reset is followed
+        // by a resumption of the outer code.
+        let outerOpen = "\(startOfCode)\(code)m"
+        var result = outerOpen
+        var index = startIndex
+        while index < endIndex {
+            if self[index...].hasPrefix(startOfCode) {
+                let afterPrefix = self.index(index, offsetBy: startOfCode.count)
+                var mPos = afterPrefix
+                while mPos < endIndex, self[mPos].isNumber || self[mPos] == ";" {
+                    mPos = self.index(after: mPos)
+                }
+                if mPos < endIndex, self[mPos] == "m" {
+                    let innerCode = String(self[afterPrefix..<mPos])
+                    if innerCode == "0" {
+                        result += reset + outerOpen
+                    } else {
+                        result += "\(startOfCode)\(innerCode);\(code)m"
+                    }
+                    index = self.index(after: mPos)
+                } else {
+                    result.append(self[index])
+                    index = self.index(after: index)
+                }
+            } else {
+                result.append(self[index])
+                index = self.index(after: index)
+            }
+        }
+        result += reset
+        return result
     }
 }
 
