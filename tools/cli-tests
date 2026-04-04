@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -euo pipefail
+
+swift build --disable-sandbox --configuration release
+
+# Iterate over CLITests directories and run each test
+for test_dir in Tests/CLITests/*/; do
+    TEST_NAME=$(basename "$test_dir")
+
+    echo "Running test: $TEST_NAME"
+
+    # Find `log.txt` in the current test directory
+    log_file=$(find "$test_dir" -name "log.txt")
+
+    # Fail if file is not found
+    if [[ -z "$log_file" ]]; then
+        echo "Error: log.txt not found in $test_dir"
+        exit 1
+    fi
+
+    # Find the expected flag file in the current test directory
+    xcb_flags=$(find "$test_dir" -name "flags.txt")
+
+    # Fail if file is not found
+    if [[ -z "$xcb_flags" ]]; then
+        echo "Error: flags.txt not found in $test_dir"
+        exit 1
+    fi
+
+    # Find the expected log file in the current test directory
+    expected_log_file=$(find "$test_dir" -name "expected.txt")
+    # Fail if file is not found
+    if [[ -z "$expected_log_file" ]]; then
+        echo "Error: expected.txt not found in $test_dir"
+        exit 1
+    fi
+
+    # Run the test with the expected flags and compare output using diff
+    if ! diff -u "$expected_log_file" <(./.build/release/xcbeautify $(< "$xcb_flags") < "$log_file"); then
+        echo "$TEST_NAME failed: Output does not match expected log.txt"
+        exit 1
+    fi
+done
+
+echo "All CLI tests passed successfully!"

@@ -1,0 +1,9 @@
+Test Suite 'All tests' started at 2025-02-17 12:38:15.972.
+Test Suite 'All tests' passed at 2025-02-17 12:38:15.974.
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test run started.
+::notice ::Skipped skippedTest().(Skipping this test)
+    ✔ example() (0.001 seconds)
+::error file=DemoSwiftTestingTests.swift,line=11,col=5::Recorded an issue (Expectation failed: true == false)
+::error ::secondExample() (0.001 seconds) 1 issue(s)
+::error ::Test run with 3 tests failed after 0.001 seconds with 1 issue(s)
