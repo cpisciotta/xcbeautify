@@ -102,6 +102,17 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+  cli_tests:
+    name: CLI Tests (${{ matrix.platform }})
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: [macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v6
+      - run: swift --version
+      - run: ./tools/cli-tests
+
   check-sorted:
     name: Check Sorted
     if: github.event_name == 'pull_request'
