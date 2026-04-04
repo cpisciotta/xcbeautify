@@ -1354,7 +1354,7 @@ struct ParallelTestCaseSkippedCaptureGroup: CaptureGroup, JUnitParallelReportabl
 
     func junitComponent() -> JUnitComponent {
         let testCase = TestCase(classname: suite, name: testCase, time: time, skipped: .init(message: nil))
-        return .testCasePassed(testCase)
+        return .skippedTest(testCase)
     }
 }
 
