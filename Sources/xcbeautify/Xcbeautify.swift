@@ -92,34 +92,25 @@ struct Xcbeautify: ParsableCommand {
         let output = OutputHandler(quiet: quiet, quieter: quieter, isCI: isCI) { print($0) }
         let junitReporter = JUnitReporter()
 
-        let parser = Parser()
-
-        let formatter = XcbeautifyLib.Formatter(
+        let xcbeautifier = XCBeautifier(
             colored: !disableColoredOutput,
             renderer: renderer,
+            preserveUnbeautifiedLines: preserveUnbeautified,
             additionalLines: { readLine() }
         )
 
         while let line = readLine() {
             // Continue if a line is empty or only contains whitespace.
-            // Create a separate variable, since passing a line with trimmed whitespace changes our ability to parse non-empty lines.
             let _line = line.trimmingCharacters(in: .whitespaces)
             guard !_line.isEmpty else { continue }
 
-            guard let captureGroup = parser.parse(line: line) else {
-                if preserveUnbeautified {
-                    output.write(.undefined, line)
-                }
+            guard let result = xcbeautifier.process(line: line) else { continue }
 
-                continue
-            }
-
-            if report.contains(.junit), let captureGroup = captureGroup as? any JUnitReportable {
+            if report.contains(.junit), let captureGroup = result.captureGroup as? any JUnitReportable {
                 junitReporter.add(captureGroup: captureGroup)
             }
 
-            guard let formatted = formatter.format(captureGroup: captureGroup) else { continue }
-            output.write(captureGroup.outputType, formatted)
+            output.write(result.outputType, result.formatted)
         }
 
         if !report.isEmpty {
