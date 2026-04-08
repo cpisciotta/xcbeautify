@@ -51,15 +51,7 @@ public struct XCBeautifier {
     /// - Parameter line: The raw `xcodebuild` output.
     /// - Returns: The formatted output. Returns `nil` if the input is unrecognized, unless `preserveUnbeautifiedLines` is `true`.
     public func format(line: String) -> String? {
-        guard let captureGroup = parser.parse(line: line) else {
-            if preserveUnbeautifiedLines {
-                return line
-            } else {
-                return nil
-            }
-        }
-
-        return formatter.format(captureGroup: captureGroup)
+        process(line: line)?.formatted
     }
 
     /// Processes a single raw log line and returns a `FormattingResult` for routing and reporting.
