@@ -44,17 +44,7 @@ struct Xcbeautify: ParsableCommand {
     // swiftformat:disable redundantReturn
 
     @Option(help: "Specify a renderer to format raw xcodebuild output.")
-    var renderer: Renderer = {
-        if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
-            return .gitHubActions
-        } else if ProcessInfo.processInfo.environment["TEAMCITY_VERSION"] != nil {
-            return .teamcity
-        } else if ProcessInfo.processInfo.environment["AZURE_DEVOPS_PIPELINES"] != nil {
-            return .azureDevOpsPipelines
-        } else {
-            return .terminal
-        }
-    }()
+    var renderer: Renderer = .detect()
 
     // swiftformat:enable redundantReturn
 
