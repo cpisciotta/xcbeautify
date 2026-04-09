@@ -7,6 +7,8 @@
 // See https://github.com/cpisciotta/xcbeautify/blob/main/LICENSE for license information
 //
 
+import Foundation
+
 enum Architecture: String {
     case arm64
     case arm64_32
@@ -53,7 +55,7 @@ package enum OutputType {
 }
 
 /// Maps to an `OutputRendering` type that formats raw `xcodebuild` output.
-public enum Renderer: String, CaseIterable {
+public enum Renderer: String, CaseIterable, Sendable {
     /// The default `OutputRendering` type for local and general use. Maps to `TerminalRenderer`.
     case terminal
 
@@ -65,4 +67,18 @@ public enum Renderer: String, CaseIterable {
 
     /// Formats output suitable for Azure DevOps Pipeline annotations. Maps to `AzureDevOpsPipelineRenderer`
     case azureDevOpsPipelines = "azure-devops-pipelines"
+
+    package static func detect(
+        environment: [String: String] = ProcessInfo.processInfo.environment
+    ) -> Self {
+        if environment["GITHUB_ACTIONS"] == "true" {
+            .gitHubActions
+        } else if environment["TEAMCITY_VERSION"] != nil {
+            .teamcity
+        } else if environment["AZURE_DEVOPS_PIPELINES"] != nil {
+            .azureDevOpsPipelines
+        } else {
+            .terminal
+        }
+    }
 }
