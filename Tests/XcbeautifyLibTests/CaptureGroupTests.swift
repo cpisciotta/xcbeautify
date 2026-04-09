@@ -308,4 +308,12 @@ struct CaptureGroupTests {
         #expect(SwiftTestingIssueCaptureGroup.regex.captureGroups(for: input) == nil)
         #expect(SwiftTestingIssueArgumentCaptureGroup.regex.captureGroups(for: input) != nil)
     }
+
+    // MARK: - Capture Group Identifiers
+
+    @Test func captureGroupIdentifierStripsSuffixAndConvertsToKebabCase() {
+        #expect(FatalErrorCaptureGroup.identifier == "fatal-error")
+        #expect(FatalErrorWithFilePathCaptureGroup.identifier == "fatal-error-with-file-path")
+        #expect(UIFailingTestCaptureGroup.identifier == "ui-failing-test")
+    }
 }
