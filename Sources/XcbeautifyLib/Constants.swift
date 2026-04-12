@@ -40,7 +40,7 @@ enum Symbol {
 
 /// Specifies the xcodebuild console output type.
 /// As an example, a compiler warning, a compiler error, a test case, etc.
-package enum OutputType {
+public enum OutputType: Sendable {
     case undefined
     case task
     case test
