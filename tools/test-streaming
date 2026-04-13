@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Verifies that xcbeautify flushes each output line immediately, even
+# when stdout is a pipe.
+#
+# Mechanism: xcbeautify reads from an input FIFO and writes to an output
+# FIFO. The test writes one line at a time, then attempts to read the
+# corresponding output line with a generous timeout. A read that
+# succeeds means the line was flushed; a timeout means it was stuck in
+# a buffer. This avoids sleep-based polling and the flakiness that
+# comes with it.
+
+set -euo pipefail
+
+BIN="${1:-.build/release/xcbeautify}"
+
+IN_FIFO=$(mktemp -u)
+OUT_FIFO=$(mktemp -u)
+mkfifo "$IN_FIFO"
+mkfifo "$OUT_FIFO"
+
+cleanup() { rm -f "$IN_FIFO" "$OUT_FIFO"; }
+trap cleanup EXIT
+
+# Start xcbeautify: reads from IN_FIFO, writes to OUT_FIFO.
+"$BIN" --disable-logging --preserve-unbeautified < "$IN_FIFO" > "$OUT_FIFO" &
+XCB_PID=$!
+
+# Open the write side of IN_FIFO (keeps it open across iterations).
+exec 3>"$IN_FIFO"
+
+# Open the read side of OUT_FIFO.
+exec 4<"$OUT_FIFO"
+
+PASS=true
+
+for i in 1 2 3; do
+    # Send one line.
+    echo "Line $i of input" >&3
+
+    # Read the corresponding output line. 5 s timeout is generous; a
+    # buffered implementation would not flush until the ~4 KB buffer
+    # fills or the process exits, so this would time out.
+    if read -t 5 -u 4 output_line; then
+        if [ "$output_line" != "Line $i of input" ]; then
+            echo "FAIL: Line $i content mismatch: got '$output_line'"
+            PASS=false
+        fi
+    else
+        echo "FAIL: Timed out waiting for line $i (output is buffered)"
+        PASS=false
+    fi
+done
+
+# Close the write side so xcbeautify sees EOF and exits.
+exec 3>&-
+wait "$XCB_PID" 2>/dev/null || true
+
+# Close the read side.
+exec 4<&-
+
+if [ "$PASS" = true ]; then
+    echo "Streaming test passed."
+else
+    echo "Streaming test FAILED."
+    exit 1
+fi
