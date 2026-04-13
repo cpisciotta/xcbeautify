@@ -14,12 +14,16 @@ set -euo pipefail
 
 BIN="${1:-.build/release/xcbeautify}"
 
-IN_FIFO=$(mktemp -u)
-OUT_FIFO=$(mktemp -u)
+TMP_DIR=$(mktemp -d)
+IN_FIFO="$TMP_DIR/in.fifo"
+OUT_FIFO="$TMP_DIR/out.fifo"
 mkfifo "$IN_FIFO"
 mkfifo "$OUT_FIFO"
 
-cleanup() { rm -f "$IN_FIFO" "$OUT_FIFO"; }
+cleanup() {
+    rm -f "$IN_FIFO" "$OUT_FIFO"
+    rmdir "$TMP_DIR" 2>/dev/null || true
+}
 trap cleanup EXIT
 
 # Start xcbeautify: reads from IN_FIFO, writes to OUT_FIFO.
