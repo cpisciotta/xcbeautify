@@ -57,6 +57,9 @@ struct Xcbeautify: ParsableCommand {
     @Option(help: "The name of JUnit report file name")
     var junitReportFilename = "junit.xml"
 
+    @Option(name: .long, parsing: .singleValue, help: "Skip formatting for a specific log pattern so it is printed as plain text instead. May be repeated. Pattern identifiers are kebab-case names, e.g. 'fatal-error', 'fatal-error-with-file-path', 'compile-error'.")
+    var skipFormatting: [String] = []
+
     func run() throws {
         #if DEBUG && os(macOS)
         let start = CFAbsoluteTimeGetCurrent()
@@ -86,6 +89,7 @@ struct Xcbeautify: ParsableCommand {
             colored: !disableColoredOutput,
             renderer: renderer,
             preserveUnbeautifiedLines: preserveUnbeautified,
+            skippedCaptureGroups: Set(skipFormatting),
             additionalLines: { readLine() }
         )
 
