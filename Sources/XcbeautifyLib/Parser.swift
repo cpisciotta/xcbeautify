@@ -76,6 +76,7 @@ package final class Parser {
         PackageGraphResolvingEndedCaptureGroup.self,
         PackageGraphResolvingStartCaptureGroup.self,
         PackageUpdatingCaptureGroup.self,
+        ParallelTestCaseAppKitFailedCaptureGroup.self,
         ParallelTestCaseAppKitPassedCaptureGroup.self,
         ParallelTestCaseFailedCaptureGroup.self,
         ParallelTestCasePassedCaptureGroup.self,
