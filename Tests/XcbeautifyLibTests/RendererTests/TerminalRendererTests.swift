@@ -387,6 +387,11 @@ struct TerminalRendererTests {
         #expect(formatted == "    ✔ [XcbeautifyLibTests.XcbeautifyLibTests] testBuildTarget (0.131 seconds)")
     }
 
+    @Test func parallelTestCaseAppKitFailed() {
+        let formatted = noColoredFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' failed on 'xctest (49438)' (0.131 seconds)")
+        #expect(formatted == "    ✖ [XcbeautifyLibTests.XcbeautifyLibTests] testBuildTarget (0.131 seconds)")
+    }
+
     @Test func parallelTestCaseAppKitWithSpacesPassed() {
         let formatted = noColoredFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests test build target]' passed on 'xctest (49438)' (0.131 seconds).")
         #expect(formatted == "    ✔ [XcbeautifyLibTests.XcbeautifyLibTests] test build target (0.131 seconds)")
