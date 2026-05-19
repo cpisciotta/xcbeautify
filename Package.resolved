@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CoreOffice/XMLCoder.git",
       "state" : {
-        "revision" : "5e1ada828d2618ecb79c974e03f79c8f4df90b71",
-        "version" : "0.18.0"
+        "revision" : "42f62383dbcd074440cb1f6a750b9c02df9e7325",
+        "version" : "0.18.2"
       }
     }
   ],
