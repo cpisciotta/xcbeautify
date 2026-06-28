@@ -342,6 +342,13 @@ struct ParserTests {
         #expect(resultFailed.testCase == "exampleFalse")
     }
 
+    @Test func parseObjectiveCParallelTestOutputFailed() throws {
+        let resultFailed = try #require(parser.parse(line: "Test case '-[LPSceneLayerMoveGestureRecognizerTests testOptionDragDuplicationCopiesAndReplacesDraggingLayersWithPastedLayers]' failed on 'My Mac - xctest (99082)' (0.974 seconds)") as? ParallelTestCaseAppKitFailedCaptureGroup)
+        #expect(resultFailed.suite == "LPSceneLayerMoveGestureRecognizerTests")
+        #expect(resultFailed.time == "0.974")
+        #expect(resultFailed.testCase == "testOptionDragDuplicationCopiesAndReplacesDraggingLayersWithPastedLayers")
+    }
+
     @Test func precompileModule() throws {
         let input = try #require(parser.parse(line: "PrecompileModule /Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan") as? PrecompileModuleCaptureGroup)
         #expect(input.path == "/Users/Some/Random-Path/_To/A/Build/Intermediates.noindex/ExplicitPrecompileModules/file-ABC123.scan")

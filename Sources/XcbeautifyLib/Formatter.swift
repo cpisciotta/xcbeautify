@@ -161,6 +161,8 @@ package struct Formatter {
             return renderer.formatPackageStart()
         case let group as PackageUpdatingCaptureGroup:
             return renderer.formatPackageUpdating(group: group)
+        case let group as ParallelTestCaseAppKitFailedCaptureGroup:
+            return renderer.formatParallelTestCaseAppKitFailed(group: group)
         case let group as ParallelTestCaseAppKitPassedCaptureGroup:
             return renderer.formatParallelTestCaseAppKitPassed(group: group)
         case let group as ParallelTestCaseFailedCaptureGroup:

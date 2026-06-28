@@ -169,6 +169,16 @@ extension MicrosoftOutputRendering {
         )
     }
 
+    func formatParallelTestCaseAppKitFailed(group: ParallelTestCaseAppKitFailedCaptureGroup) -> String {
+        let testCase = group.testCase
+        let time = group.time
+        let message = "    \(testCase) (\(time) seconds)"
+        return makeOutputLog(
+            annotation: .error,
+            message: message
+        )
+    }
+
     func formatParallelTestingFailed(group: ParallelTestingFailedCaptureGroup) -> String {
         makeOutputLog(
             annotation: .error,

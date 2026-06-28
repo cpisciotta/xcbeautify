@@ -845,4 +845,18 @@ struct JUnitReporterTests {
         #expect(testCase.skipped != nil)
         #expect(testCase.failure == nil)
     }
+
+    @Test func parallelTestCaseAppKitFailedJUnitComponent() throws {
+        let group = try #require(ParallelTestCaseAppKitFailedCaptureGroup(groups: ["MySuite", "testMyFailure", "0.001"]))
+        let component = group.junitComponent()
+        guard case let .failingTest(testCase) = component else {
+            Issue.record("Expected .failingTest but got \(component)")
+            return
+        }
+        #expect(testCase.classname == "MySuite")
+        #expect(testCase.name == "testMyFailure")
+        #expect(testCase.time == nil)
+        #expect(testCase.skipped == nil)
+        #expect(testCase.failure?.message == "Parallel test failed")
+    }
 }
