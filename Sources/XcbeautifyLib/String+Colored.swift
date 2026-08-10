@@ -94,15 +94,23 @@ extension String {
 extension String {
     func coloredTime() -> String {
         guard let time = Double(self) else { return self }
-        if time < 0.025 { return self }
-        if time < 0.100 { return yellow() }
+        if time < 0.025 {
+            return self
+        }
+        if time < 0.100 {
+            return yellow()
+        }
         return red()
     }
 
     func coloredDeviation() -> String {
         guard let deviation = Double(self) else { return self }
-        if deviation < 1 { return self }
-        if deviation < 10 { return yellow() }
+        if deviation < 1 {
+            return self
+        }
+        if deviation < 10 {
+            return yellow()
+        }
         return red()
     }
 }
