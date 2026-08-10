@@ -43,7 +43,9 @@ package final class OutputHandler {
 
         switch type {
         case OutputType.warning:
-            if quieter { return }
+            if quieter {
+                return
+            }
             fallthrough
         case OutputType.error:
             if let last = lastFormatted {
