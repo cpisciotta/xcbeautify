@@ -1248,6 +1248,34 @@ struct PackageUpdatingCaptureGroup: CaptureGroup {
     }
 }
 
+struct ParallelTestCaseAppKitFailedCaptureGroup: TestCaseCaptureGroup, JUnitParallelReportable {
+    static let outputType: OutputType = .testCaseFailure
+
+    /// Regular expression captured groups:
+    /// $1 = suite
+    /// $2 = test case
+    /// $3 = time
+    static let regex = XCRegex(pattern: #"^\s*Test case\s'-\[(.*?)\s(.*)\]'\sfailed\son\s'.*'\s\((\d*\.\d{3})\sseconds\)"#)
+
+    let suite: String
+    let testCase: String
+    let time: String
+
+    init?(groups: [String]) {
+        assert(groups.count >= 3)
+        guard let suite = groups[safe: 0], let testCase = groups[safe: 1], let time = groups[safe: 2] else { return nil }
+        self.suite = suite
+        self.testCase = testCase
+        self.time = time
+    }
+
+    func junitComponent() -> JUnitComponent {
+        // Parallel tests do not provide meaningful failure messages
+        let testCase = TestCase(classname: suite, name: testCase, time: nil, failure: .init(message: "Parallel test failed"))
+        return .failingTest(testCase)
+    }
+}
+
 struct ParallelTestCaseAppKitPassedCaptureGroup: TestCaseCaptureGroup {
     static let outputType: OutputType = .testCasePass
 

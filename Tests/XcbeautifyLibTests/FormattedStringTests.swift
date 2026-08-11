@@ -455,6 +455,14 @@ struct FormattedStringTests {
         #expect(colored == expected)
     }
 
+    @Test func parallelTestCaseAppKitFailedWithRedStatus() {
+        let input = "Test case '-[MyTests testFailure]' failed on 'My Mac - xctest (99082)' (0.010 seconds)"
+        let colored = coloredFormatted(input)
+
+        let expected = "\(Format.indent)\(redStart)✖\(reset) [\(cyanStart)MyTests\(reset)] testFailure (0.010 seconds)"
+        #expect(colored == expected)
+    }
+
     @Test func parallelTestCaseSkippedWithYellowStatus() {
         let input = "Test case 'MyTests.testSkipped()' skipped on 'iPhone 15 Simulator' (0.001 seconds)"
         let colored = coloredFormatted(input)

@@ -65,6 +65,7 @@ protocol OutputRendering {
     func formatPackageItem(group: PackageGraphResolvedItemCaptureGroup) -> String
     func formatPackageStart() -> String
     func formatPackageUpdating(group: PackageUpdatingCaptureGroup) -> String
+    func formatParallelTestCaseAppKitFailed(group: ParallelTestCaseAppKitFailedCaptureGroup) -> String
     func formatParallelTestCaseAppKitPassed(group: ParallelTestCaseAppKitPassedCaptureGroup) -> String
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String
     func formatParallelTestCasePassed(group: ParallelTestCasePassedCaptureGroup) -> String
@@ -528,6 +529,14 @@ extension OutputRendering {
         let time = group.time
 
         return formatParallelTestCase(result: TestStatus.pass, suite: suite, testCase: testCase, device: nil, time: time)
+    }
+
+    func formatParallelTestCaseAppKitFailed(group: ParallelTestCaseAppKitFailedCaptureGroup) -> String {
+        let suite = group.suite
+        let testCase = group.testCase
+        let time = group.time
+
+        return formatParallelTestCase(result: TestStatus.fail, suite: suite, testCase: testCase, device: nil, time: time)
     }
 
     func formatParallelTestCaseFailed(group: ParallelTestCaseFailedCaptureGroup) -> String {

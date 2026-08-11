@@ -384,6 +384,11 @@ struct AzureDevOpsPipelinesRendererTests {
         #expect(formatted == "    ✔ [XcbeautifyLibTests.XcbeautifyLibTests] testBuildTarget (0.131 seconds)")
     }
 
+    @Test func parallelTestCaseAppKitFailed() {
+        let formatted = logFormatted("Test case '-[XcbeautifyLibTests.XcbeautifyLibTests testBuildTarget]' failed on 'xctest (49438)' (0.131 seconds)")
+        #expect(formatted == "##vso[task.logissue type=error]    testBuildTarget (0.131 seconds)")
+    }
+
     @Test func parallelTestingStarted() {
         let formatted = logFormatted("Testing started on 'iPhone X'")
         #expect(formatted == "Testing started on 'iPhone X'")
