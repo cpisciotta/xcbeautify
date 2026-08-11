@@ -8,7 +8,7 @@
 //
 
 import ArgumentParser
-import Foundation
+@preconcurrency import Foundation
 import XcbeautifyLib
 
 @main
@@ -58,6 +58,8 @@ struct Xcbeautify: ParsableCommand {
     var junitReportFilename = "junit.xml"
 
     func run() throws {
+        setvbuf(stdout, nil, _IONBF, 0)
+
         #if DEBUG && os(macOS)
         let start = CFAbsoluteTimeGetCurrent()
 

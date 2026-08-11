@@ -43,4 +43,7 @@ for test_dir in Tests/CLITests/*/; do
     fi
 done
 
+echo "Running test: streaming"
+"$(dirname "$0")/test-streaming" ./.build/release/xcbeautify
+
 echo "All CLI tests passed successfully!"
