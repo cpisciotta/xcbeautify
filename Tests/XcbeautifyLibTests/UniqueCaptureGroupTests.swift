@@ -212,5 +212,24 @@ struct UniqueCaptureGroupTests {
             )
         }
     }
+
+    @Test func uniqueCaptureGroupIdentifiers() {
+        var seen = [String]()
+        var duplicates = [String]()
+
+        for type in captureGroupTypes {
+            let id = type.identifier
+            if seen.contains(id) {
+                duplicates.append("\(id) (\(String(describing: type)))")
+            } else {
+                seen.append(id)
+            }
+        }
+
+        #expect(
+            duplicates.isEmpty,
+            "Found duplicate capture group identifier(s): \(duplicates.joined(separator: ", "))"
+        )
+    }
     #endif
 }

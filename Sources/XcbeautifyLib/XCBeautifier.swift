@@ -25,17 +25,20 @@ public struct XCBeautifier {
     private let parser = Parser()
     private let formatter: Formatter
     private let preserveUnbeautifiedLines: Bool
+    private let skippedCaptureGroups: Set<String>
 
     /// Creates an `XCBeautifier` instance.
     /// - Parameters:
     ///   - colored: Indicates if `XCBeautifier` should color its formatted output.
     ///   - renderer: Indicates the context, such as Terminal and GitHub Actions, where `XCBeautifier` is used.
     ///   - preserveUnbeautifiedLines: Indicates if `XCBeautifier` should preserve unrecognized output.
+    ///   - skippedCaptureGroups: A set of capture group identifiers whose formatting should be skipped. Matched lines are emitted as plain text instead.
     ///   - additionalLines: A closure that provides `XCBeautifier` the subsequent console output when needed (i.e. multi-line output).
     public init(
         colored: Bool,
         renderer: Renderer,
         preserveUnbeautifiedLines: Bool,
+        skippedCaptureGroups: Set<String> = [],
         additionalLines: @escaping () -> String?
     ) {
         formatter = Formatter(
@@ -45,6 +48,7 @@ public struct XCBeautifier {
         )
 
         self.preserveUnbeautifiedLines = preserveUnbeautifiedLines
+        self.skippedCaptureGroups = skippedCaptureGroups
     }
 
     /// Formats `xcodebuild` console output.
@@ -61,6 +65,14 @@ public struct XCBeautifier {
         guard let captureGroup = parser.parse(line: line) else {
             guard preserveUnbeautifiedLines else { return nil }
             return FormattingResult(captureGroup: nil, outputType: .undefined, formatted: line)
+        }
+
+        if skippedCaptureGroups.contains(captureGroup.identifier) {
+            return FormattingResult(
+                captureGroup: captureGroup,
+                outputType: captureGroup.outputType,
+                formatted: line
+            )
         }
 
         return FormattingResult(

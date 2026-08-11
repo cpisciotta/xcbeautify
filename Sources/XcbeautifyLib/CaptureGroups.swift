@@ -14,12 +14,25 @@ private let swiftTestingSuiteName = "SwiftTesting"
 package protocol CaptureGroup {
     static var outputType: OutputType { get }
     static var regex: XCRegex { get }
+    static var identifier: String { get }
     init?(groups: [String])
 }
 
 package extension CaptureGroup {
     var outputType: OutputType {
         Self.outputType
+    }
+
+    static var identifier: String {
+        let name = String(describing: Self.self)
+        let trimmed = name.hasSuffix("CaptureGroup")
+            ? String(name.dropLast("CaptureGroup".count))
+            : name
+        return trimmed.kebabCased
+    }
+
+    var identifier: String {
+        Self.identifier
     }
 }
 
