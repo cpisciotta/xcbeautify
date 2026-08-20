@@ -10,7 +10,7 @@
 import Foundation
 
 /// Filters formatted output by `OutputType` only if `quiet` or `quieter` are specified.
-package final class OutputHandler {
+public final class OutputHandler {
     let quiet: Bool
     let quieter: Bool
     let isCI: Bool
@@ -26,14 +26,14 @@ package final class OutputHandler {
     /// Ref: https://github.com/cpisciotta/xcbeautify/pull/15
     private var lastFormatted: String?
 
-    package init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
+    public init(quiet: Bool, quieter: Bool, isCI: Bool = false, _ writer: @escaping (String) -> Void) {
         self.quiet = quiet
         self.quieter = quieter
         self.isCI = isCI
         self.writer = writer
     }
 
-    package func write(_ type: OutputType, _ content: String?) {
+    public func write(_ type: OutputType, _ content: String?) {
         guard let content else { return }
 
         if !quiet, !quieter {
